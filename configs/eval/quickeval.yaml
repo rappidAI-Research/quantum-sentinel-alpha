@@ -1,0 +1,24 @@
+schema_version: "1.0"
+name: quickeval
+public_contract_seed: eval/sentinelbench/public_seed.jsonl
+private_case_dir: eval/sentinelbench/private
+release_holdout_public: false
+pre_bakeoff_target_cases: 50-100
+release_target_cases: 500-1000
+primary_metrics:
+  - precision
+  - false_positive_rate
+  - recall
+  - f1
+  - localization_top1
+  - localization_mean_overlap
+  - cwe_accuracy
+  - explicit_abstention_recall
+  - patch_apply_rate
+  - functional_test_pass_rate
+  - security_test_pass_rate
+  - regression_free_rate
+runtime_metrics:
+  - peak_vram_gb
+  - latency_seconds
+  - tokens_per_second

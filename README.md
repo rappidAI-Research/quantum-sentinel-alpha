@@ -20,3 +20,20 @@ pytest -q
 ```
 
 The foundation check validates the versioned finding contract and the Sentinel Garden source registry. It intentionally does not perform network calls or GPU work.
+
+## Evaluation harness
+
+The public repository ships the SentinelBench/QuickEval contract and a small synthetic harness seed, not the private release holdout.
+
+```bash
+python -m sentinel.eval.baseline \
+  --cases eval/sentinelbench/public_seed.jsonl \
+  --output /tmp/qsa-baseline.jsonl
+
+python -m sentinel.eval.quickeval \
+  --cases eval/sentinelbench/public_seed.jsonl \
+  --predictions /tmp/qsa-baseline.jsonl \
+  --json
+```
+
+The synthetic seed exists to validate the scorer and model-adapter path. Its scores are not model-quality evidence.

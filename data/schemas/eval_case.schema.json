@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rappidai-research.com/schemas/quantum-sentinel-alpha/eval-case-v1.json",
+  "title": "Quantum Sentinel Alpha Evaluation Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "language",
+    "source_kind",
+    "task",
+    "expected_decision",
+    "file",
+    "code",
+    "ground_truth"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "language": {"enum": ["python", "javascript", "typescript", "go"]},
+    "source_kind": {"enum": ["synthetic", "private_holdout", "public_eval"]},
+    "task": {"enum": ["review", "patch"]},
+    "expected_decision": {"enum": ["finding", "no_finding", "abstain"]},
+    "file": {"type": "string", "minLength": 1, "pattern": "^(?!/).+"},
+    "code": {"type": "string", "minLength": 1},
+    "ground_truth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cwe", "start_line", "end_line"],
+      "properties": {
+        "cwe": {"type": ["string", "null"], "pattern": "^CWE-[1-9][0-9]*$"},
+        "start_line": {"type": ["integer", "null"], "minimum": 1},
+        "end_line": {"type": ["integer", "null"], "minimum": 1}
+      }
+    }
+  }
+}
