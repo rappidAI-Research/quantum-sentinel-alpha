@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rappidai-research.com/schemas/quantum-sentinel-alpha/finding-v1.json",
+  "title": "Quantum Sentinel Alpha Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "severity",
+    "confidence",
+    "cwe",
+    "file",
+    "start_line",
+    "end_line",
+    "summary",
+    "evidence",
+    "preconditions",
+    "remediation",
+    "patch",
+    "verification"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "pattern": "^QSA-[A-Za-z0-9._-]+$"},
+    "severity": {"enum": ["low", "medium", "high", "critical"]},
+    "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "cwe": {"type": "string", "pattern": "^(CWE-[1-9][0-9]*|unknown)$"},
+    "file": {"type": "string", "minLength": 1, "pattern": "^(?!/).+"},
+    "start_line": {"type": "integer", "minimum": 1},
+    "end_line": {"type": "integer", "minimum": 1},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 1200},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1200}
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 800}
+    },
+    "remediation": {"type": "string", "minLength": 1, "maxLength": 2400},
+    "patch": {"type": ["string", "null"]},
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "tests"],
+      "properties": {
+        "status": {"enum": ["verified", "unverified", "rejected"]},
+        "tests": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 500}
+        }
+      }
+    }
+  }
+}

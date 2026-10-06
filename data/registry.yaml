@@ -1,0 +1,101 @@
+registry_version: "1.0"
+sources:
+  - source_id: github-advisory-db
+    role: metadata
+    revision: null
+    license: CC-BY-4.0
+    license_status: review_required
+    terms_status: review_required
+    redistribution_status: metadata_only
+    removal_status: ready
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/github/advisory-database
+    notes: >-
+      Metadata anchor only. Vulnerable source code must be resolved to the upstream
+      repository and reviewed under that repository's own license and terms.
+
+  - source_id: osv
+    role: metadata
+    revision: null
+    license: upstream-specific / aggregator metadata
+    license_status: review_required
+    terms_status: review_required
+    redistribution_status: metadata_only
+    removal_status: ready
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://osv.dev/
+    notes: >-
+      Aggregation and version-resolution candidate. Upstream dataset and repository
+      rights remain separate gates.
+
+  - source_id: vulnbench
+    role: eval_only
+    revision: null
+    license: review required
+    license_status: unreviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: unknown
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/vulnbench/vulnbench
+    notes: Public benchmark candidate. Never mix benchmark cases or solutions into training.
+
+  - source_id: secodebench-v2
+    role: eval_only
+    revision: null
+    license: review required
+    license_status: unreviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: unknown
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/alibaba/sec-code-bench
+    notes: Public evaluation candidate only until exact revision and rights are reviewed.
+
+  - source_id: secodeplt
+    role: eval_only
+    revision: null
+    license: review required
+    license_status: unreviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: unknown
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/ucsb-mlsec/SeCodePLT
+    notes: Public evaluation candidate only; keep training decontamination explicit.
+
+  - source_id: primevul
+    role: eval_only
+    revision: null
+    license: review required
+    license_status: unreviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: unknown
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/DLVulDet/PrimeVul
+    notes: Detection/hard-negative reference for evaluation; not an approved training source.

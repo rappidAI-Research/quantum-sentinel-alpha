@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rappidai-research.com/schemas/quantum-sentinel-alpha/source-registry-v1.json",
+  "title": "Sentinel Garden Source Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "sources"],
+  "properties": {
+    "registry_version": {"const": "1.0"},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "role",
+          "revision",
+          "license",
+          "license_status",
+          "terms_status",
+          "redistribution_status",
+          "removal_status",
+          "pii_risk",
+          "production_approved",
+          "owner",
+          "reviewer",
+          "evidence_urls",
+          "notes"
+        ],
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+          "role": {"enum": ["metadata", "train_candidate", "eval_only", "research_reference"]},
+          "revision": {"type": ["string", "null"], "minLength": 7},
+          "license": {"type": "string", "minLength": 1},
+          "license_status": {"enum": ["unreviewed", "review_required", "reviewed"]},
+          "terms_status": {"enum": ["unreviewed", "review_required", "approved_for_project", "blocked"]},
+          "redistribution_status": {"enum": ["unreviewed", "metadata_only", "not_redistributed", "approved", "blocked"]},
+          "removal_status": {"enum": ["ready", "blocked", "not_applicable"]},
+          "pii_risk": {"enum": ["unknown", "low", "medium", "high"]},
+          "production_approved": {"type": "boolean"},
+          "owner": {"type": ["string", "null"]},
+          "reviewer": {"type": ["string", "null"]},
+          "evidence_urls": {
+            "type": "array",
+            "items": {"type": "string", "format": "uri"}
+          },
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

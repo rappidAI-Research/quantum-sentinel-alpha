@@ -1,0 +1,17 @@
+# Planning candidates only. A bake-off must freeze the exact model ID and immutable revision.
+foundation_status: unfrozen
+candidates:
+  - id: Qwen/Qwen3.5-9B
+    role: primary_candidate
+    revision: null
+  - id: Qwen/Qwen3.5-4B
+    role: efficiency_candidate
+    revision: null
+
+bakeoff_dimensions:
+  - security_precision_false_positive_rate
+  - detection_localization
+  - patch_verification
+  - general_coding_regression
+  - vram_and_throughput
+  - license_tooling_compatibility
