@@ -118,3 +118,21 @@ sources:
       86 clean-room QuickEval cases (vulnerable, hard-negative, abstention) used for the
       foundation bake-off. Public, therefore not a holdout. Registered so it can never be
       approved for training; its cases, labels and neighbours must stay out of training data.
+
+  - source_id: coding-regression-v1
+    role: eval_only
+    revision: null
+    license: project-authored clean-room tasks; repository license not yet declared
+    license_status: review_required
+    terms_status: review_required
+    redistribution_status: unreviewed
+    removal_status: ready
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/rappidAI-Research/quantum-sentinel-alpha/blob/main/eval/coding/coding_v1.jsonl
+    notes: >-
+      16 clean-room Python coding tasks with reference solutions and hidden tests, used only
+      to detect general coding regressions in the foundation bake-off. Never a training source.

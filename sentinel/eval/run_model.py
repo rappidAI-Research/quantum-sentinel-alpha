@@ -28,7 +28,7 @@ from sentinel.eval.io import PROJECT_ROOT, load_jsonl
 from sentinel.eval.runner import is_immutable_revision, run_quickeval, write_artifact
 
 # Flags that would change the shared bake-off setup; rejected together with --bakeoff.
-SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens")
+SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -46,7 +46,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-new-tokens", type=int)
     parser.add_argument("--limit", type=int, help="smoke test on the first N cases; never reportable")
     parser.add_argument("--allow-unpinned", action="store_true", help="permit a non-reportable run without a pinned revision")
-    parser.add_argument("--coding-suite", help=f"coding-regression suite ({', '.join(SUITES) or 'none registered yet'})")
+    parser.add_argument(
+        "--coding-suite",
+        choices=sorted(SUITES),
+        help="also run a coding-regression suite (executes model-generated code; use a disposable host)",
+    )
     return parser
 
 
@@ -69,6 +73,7 @@ def main(argv: list[str] | None = None) -> int:
             parser.error(f"--revision {args.revision} contradicts the pinned config revision {candidate.revision}")
         model_id, revision = candidate.model_id, args.revision or candidate.revision
         cases_path, generation, runtime = config.cases, config.generation, candidate.runtime
+        coding_suite_name = config.coding_suite
         bakeoff_meta = {
             "id": config.bakeoff_id,
             "candidate": candidate.name,
@@ -83,6 +88,7 @@ def main(argv: list[str] | None = None) -> int:
         model_id = args.model or "baseline/regex"
         revision = args.revision
         cases_path = args.cases
+        coding_suite_name = args.coding_suite
         generation = GenerationSettings(**({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}))
         runtime = RuntimeSettings(
             **{key: value for key in ("device", "dtype", "quantization") if (value := getattr(args, key)) is not None}
@@ -98,11 +104,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit is not None:
         cases = cases[: args.limit]
 
-    coding_suite = None
-    if args.coding_suite:
-        if args.coding_suite not in SUITES:
-            parser.error(f"unknown coding suite {args.coding_suite!r}")
-        coding_suite = SUITES[args.coding_suite]()
+    coding_suite = SUITES[coding_suite_name]() if coding_suite_name else None
 
     backend: ModelBackend
     if args.backend == "baseline":

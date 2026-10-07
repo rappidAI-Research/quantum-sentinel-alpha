@@ -25,6 +25,7 @@ ROWS: tuple[tuple[str, str, tuple[str, ...], str], ...] = (
     ("Security", "F1", ("metrics", "f1"), "higher"),
     ("Security", "strict recall (loc+CWE)", ("metrics", "strict_recall"), "higher"),
     ("Security", "vuln/fix pair accuracy", ("metrics", "pair_accuracy"), "higher"),
+    ("Security", "strict pair accuracy", ("metrics", "strict_pair_accuracy"), "higher"),
     ("Security", "localization top-1", ("metrics", "localization_top1"), "higher"),
     ("Security", "localization mean overlap", ("metrics", "localization_mean_overlap"), "higher"),
     ("Security", "CWE accuracy", ("metrics", "cwe_accuracy"), "higher"),
@@ -89,6 +90,13 @@ def comparability(a: dict[str, Any], b: dict[str, Any]) -> tuple[list[str], list
         for key in RUNTIME_FIELDS
         if a["runtime"].get(key) != b["runtime"].get(key)
     ]
+    coding_a, coding_b = a["coding_regression"], b["coding_regression"]
+    if coding_a["status"] != coding_b["status"]:
+        problems.append(f"coding_regression.status differs: {coding_a['status']} vs {coding_b['status']}")
+    elif coding_a["status"] == "completed":
+        for key in ("suite", "suite_version", "suite_sha256", "runner_version", "contract_sha256"):
+            if coding_a.get(key) != coding_b.get(key):
+                problems.append(f"coding_regression.{key} differs")
     for label, artifact in (("A", a), ("B", b)):
         if not artifact["reportable"]:
             notes.append(f"run {label} is not reportable: {'; '.join(artifact['reportable_blockers'])}")

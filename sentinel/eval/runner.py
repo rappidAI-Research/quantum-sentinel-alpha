@@ -26,6 +26,10 @@ IMMUTABLE_REVISION = re.compile(r"^[0-9a-f]{40}$")
 MAX_STORED_OUTPUT_CHARS = 4000
 
 
+def _is_floating_dtype(name: str) -> bool:
+    return name == "bfloat16" or name.startswith("float")
+
+
 def is_immutable_revision(revision: str | None) -> bool:
     return bool(revision and IMMUTABLE_REVISION.match(revision))
 
@@ -55,6 +59,25 @@ def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> lis
         blockers.append("the loaded model revision could not be confirmed")
     elif resolved and model["revision"] and resolved != model["revision"]:
         blockers.append(f"loaded revision {resolved} differs from requested {model['revision']}")
+    if model["backend"] == "hf":
+        runtime = artifact["runtime"]
+        requested, loaded = runtime["dtype"], runtime.get("loaded_dtype")
+        if loaded != requested:
+            blockers.append(f"loaded model dtype {loaded} differs from requested {requested}")
+        if runtime.get("quantization") == "none":
+            parameter_dtypes = runtime.get("parameter_dtypes")
+            if not isinstance(parameter_dtypes, dict) or not parameter_dtypes:
+                blockers.append("loaded model parameter dtypes could not be confirmed")
+            else:
+                unexpected = sorted(
+                    dtype
+                    for dtype, count in parameter_dtypes.items()
+                    if count and _is_floating_dtype(dtype) and dtype != requested
+                )
+                if unexpected:
+                    blockers.append(
+                        f"loaded model has unexpected floating parameter dtypes {unexpected}; requested {requested}"
+                    )
     if not full_case_set:
         blockers.append("run used a subset of the case file (--limit)")
     git = artifact["git"]

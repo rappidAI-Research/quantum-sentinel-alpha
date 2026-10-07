@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-PARSER_VERSION = "1"
+PARSER_VERSION = "2"
 
 DECISIONS = {"finding", "no_finding", "abstain"}
 FINDING_KEYS = {"decision", "cwe", "start_line", "end_line", "confidence", "evidence"}
@@ -36,12 +36,19 @@ class OutputError(ValueError):
     pass
 
 
-def strip_reasoning(text: str) -> str:
-    """Drop any reasoning block so it is neither scored nor stored."""
+def strip_reasoning(text: str) -> tuple[str, bool]:
+    """Remove reasoning so it is neither scored nor stored.
+
+    Returns the visible text and whether an unterminated reasoning block was cut off
+    (e.g. generation hit max_new_tokens while still "thinking").
+    """
     text = _THINK_BLOCK.sub("", text)
     if "</think>" in text:  # opening tag was part of the prompt template
-        text = text.split("</think>", 1)[1]
-    return text.strip()
+        text = text.rsplit("</think>", 1)[1]
+    truncated = "<think>" in text
+    if truncated:  # everything after an unclosed tag is reasoning
+        text = text.split("<think>", 1)[0]
+    return text.strip(), truncated
 
 
 def _extract_object(text: str) -> dict[str, Any]:
@@ -123,9 +130,11 @@ def _validate(payload: dict[str, Any], line_count: int) -> tuple[dict[str, Any] 
 
 
 def parse_model_output(text: str, case: dict[str, Any]) -> ParsedOutput:
-    visible = strip_reasoning(text)
+    visible, truncated = strip_reasoning(text)
     base = {"schema_version": "1.0", "case_id": case["case_id"], "patch_verification": None}
     try:
+        if truncated:
+            raise OutputError("unterminated reasoning block (output truncated before an answer)")
         payload = _extract_object(visible)
         finding, decision, evidence = _validate(payload, len(case["code"].splitlines()))
     except OutputError as exc:

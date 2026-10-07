@@ -4,7 +4,7 @@ Last updated: 2026-10-07
 
 ## Current phase
 
-Phase 0 - Foundation. Milestone completed: **QuickEval + real model runner + Qwen3.5 4B/9B bake-off readiness**. The bake-off itself has **not** been run.
+Phase 0 - Foundation. Milestones completed: QuickEval + real model runner + bake-off readiness (PR #2), and **pre-bake-off hardening**. The bake-off itself has **not** been run.
 
 ## Completed
 
@@ -17,8 +17,15 @@ Phase 0 - Foundation. Milestone completed: **QuickEval + real model runner + Qwe
 - Extended metrics: hard-negative accuracy, strict recall (decision + location + CWE), vuln/fix pair accuracy, abstention precision, over-abstention, findings on abstention cases, invalid-output rate, per-language decision accuracy. Patch metrics stay `null` because patch evaluation is not implemented.
 - Bake-off config `configs/model/bakeoff_qwen35.yaml` with shared cases, prompt and generation settings. Per-candidate runtime overrides require a written reason. Runbook: `docs/BAKEOFF.md`.
 - `sentinel.eval.compare`: side-by-side security/abstention/efficiency table, runtime/kernel differences and per-case disagreements. It computes no winner and refuses to compare runs that used different evaluation contracts.
-- Coding-regression extension point (`sentinel/eval/coding_regression.py`). No suite is registered yet; artifacts report `not_run`.
-- Heavy dependencies are optional extras: `.[model]` (torch, transformers ≥5.2,<6, accelerate) and `.[quant]` (bitsandbytes).
+- Heavy dependencies are optional extras: `.[model]` (torch, transformers ≥5.12,<6, accelerate) and `.[quant]` (bitsandbytes). The backend refuses to load with an older transformers.
+
+### Pre-bake-off hardening
+- The actually loaded model dtype (and per-dtype parameter counts) is recorded; a run whose loaded dtype differs from the requested dtype is non-reportable.
+- Reasoning stripping covers truncated output: an unterminated `<think>` block is cut and the case is scored `invalid`, so partial reasoning never reaches an artifact. If the chat template itself opens a reasoning block, the backend restores the tag so the same stripping applies.
+- `strict_pair_accuracy` (scorer v3): a vulnerable/secure pair counts only if the secure case is rejected and the vulnerable case has the right decision, an accepted CWE and an overlapping location.
+- Coding-regression suite `coding-v1`: 16 clean-room Python tasks with hidden tests and reference solutions (`eval/coding/coding_v1.jsonl`, registered `eval_only`). It is part of the bake-off config and runs through the same backend and generation settings; generated code runs in a resource-limited child process. `foundation` checks that every reference solution passes.
+- `scripts/pin_hf_revisions.py` pins `revision: null` candidates to the current commit SHA of their Hugging Face `main` branch.
+- Minimal GitHub Actions CI: `pytest` and `python -m sentinel.foundation` on pushes to `main` and on pull requests.
 
 ## QuickEval state
 
@@ -38,15 +45,22 @@ CWEs covered: 89, 943, 78, 22, 79, 1336, 918, 502, 1321, 95, 639, 328, 338, 347,
 
 ## Benchmark state
 
-No model has been evaluated. The only QuickEval v1 results are from the regex engineering baseline (backend `baseline`). They exist to test the harness and **are not model performance**.
+No model has been evaluated. The only QuickEval v1 results are from the regex engineering baseline (backend `baseline`; it writes no code, so `coding-v1` is 0/16). They exist to test the harness and **are not model performance**.
 
 ## Model state
 
-Foundation is **not frozen**. Qwen3.5-4B and Qwen3.5-9B are bake-off candidates. Neither has been downloaded, run or modified. No adapter or training run exists. Exact revisions are **not pinned yet**: `revision: null` in the bake-off config. Hugging Face was not reachable from the development environment, so revisions must be pinned before the first reportable run.
+Foundation is **not frozen**. Qwen3.5-4B and Qwen3.5-9B are bake-off candidates. Neither has been downloaded, run or modified. No adapter or training run exists. Exact revisions are **pinned** in `configs/model/bakeoff_qwen35.yaml` (fetched 2026-10-07 from the official Hugging Face API via `scripts/pin_hf_revisions.py`):
+
+| Candidate | Revision | Architecture | bf16 weights | License |
+| --- | --- | --- | --- | --- |
+| `Qwen/Qwen3.5-4B` | `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a` | `Qwen3_5ForConditionalGeneration` | 9.3 GB | Apache-2.0 |
+| `Qwen/Qwen3.5-9B` | `c202236235762e1c871ad0ccb60c8ee5ba337b9a` | `Qwen3_5ForConditionalGeneration` | 19.3 GB | Apache-2.0 |
+
+Only metadata (config, file list, chat template) was read at these revisions; no weights were downloaded. Both fit unquantized on one 48 GB L40S, so the bake-off keeps identical runtime settings.
 
 ## Dataset state
 
-Source registry: 7 sources, all `production_approved: false`. Training records: 0. Training-approved sources: 0.
+Source registry: 8 sources, all `production_approved: false`. Training records: 0. Training-approved sources: 0.
 
 ## AWS state
 
@@ -56,7 +70,7 @@ No AWS resource was started for this milestone. Planning assumptions are unchang
 
 - Approve the paid GPU time for the bake-off (`g6e.xlarge` or any other CUDA host).
 - Freeze 4B vs 9B after the identical bake-off and a coding-regression check.
-- Choose a coding-regression suite (small, license-clean, executed in an isolated sandbox).
+- Whether to replace `coding-v1` containment (child process + rlimits) with a real sandbox before running it on shared hosts.
 - Exact training-source approvals after rights/terms review.
 - Final LoRA rank/LR/sequence length after one short L40S calibration.
 - Release thresholds after the foundation baseline.
@@ -64,7 +78,6 @@ No AWS resource was started for this milestone. Planning assumptions are unchang
 
 ## Next action
 
-1. Pin the Hugging Face commit SHAs for both candidates in `configs/model/bakeoff_qwen35.yaml`.
-2. After approval, run the `--limit 5` smoke test and then both full runs on one CUDA host, as described in `docs/BAKEOFF.md`.
-3. Compare the runs with `sentinel.eval.compare` and make the foundation decision by human judgement.
-4. In parallel, start the private SentinelBench holdout from rights-reviewed upstream fixes.
+1. After approval of paid GPU time, run the `--limit 5` smoke test and then both full runs on one CUDA host, as described in `docs/BAKEOFF.md`.
+2. Compare the runs with `sentinel.eval.compare` and make the foundation decision by human judgement.
+3. In parallel, start the private SentinelBench holdout from rights-reviewed upstream fixes.

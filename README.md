@@ -19,7 +19,7 @@ python -m sentinel.foundation
 pytest -q
 ```
 
-The foundation check validates the versioned finding contract and the Sentinel Garden source registry. It intentionally does not perform network calls or GPU work.
+The foundation check validates the versioned finding contract, the Sentinel Garden source registry, the public evaluation case files, the coding-regression reference solutions and the bake-off config. It intentionally does not perform network calls or GPU work. CI (`.github/workflows/ci.yml`) runs both commands on every pull request.
 
 ## Evaluation harness
 

@@ -17,6 +17,7 @@ from sentinel.eval.baseline import detect
 
 QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit")
 DTYPES = ("bfloat16", "float16", "float32")
+MIN_TRANSFORMERS = "5.12"  # keep in sync with the [model] extra in pyproject.toml
 
 
 @dataclass(frozen=True)
@@ -93,8 +94,10 @@ class BaselineBackend:
         return None
 
     def generate(self, messages: list[dict[str, str]]) -> GenerationResult:
-        user = messages[-1]["content"]
-        code_lines = [m.group(1) for line in user.split("\nCode:\n", 1)[1].splitlines() if (m := self._NUMBERED.match(line))]
+        parts = messages[-1]["content"].split("\nCode:\n", 1)
+        if len(parts) < 2:  # not a QuickEval review prompt (e.g. coding regression): no answer
+            return GenerationResult(text="")
+        code_lines = [m.group(1) for line in parts[1].splitlines() if (m := self._NUMBERED.match(line))]
         hit = detect("\n".join(code_lines))
         if hit is None:
             payload: dict[str, Any] = {"decision": "no_finding", "evidence": "No baseline rule matched."}
@@ -130,14 +133,20 @@ class HFBackend:
         self._model: Any = None
         self._tokenizer: Any = None
         self._generation_config: Any = None
+        self._loaded_dtype: str | None = None
+        self._parameter_dtypes: dict[str, int] = {}
 
     def _cuda(self) -> bool:
         return self.runtime.device.startswith("cuda") or self.runtime.device == "auto"
 
     def load(self) -> None:
         import torch
+        import transformers
+        from packaging.version import Version
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
+        if Version(transformers.__version__) < Version(MIN_TRANSFORMERS):
+            raise RuntimeError(f"transformers>={MIN_TRANSFORMERS} is required, found {transformers.__version__}")
         torch.manual_seed(self.generation.seed)
         dtype = getattr(torch, self.runtime.dtype)
         kwargs: dict[str, Any] = {"revision": self.revision, "dtype": dtype, "device_map": self.runtime.device}
@@ -162,6 +171,11 @@ class HFBackend:
             raise RuntimeError(f"checkpoint is missing weights ({len(missing)}), e.g. {missing[:5]}")
         model.eval()
         self._model = model
+        # Record what was actually loaded; the runner blocks reporting when it differs from the request.
+        self._loaded_dtype = str(model.dtype).removeprefix("torch.")
+        for parameter in model.parameters():
+            name = str(parameter.dtype).removeprefix("torch.")
+            self._parameter_dtypes[name] = self._parameter_dtypes.get(name, 0) + parameter.numel()
 
         config = copy.deepcopy(model.generation_config)
         config.max_new_tokens = self.generation.max_new_tokens
@@ -176,14 +190,9 @@ class HFBackend:
     def generate(self, messages: list[dict[str, str]]) -> GenerationResult:
         import torch
 
-        inputs = self._tokenizer.apply_chat_template(
-            messages,
-            add_generation_prompt=True,
-            tokenize=True,
-            return_dict=True,
-            return_tensors="pt",
-            enable_thinking=self.generation.enable_thinking,
-        ).to(self._model.device)
+        template_kwargs = {"add_generation_prompt": True, "enable_thinking": self.generation.enable_thinking}
+        rendered = self._tokenizer.apply_chat_template(messages, tokenize=False, **template_kwargs)
+        inputs = self._tokenizer(rendered, return_tensors="pt", add_special_tokens=False).to(self._model.device)
         prompt_tokens = int(inputs["input_ids"].shape[1])
         with torch.inference_mode():
             output = self._model.generate(**inputs, generation_config=self._generation_config)
@@ -191,6 +200,9 @@ class HFBackend:
         if self._cuda() and torch.cuda.is_available():
             torch.cuda.synchronize()
         text = self._tokenizer.decode(new_tokens, skip_special_tokens=True)
+        if rendered.rstrip().endswith("<think>"):
+            # The template opened a reasoning block; restore the tag so the parser can strip it.
+            text = "<think>" + text
         return GenerationResult(text=text, generated_tokens=int(new_tokens.shape[0]), prompt_tokens=prompt_tokens)
 
     def describe(self) -> dict[str, Any]:
@@ -200,6 +212,8 @@ class HFBackend:
         info: dict[str, Any] = {
             "backend": self.name,
             "resolved_revision": getattr(self._model.config, "_commit_hash", None) if self._model else None,
+            "loaded_dtype": self._loaded_dtype,
+            "parameter_dtypes": dict(sorted(self._parameter_dtypes.items())),
             "torch_version": torch.__version__,
             "transformers_version": transformers.__version__,
             "cuda_version": torch.version.cuda,

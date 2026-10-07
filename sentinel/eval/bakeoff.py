@@ -10,11 +10,12 @@ from typing import Any
 import yaml
 
 from sentinel.eval.backends import GenerationSettings, RuntimeSettings
+from sentinel.eval.coding_regression import SUITES
 from sentinel.eval.io import PROJECT_ROOT
 from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.eval.runner import is_immutable_revision
 
-TOP_LEVEL_KEYS = {"bakeoff_id", "cases", "prompt_version", "generation", "runtime", "candidates"}
+TOP_LEVEL_KEYS = {"bakeoff_id", "cases", "prompt_version", "generation", "runtime", "coding_suite", "candidates"}
 CANDIDATE_KEYS = {"name", "model_id", "revision", "runtime_overrides", "override_reason"}
 OVERRIDABLE_RUNTIME_KEYS = {"device", "dtype", "quantization"}
 
@@ -33,6 +34,7 @@ class BakeoffConfig:
     bakeoff_id: str
     cases: Path
     generation: GenerationSettings
+    coding_suite: str
     candidates: dict[str, Candidate]
     sha256: str
 
@@ -50,6 +52,8 @@ def load_bakeoff(path: Path) -> BakeoffConfig:
     if not cases.is_file():
         raise ValueError(f"bake-off case file not found: {document['cases']}")
     generation = GenerationSettings(**document["generation"])
+    if document["coding_suite"] not in SUITES:
+        raise ValueError(f"unknown coding_suite {document['coding_suite']!r}; choose from {sorted(SUITES)}")
     shared_runtime = dict(document["runtime"])
     RuntimeSettings(**shared_runtime)
 
@@ -87,6 +91,7 @@ def load_bakeoff(path: Path) -> BakeoffConfig:
         bakeoff_id=document["bakeoff_id"],
         cases=cases,
         generation=generation,
+        coding_suite=document["coding_suite"],
         candidates=candidates,
         sha256=hashlib.sha256(raw_bytes).hexdigest(),
     )

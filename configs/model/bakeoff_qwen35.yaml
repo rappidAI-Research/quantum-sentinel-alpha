@@ -17,6 +17,9 @@ generation:
   enable_thinking: false    # concise JSON evidence only; no chain-of-thought is requested or stored
   seed: 0
 
+# Small clean-room Python suite; executes model-generated code (contained child process).
+coding_suite: coding-v1
+
 runtime:
   device: cuda
   dtype: bfloat16           # both fit unquantized on one 48 GB L40S (g6e.xlarge)
@@ -25,7 +28,7 @@ runtime:
 candidates:
   - name: qwen35-4b
     model_id: Qwen/Qwen3.5-4B
-    revision: null
+    revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
   - name: qwen35-9b
     model_id: Qwen/Qwen3.5-9B
-    revision: null
+    revision: c202236235762e1c871ad0ccb60c8ee5ba337b9a

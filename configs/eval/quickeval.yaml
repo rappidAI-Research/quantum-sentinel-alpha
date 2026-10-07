@@ -14,6 +14,7 @@ primary_metrics:
   - hard_negative_accuracy
   - strict_recall
   - pair_accuracy
+  - strict_pair_accuracy
   - localization_top1
   - localization_mean_overlap
   - cwe_accuracy
