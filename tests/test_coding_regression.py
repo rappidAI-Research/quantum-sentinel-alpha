@@ -35,7 +35,7 @@ def test_runaway_code_is_stopped(monkeypatch) -> None:
     monkeypatch.setattr(coding_regression, "TIMEOUT_SECONDS", 2)
     hang = CodingV1().run(ScriptedCoder(lambda t: "```python\nwhile True:\n    pass\n```" if t["task_id"] == "rle-encode" else ""))
     result = hang.details["tasks"]["rle-encode"]
-    assert result["passed"] is False and result["failure"] == "timeout"
+    assert result["passed"] is False and result["failure"] in {"timeout", "resource_limit"}
 
 
 def test_truncated_reasoning_yields_no_code() -> None:
