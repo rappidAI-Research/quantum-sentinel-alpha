@@ -51,3 +51,17 @@ def test_pin_script_only_fills_unpinned_revisions() -> None:
     updated = pin.set_revisions(text, {"Qwen/Qwen3.5-4B": "a" * 40, "Qwen/Qwen3.5-9B": "b" * 40})
     assert updated.count("revision: " + "a" * 40) == 1 and updated.count("revision: " + "b" * 40) == 1
     assert updated.replace("a" * 40, "null").replace("b" * 40, "null") == text
+
+
+def test_successful_early_exit_cannot_fake_a_pass() -> None:
+    ok, failure = coding_regression.execute("import sys\nsys.exit(0)\n", "assert True")
+    assert ok is False and failure == "tests_not_completed"
+
+    ok, failure = coding_regression.execute("import os\nos._exit(0)\n", "assert True")
+    assert ok is False and failure == "tests_not_completed"
+
+
+def test_generated_output_is_not_buffered_by_the_parent() -> None:
+    code = "print('x' * 2_000_000)\ndef answer():\n    return 42\n"
+    ok, failure = coding_regression.execute(code, "assert answer() == 42")
+    assert ok is True and failure is None

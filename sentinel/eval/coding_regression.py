@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import secrets
 import subprocess
 import sys
 import tempfile
@@ -99,27 +100,52 @@ def _limit_resources() -> None:  # pragma: no cover - runs in the child process
 
 
 def execute(code: str, tests: str) -> tuple[bool, str | None]:
-    """Run code + tests in a contained child process. Returns (passed, failure kind)."""
+    """Run generated code and hidden tests in a contained child process.
+
+    The generated solution and hidden-test controller live in separate files. A zero
+    process exit is not enough to pass: the controller must write a random completion
+    marker only after all hidden tests finish. stdout/stderr go to DEVNULL so untrusted
+    code cannot make the parent buffer unbounded output.
+    """
     with tempfile.TemporaryDirectory(prefix="qsa-coding-") as workdir:
-        program = Path(workdir) / "task.py"
-        program.write_text(f"{code}\n\n\n{tests}\n", encoding="utf-8")
+        solution = Path(workdir) / "solution.py"
+        runner = Path(workdir) / "runner.py"
+        marker = Path(workdir) / f".complete-{secrets.token_hex(16)}"
+        solution.write_text(code + "\n", encoding="utf-8")
+        runner.write_text(
+            "import importlib.util\n"
+            "from pathlib import Path\n"
+            f"_solution_path = {str(solution)!r}\n"
+            f"_marker_path = {str(marker)!r}\n"
+            f"_tests = {tests!r}\n"
+            "_spec = importlib.util.spec_from_file_location('_qsa_solution', _solution_path)\n"
+            "_module = importlib.util.module_from_spec(_spec)\n"
+            "assert _spec.loader is not None\n"
+            "_spec.loader.exec_module(_module)\n"
+            "_namespace = vars(_module)\n"
+            "exec(_tests, _namespace, _namespace)\n"
+            "Path(_marker_path).write_text('complete', encoding='utf-8')\n",
+            encoding="utf-8",
+        )
         try:
             done = subprocess.run(
-                [sys.executable, "-I", str(program)],
+                [sys.executable, "-I", str(runner)],
                 cwd=workdir,
                 env={},
                 stdin=subprocess.DEVNULL,
-                capture_output=True,
-                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
                 timeout=TIMEOUT_SECONDS,
                 preexec_fn=_limit_resources if sys.platform != "win32" else None,
             )
         except subprocess.TimeoutExpired:
             return False, "timeout"
-    if done.returncode == 0:
+
+        if done.returncode != 0:
+            return False, f"exit_{done.returncode}"
+        if not marker.is_file() or marker.read_text(encoding="utf-8") != "complete":
+            return False, "tests_not_completed"
         return True, None
-    last = (done.stderr.strip().splitlines() or ["unknown error"])[-1]
-    return False, last.split(":", 1)[0][:80] if last else "unknown error"
 
 
 class CodingV1:

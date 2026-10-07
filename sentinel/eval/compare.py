@@ -92,7 +92,7 @@ def comparability(a: dict[str, Any], b: dict[str, Any]) -> tuple[list[str], list
     ]
     coding_a, coding_b = a["coding_regression"], b["coding_regression"]
     if coding_a["status"] != coding_b["status"]:
-        notes.append(f"coding regression ran in only one run: {coding_a['status']} vs {coding_b['status']}")
+        problems.append(f"coding_regression.status differs: {coding_a['status']} vs {coding_b['status']}")
     elif coding_a["status"] == "completed" and coding_a["suite_sha256"] != coding_b["suite_sha256"]:
         problems.append("coding_regression.suite_sha256 differs")
     for label, artifact in (("A", a), ("B", b)):

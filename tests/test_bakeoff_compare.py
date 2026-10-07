@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -73,3 +74,13 @@ def test_compare_flags_different_case_sets(tmp_path: Path) -> None:
     a = _baseline_run(tmp_path, "full")
     b = _baseline_run(tmp_path, "subset", "--limit", "10")
     assert compare.main([str(a), str(b)]) == 2
+
+
+def test_compare_rejects_coding_suite_status_mismatch(tmp_path: Path) -> None:
+    artifact = runner.load_artifact(_baseline_run(tmp_path, "coding-complete"))
+    missing = deepcopy(artifact)
+    missing["coding_regression"] = {"status": "not_run", "reason": "intentionally skipped"}
+
+    report = compare.build_report(artifact, missing)
+    assert report["comparable"] is False
+    assert any("coding_regression.status differs" in problem for problem in report["problems"])
