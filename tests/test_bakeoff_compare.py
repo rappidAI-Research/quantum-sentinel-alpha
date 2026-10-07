@@ -84,3 +84,13 @@ def test_compare_rejects_coding_suite_status_mismatch(tmp_path: Path) -> None:
     report = compare.build_report(artifact, missing)
     assert report["comparable"] is False
     assert any("coding_regression.status differs" in problem for problem in report["problems"])
+
+
+def test_compare_rejects_different_coding_contracts(tmp_path: Path) -> None:
+    artifact = runner.load_artifact(_baseline_run(tmp_path, "coding-contract-a"))
+    changed = deepcopy(artifact)
+    changed["coding_regression"]["runner_version"] = "different"
+
+    report = compare.build_report(artifact, changed)
+    assert report["comparable"] is False
+    assert "coding_regression.runner_version differs" in report["problems"]

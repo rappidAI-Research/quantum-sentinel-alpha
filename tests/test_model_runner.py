@@ -26,11 +26,13 @@ class FakeBackend:
         default: str = '{"decision": "no_finding"}',
         resolved: str | None = PINNED,
         loaded_dtype: str = "bfloat16",
+        parameter_dtypes: dict[str, int] | None = None,
     ):
         self.answers = answers
         self.default = default
         self.resolved = resolved
         self.loaded_dtype = loaded_dtype
+        self.parameter_dtypes = parameter_dtypes or {loaded_dtype: 100}
         self.loaded = False
         self.seen: list[list[dict[str, str]]] = []
 
@@ -46,7 +48,7 @@ class FakeBackend:
         return GenerationResult(text=self.default, generated_tokens=10, prompt_tokens=300)
 
     def describe(self) -> dict:
-        return {"backend": self.name, "resolved_revision": self.resolved, "loaded_dtype": self.loaded_dtype}
+        return {"backend": self.name, "resolved_revision": self.resolved, "loaded_dtype": self.loaded_dtype, "parameter_dtypes": self.parameter_dtypes}
 
     def peak_vram_gib(self) -> float | None:
         return 9.5
@@ -118,3 +120,11 @@ def test_prompt_never_contains_ground_truth() -> None:
     altered.update(expected_decision="no_finding", case_type="hard_negative", case_id="something-else")
     altered["ground_truth"] = {"cwe": "CWE-1", "start_line": 1, "end_line": 1}
     assert build_messages(case) == build_messages(altered)
+
+
+def test_mixed_floating_parameter_dtypes_are_not_reportable() -> None:
+    artifact = run(
+        FakeBackend({}, parameter_dtypes={"bfloat16": 99, "float32": 1})
+    )
+    assert artifact["reportable"] is False
+    assert any("unexpected floating parameter dtypes" in b for b in artifact["reportable_blockers"])

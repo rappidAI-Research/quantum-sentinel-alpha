@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-PARSER_VERSION = "1"
+PARSER_VERSION = "2"
 
 DECISIONS = {"finding", "no_finding", "abstain"}
 FINDING_KEYS = {"decision", "cwe", "start_line", "end_line", "confidence", "evidence"}

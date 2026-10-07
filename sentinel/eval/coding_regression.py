@@ -31,6 +31,7 @@ CODING_V1_PATH = PROJECT_ROOT / "eval" / "coding" / "coding_v1.jsonl"
 TASK_KEYS = {"task_id", "entry_point", "prompt", "tests", "canonical_solution"}
 TIMEOUT_SECONDS = 10
 MAX_STORED_CODE_CHARS = 4000
+CODING_RUNNER_VERSION = "2"
 
 CODING_SYSTEM_PROMPT = """You are a careful Python programmer.
 Implement the requested function or class exactly as specified, using only the Python standard library.
@@ -44,6 +45,8 @@ class CodingRegressionResult:
     suite: str
     suite_version: str
     suite_sha256: str
+    runner_version: str
+    contract_sha256: str
     tasks: int
     passed: int
     details: dict[str, Any] = field(default_factory=dict)
@@ -178,6 +181,8 @@ class CodingV1:
             suite=self.name,
             suite_version=self.version,
             suite_sha256=tasks_sha256(self.tasks),
+            runner_version=CODING_RUNNER_VERSION,
+            contract_sha256=coding_contract_sha256(),
             tasks=len(self.tasks),
             passed=passed,
             details={"seconds": time.perf_counter() - started, "tasks": details},
