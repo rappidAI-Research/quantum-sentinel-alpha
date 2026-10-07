@@ -25,6 +25,7 @@ def test_shipped_bakeoff_compares_qwen35_4b_and_9b_under_one_setup() -> None:
     runtimes = {c.runtime for c in config.candidates.values()}
     assert len(runtimes) == 1, "candidates must share runtime unless an override is justified"
     assert config.generation.do_sample is False and config.generation.enable_thinking is False
+    assert config.coding_suite == "coding-v1"
 
 
 def test_bakeoff_rejects_per_candidate_generation_and_unjustified_overrides(tmp_path: Path) -> None:
@@ -40,6 +41,8 @@ def test_cli_refuses_to_change_shared_setup_or_run_unpinned(tmp_path: Path) -> N
     out = str(tmp_path / "run.json")
     with pytest.raises(SystemExit):
         run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-4b", "--max-new-tokens", "2048", "--output", out])
+    with pytest.raises(SystemExit):
+        run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-4b", "--coding-suite", "coding-v1", "--output", out])
     with pytest.raises(SystemExit):
         run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-9b", "--output", out])
 

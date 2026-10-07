@@ -55,6 +55,10 @@ def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> lis
         blockers.append("the loaded model revision could not be confirmed")
     elif resolved and model["revision"] and resolved != model["revision"]:
         blockers.append(f"loaded revision {resolved} differs from requested {model['revision']}")
+    if model["backend"] == "hf":
+        requested, loaded = artifact["runtime"]["dtype"], artifact["runtime"].get("loaded_dtype")
+        if loaded != requested:
+            blockers.append(f"loaded model dtype {loaded} differs from requested {requested}")
     if not full_case_set:
         blockers.append("run used a subset of the case file (--limit)")
     git = artifact["git"]

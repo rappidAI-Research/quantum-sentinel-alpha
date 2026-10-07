@@ -20,10 +20,17 @@ class FakeBackend:
 
     name = "hf"
 
-    def __init__(self, answers: dict[str, str], default: str = '{"decision": "no_finding"}', resolved: str | None = PINNED):
+    def __init__(
+        self,
+        answers: dict[str, str],
+        default: str = '{"decision": "no_finding"}',
+        resolved: str | None = PINNED,
+        loaded_dtype: str = "bfloat16",
+    ):
         self.answers = answers
         self.default = default
         self.resolved = resolved
+        self.loaded_dtype = loaded_dtype
         self.loaded = False
         self.seen: list[list[dict[str, str]]] = []
 
@@ -39,7 +46,7 @@ class FakeBackend:
         return GenerationResult(text=self.default, generated_tokens=10, prompt_tokens=300)
 
     def describe(self) -> dict:
-        return {"backend": self.name, "resolved_revision": self.resolved}
+        return {"backend": self.name, "resolved_revision": self.resolved, "loaded_dtype": self.loaded_dtype}
 
     def peak_vram_gib(self) -> float | None:
         return 9.5
@@ -92,6 +99,12 @@ def test_unpinned_or_mismatched_revision_is_not_reportable() -> None:
 
     mismatch = run(FakeBackend({}, resolved="a" * 40))
     assert any("differs from requested" in blocker for blocker in mismatch["reportable_blockers"])
+
+
+def test_loaded_dtype_must_match_requested_dtype() -> None:
+    artifact = run(FakeBackend({}, loaded_dtype="float32"))
+    assert artifact["reportable"] is False
+    assert any("dtype float32 differs from requested bfloat16" in b for b in artifact["reportable_blockers"])
 
 
 def test_subset_runs_are_not_reportable() -> None:

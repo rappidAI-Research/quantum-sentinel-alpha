@@ -5,6 +5,7 @@ from pathlib import Path
 from sentinel.contracts import load_finding_schema
 from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.bakeoff import load_bakeoff
+from sentinel.eval.coding_regression import execute, load_tasks
 from sentinel.eval.io import PROJECT_ROOT, assert_publicly_committable, case_set_sha256, load_jsonl, validate_cases
 
 BAKEOFF_CONFIG = PROJECT_ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
@@ -12,7 +13,7 @@ BAKEOFF_CONFIG = PROJECT_ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
 
 def public_case_files() -> list[Path]:
     """Case files in the public tree; the Git-ignored private holdout directory is skipped."""
-    return [p for p in sorted((PROJECT_ROOT / "eval").rglob("*.jsonl")) if "private" not in p.parts]
+    return [p for p in sorted((PROJECT_ROOT / "eval" / "sentinelbench").rglob("*.jsonl")) if "private" not in p.parts]
 
 
 def main() -> int:
@@ -31,6 +32,13 @@ def main() -> int:
         validate_cases(cases)
         assert_publicly_committable(cases)
         print(f"eval cases: {path.relative_to(PROJECT_ROOT)} {len(cases)} OK sha256={case_set_sha256(cases)[:12]}")
+
+    tasks = load_tasks()
+    for task in tasks:
+        passed, failure = execute(task["canonical_solution"], task["tests"])
+        if not passed:
+            raise ValueError(f"coding task {task['task_id']} reference solution fails: {failure}")
+    print(f"coding suite: coding-v1 {len(tasks)} tasks OK (reference solutions pass)")
 
     bakeoff = load_bakeoff(BAKEOFF_CONFIG)
     pinned = sum(1 for c in bakeoff.candidates.values() if c.revision)

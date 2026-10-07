@@ -17,10 +17,11 @@ dependencies = [
 dev = [
   "pytest>=8.3,<10",
 ]
-# Real model runs (Linux/CUDA). Qwen3.5 (model_type qwen3_5) needs Transformers 5.x.
+# Real model runs (Linux/CUDA). Qwen3.5 (model_type qwen3_5) needs Transformers 5.x;
+# 5.12 is the minimum the bake-off supports.
 model = [
   "torch>=2.5",
-  "transformers>=5.2,<6",
+  "transformers>=5.12,<6",
   "accelerate>=1.1",
 ]
 # Optional bitsandbytes quantization (--quantization bnb-4bit / bnb-8bit).

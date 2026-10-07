@@ -17,6 +17,9 @@ generation:
   enable_thinking: false    # concise JSON evidence only; no chain-of-thought is requested or stored
   seed: 0
 
+# Small clean-room Python suite; executes model-generated code (contained child process).
+coding_suite: coding-v1
+
 runtime:
   device: cuda
   dtype: bfloat16           # both fit unquantized on one 48 GB L40S (g6e.xlarge)

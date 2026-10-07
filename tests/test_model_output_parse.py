@@ -34,6 +34,18 @@ def test_reasoning_and_fences_are_stripped_and_not_stored() -> None:
     assert "secret" not in parsed.visible_output
 
 
+def test_truncated_reasoning_is_invalid_and_never_stored() -> None:
+    # Generation stopped while still reasoning: the partial reasoning must not leak into the artifact.
+    for text in ["<think>step one: the query looks", '{"decision": "abstain"}\n<think>but maybe']:
+        parsed = parse_model_output(text, CASE)
+        assert parsed.prediction["decision"] == "invalid"
+        assert "unterminated reasoning" in parsed.error
+        assert "step one" not in parsed.visible_output and "maybe" not in parsed.visible_output
+    # Opening tag injected by the chat template: keep only the text after the last closing tag.
+    parsed = parse_model_output('hidden notes</think>\n{"decision": "no_finding"}', CASE)
+    assert parsed.prediction["decision"] == "no_finding" and "hidden" not in parsed.visible_output
+
+
 def test_malformed_json_is_an_invalid_prediction() -> None:
     parsed = parse_model_output('{"decision": "finding", "cwe": ', CASE)
     assert parsed.prediction["decision"] == "invalid"

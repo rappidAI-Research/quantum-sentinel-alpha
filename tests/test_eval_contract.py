@@ -134,3 +134,26 @@ def test_abstention_and_invalid_outputs_are_scored_as_failures_where_wrong() -> 
     assert metrics.abstention_precision == 0.5
     assert metrics.over_abstention_rate == 0.5
     assert metrics.abstention_case_finding_rate == 0.5
+
+
+def test_strict_pair_accuracy_requires_cwe_and_location_on_the_vulnerable_side() -> None:
+    cases = [
+        {"case_id": f"{p}-{kind}", "expected_decision": decision, "pair_id": p,
+         "ground_truth": {"cwe": "CWE-22", "start_line": 4, "end_line": 5} if decision == "finding" else {}}
+        for p in ("p1", "p2", "p3")
+        for kind, decision in (("vuln", "finding"), ("safe", "no_finding"))
+    ]
+    predictions = [
+        _pred("p1-vuln", "finding", {"cwe": "CWE-22", "start_line": 5, "end_line": 5}),  # fully right
+        _pred("p2-vuln", "finding", {"cwe": "CWE-79", "start_line": 5, "end_line": 5}),  # wrong CWE
+        _pred("p3-vuln", "finding", {"cwe": "CWE-22", "start_line": 1, "end_line": 2}),  # wrong lines
+        _pred("p1-safe", "no_finding"),
+        _pred("p2-safe", "no_finding"),
+        _pred("p3-safe", "no_finding"),
+    ]
+    metrics = score(cases, predictions)
+    assert metrics.pair_accuracy == 1.0
+    assert metrics.strict_pair_accuracy == pytest.approx(1 / 3)
+
+    predictions[3] = _pred("p1-safe", "abstain")  # secure side not rejected
+    assert score(cases, predictions).strict_pair_accuracy == 0.0

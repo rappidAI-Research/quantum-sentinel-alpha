@@ -59,7 +59,9 @@
         "dtype": {"type": "string"},
         "quantization": {"type": "string"},
         "backend": {"type": "string"},
-        "resolved_revision": {"type": ["string", "null"]}
+        "resolved_revision": {"type": ["string", "null"]},
+        "loaded_dtype": {"type": ["string", "null"]},
+        "parameter_dtypes": {"type": "object", "additionalProperties": {"type": "integer"}}
       }
     },
     "generation": {

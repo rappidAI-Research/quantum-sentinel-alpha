@@ -4,7 +4,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 # Bump when a metric definition changes; compare refuses to mix scorer versions.
-SCORER_VERSION = "2"
+SCORER_VERSION = "3"
 
 
 @dataclass(frozen=True)
@@ -18,6 +18,8 @@ class QuickEvalMetrics:
       count against `hard_negative_accuracy`, abstention recall and `invalid_rate`.
     - Localization and CWE accuracy are measured over true positives; `strict_recall` requires
       decision, overlapping location and an accepted CWE at once.
+    - `pair_accuracy` credits a vulnerable/secure pair when both decisions are right;
+      `strict_pair_accuracy` additionally requires the vulnerable side's CWE and location.
     """
 
     cases: int
@@ -39,6 +41,7 @@ class QuickEvalMetrics:
     localization_mean_overlap: float | None
     cwe_accuracy: float | None
     pair_accuracy: float | None
+    strict_pair_accuracy: float | None
     explicit_abstention_recall: float | None
     abstention_precision: float | None
     over_abstention_rate: float | None
@@ -90,7 +93,8 @@ def score(cases: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> Qui
     cwe_hits = 0
     abstain_hits = abstain_decisions = over_abstain = abstain_case_findings = 0
     patch_attempts = patch_applied = functional_pass = security_pass = regression_free = 0
-    pair_results: dict[str, list[bool]] = {}
+    # pair_id -> [(decision correct, strictly correct)]; strict adds CWE + location for the vulnerable side.
+    pair_results: dict[str, list[tuple[bool, bool]]] = {}
     by_language: dict[str, dict[str, int]] = {}
 
     for case in cases:
@@ -100,6 +104,7 @@ def score(cases: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> Qui
         invalid += int(decision == "invalid")
         abstain_decisions += int(decision == "abstain")
         correct = decision == expected
+        strict = correct
 
         if expected == "finding":
             positive += 1
@@ -116,7 +121,8 @@ def score(cases: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> Qui
                 localization_overlap_total += overlap
                 localization_hits += int(overlap > 0.0)
                 cwe_hits += int(cwe_ok)
-                strict_hits += int(overlap > 0.0 and cwe_ok)
+                strict = overlap > 0.0 and cwe_ok
+                strict_hits += int(strict)
             else:
                 fn += 1
         elif expected == "no_finding":
@@ -132,7 +138,7 @@ def score(cases: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> Qui
             abstain_case_findings += int(decision == "finding")
 
         if "pair_id" in case:
-            pair_results.setdefault(case["pair_id"], []).append(correct)
+            pair_results.setdefault(case["pair_id"], []).append((correct, strict))
 
         language = by_language.setdefault(case.get("language", "unknown"), {"cases": 0, "correct": 0})
         language["cases"] += 1
@@ -171,7 +177,10 @@ def score(cases: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> Qui
         localization_top1=_optional_ratio(localization_hits, tp),
         localization_mean_overlap=(localization_overlap_total / tp if tp else None),
         cwe_accuracy=_optional_ratio(cwe_hits, tp),
-        pair_accuracy=_optional_ratio(sum(all(results) for results in complete_pairs), len(complete_pairs)),
+        pair_accuracy=_optional_ratio(sum(all(c for c, _ in pair) for pair in complete_pairs), len(complete_pairs)),
+        strict_pair_accuracy=_optional_ratio(
+            sum(all(s for _, s in pair) for pair in complete_pairs), len(complete_pairs)
+        ),
         explicit_abstention_recall=_optional_ratio(abstain_hits, abstain),
         abstention_precision=_optional_ratio(abstain_hits, abstain_decisions),
         over_abstention_rate=_optional_ratio(over_abstain, answerable),
