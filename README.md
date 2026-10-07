@@ -37,3 +37,22 @@ python -m sentinel.eval.quickeval \
 ```
 
 The synthetic seed exists to validate the scorer and model-adapter path. Its scores are not model-quality evidence.
+
+## QuickEval model runs
+
+`eval/sentinelbench/quickeval_v1.jsonl` holds 86 clean-room cases: vulnerable code, hard negatives and abstention cases. Every model goes through the same prompt, strict output parser and scorer. Each run writes one JSON artifact with security metrics, efficiency metrics and per-case outputs.
+
+```bash
+# No GPU: full path with the label-blind regex baseline (not a model result)
+python -m sentinel.eval.run_model --backend baseline \
+  --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/baseline.json
+
+# Real model (Linux/CUDA, pip install -e '.[model]'); --revision must be a 40-char commit SHA
+python -m sentinel.eval.run_model --model Qwen/Qwen3.5-4B --revision <sha> \
+  --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/qwen35-4b.json
+
+# Side-by-side comparison of two runs (no automatic winner)
+python -m sentinel.eval.compare runs/qwen35-4b.json runs/qwen35-9b.json
+```
+
+The identical 4B vs 9B bake-off is configured in `configs/model/bakeoff_qwen35.yaml`. See `docs/BAKEOFF.md`.

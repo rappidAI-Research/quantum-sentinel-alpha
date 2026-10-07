@@ -1,5 +1,6 @@
 # Planning candidates only. A bake-off must freeze the exact model ID and immutable revision.
 foundation_status: unfrozen
+bakeoff_config: configs/model/bakeoff_qwen35.yaml  # pin revisions there
 candidates:
   - id: Qwen/Qwen3.5-9B
     role: primary_candidate
