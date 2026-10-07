@@ -49,7 +49,14 @@ No model has been evaluated. The only QuickEval v1 results are from the regex en
 
 ## Model state
 
-Foundation is **not frozen**. Qwen3.5-4B and Qwen3.5-9B are bake-off candidates. Neither has been downloaded, run or modified. No adapter or training run exists. Exact revisions are **not pinned yet**: `revision: null` in the bake-off config. huggingface.co is blocked by the network policy of the development environment, so the pin script could not run there. No unverified SHA was committed.
+Foundation is **not frozen**. Qwen3.5-4B and Qwen3.5-9B are bake-off candidates. Neither has been downloaded, run or modified. No adapter or training run exists. Exact revisions are **pinned** in `configs/model/bakeoff_qwen35.yaml` (fetched 2026-10-07 from the official Hugging Face API via `scripts/pin_hf_revisions.py`):
+
+| Candidate | Revision | Architecture | bf16 weights | License |
+| --- | --- | --- | --- | --- |
+| `Qwen/Qwen3.5-4B` | `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a` | `Qwen3_5ForConditionalGeneration` | 9.3 GB | Apache-2.0 |
+| `Qwen/Qwen3.5-9B` | `c202236235762e1c871ad0ccb60c8ee5ba337b9a` | `Qwen3_5ForConditionalGeneration` | 19.3 GB | Apache-2.0 |
+
+Only metadata (config, file list, chat template) was read at these revisions; no weights were downloaded. Both fit unquantized on one 48 GB L40S, so the bake-off keeps identical runtime settings.
 
 ## Dataset state
 
@@ -71,7 +78,6 @@ No AWS resource was started for this milestone. Planning assumptions are unchang
 
 ## Next action
 
-1. On a host with huggingface.co access, run `python scripts/pin_hf_revisions.py`, review and commit the two SHAs (or allow huggingface.co in this environment's network settings).
-2. After approval, run the `--limit 5` smoke test and then both full runs on one CUDA host, as described in `docs/BAKEOFF.md`.
-3. Compare the runs with `sentinel.eval.compare` and make the foundation decision by human judgement.
-4. In parallel, start the private SentinelBench holdout from rights-reviewed upstream fixes.
+1. After approval of paid GPU time, run the `--limit 5` smoke test and then both full runs on one CUDA host, as described in `docs/BAKEOFF.md`.
+2. Compare the runs with `sentinel.eval.compare` and make the foundation decision by human judgement.
+3. In parallel, start the private SentinelBench holdout from rights-reviewed upstream fixes.

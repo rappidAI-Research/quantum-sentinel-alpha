@@ -20,8 +20,7 @@ A run is marked non-reportable if the loaded model revision or the loaded parame
 
 ## Runbook (any Linux/CUDA host; not AWS-specific)
 
-1. Pin both models from a host that can reach huggingface.co, then review and commit the config:
-   `python scripts/pin_hf_revisions.py` (fills only `revision: null`, never moves an existing pin). Unpinned runs are refused unless you pass `--allow-unpinned`, and are then marked non-reportable.
+1. Revisions are pinned in the config (4B `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`, 9B `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, fetched 2026-10-07). Re-pinning is a deliberate change: set `revision: null`, run `python scripts/pin_hf_revisions.py`, review and commit. Unpinned runs are refused unless you pass `--allow-unpinned`, and are then marked non-reportable.
 2. Install: `pip install -e '.[model]'` (transformers ≥5.12,<6). Use identical environments for both runs. The optional `flash-linear-attention`/`causal-conv1d` kernels change throughput, so install them for both runs or for neither. The artifact records which are present.
 3. Smoke test (cheap, never reportable):
    `python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-4b --limit 5 --output runs/smoke-4b.json`

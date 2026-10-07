@@ -26,6 +26,7 @@ def test_shipped_bakeoff_compares_qwen35_4b_and_9b_under_one_setup() -> None:
     assert len(runtimes) == 1, "candidates must share runtime unless an override is justified"
     assert config.generation.do_sample is False and config.generation.enable_thinking is False
     assert config.coding_suite == "coding-v1"
+    assert all(c.revision and len(c.revision) == 40 for c in config.candidates.values()), "pin both revisions"
 
 
 def test_bakeoff_rejects_per_candidate_generation_and_unjustified_overrides(tmp_path: Path) -> None:
@@ -43,8 +44,11 @@ def test_cli_refuses_to_change_shared_setup_or_run_unpinned(tmp_path: Path) -> N
         run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-4b", "--max-new-tokens", "2048", "--output", out])
     with pytest.raises(SystemExit):
         run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-4b", "--coding-suite", "coding-v1", "--output", out])
-    with pytest.raises(SystemExit):
-        run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-9b", "--output", out])
+    with pytest.raises(SystemExit):  # a pinned config revision cannot be overridden
+        run_model.main(["--bakeoff", str(CONFIG), "--candidate", "qwen35-9b", "--revision", "f" * 40, "--output", out])
+    cases = str(ROOT / "eval" / "sentinelbench" / "quickeval_v1.jsonl")
+    with pytest.raises(SystemExit):  # a real model run without an immutable revision is refused
+        run_model.main(["--model", "Qwen/Qwen3.5-9B", "--revision", "main", "--cases", cases, "--output", out])
 
 
 def _baseline_run(tmp_path: Path, name: str, *extra: str) -> Path:

@@ -1,4 +1,5 @@
 import importlib.util
+import re
 from pathlib import Path
 
 from sentinel.eval import coding_regression
@@ -46,7 +47,7 @@ def test_pin_script_only_fills_unpinned_revisions() -> None:
     spec = importlib.util.spec_from_file_location("pin", ROOT / "scripts" / "pin_hf_revisions.py")
     pin = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(pin)
-    text = (ROOT / "configs" / "model" / "bakeoff_qwen35.yaml").read_text()
+    text = re.sub(r"revision: [0-9a-f]{40}", "revision: null", (ROOT / "configs" / "model" / "bakeoff_qwen35.yaml").read_text())
     updated = pin.set_revisions(text, {"Qwen/Qwen3.5-4B": "a" * 40, "Qwen/Qwen3.5-9B": "b" * 40})
     assert updated.count("revision: " + "a" * 40) == 1 and updated.count("revision: " + "b" * 40) == 1
     assert updated.replace("a" * 40, "null").replace("b" * 40, "null") == text
