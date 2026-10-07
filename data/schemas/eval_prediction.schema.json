@@ -8,7 +8,11 @@
   "properties": {
     "schema_version": {"const": "1.0"},
     "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
-    "decision": {"enum": ["finding", "no_finding", "abstain"]},
+    "decision": {
+      "description": "invalid = the model output violated the output contract; it is scored as a failure, never repaired.",
+      "enum": ["finding", "no_finding", "abstain", "invalid"]
+    },
+    "error": {"type": "string", "minLength": 1},
     "finding": {
       "type": ["object", "null"],
       "additionalProperties": false,

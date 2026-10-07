@@ -1,0 +1,31 @@
+# Identical QuickEval security bake-off: Qwen3.5-4B vs Qwen3.5-9B.
+# Status: prepared, NOT run. No model has been evaluated with this configuration yet.
+#
+# Everything except `runtime_overrides` is shared by both candidates. Generation settings,
+# cases, prompt, parser and scorer can never differ per candidate. A runtime override
+# (device/dtype/quantization) is allowed only with a written `override_reason`.
+#
+# Before a reportable run, pin `revision` to the full 40-character Hugging Face commit SHA
+# of each repository (e.g. `huggingface-cli repo info` / the "Files and versions" history).
+bakeoff_id: qwen35-4b-vs-9b-quickeval-v1
+cases: eval/sentinelbench/quickeval_v1.jsonl
+prompt_version: quickeval-review-v1
+
+generation:
+  max_new_tokens: 384
+  do_sample: false          # greedy decoding: deterministic and identical for both models
+  enable_thinking: false    # concise JSON evidence only; no chain-of-thought is requested or stored
+  seed: 0
+
+runtime:
+  device: cuda
+  dtype: bfloat16           # both fit unquantized on one 48 GB L40S (g6e.xlarge)
+  quantization: none
+
+candidates:
+  - name: qwen35-4b
+    model_id: Qwen/Qwen3.5-4B
+    revision: null
+  - name: qwen35-9b
+    model_id: Qwen/Qwen3.5-9B
+    revision: null

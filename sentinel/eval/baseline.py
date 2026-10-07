@@ -21,22 +21,29 @@ def _line_for_offset(code: str, offset: int) -> int:
     return code.count("\n", 0, offset) + 1
 
 
-def predict(case: dict[str, Any]) -> dict[str, Any]:
-    code = case["code"]
+def detect(code: str) -> tuple[str, int] | None:
+    """Return (CWE, line) for the first matching rule, or None."""
     for pattern, cwe in RULES:
         match = pattern.search(code)
         if match:
-            line = _line_for_offset(code, match.start())
-            return {
-                "schema_version": "1.0",
-                "case_id": case["case_id"],
-                "decision": "finding",
-                "finding": {"cwe": cwe, "start_line": line, "end_line": line, "confidence": 0.55},
-                "patch_verification": None,
-            }
+            return cwe, _line_for_offset(code, match.start())
+    return None
+
+
+def predict(case: dict[str, Any]) -> dict[str, Any]:
+    hit = detect(case["code"])
+    if hit:
+        cwe, line = hit
+        return {
+            "schema_version": "1.0",
+            "case_id": case["case_id"],
+            "decision": "finding",
+            "finding": {"cwe": cwe, "start_line": line, "end_line": line, "confidence": 0.55},
+            "patch_verification": None,
+        }
 
     # The heuristic cannot reason from deliberately incomplete context.
-    if case["expected_decision"] == "abstain" and "SENTINEL_INCOMPLETE_CONTEXT" in code:
+    if "SENTINEL_INCOMPLETE_CONTEXT" in case["code"]:
         decision = "abstain"
     else:
         decision = "no_finding"

@@ -22,7 +22,22 @@
     "source_kind": {"enum": ["synthetic", "private_holdout", "public_eval"]},
     "task": {"enum": ["review", "patch"]},
     "expected_decision": {"enum": ["finding", "no_finding", "abstain"]},
+    "case_type": {
+      "description": "vulnerable -> finding, hard_negative -> no_finding, abstention -> abstain.",
+      "enum": ["vulnerable", "hard_negative", "abstention"]
+    },
+    "pair_id": {
+      "description": "Shared by a vulnerable case and its fixed/look-alike neighbour.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
     "file": {"type": "string", "minLength": 1, "pattern": "^(?!/).+"},
+    "context": {
+      "description": "Neutral facts the engine would supply alongside the excerpt (framework, trust facts, what is not included). Shown to the model.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
     "code": {"type": "string", "minLength": 1},
     "ground_truth": {
       "type": "object",
@@ -30,8 +45,38 @@
       "required": ["cwe", "start_line", "end_line"],
       "properties": {
         "cwe": {"type": ["string", "null"], "pattern": "^CWE-[1-9][0-9]*$"},
+        "alternate_cwes": {
+          "description": "Other CWE IDs accepted as correct for this weakness (e.g. CWE-77 for an OS command injection).",
+          "type": "array",
+          "items": {"type": "string", "pattern": "^CWE-[1-9][0-9]*$"},
+          "uniqueItems": true
+        },
         "start_line": {"type": ["integer", "null"], "minimum": 1},
         "end_line": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "content_sha256"],
+      "properties": {
+        "origin": {"enum": ["clean_room_synthetic", "upstream_derived"]},
+        "author": {"type": "string", "minLength": 1},
+        "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "upstream": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_id", "repository", "revision", "file", "license", "license_status", "redistribution_status"],
+          "properties": {
+            "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+            "repository": {"type": "string", "minLength": 1},
+            "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "file": {"type": "string", "minLength": 1},
+            "license": {"type": "string", "minLength": 1},
+            "license_status": {"enum": ["unreviewed", "review_required", "reviewed"]},
+            "redistribution_status": {"enum": ["unreviewed", "metadata_only", "not_redistributed", "approved", "blocked"]}
+          }
+        }
       }
     }
   }
