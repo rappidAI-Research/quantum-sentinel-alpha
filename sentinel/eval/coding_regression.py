@@ -156,6 +156,8 @@ def execute(code: str, tests: str) -> tuple[bool, str | None]:
         except subprocess.TimeoutExpired:
             return False, "timeout"
 
+        if done.returncode < 0:
+            return False, "resource_limit"
         if done.returncode != 0:
             return False, f"exit_{done.returncode}"
         if not marker.is_file() or marker.read_text(encoding="utf-8") != "complete":
