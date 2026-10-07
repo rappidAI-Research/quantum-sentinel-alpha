@@ -40,6 +40,18 @@ Reply with the complete implementation (including any imports and helpers) in a 
 _CODE_BLOCK = re.compile(r"```(?:python|py)?[ \t]*\n(.*?)```", re.DOTALL)
 
 
+def coding_contract_sha256() -> str:
+    payload = "\\x00".join(
+        (
+            CODING_RUNNER_VERSION,
+            CODING_SYSTEM_PROMPT,
+            _CODE_BLOCK.pattern,
+            "separate-solution-hidden-tests;completion-marker;stdout-stderr-devnull",
+        )
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 @dataclass(frozen=True)
 class CodingRegressionResult:
     suite: str
