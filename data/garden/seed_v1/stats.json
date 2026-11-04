@@ -216,12 +216,12 @@
   "build": {
     "candidates": 1413,
     "outcomes": {
-      "built": 373,
-      "change_outside_function": 287,
+      "built": 372,
+      "change_outside_function": 288,
       "fix_too_large": 11,
-      "function_mismatch": 35,
+      "function_mismatch": 36,
       "function_size_out_of_bounds": 36,
-      "multiple_functions_changed": 232,
+      "multiple_functions_changed": 231,
       "no_logic_change": 1,
       "no_source_change_in_language": 131,
       "root_commit": 1,
@@ -299,24 +299,24 @@
       "split:temporal_quarantine": 81
     },
     "by_approval_status": {
-      "excluded": 238,
+      "excluded": 236,
       "pending_review": 644
     },
     "training_approved": 0
   },
-  "manifest_sha256": "7ac1eebb3da9379398eb8d5891f9336dc3ba56edbfae5ac29ddadae0aa994f3f",
+  "manifest_sha256": "999835d8712d2f6e844145afd28e91904b6d8c32be4baf5ddb7ddbaede4b6754",
   "pipeline_version": "1",
   "records": {
     "accepted": 825,
     "failed_checks": {
       "label_conflict_exact": 4,
       "label_conflict_near": 2,
-      "localization_valid:diff_consistent": 5,
+      "localization_valid:diff_consistent": 4,
       "localization_valid:trivial_span": 15,
-      "sibling_rejected": 29,
+      "sibling_rejected": 28,
       "syntax_well_formed": 2
     },
-    "rejected": 57,
-    "total": 882
+    "rejected": 55,
+    "total": 880
   }
 }

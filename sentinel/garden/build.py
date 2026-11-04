@@ -64,7 +64,9 @@ class _Change:
     hunks: list[Hunk]
     additions: list[tuple[int, int]]  # new-file line ranges of top-level code added by the fix
     trivial_hunks: list[Hunk] = field(default_factory=list)  # comment/blank-only hunks inside the function
-    old_trivial_lines: set[int] = field(default_factory=set)  # blank/comment/docstring/import lines (old file)
+    old_noise_lines: set[int] = field(default_factory=set)  # blank/comment/docstring/import lines (old file)
+    new_noise_lines: set[int] = field(default_factory=set)
+    old_trivial_lines: set[int] = field(default_factory=set)  # noise + bracket-only: not localizable
     new_trivial_lines: set[int] = field(default_factory=set)
 
 
@@ -93,17 +95,19 @@ def _containing(
     return min(matches, key=lambda f: (f.length, -f.start))
 
 
-def _is_trivial(hunk: Hunk, old_trivial: set[int], new_trivial: set[int]) -> bool:
-    """Only blank, comment, docstring, import or bracket-only lines change (classified on whole files)."""
-    return all(n in old_trivial for n, _ in hunk.removed) and all(n in new_trivial for n, _ in hunk.added)
+def _is_trivial(hunk: Hunk, old_noise: set[int], new_noise: set[int]) -> bool:
+    """Only blank, comment, docstring or import lines change (classified on whole files).
+
+    Bracket-only lines are not trivial: moving a closing brace changes control flow."""
+    return all(n in old_noise for n, _ in hunk.removed) and all(n in new_noise for n, _ in hunk.added)
 
 
-def _is_top_level_addition(hunk: Hunk, language: str, new_trivial: set[int]) -> bool:
+def _is_top_level_addition(hunk: Hunk, language: str, new_noise: set[int]) -> bool:
     """A pure insertion of complete top-level code (e.g. a new helper function or constant)."""
     if not hunk.is_insertion:
         return False
     lines = [t for _, t in hunk.added]
-    meaningful = [t for n, t in hunk.added if n not in new_trivial]
+    meaningful = [t for n, t in hunk.added if n not in new_noise]
     if not meaningful or meaningful[0][:1].isspace():
         return False
     return code.excerpt_is_well_formed(language, "\n".join(lines) + "\n")
@@ -126,10 +130,10 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
         old_lines, new_lines = old_source.splitlines(), new_source.splitlines()
         old_functions = code.find_functions(language, old_source)
         new_functions = code.find_functions(language, new_source)
-        old_trivial = code.trivial_lines(language, old_source)
-        new_trivial = code.trivial_lines(language, new_source)
+        old_noise, new_noise = code.noise_lines(language, old_source), code.noise_lines(language, new_source)
+        old_trivial, new_trivial = code.trivial_lines(language, old_source), code.trivial_lines(language, new_source)
         for hunk in hunks:
-            if _is_trivial(hunk, old_trivial, new_trivial):
+            if _is_trivial(hunk, old_noise, new_noise):
                 trivial.append((path, hunk))
                 continue
             old_fn = _containing(
@@ -141,7 +145,7 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
                 old_lines,
                 [t for _, t in hunk.added],
             )
-            if old_fn is None and _is_top_level_addition(hunk, language, new_trivial):
+            if old_fn is None and _is_top_level_addition(hunk, language, new_noise):
                 additions.setdefault(path, []).append((hunk.new_start, hunk.new_start + hunk.new_count - 1))
                 continue
             new_fn = _containing(
@@ -160,7 +164,7 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
             key = (path, old_fn.start, old_fn.end)
             change = changes.get(key)
             if change is None:
-                changes[key] = _Change(path, language, old_source, new_source, old_fn, new_fn, [hunk], [], [], old_trivial, new_trivial)
+                changes[key] = _Change(path, language, old_source, new_source, old_fn, new_fn, [hunk], [], [], old_noise, new_noise, old_trivial, new_trivial)
             else:
                 if change.new_function != new_fn:
                     raise Rejected("function_mismatch", f"{old_fn.name} maps to two functions")
@@ -210,10 +214,15 @@ def _span(change: _Change) -> tuple[int, int, str]:
     for hunk in change.hunks:
         removed = [n for n, _ in hunk.removed if n not in change.old_trivial_lines]
         added = [n for n, _ in hunk.added if n not in change.new_trivial_lines]
+        structural = any(n not in change.old_noise_lines for n, _ in hunk.removed) or any(
+            n not in change.new_noise_lines for n, _ in hunk.added
+        )
         if removed:
             lines.extend(removed)
             kinds.add("changed_lines")
-        elif added:  # logic was only added: localize the insertion point
+        elif added or structural:
+            # logic was only added, or only block delimiters moved: localize the change point and
+            # the line after it (e.g. the statement a moved brace now guards)
             anchor = max(hunk.old_start, fn.start)
             lines.extend([anchor, min(anchor + 1, fn.end)])
             kinds.add("insertion_point")

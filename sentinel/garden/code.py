@@ -86,10 +86,12 @@ _REGEX_PRECEDERS = set("(,=:[!&|?{};+-*%<>~^")
 _REGEX_KEYWORDS = ("return", "typeof", "case", "in", "of", "delete", "void", "throw", "new", "else", "do")
 
 
-def mask_c_like(source: str, language: str) -> str:
+def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]] | None = None) -> str:
     """Replace the contents of strings, comments, template literals and regex literals by spaces.
 
-    Newlines are kept so line numbers stay valid; quote and delimiter characters are kept.
+    Newlines are kept so line numbers stay valid; quote and delimiter characters are kept. When
+    `literal_spans` is given, the (start, end) offsets of every blanked string/template/regex body are
+    appended to it (comments are not literals).
     """
     out = list(source)
     n = len(source)
@@ -138,6 +140,8 @@ def mask_c_like(source: str, language: str) -> str:
                     break
                 j += 1
             blank(i + 1, j)
+            if literal_spans is not None:
+                literal_spans.append((i + 1, j))
             i = j + 1
             continue
         if ch == "`" and is_js:
@@ -152,6 +156,8 @@ def mask_c_like(source: str, language: str) -> str:
                     break
                 j += 1
             blank(i + 1, j)
+            if literal_spans is not None:
+                literal_spans.append((i + 1, j))
             if j < n and source[j] == "$":
                 template_stack.append(brace_depth)
                 brace_depth += 1
@@ -178,6 +184,8 @@ def mask_c_like(source: str, language: str) -> str:
                     j += 1
                 if j < n and source[j] == "/":
                     blank(i + 1, j)
+                    if literal_spans is not None:
+                        literal_spans.append((i + 1, j))
                     i = j + 1
                     continue
         if ch == "{":
@@ -198,6 +206,8 @@ def mask_c_like(source: str, language: str) -> str:
                         break
                     j += 1
                 blank(i + 1, j)
+                if literal_spans is not None:
+                    literal_spans.append((i + 1, j))
                 if j < n and source[j] == "$":
                     template_stack.append(brace_depth)
                     brace_depth += 1
@@ -539,29 +549,49 @@ def import_statement_lines(language: str, source: str) -> set[int]:
     return lines
 
 
-def trivial_lines(language: str, source: str) -> set[int]:
-    """Lines that carry no logic: blank, comment-only, docstring, import statement or brackets only.
-
-    Classification uses the whole source, so a `*` dereference in Go, a `#` inside a Python SQL
-    string or a string literal line are code, while block-comment continuation lines are not.
-    """
+def _line_classes(language: str, source: str) -> tuple[set[int], set[int]]:
+    """(noise lines, bracket-only lines), classified on the whole source."""
     lines = source.splitlines()
-    trivial: set[int] = set()
+    noise: set[int] = set()
+    brackets: set[int] = set()
     if language == "python":
         classes = _python_line_classes(source)
         if classes is None:  # untokenizable: conservative textual fallback (blank / '#' lines only)
-            return {n for n, line in enumerate(lines, start=1) if not line.strip() or line.strip().startswith("#")}
+            noise = {n for n, line in enumerate(lines, start=1) if not line.strip() or line.strip().startswith("#")}
+            return noise, set()
         code_lines, imports = classes
         for number, line in enumerate(lines, start=1):
-            if number not in code_lines or _BRACKETS_ONLY.match(line):
-                trivial.add(number)
-        return trivial | imports | python_docstring_lines(source)
+            if number not in code_lines:
+                noise.add(number)
+            elif _BRACKETS_ONLY.match(line):
+                brackets.add(number)
+        return noise | imports | python_docstring_lines(source), brackets
     # Comments removed, string contents kept: a line inside a multi-line template literal or Go raw
     # string is code, a block-comment continuation line is not.
     for number, line in enumerate(strip_comments(language, source).split("\n"), start=1):
-        if _BRACKETS_ONLY.match(line):
-            trivial.add(number)
-    return {n for n in trivial if n <= len(lines)} | import_statement_lines(language, source)
+        if number > len(lines):
+            break
+        if not line.strip():
+            noise.add(number)
+        elif _BRACKETS_ONLY.match(line):
+            brackets.add(number)
+    return noise | import_statement_lines(language, source), brackets
+
+
+def noise_lines(language: str, source: str) -> set[int]:
+    """Lines whose change cannot change behaviour: blank, comment-only, docstring or import statement.
+
+    Classification uses the whole source, so a `*` dereference in Go, a `#` inside a Python SQL
+    string or a string literal line are code, while block-comment continuation lines are not.
+    Bracket-only lines are NOT noise: moving a closing brace changes control flow.
+    """
+    return _line_classes(language, source)[0]
+
+
+def trivial_lines(language: str, source: str) -> set[int]:
+    """Lines a localization span must not consist of: noise lines plus bracket-only lines."""
+    noise, brackets = _line_classes(language, source)
+    return noise | brackets
 
 
 def import_lines(language: str, source: str, limit: int = 15) -> list[str]:
@@ -673,9 +703,7 @@ def _python_tokens(source: str) -> list[str] | None:
             out.append("<DEDENT>")
         elif token.type == tokenize.NEWLINE:
             out.append("<NEWLINE>")
-        elif token.type == tokenize.STRING:
-            out.extend(_TOKEN.findall(token.string))
-        else:
+        else:  # string literals stay one token, so whitespace inside them is significant
             out.append(token.string)
     return out
 
@@ -693,7 +721,23 @@ def normalized_tokens(language: str, source: str) -> list[str]:
                 out.append(f"<I{len(line) - len(line.lstrip())}>")
                 out.extend(_TOKEN.findall(line))
         return out
-    return _TOKEN.findall(strip_comments(language, source))
+    return _c_like_tokens(language, strip_comments(language, source))
+
+
+def _c_like_tokens(language: str, text: str) -> list[str]:
+    """Tokens of comment-free code; string, template and regex literal bodies stay one exact token."""
+    spans: list[tuple[int, int]] = []
+    mask_c_like(text, language, spans)
+    out: list[str] = []
+    position = 0
+    for start, end in sorted(spans):
+        if start < position:
+            continue
+        out.extend(_TOKEN.findall(text[position:start]))
+        out.append("\x00" + text[start:end])
+        position = end
+    out.extend(_TOKEN.findall(text[position:]))
+    return out
 
 
 def normalized_sha256(language: str, source: str) -> str:

@@ -191,12 +191,12 @@ Discovery outcomes:
 
 | Outcome | Candidates |
 | --- | ---: |
-| built | 373 |
-| change_outside_function | 287 |
+| built | 372 |
+| change_outside_function | 288 |
 | fix_too_large | 11 |
-| function_mismatch | 35 |
+| function_mismatch | 36 |
 | function_size_out_of_bounds | 36 |
-| multiple_functions_changed | 232 |
+| multiple_functions_changed | 231 |
 | no_logic_change | 1 |
 | no_source_change_in_language | 131 |
 | root_commit | 1 |
@@ -207,15 +207,15 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 882 built, 825 accepted, 57 rejected.
+Records: 880 built, 825 accepted, 55 rejected.
 
 | Failed check | Records |
 | --- | ---: |
 | label_conflict_exact | 4 |
 | label_conflict_near | 2 |
-| localization_valid:diff_consistent | 5 |
+| localization_valid:diff_consistent | 4 |
 | localization_valid:trivial_span | 15 |
-| sibling_rejected | 29 |
+| sibling_rejected | 28 |
 | syntax_well_formed | 2 |
 
 Flags on accepted records (not rejections):
@@ -254,7 +254,7 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 238 |
+| excluded | 236 |
 | pending_review | 644 |
 
 Blockers on accepted records:

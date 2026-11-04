@@ -43,7 +43,9 @@ Codex review findings fixed with regression tests (`tests/test_garden_regression
 - Python callers are found with the tokenizer: names inside strings, comments or docstrings are not calls. This removed one real false abstention record (aiohttp: `write_eof` was only mentioned in an error message). The quality check uses the same logic.
 - Line classification is structural on the whole file instead of per line: a Go `*out = in` dereference, a `#` or `from x import y` line inside a Python string, a Go string-literal line outside the import block and lines inside multi-line template literals / raw strings are code; block-comment continuations, docstrings, import statements and bracket-only lines are not.
 
-Adjacent defects found and fixed while doing this: TypeScript `import x = require('y')` without a semicolon, identifiers starting with `import`, and semicolon-free JS calls misread as method definitions (which created a phantom `mergeKeys` function inside an abstention excerpt). Second review round: Python normalization now keeps significant indentation (a fix that moves `return secret` into an `if is_admin:` block was rejected as cosmetic and collided in deduplication), and TypeScript return-type annotations such as `): { html: string } {` or `Promise<{...}>` are skipped before the body brace. Upstream caches now fetch with `--filter=tree:0`: the previous `blob:none` filter downloaded a full tree per commit and filled 29 GB of disk for the first 975 repositories; a monorepo fix now costs megabytes. The dataset was rebuilt from an empty cache; totals below are the regenerated ones (5 TypeScript records added, no existing record changed).
+Adjacent defects found and fixed while doing this: TypeScript `import x = require('y')` without a semicolon, identifiers starting with `import`, and semicolon-free JS calls misread as method definitions (which created a phantom `mergeKeys` function inside an abstention excerpt). Second review round: Python normalization now keeps significant indentation (a fix that moves `return secret` into an `if is_admin:` block was rejected as cosmetic and collided in deduplication), and TypeScript return-type annotations such as `): { html: string } {` or `Promise<{...}>` are skipped before the body brace. Upstream caches now fetch with `--filter=tree:0`: the previous `blob:none` filter downloaded a full tree per commit and filled 29 GB of disk for the first 975 repositories; a monorepo fix now costs megabytes. Third review round: string, template, regex and raw-string literals are single exact tokens in the normalization (a fix that only changes whitespace inside a regex such as `^[a-z ]+$` was rejected as cosmetic), and bracket-only lines are no longer "no logic": moving a closing brace changes control flow, counts for the one-function rule and is localized at the change point. Line classes are now split into noise (blank, comment, docstring, import) and non-localizable (noise plus bracket-only).
+
+Two operational defects were found while rebuilding: (1) the presence check `git cat-file -e <sha>` triggered Git's lazy fetch of the commit's whole closure in a partial clone, which pulled entire histories (grafana: 10 M objects, 2.5 GB) and exhausted the disk; presence is now tracked in a marker file and the whole cache for 975 repositories is 0.5 GB; (2) a fix commit that is also the parent of another fix became a shallow boundary and looked parentless on a rebuild (12 records); parents are now read from the raw commit object and such commits are deepened. The dataset was rebuilt from an empty cache; totals below are the regenerated ones (no accepted record changed).
 
 ### Milestone 3 - First dataset seed: `sentinel-garden-seed-v1`
 
@@ -53,10 +55,10 @@ Produced by the pipeline from real advisories and upstream fix commits (OSV expo
 | --- | ---: |
 | GHSA advisories inspected (1,400 per ecosystem) | 4,200 |
 | Candidates (single fix commit, localizable CWE, caps applied) | 1,413 |
-| Fix commits turned into records (one-function rule) | 373 |
-| Records built | 882 |
+| Fix commits turned into records (one-function rule) | 372 |
+| Records built | 880 |
 | Records accepted by quality checks | **825** |
-| Records rejected (label conflicts 6, trivial span 15, diff inconsistency 5, syntax 2, sibling 29) | 57 |
+| Records rejected (label conflicts 6, trivial span 15, diff inconsistency 4, syntax 2, sibling 28) | 55 |
 | **Training-approved records** | **0** |
 
 Accepted records by language and label:
@@ -73,7 +75,7 @@ Accepted records by language and label:
 - Localization (diff-derived): 202 changed-line spans, 100 insertion points (missing checks), 47 mixed.
 - Splits (repository-level, temporal cutoff 2026-07-01, provisional): train 569 records / 220 repos, validation 75 / 27, holdout_reserved 100 / 34, temporal_quarantine 81 / 28. No repository is in two splits; no train/validation record is after the cutoff.
 - Evaluation contamination: 0 hits against QuickEval v1, the public seed, `coding-v1` (and `private/`, which is empty here).
-- Determinism: `curate` is byte-identical across runs; `verify` rebuilt all 882 records from the frozen candidates with 0 hash mismatches, starting from an empty Git cache.
+- Determinism: `curate` is byte-identical across runs; `verify` rebuilt all 880 records from the frozen candidates with 0 hash mismatches, after a first build from an empty Git cache.
 - Manual spot check by the implementing engineer (not a review or approval): 22 sampled findings across all four languages; labels and localizations matched the upstream fixes, 2 spans were wider than necessary but correct. One systematic issue (Python docstring edits widening spans) was found and fixed before the final run.
 
 **Approval status:** all 825 accepted records are a **non-approved staging dataset**. 644 train/validation records are `pending_review`; holdout and quarantined records are `excluded` from training. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed): 662 records permissive, 91 strong copyleft (mostly AGPL-3.0), 15 weak copyleft, 57 unknown or no root license file.

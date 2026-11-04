@@ -20,6 +20,7 @@ from sentinel.garden.licenses import LICENSE_FILE
 
 SHA = re.compile(r"^[0-9a-f]{40}$")
 FILTER = "tree:0"  # lazily fetch trees and blobs; see module docstring
+FETCHED_MARKER = "qsa-fetched-commits"  # commits fetched explicitly with --depth=2
 _ENV = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "true", "LC_ALL": "C"}
 
 
@@ -71,22 +72,38 @@ class UpstreamRepo:
         return done.stdout if binary else done.stdout.decode("utf-8", "replace")
 
     def has_commit(self, sha: str) -> bool:
-        try:
-            self._git("cat-file", "-e", f"{sha}^{{commit}}")
-            return True
-        except GitError:
-            return False
+        # Never probe with `cat-file`/`rev-parse`: in a partial clone a missing object triggers a lazy
+        # fetch of that commit's whole closure (all ancestors and their trees), ignoring --depth.
+        # That silently pulled entire histories of monorepos (10 M objects, 2.5 GB for grafana).
+        marker = self.path / FETCHED_MARKER
+        return marker.is_file() and sha in marker.read_text(encoding="utf-8").split()
+
+    def _mark_fetched(self, sha: str) -> None:
+        with (self.path / FETCHED_MARKER).open("a", encoding="utf-8") as handle:
+            handle.write(sha + "\n")
 
     def ensure_commit(self, sha: str) -> CommitInfo:
         if not SHA.match(sha):
             raise GitError(f"not a full commit SHA: {sha}")
-        if not self.has_commit(sha):
+        # A commit that is the shallow boundary of another fetch (e.g. a fix commit that is also the
+        # parent of a later fix) looks parentless and its parent may be missing: deepen it again.
+        if not self.has_commit(sha) or sha in self._shallow():
             self._git("fetch", "-q", "--depth=2", f"--filter={FILTER}", "origin", sha, timeout=300)
-        line = str(self._git("show", "-s", "--format=%H %P%n%cI%n%aI", sha)).strip().splitlines()
-        hashes = line[0].split()
-        if hashes[0] != sha:
-            raise GitError(f"resolved {hashes[0]} instead of {sha}")
-        return CommitInfo(sha=sha, parents=tuple(hashes[1:]), committed_at=line[1], authored_at=line[2])
+            self._mark_fetched(sha)
+        # Parents come from the raw commit object, which shallow grafts do not alter.
+        raw = str(self._git("cat-file", "commit", sha))
+        header = raw.split("\n\n", 1)[0].splitlines()
+        parents = tuple(line.split()[1] for line in header if line.startswith("parent "))
+        line = str(self._git("show", "-s", "--format=%H%n%cI%n%aI", sha)).strip().splitlines()
+        if line[0] != sha:
+            raise GitError(f"resolved {line[0]} instead of {sha}")
+        if sha in self._shallow() and parents:
+            raise GitError(f"{sha} is still a shallow boundary after deepening")
+        return CommitInfo(sha=sha, parents=parents, committed_at=line[1], authored_at=line[2])
+
+    def _shallow(self) -> set[str]:
+        path = self.path / "shallow"
+        return set(path.read_text(encoding="utf-8").split()) if path.is_file() else set()
 
     def changed_files(self, parent: str, sha: str) -> list[tuple[str, str]]:
         out = str(self._git("diff", "--name-status", "--no-renames", "--no-ext-diff", parent, sha))

@@ -233,3 +233,99 @@ def test_typescript_return_type_fix_is_extracted() -> None:
     vulnerable = next(r for r in records if r["kind"] == "vulnerable")
     assert vulnerable["provenance"]["excerpt_function"] == "render"
     assert vulnerable["target"]["start_line"] == 2
+
+
+# --- Third review round -------------------------------------------------------------------------
+
+REGEX_CASES = [
+    ("a.py", "PyPI", 'import re\n\ndef check(name):\n    pattern = r"^[a-z ]+$"\n    return re.match(pattern, name)\n', 'import re\n\ndef check(name):\n    pattern = r"^[a-z]+$"\n    return re.match(pattern, name)\n'),
+    ("a.js", "npm", "function check(name) {\n  const ok = /^[a-z ]+$/.test(name);\n  return ok;\n}\n", "function check(name) {\n  const ok = /^[a-z]+$/.test(name);\n  return ok;\n}\n"),
+    ("a.go", "Go", 'package a\n\nfunc check(name string) bool {\n\tre := regexp.MustCompile("^[a-z ]+$")\n\treturn re.MatchString(name)\n}\n', 'package a\n\nfunc check(name string) bool {\n\tre := regexp.MustCompile("^[a-z]+$")\n\treturn re.MatchString(name)\n}\n'),
+]
+
+
+@pytest.mark.parametrize(("path", "ecosystem", "old", "new"), REGEX_CASES)
+def test_whitespace_inside_literals_is_significant(path: str, ecosystem: str, old: str, new: str) -> None:
+    language = code.language_of(path)
+    assert code.normalized_sha256(language, old) != code.normalized_sha256(language, new)
+    records = build({path: old}, {path: new}, candidate(ecosystem, ["CWE-20"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    assert "[a-z ]" in vulnerable["input"]["code"].splitlines()[vulnerable["target"]["start_line"] - 1]
+
+
+def test_whitespace_outside_literals_is_still_cosmetic() -> None:
+    assert code.normalized_sha256("javascript", "f(a,b);  // x\n") == code.normalized_sha256("javascript", "f( a, b );\n")
+    assert code.normalized_sha256("javascript", "f('a b');\n") != code.normalized_sha256("javascript", "f('ab');\n")
+
+
+def test_moved_closing_brace_is_a_logic_change_and_localized() -> None:
+    old = "function get(user, resource) {\n  if (user.isAdmin) {\n    log(user);\n  }\n  return resource.secret;\n}\n"
+    new = "function get(user, resource) {\n  if (user.isAdmin) {\n    log(user);\n  return resource.secret;\n  }\n}\n"
+    records = build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-862"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    lines = vulnerable["input"]["code"].splitlines()
+    span = lines[vulnerable["target"]["start_line"] - 1 : vulnerable["target"]["end_line"]]
+    assert "  return resource.secret;" in span
+
+
+def test_brace_change_in_second_function_counts_for_the_one_function_rule() -> None:
+    other_old = "function other(x) {\n  if (x) {\n    a();\n  }\n  b();\n}\n"
+    other_new = "function other(x) {\n  if (x) {\n    a();\n  b();\n  }\n}\n"
+    old = "function get(name) {\n  run(name);\n  return 1;\n}\n\n" + other_old
+    new = "function get(name) {\n  run(escape(name));\n  return 1;\n}\n\n" + other_new
+    with pytest.raises(Rejected) as excinfo:
+        build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-79"]))
+    assert excinfo.value.reason == "multiple_functions_changed"
+
+
+def test_noise_and_trivial_line_sets() -> None:
+    source = "function f(x) {\n  // c\n  if (x) {\n    g();\n  }\n}\n"
+    assert code.noise_lines("javascript", source) == {2}
+    assert code.trivial_lines("javascript", source) == {2, 5, 6}
+
+
+def test_presence_check_never_touches_git_objects(tmp_path) -> None:
+    """has_commit must not look up objects: in a partial clone that lazily fetches whole histories."""
+    from sentinel.garden.gitsource import FETCHED_MARKER, UpstreamRepo
+
+    repo = UpstreamRepo(tmp_path, "https://example.invalid/none.git", "example/none")
+    sha = "a" * 40
+    assert not repo.has_commit(sha)  # no network, no git object access
+    (repo.path / FETCHED_MARKER).write_text(sha + "\n")
+    assert repo.has_commit(sha)
+
+
+def _local_upstream(tmp_path):
+    """A real git repository A -> B -> C served over file:// with partial-clone support."""
+    import subprocess
+
+    origin = tmp_path / "origin"
+    origin.mkdir()
+
+    def git(*args: str) -> str:
+        return subprocess.run(["git", "-C", str(origin), *args], capture_output=True, text=True, check=True).stdout.strip()
+
+    git("init", "-q")
+    git("config", "user.email", "t@example.com")
+    git("config", "user.name", "t")
+    git("config", "uploadpack.allowfilter", "true")
+    git("config", "uploadpack.allowanysha1inwant", "true")
+    shas = []
+    for name in ("a", "b", "c"):
+        (origin / "f.py").write_text(f"def f():\n    return '{name}'\n")
+        git("add", "f.py")
+        git("commit", "-q", "-m", name)
+        shas.append(git("rev-parse", "HEAD"))
+    return f"file://{origin}", shas
+
+
+def test_fix_commit_that_is_another_fix_parent_keeps_its_parent(tmp_path) -> None:
+    from sentinel.garden.gitsource import UpstreamRepo
+
+    url, (a, b, c) = _local_upstream(tmp_path)
+    cache = tmp_path / "cache"
+    for _ in range(2):  # a rebuild must see exactly what the first build saw
+        repo = UpstreamRepo(cache, url, "example/local")
+        assert repo.ensure_commit(c).parents == (b,)
+        assert repo.ensure_commit(b).parents == (a,)  # b was the shallow boundary of c's fetch
+        assert repo.ensure_commit(c).parents == (b,)
