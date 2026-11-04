@@ -76,4 +76,17 @@ def test_status_drift_without_missing_records_fails(garden, monkeypatch) -> None
     rows[0]["split"] = "validation" if rows[0]["split"] != "validation" else "train"
     pipeline._write_jsonl(config.committed_dir / "manifest.jsonl", rows)
     report = pipeline.reconstruct(config, log=lambda _: None)
-    assert not report["ok"] and report["status_or_split_drift"] == [rows[0]["record_id"]]
+    assert not report["ok"] and report["split_drift"] == [rows[0]["record_id"]]
+
+
+def test_split_drift_fails_even_when_upstream_records_are_missing(garden, monkeypatch) -> None:
+    config, raw = garden
+    available = [r for r in raw if r["provenance"]["repository_key"] == "example/one"]
+    monkeypatch.setattr(pipeline, "build", lambda config, workers=6, log=print: (copy.deepcopy(available), []))
+    monkeypatch.setattr(pipeline, "_reachable", lambda url: "example/one" in url)
+    rows = [json.loads(line) for line in (config.committed_dir / "manifest.jsonl").read_text().splitlines()]
+    target = next(r for r in rows if r["provenance"]["repository_key"] == "example/one")
+    target["split"] = "validation" if target["split"] != "validation" else "train"
+    pipeline._write_jsonl(config.committed_dir / "manifest.jsonl", rows)
+    report = pipeline.reconstruct(config, log=lambda _: None)
+    assert report["missing_records"] and not report["ok"] and report["split_drift"] == [target["record_id"]]

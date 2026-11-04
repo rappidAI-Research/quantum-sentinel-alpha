@@ -290,3 +290,36 @@ def test_rates_after_automated_exclusions_count_only_surviving_items() -> None:
     summary = audit.summarize(result, manual)
     assert summary["manual"]["rates"]["localization"]["errors"] == 1
     assert summary["manual"]["rates_after_automated_exclusions"]["localization"] == {"judged": 1, "errors": 0, "error_rate": 0.0, "wilson95": [0.0, round(audit.wilson_interval(0, 1)[1], 3)]}
+
+
+def test_failed_license_lookup_is_missing_evidence_not_consistency(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.garden.gitsource import GitError
+
+    class NoLicenses:
+        def __init__(self, *args, **kwargs) -> None:
+            pass
+
+        def root_license_files(self, revision: str):
+            raise GitError("unreachable")
+
+    monkeypatch.setattr(review, "UpstreamRepo", NoLicenses)
+    row = {
+        "quality": {"status": "accepted"},
+        "split": "train",
+        "kind": "vulnerable",
+        "provenance": {
+            "repository_key": "example/webapp",
+            "repository": "https://github.com/example/webapp",
+            "fix_committed_at": "2025-01-01T00:00:00Z",
+            "vulnerable_revision": "a" * 40,
+            "fixed_revision": "b" * 40,
+            "license": {"detected": "MIT", "category": "permissive", "files": [{"path": "LICENSE", "sha256": "c" * 64}]},
+            "advisory_id": "GHSA-2222-3333-4444",
+        },
+    }
+    depsdev = review.DepsDev(tmp_path, fetch=lambda url: {"versions": [{"isDefault": True, "licenses": ["MIT"]}]})
+    candidates = [{"repository_key": "example/webapp", "ecosystem": "npm", "packages": ["webapp"]}]
+    evidence = review.collect_evidence([row], candidates, tmp_path, depsdev, workers=1)[0]
+    assert evidence["license_lookup_failed_revisions"] == ["a" * 40, "b" * 40]
+    assert not evidence["license_files_identical_across_revisions"]
+    assert evidence["tier"] == "B" and "license_lookup_failed" in evidence["tier_reasons"]

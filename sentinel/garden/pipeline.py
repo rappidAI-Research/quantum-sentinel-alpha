@@ -696,9 +696,11 @@ def reconstruct(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
     )
     records = curate_records(config, raw)
     curated = {r["record_id"]: r for r in records}
+    # The split depends only on the repository, the fix date and the frozen policy, so it never
+    # legitimately changes; acceptance can (a kept duplicate whose twin is missing upstream).
+    split_drift = sorted(rid for rid in curated if rid in manifest and curated[rid]["split"] != manifest[rid]["split"])
     status_drift = sorted(
-        rid for rid in curated if rid in manifest
-        and (curated[rid]["quality"]["status"], curated[rid]["split"]) != (manifest[rid]["quality"]["status"], manifest[rid]["split"])
+        rid for rid in curated if rid in manifest and curated[rid]["quality"]["status"] != manifest[rid]["quality"]["status"]
     )
     write_exports(config.workdir, records)
     report = {
@@ -708,12 +710,14 @@ def reconstruct(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
         "missing_because_unreachable": sorted({manifest[r]["provenance"]["repository_key"] for r in missing} & set(unreachable)),
         "unexpected_records": unexpected,
         "content_hash_mismatches": mismatched,
-        "status_or_split_drift": status_drift,
+        "split_drift": split_drift,
+        "status_drift": status_drift,
         "unreachable_repositories": unreachable,
         "exports": (config.workdir / "SHA256SUMS").read_text(encoding="utf-8").splitlines(),
         # Missing upstream data can legitimately shift deduplication (a kept duplicate disappears);
-        # without missing records any acceptance/split drift means the rebuild is not deterministic.
-        "ok": not mismatched and not unexpected and (not status_drift or bool(missing)),
+        # without missing records any acceptance drift means the rebuild is not deterministic. Split
+        # drift is never acceptable.
+        "ok": not mismatched and not unexpected and not split_drift and (not status_drift or bool(missing)),
     }
     _write_json(config.workdir / "reconstruction_report.json", report)
     log(

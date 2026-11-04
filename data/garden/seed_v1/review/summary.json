@@ -7,6 +7,7 @@
     "D": 127
   },
   "license_changed_between_revisions": 22,
+  "license_lookup_failed": 0,
   "manifest_sha256": "49d38d75e179cfb8c1b09c38cb71f72b5c0959a30269669647a13c4c4dac15f5",
   "records_by_tier": {
     "A": 1267,

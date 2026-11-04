@@ -5,7 +5,7 @@ deps.dev metadata are evidence for a human reviewer. Workflow: `docs/RIGHTS_REVI
 
 Repositories with accepted train/validation records: 766 (tier A: 514, tier B: 110, tier C: 15, tier D: 127).
 Records by tier: A: 1267, B: 328, C: 33, D: 308.
-deps.dev agreement: agrees: 559, disagrees: 140, unavailable: 28, unrecognised: 39. License file changed between used revisions: 22 repositories.
+deps.dev agreement: agrees: 559, disagrees: 140, unavailable: 28, unrecognised: 39. License file changed between used revisions: 22 repositories; license lookup failed at a used revision: 0 repositories (never tier A).
 Approval templates for tiers A and B: `review/approvals_template_batch_01..25.yaml` (batches of 25, most records first).
 
 ## Tier A - permissive, consistent evidence

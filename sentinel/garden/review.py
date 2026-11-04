@@ -106,7 +106,9 @@ def tier_of(evidence: dict[str, Any]) -> tuple[str, list[str]]:
         return "D", ["license_conflicting" if detected.startswith("multiple:") else f"license_{category}"]
     if category == "weak_copyleft":
         return "C", ["weak_copyleft"]
-    if not evidence["license_files_identical_across_revisions"]:
+    if evidence.get("license_lookup_failed_revisions"):
+        reasons.append("license_lookup_failed")
+    elif not evidence["license_files_identical_across_revisions"]:
         reasons.append("license_file_changed_between_revisions")
     if detected not in TIER_A_LICENSES:
         reasons.append(f"other_permissive_license:{detected}")
@@ -144,12 +146,15 @@ def collect_evidence(rows: list[dict[str, Any]], candidates: list[dict[str, Any]
         repo = UpstreamRepo(git_cache, provenance["repository"], repo_key)
         revisions = sorted({r["provenance"][k] for r in repo_rows for k in ("vulnerable_revision", "fixed_revision")})
         files_by_revision: dict[str, list[dict[str, str]]] = {}
+        lookup_failed: list[str] = []
         for revision in revisions:
             try:
                 files_by_revision[revision] = [{"path": f.path, "sha256": f.sha256} for f in repo.root_license_files(revision)]
             except GitError:
-                files_by_revision[revision] = []
+                lookup_failed.append(revision)  # missing evidence, not an empty license list
         distinct = {json.dumps(v, sort_keys=True) for v in files_by_revision.values()}
+        # Consistency needs evidence: every used revision read successfully and the same, non-empty files.
+        identical = not lookup_failed and len(distinct) == 1 and next(iter(files_by_revision.values()), []) != []
         registry = {f"{eco}:{name}": depsdev.licenses(eco, name) for eco, name in sorted(packages[repo_key])}
         detected = provenance["license"]["detected"]
         evidence = {
@@ -160,7 +165,9 @@ def collect_evidence(rows: list[dict[str, Any]], candidates: list[dict[str, Any]
             "license_files_latest": provenance["license"]["files"],
             "latest_fixed_revision": provenance["fixed_revision"],
             "license_files_by_revision": files_by_revision,
-            "license_files_identical_across_revisions": len(distinct) == 1,
+            "license_files_identical_across_revisions": identical,
+            "license_lookup_failed_revisions": lookup_failed,
+            "license_file_variants": len(distinct),
             "registry_licenses": registry,
             "registry_agreement": registry_agreement(detected, registry),
             "records": dict(sorted(Counter(f"{r['split']}/{r['kind']}" for r in repo_rows).items())),
@@ -240,7 +247,8 @@ def write_review_outputs(evidence: list[dict[str, Any]], committed: Path, manife
         "by_tier": dict(sorted(Counter(e["tier"] for e in evidence).items())),
         "records_by_tier": {t: sum(e["record_count"] for e in evidence if e["tier"] == t) for t in sorted({e["tier"] for e in evidence})},
         "registry_agreement": dict(sorted(Counter(e["registry_agreement"] for e in evidence).items())),
-        "license_changed_between_revisions": sum(1 for e in evidence if not e["license_files_identical_across_revisions"]),
+        "license_changed_between_revisions": sum(1 for e in evidence if e.get("license_file_variants", 1) > 1),
+        "license_lookup_failed": sum(1 for e in evidence if e.get("license_lookup_failed_revisions")),
         "batches": len(batches),
     }
     (review_dir / "summary.json").write_text(json.dumps(summary, sort_keys=True, indent=2) + "\n", encoding="utf-8")
@@ -265,7 +273,8 @@ def review_queue_markdown(evidence: list[dict[str, Any]], summary: dict[str, Any
         f"({', '.join(f'tier {t}: {n}' for t, n in summary['by_tier'].items())}).",
         f"Records by tier: {', '.join(f'{t}: {n}' for t, n in summary['records_by_tier'].items())}.",
         f"deps.dev agreement: {', '.join(f'{k}: {v}' for k, v in summary['registry_agreement'].items())}. "
-        f"License file changed between used revisions: {summary['license_changed_between_revisions']} repositories.",
+        f"License file changed between used revisions: {summary['license_changed_between_revisions']} repositories; "
+        f"license lookup failed at a used revision: {summary['license_lookup_failed']} repositories (never tier A).",
         f"Approval templates for tiers A and B: `review/approvals_template_batch_01..{summary['batches']:02d}.yaml` "
         f"(batches of {BATCH_SIZE}, most records first).",
         "",

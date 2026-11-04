@@ -51,7 +51,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if problems else 0
     elif args.stage == "reconstruct":
         report = pipeline.reconstruct(config, workers=args.workers)
-        for key in ("missing_records", "content_hash_mismatches", "unexpected_records", "status_or_split_drift"):
+        for key in ("missing_records", "content_hash_mismatches", "unexpected_records", "split_drift", "status_drift"):
             if report[key]:
                 print(f"  {key}: {len(report[key])} (see reconstruction_report.json)", file=sys.stderr)
         return 0 if report["ok"] else 1
