@@ -44,7 +44,7 @@ from sentinel.garden.gitsource import GitError, UpstreamRepo
 from sentinel.garden.osv import fix_commit_refs
 from sentinel.garden.split import parse_time
 
-AUDIT_VERSION = "1"
+AUDIT_VERSION = "2"  # 2: broad localization spans are excluded
 LATER_FIX_SIMILARITY = 0.5  # Jaccard of 5-token shingles between our post-fix code and the later-fixed function
 OSV_API = "https://api.osv.dev/v1"
 
@@ -412,6 +412,25 @@ def stratified_sample(groups: dict[str, dict[str, dict[str, Any]]], pairs_per_la
 # --------------------------------------------------------------------------------------------
 
 
+def audit_exclusions(results: list[dict[str, Any]], leakage: dict[str, str]) -> list[dict[str, str]]:
+    """Automated exclusions from the per-group audit results and the split-leakage check."""
+    exclusions = []
+    for result in results:
+        records_by_kind = result["records"]
+        for fix in result.get("later_fixes", []):
+            exclusions.append({"record_id": records_by_kind["post_fix"], "reason": f"{fix['reason']}:{fix['advisory_id']}"})
+        for problem in result.get("abstention", {}).get("problems", []):
+            exclusions.append({"record_id": records_by_kind["caller_abstention"], "reason": f"abstention_{problem}"})
+        if result.get("span", {}).get("broad") and "vulnerable" in records_by_kind:
+            # In the manual sample every broad span was imprecise (it covers unrelated edits made in
+            # the same commit, such as renames or docstrings); a localization target that cannot be
+            # trusted is not trained on. curate rejects the group's siblings with it.
+            exclusions.append({"record_id": records_by_kind["vulnerable"], "reason": "broad_localization_span"})
+    for record_id, reason in sorted(leakage.items()):
+        exclusions.append({"record_id": record_id, "reason": f"split_leakage_{reason}"})
+    return exclusions
+
+
 def run_audit(
     records: list[dict[str, Any]],
     candidates: list[dict[str, Any]],
@@ -480,15 +499,7 @@ def run_audit(
         per_repo = list(pool.map(lambda key: [audit_group(g) for g in by_repo[key]], sorted(by_repo)))
     results = sorted((r for chunk in per_repo for r in chunk), key=lambda r: r["group_id"])
     leakage = split_leakage(records)
-    exclusions = []
-    for result in results:
-        records_by_kind = result["records"]
-        for fix in result.get("later_fixes", []):
-            exclusions.append({"record_id": records_by_kind["post_fix"], "reason": f"{fix['reason']}:{fix['advisory_id']}"})
-        for problem in result.get("abstention", {}).get("problems", []):
-            exclusions.append({"record_id": records_by_kind["caller_abstention"], "reason": f"abstention_{problem}"})
-    for record_id, reason in sorted(leakage.items()):
-        exclusions.append({"record_id": record_id, "reason": f"split_leakage_{reason}"})
+    exclusions = audit_exclusions(results, leakage)
     unique = {(e["record_id"], e["reason"]): e for e in exclusions}
     return {
         "audit_version": AUDIT_VERSION,
@@ -556,7 +567,14 @@ def summarize(audit: dict[str, Any], manual: dict[str, Any]) -> dict[str, Any]:
         "abstentions_invalid": sum(1 for g in groups if g.get("abstention", {}).get("problems")),
         "exclusions_by_reason": dict(sorted(Counter(e["reason"].split(":")[0] for e in audit["exclusions"]).items())),
     }
-    items = manual.get("items") or []
+    # Error rates describe the current sample only: a verdict on a group that is no longer sampled
+    # (the population changed) is kept for its exclusions but not counted, and sampled items without a
+    # verdict are reported as pending rather than silently missing from the denominator.
+    sample_keys = [(s["group_id"], s.get("item", "pair")) for s in audit.get("sample") or []]
+    by_key = {(i["group_id"], i.get("item", "pair")): i for i in manual.get("items") or []}
+    items = [by_key[k] for k in sample_keys if k in by_key]
+    pending = [f"{g}:{kind}" for g, kind in sample_keys if (g, kind) not in by_key]
+    outside = sorted(f"{g}:{kind}" for g, kind in by_key if (g, kind) not in set(sample_keys))
     rates = {}
     for key, bad in (
         ("advisory_matches_code", {"no"}),
@@ -571,7 +589,30 @@ def summarize(audit: dict[str, Any], manual: dict[str, Any]) -> dict[str, Any]:
         uncertain = sum(1 for i in judged if i[key] in {"unclear", "partly", "questionable", "acceptable"})
         low, high = wilson_interval(errors, len(judged))
         rates[key] = {"judged": len(judged), "errors": errors, "uncertain_or_partial": uncertain, "error_rate": round(errors / len(judged), 3) if judged else None, "wilson95": [round(low, 3), round(high, 3)]}
-    summary["manual"] = {"reviewer": manual.get("reviewer"), "items": len(items), "rates": rates}
+    # The same rates over the sampled items that survive the automated exclusions: the error estimate
+    # for the records that remain (manual findings still count - they are evidence, not removals).
+    auto_excluded = {e["record_id"] for e in audit.get("exclusions") or []}
+    group_records = {g["group_id"]: g.get("records", {}) for g in groups}
+    kept = [
+        i for i in items
+        if group_records.get(i["group_id"], {}).get("vulnerable" if i.get("item", "pair") == "pair" else "caller_abstention") not in auto_excluded
+    ]
+    kept_rates = {}
+    for key, rate in rates.items():
+        bad = {"advisory_matches_code": {"no"}, "fix_addresses_weakness": {"no"}, "localization": {"imprecise", "wrong"}, "cwe": {"wrong"}, "hard_negative_safe": {"no"}, "abstention_valid": {"no"}}[key]
+        judged = [i for i in kept if key in i]
+        errors = sum(1 for i in judged if i[key] in bad)
+        low, high = wilson_interval(errors, len(judged))
+        kept_rates[key] = {"judged": len(judged), "errors": errors, "error_rate": round(errors / len(judged), 3) if judged else None, "wilson95": [round(low, 3), round(high, 3)]}
+    summary["manual"] = {
+        "reviewer": manual.get("reviewer"),
+        "rates_after_automated_exclusions": kept_rates,
+        "sample_items": len(sample_keys),
+        "items": len(items),
+        "pending": pending,
+        "outside_sample": outside,
+        "rates": rates,
+    }
     return summary
 
 
@@ -623,8 +664,11 @@ def report_markdown(summary: dict[str, Any], audit: dict[str, Any], manual: dict
     lines += [
         "## Manual stratified review",
         "",
-        f"Reviewer: {manual.get('reviewer') or 'not yet performed'}. Items: {summary['manual']['items']} "
-        f"(sample definition: `audit/sample.jsonl`; verdicts: `audit/manual_review.yaml`).",
+        f"Reviewer: {manual.get('reviewer') or 'not yet performed'}. Reviewed {summary['manual']['items']} of "
+        f"{summary['manual']['sample_items']} sampled items"
+        + (f" (**{len(summary['manual']['pending'])} pending**)" if summary["manual"]["pending"] else "")
+        + " (sample definition: `audit/sample.jsonl`; verdicts: `audit/manual_review.yaml`). Rates count sampled items only"
+        + (f"; {len(summary['manual']['outside_sample'])} earlier verdicts on groups no longer sampled still apply their exclusions." if summary["manual"]["outside_sample"] else "."),
         "",
         "| Question | Judged | Errors | Uncertain / partial | Error rate | Wilson 95 % |",
         "| --- | ---: | ---: | ---: | ---: | --- |",
@@ -632,6 +676,18 @@ def report_markdown(summary: dict[str, Any], audit: dict[str, Any], manual: dict
     for key, rate in rates.items():
         error_rate = "-" if rate["error_rate"] is None else f"{rate['error_rate']:.1%}"
         lines.append(f"| {key} | {rate['judged']} | {rate['errors']} | {rate['uncertain_or_partial']} | {error_rate} | {rate['wilson95'][0]:.1%} - {rate['wilson95'][1]:.1%} |")
+    kept = summary["manual"].get("rates_after_automated_exclusions") or {}
+    if kept:
+        lines += [
+            "",
+            "The same questions over the sampled items whose records survive the automated exclusions (the estimate for the exported data; errors found manually still count):",
+            "",
+            "| Question | Judged | Errors | Error rate | Wilson 95 % |",
+            "| --- | ---: | ---: | ---: | --- |",
+        ]
+        for key, rate in kept.items():
+            error_rate = "-" if rate["error_rate"] is None else f"{rate['error_rate']:.1%}"
+            lines.append(f"| {key} | {rate['judged']} | {rate['errors']} | {error_rate} | {rate['wilson95'][0]:.1%} - {rate['wilson95'][1]:.1%} |")
     notes = [i for i in manual.get("items") or [] if i.get("notes")]
     if notes:
         lines += ["", "Findings from the manual review:", ""]

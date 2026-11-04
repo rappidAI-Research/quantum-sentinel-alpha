@@ -28,6 +28,15 @@
     },
     {
       "commits": [
+        "71573078c4168b2dc166bb847c3a85715dadc675",
+        "b2b75e237037779d5251e3ad92fa41aa561434f8"
+      ],
+      "records": 2,
+      "repository_key": "a2ui-project/a2ui",
+      "url": "https://github.com/a2ui-project/a2ui.git"
+    },
+    {
+      "commits": [
         "547a26b685d08cac0aa64e5e65f7867ac0ea9bc0",
         "a14226afb77b524c2ced7d649ac7420a14992716"
       ],
@@ -37,10 +46,19 @@
     },
     {
       "commits": [
+        "5ab40e6167e64ecb06c2a4d8ae798391bf9a5893",
+        "b454f40a9a1787b2b5659cd2cb00819d983185df"
+      ],
+      "records": 2,
+      "repository_key": "abetlen/llama-cpp-python",
+      "url": "https://github.com/abetlen/llama-cpp-python.git"
+    },
+    {
+      "commits": [
         "ab10999b092a9629d71c76d2f248dee063e7ae93",
         "f6aae3dda4f4c9dc0b49737b36007330f78fd53a"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "actions/http-client",
       "url": "https://github.com/actions/http-client.git"
     },
@@ -55,12 +73,43 @@
     },
     {
       "commits": [
-        "17614200f27174f789d4af54cc3a1f2b0df7870c",
-        "7dcb01009c3c4653b24e0fb06c7bc0f9d521cbb0"
+        "0ae91325065dd8693eb457492c210ff9a3fa6f7b",
+        "cfd5fbfc32368bcf7e06d1c5985ea60e34cd4028",
+        "db70fe9bcbba451e9f8bd794a9fa7cdfa00125ad",
+        "fdeddcd96ab8b5a87b953e257731bd5f76a41074"
       ],
-      "records": 2,
+      "records": 6,
+      "repository_key": "adaltas/node-mixme",
+      "url": "https://github.com/adaltas/node-mixme.git"
+    },
+    {
+      "commits": [
+        "17614200f27174f789d4af54cc3a1f2b0df7870c",
+        "7dcb01009c3c4653b24e0fb06c7bc0f9d521cbb0",
+        "aa5b9835d946bd9893ef02e556859e3ea62cc5e2",
+        "b11b4c121b5684b042b46a88a1266e0326d64cc5"
+      ],
+      "records": 4,
       "repository_key": "adamghill/django-unicorn",
       "url": "https://github.com/adamghill/django-unicorn.git"
+    },
+    {
+      "commits": [
+        "696f920a66c7c9d45638f97c62f6480506d87fdb",
+        "a1edd39d33d1bdf75c31ea01c317547be90ca074"
+      ],
+      "records": 2,
+      "repository_key": "adfinis/document-merge-service",
+      "url": "https://github.com/adfinis/document-merge-service.git"
+    },
+    {
+      "commits": [
+        "300421f269959af1198b3757c4bd5f24df699f98",
+        "c3e2ee08710d4164d796ecb66ed291335dae9291"
+      ],
+      "records": 3,
+      "repository_key": "aedart/ion",
+      "url": "https://github.com/aedart/ion.git"
     },
     {
       "commits": [
@@ -93,6 +142,35 @@
     },
     {
       "commits": [
+        "a883c871573874037e92f309c270160a754e67be",
+        "e431effa00195a6f06b111e09733cd1445a91a88"
+      ],
+      "records": 3,
+      "repository_key": "ahdinosaur/set-in",
+      "url": "https://github.com/ahdinosaur/set-in.git"
+    },
+    {
+      "commits": [
+        "3bf8aaaf4dbb1c209dcb8d87a82711a54c1ab39a",
+        "5623009ef11dcf095c163a38dea07b9cc22ad19f",
+        "62d6542a2a57298da7a2e02de623454007e4f6d6",
+        "fe0ebce263341f247b2360a8d55b9985b9155234"
+      ],
+      "records": 6,
+      "repository_key": "ahmedadelfahim/express-xss-sanitizer",
+      "url": "https://github.com/AhmedAdelFahim/express-xss-sanitizer.git"
+    },
+    {
+      "commits": [
+        "0b99c6ca08e0ba7e7011453a2f68033e9b1d1bce",
+        "b9e53df5e32d14bbd3a2c738e2db7187fb531e93"
+      ],
+      "records": 2,
+      "repository_key": "aimhubio/aim",
+      "url": "https://github.com/aimhubio/aim.git"
+    },
+    {
+      "commits": [
         "4b17597f3c82b6d94553d3b9d26d70e8f918123f",
         "fce8c31dfe04033d9d005a89694d3e7a60784f89"
       ],
@@ -115,10 +193,12 @@
     },
     {
       "commits": [
+        "1b356f01bbab57d041c9a75bacd72fbbf8524728",
         "6b7864004d3442dbcfaf8687f63262c1c629f569",
-        "95c2d2ed6828a4dbf8622fc143639ee6049d96c7"
+        "95c2d2ed6828a4dbf8622fc143639ee6049d96c7",
+        "faadf107ff156deacd408873fc33b936e7c1d79b"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "aio-libs/aiohttp-session",
       "url": "https://github.com/aio-libs/aiohttp-session.git"
     },
@@ -133,6 +213,33 @@
     },
     {
       "commits": [
+        "d1874d3e71994cd9bb769d60133c046b6d2b8bb5",
+        "f026ad2afea14e0ffc91f1aa0eaedcdc72c63167"
+      ],
+      "records": 2,
+      "repository_key": "airbnb/knowledge-repo",
+      "url": "https://github.com/airbnb/knowledge-repo.git"
+    },
+    {
+      "commits": [
+        "10f08dedfa1636dd477f1ac970827c64f234aad4",
+        "1ad67864c0c20f167929e64c875f5c28e1aad9fd"
+      ],
+      "records": 2,
+      "repository_key": "ajanubolu/vllm",
+      "url": "https://github.com/AjAnubolu/vllm.git"
+    },
+    {
+      "commits": [
+        "720a23fa453ffae8340e92c9b0fe886c54cfe0d5",
+        "82735a15826a30cc51e97a1bbfb59b3d388e4b98"
+      ],
+      "records": 2,
+      "repository_key": "ajv-validator/ajv",
+      "url": "https://github.com/ajv-validator/ajv.git"
+    },
+    {
+      "commits": [
         "0a51c25ec5fd07efcc383195f5dd5e53c4245637",
         "fc9bbcd25b0b4f09bbd6339f710ad24c129d5d7c"
       ],
@@ -142,12 +249,54 @@
     },
     {
       "commits": [
+        "4ff542b70b92a6b81cce8b9255700b0bc0817edd",
+        "776dff23c87b0902e554e02a8c2567d2580fe12a",
+        "c3c0c531cce6d819d242e453e4144e0f3e1a5b68",
+        "dff9e32bf1f507cc8be21e80c798a6f4828bf127"
+      ],
+      "records": 6,
+      "repository_key": "algolia/algoliasearch-helper-js",
+      "url": "https://github.com/algolia/algoliasearch-helper-js.git"
+    },
+    {
+      "commits": [
+        "09ccb6e0baccf56c40e6cb429c698750843a999c",
+        "d37584f4571bb97b904aa51a0c925ac89114c05a",
+        "e22a1220f764e2d7cf9da6d6144926f53ca01cde",
+        "e38ac2b031dc87ee2b608ee43a59ac9d913fdd74"
+      ],
+      "records": 4,
+      "repository_key": "aliasrobotics/cai",
+      "url": "https://github.com/aliasrobotics/cai.git"
+    },
+    {
+      "commits": [
         "34746e951cba8a48aa697c75ce24c2fee55c3808",
         "6100647310594868e931f3de1188ddd8bde93b78"
       ],
       "records": 2,
       "repository_key": "alist-org/alist",
       "url": "https://github.com/alist-org/alist.git"
+    },
+    {
+      "commits": [
+        "3c1b120f1dcd44eefe07d4a5022e1baa3c7164d3",
+        "c57edf319ba13584d3cec4b994057443c92bb21c"
+      ],
+      "records": 2,
+      "repository_key": "alizeait/unflatto",
+      "url": "https://github.com/alizeait/unflatto.git"
+    },
+    {
+      "commits": [
+        "2565f0e2bab1a8b68413b0e0e03864279699271a",
+        "43e06482372dc5f6d4ab0476e0c41fddddf63bec",
+        "74c354c413ee3f82dff97a15a0a43942887c2b5b",
+        "c4c2fcf2b2212ce968bdcae145bb74283c441e5f"
+      ],
+      "records": 4,
+      "repository_key": "amauric/tarteaucitron.js",
+      "url": "https://github.com/amauric/tarteaucitron.js.git"
     },
     {
       "commits": [
@@ -179,9 +328,11 @@
     {
       "commits": [
         "6bde84fa8e6a5770b54040fbbc9bf10d5d0386fa",
-        "7896e742227aa462ef6cede2ce0e100e4321567f"
+        "7896e742227aa462ef6cede2ce0e100e4321567f",
+        "af7cb63151a8c932cd7dd14dae01ef4a1f7f90a1",
+        "eeb03f4ea310e2e51ba5d53a421ec7b418e186cd"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "angular/angular",
       "url": "https://github.com/angular/angular.git"
     },
@@ -196,12 +347,57 @@
     },
     {
       "commits": [
+        "165a5ca18e6cc39ce8c4ea0ba6b5cdd120837045",
+        "dd57a476f4bb9d78c6f60741898dc04c71d2eb53"
+      ],
+      "records": 2,
+      "repository_key": "angus-c/just",
+      "url": "https://github.com/angus-c/just.git"
+    },
+    {
+      "commits": [
+        "858e5689d0e4fd24f74856c7e8f245412694a219",
+        "c168175b17053a5bbdf19ccaf6bb10c331b9486e"
+      ],
+      "records": 2,
+      "repository_key": "ankitects/anki",
+      "url": "https://github.com/ankitects/anki.git"
+    },
+    {
+      "commits": [
+        "00639d375b0efd097bc1eca18d9dc021691b9286",
+        "23abc78c8bf9eddce8ec40f0ec7bbb586a3ebe9f"
+      ],
+      "records": 2,
+      "repository_key": "annethedev/nobelprize",
+      "url": "https://github.com/AnneTheDev/nobelprize.git"
+    },
+    {
+      "commits": [
+        "1d0c5e2ba47724c31a18d7b08b9daf13df8829dc",
+        "a9c64655de4e75b573a49336e73a1487dbd29d0d"
+      ],
+      "records": 2,
+      "repository_key": "ansible-collections/community.general",
+      "url": "https://github.com/ansible-collections/community.general.git"
+    },
+    {
+      "commits": [
         "49da47d09fa72670d3f87bf16305d7cccd0465c1",
         "c1ee1f142db1e669b710a65147ea32be47a91519"
       ],
       "records": 3,
       "repository_key": "ansible/ansible",
       "url": "https://github.com/ansible/ansible.git"
+    },
+    {
+      "commits": [
+        "0cb32a7b304e97b5ee04d8d3fa32d2f09302d837",
+        "30fb384e7fb9a94ac3929e4a650877e45d8834c9"
+      ],
+      "records": 3,
+      "repository_key": "ansible/ansible-modules-core",
+      "url": "https://github.com/ansible/ansible-modules-core.git"
     },
     {
       "commits": [
@@ -241,6 +437,24 @@
     },
     {
       "commits": [
+        "6599043eee6e86dce16953fcd1fd828052052be6",
+        "715030ceb4d6dd8d3546e999c680e29532bf1255"
+      ],
+      "records": 3,
+      "repository_key": "anthropics/anthropic-sdk-python",
+      "url": "https://github.com/anthropics/anthropic-sdk-python.git"
+    },
+    {
+      "commits": [
+        "738bad662b20a5d358d19466936176ef580a9b07",
+        "c3bb2034d7325475b1e01ed14be5bf12411b2dfd"
+      ],
+      "records": 2,
+      "repository_key": "antrea-io/antrea",
+      "url": "https://github.com/antrea-io/antrea.git"
+    },
+    {
+      "commits": [
         "4e32546faf227a6497ce8b282fff7450cae6f665",
         "d38a0a781e123c8c50313efdb23f767d6678afe0"
       ],
@@ -250,12 +464,84 @@
     },
     {
       "commits": [
+        "1e39b00eedda0e4a0b048e099c0e13ce7149d90f",
+        "3c62f0d9a39e0fecedc0c5a6b1e48fee25f21e00"
+      ],
+      "records": 2,
+      "repository_key": "apache/echarts",
+      "url": "https://github.com/apache/echarts.git"
+    },
+    {
+      "commits": [
+        "4449e165a00756dc61430e6ad9520f005b045d29",
+        "df38b3b70b481b270deab0e0a5d9c0bcb25db1b2"
+      ],
+      "records": 2,
+      "repository_key": "apache/libcloud",
+      "url": "https://github.com/apache/libcloud.git"
+    },
+    {
+      "commits": [
+        "264a3f318ed3e9e51573f67f963c8509786bcec2",
+        "6e5c0f6e315ea1cd8526789558bfd10d6cee2173"
+      ],
+      "records": 3,
+      "repository_key": "apache/thrift",
+      "url": "https://github.com/apache/thrift.git"
+    },
+    {
+      "commits": [
         "85596a08bb12835370895ba20455e5ce998278d1",
         "f780aff77a52d52a37b4d1cc3e8e801c0b557356"
       ],
       "records": 2,
       "repository_key": "apache/trafficcontrol",
       "url": "https://github.com/apache/trafficcontrol.git"
+    },
+    {
+      "commits": [
+        "8cad7f72c15b198f4d0b5b1c8a3a979b2e4baa82",
+        "b93e3a2e48d92e29d3ed0523e762261360f42036"
+      ],
+      "records": 2,
+      "repository_key": "apidevtools/json-schema-ref-parser",
+      "url": "https://github.com/APIDevTools/json-schema-ref-parser.git"
+    },
+    {
+      "commits": [
+        "116e1b46ae8a58d5b77038d66588f208eb9b6e2a",
+        "cea7397582a293af6a5f60947da34b95e669c6c1"
+      ],
+      "records": 2,
+      "repository_key": "apollographql/apollo-server",
+      "url": "https://github.com/apollographql/apollo-server.git"
+    },
+    {
+      "commits": [
+        "a2b62f6b098fe9403f86f3003b8638a6008f2ff7",
+        "cb5f8f1c0b24f1b215b2bb5eb6f9a8e16d728ce2"
+      ],
+      "records": 2,
+      "repository_key": "apollosproject/apollos-apps",
+      "url": "https://github.com/ApollosProject/apollos-apps.git"
+    },
+    {
+      "commits": [
+        "994f9627206f0fc0a34bcb7bac755ff5d64a3d78",
+        "b4682c12fd30e12e82fa2d9b766de91d7d2cd23c"
+      ],
+      "records": 2,
+      "repository_key": "apostrophecms/sanitize-html",
+      "url": "https://github.com/apostrophecms/sanitize-html.git"
+    },
+    {
+      "commits": [
+        "067cb597e485e40b790a267187bf7f00730b1c4b",
+        "9bb630541925d72ae8def22657cbe0c36cd61d34"
+      ],
+      "records": 2,
+      "repository_key": "appleboy/gorush",
+      "url": "https://github.com/appleboy/gorush.git"
     },
     {
       "commits": [
@@ -315,12 +601,30 @@
     },
     {
       "commits": [
+        "3da3d75f35204aa71633c7a315327ba39cb6295d",
+        "ffae1aee7db8d4c909a412aa763d41f08853a8fa"
+      ],
+      "records": 2,
+      "repository_key": "askbot/askbot-devel",
+      "url": "https://github.com/ASKBOT/askbot-devel.git"
+    },
+    {
+      "commits": [
         "9f8ce247266e1ab2a2075845cd50fc0b59e94cdb",
         "aaec41e5054569ceaa1113593a34da7568e2d211"
       ],
       "records": 2,
       "repository_key": "astrbotdevs/astrbot",
       "url": "https://github.com/AstrBotDevs/AstrBot.git"
+    },
+    {
+      "commits": [
+        "026a140cec08a9e5b7c80726956969290f50e2d4",
+        "22057d37b1313f5f5a9b5783df0a091d978dccb5"
+      ],
+      "records": 2,
+      "repository_key": "astropy/astropy",
+      "url": "https://github.com/astropy/astropy.git"
     },
     {
       "commits": [
@@ -334,12 +638,30 @@
     },
     {
       "commits": [
+        "7ecab5f8f0cab5297c2b863596566eb0c019cdef",
+        "e9ed6d240d945fca8f8911c1f1d743dfe3f1f8e3"
+      ],
+      "records": 2,
+      "repository_key": "auth0/express-jwt",
+      "url": "https://github.com/auth0/express-jwt.git"
+    },
+    {
+      "commits": [
         "0947b92164a2c5f661ebcc183d37e7f21de719ad",
         "c619f67e90b46e0ff7637faba125e5d3761dbc96"
       ],
       "records": 2,
       "repository_key": "auth0/express-openid-connect",
       "url": "https://github.com/auth0/express-openid-connect.git"
+    },
+    {
+      "commits": [
+        "728066562fb9c254c2ebb4ad9bb32e40985bf984",
+        "79ae557d331274b114848150f19832ae341771b1"
+      ],
+      "records": 2,
+      "repository_key": "auth0/lock",
+      "url": "https://github.com/auth0/lock.git"
     },
     {
       "commits": [
@@ -361,6 +683,15 @@
     },
     {
       "commits": [
+        "1bd2a313492ce0a4d0571c150730907aa3fc91ff",
+        "311da11e41ae44fac570ac5224a45e0fec993939"
+      ],
+      "records": 2,
+      "repository_key": "authlib/authlib",
+      "url": "https://github.com/authlib/authlib.git"
+    },
+    {
+      "commits": [
         "3d988010598224c10e2860efc8822a861f3a21a0",
         "fa1d7f48107e0c6c35e6a7862aa983366e70208f"
       ],
@@ -379,6 +710,15 @@
     },
     {
       "commits": [
+        "129fd407ffca49ee4ab853772c88d0c873e038dd",
+        "d8556b92128defb4ea079e8776b1385cdc17e3fa"
+      ],
+      "records": 2,
+      "repository_key": "avaiga/taipy",
+      "url": "https://github.com/Avaiga/taipy.git"
+    },
+    {
+      "commits": [
         "a6872ca560a2e02e86a3a7a0be92ae0cb126ef3f",
         "ae1b932ec91bacdbb7a3521f9f1fc24479a3d504"
       ],
@@ -394,6 +734,24 @@
       "records": 2,
       "repository_key": "aws/aws-cdk",
       "url": "https://github.com/aws/aws-cdk.git"
+    },
+    {
+      "commits": [
+        "2d873d53f708ea570fc2e2a6974f8c3097fe9df5",
+        "d27836eab1575d90db676ab2667b4816eaf45af0"
+      ],
+      "records": 2,
+      "repository_key": "aws/sagemaker-python-sdk",
+      "url": "https://github.com/aws/sagemaker-python-sdk.git"
+    },
+    {
+      "commits": [
+        "1ee3d282debfa0a99afeb41d22c4b2fd5a3148f2",
+        "d502ad2799d00ac2d879c6f279b0795fc3fdf02c"
+      ],
+      "records": 2,
+      "repository_key": "awwaiid/mcp-server-taskwarrior",
+      "url": "https://github.com/awwaiid/mcp-server-taskwarrior.git"
     },
     {
       "commits": [
@@ -424,12 +782,39 @@
     },
     {
       "commits": [
+        "1b8dcfb6d7e1c8a0a00044286021a841961cf636",
+        "a7b3f559e969725b48decd4393635690bdede452"
+      ],
+      "records": 2,
+      "repository_key": "azure/ms-rest-nodeauth",
+      "url": "https://github.com/Azure/ms-rest-nodeauth.git"
+    },
+    {
+      "commits": [
         "0253c50673f2832b0b1e9f73348186434e7bd09e",
         "1b1f05e82161aaabc226c1d7d498d746956bf942"
       ],
       "records": 2,
       "repository_key": "backstage/backstage",
       "url": "https://github.com/backstage/backstage.git"
+    },
+    {
+      "commits": [
+        "78f4ffab4ed76c43f6f7fb91d8b329acb0d6e684",
+        "b9cc2b3b49f6cd5228e406bc57e17a28b998fea5"
+      ],
+      "records": 3,
+      "repository_key": "badopcode/nodash",
+      "url": "https://github.com/BadOPCode/NoDash.git"
+    },
+    {
+      "commits": [
+        "406a12095bc7708fc20c2f9056782a6084dd412f",
+        "4a023dc5095a4b30fdc8535f705ed34cd22d2f7d"
+      ],
+      "records": 2,
+      "repository_key": "balderdashy/sails",
+      "url": "https://github.com/balderdashy/sails.git"
     },
     {
       "commits": [
@@ -442,12 +827,34 @@
     },
     {
       "commits": [
+        "1f40a88b0ccc861dee094371aeeb29a3f70a2ee6",
+        "939bb18c66406466715ddadd25dd9ffa6f169e25",
+        "a451f398a3f9666de84a0951b6c1c4be8864c251",
         "bb72dc27ac3970e51d38ee52fc3dc1465ae25b9d",
-        "e7fa4835f71f47ab1d13afd638cebf661800d5a4"
+        "e7fa4835f71f47ab1d13afd638cebf661800d5a4",
+        "ea5ae58d40589d249cf577a053e490509de2bf57"
       ],
-      "records": 3,
+      "records": 8,
       "repository_key": "beego/beego",
       "url": "https://github.com/beego/beego.git"
+    },
+    {
+      "commits": [
+        "10eae6ce534c554b4324585a6d427c44f2dd38db",
+        "88aa966b1415a167c7c91b70053b72c7762c1cc0"
+      ],
+      "records": 2,
+      "repository_key": "benhmoore/knwl",
+      "url": "https://github.com/benhmoore/Knwl.git"
+    },
+    {
+      "commits": [
+        "1e10a02e73c87dfadc394b361af33864d0e59e24",
+        "52088be726b19cd0295cec7ea5032b9d1cdf46f9"
+      ],
+      "records": 3,
+      "repository_key": "benoitc/gunicorn",
+      "url": "https://github.com/benoitc/gunicorn.git"
     },
     {
       "commits": [
@@ -469,6 +876,24 @@
     },
     {
       "commits": [
+        "0eaa375c5e5446bfba94a290eff92967a5deac9e",
+        "38144a0e3f99217681f128057afedb7e3bafc4c6"
+      ],
+      "records": 2,
+      "repository_key": "bettercap/bettercap",
+      "url": "https://github.com/bettercap/bettercap.git"
+    },
+    {
+      "commits": [
+        "4dc1fe145cf6231de860938d4b3d8056e77386cc",
+        "818127349ccec812876693c4ca74ebf4350ec6b7"
+      ],
+      "records": 2,
+      "repository_key": "bishopfox/sliver",
+      "url": "https://github.com/BishopFox/sliver.git"
+    },
+    {
+      "commits": [
         "8e3125d0b98bbadb8d0f82a133ef4796ff275dcc",
         "ee307459972442a17beebc29dc331fffd8aff796"
       ],
@@ -478,12 +903,85 @@
     },
     {
       "commits": [
-        "90a7d52c69e921a0b019592d887acd97b1c8b8a5",
-        "b033db675b913a9dba1d29135ec3c10eae7095a7"
+        "6325f2f4f8f6f4545703e4c9b8004e69f71bec82",
+        "9eb343e70642303ea1e60143a4f2c3be6cd64e83"
       ],
       "records": 2,
+      "repository_key": "blacklanternsecurity/bbot",
+      "url": "https://github.com/blacklanternsecurity/bbot.git"
+    },
+    {
+      "commits": [
+        "9e696b77c9d02da0e1dd3e8c9329cdcfdad62151",
+        "bd6b965b03c467e7a58ab0cb89b9172fa5e07013"
+      ],
+      "records": 2,
+      "repository_key": "blackprint/engine-js",
+      "url": "https://github.com/Blackprint/engine-js.git"
+    },
+    {
+      "commits": [
+        "a9a320c3c49d65df491f5721969cfbf9e128d9af",
+        "eaa00021caf6ae09449dde826108153b578348e5"
+      ],
+      "records": 2,
+      "repository_key": "bmeck/node-cookiejar",
+      "url": "https://github.com/bmeck/node-cookiejar.git"
+    },
+    {
+      "commits": [
+        "a961ab7aad2a7d5d0350e861368e3d4294732caa",
+        "cedd113b0e271b439dce768671685cf5f861812e"
+      ],
+      "records": 3,
+      "repository_key": "bokeh/bokeh",
+      "url": "https://github.com/bokeh/bokeh.git"
+    },
+    {
+      "commits": [
+        "90a7d52c69e921a0b019592d887acd97b1c8b8a5",
+        "b033db675b913a9dba1d29135ec3c10eae7095a7",
+        "ba2b57106a37f931a8447bbfcdc072618ddac448"
+      ],
+      "records": 4,
       "repository_key": "borewit/music-metadata",
       "url": "https://github.com/Borewit/music-metadata.git"
+    },
+    {
+      "commits": [
+        "2d6acef676d35611dc58ca9c3bac51789adbcce8",
+        "57a2f22e0c1d2b328c4f54bf75741d74f47f1a6b"
+      ],
+      "records": 3,
+      "repository_key": "bottlepy/bottle",
+      "url": "https://github.com/bottlepy/bottle.git"
+    },
+    {
+      "commits": [
+        "45c6bfa86f6e57731b153baca9e0b41a1cc699e3",
+        "4f68fc7daa4d6f0a3dfd0da2afdbb8f0b87558af"
+      ],
+      "records": 2,
+      "repository_key": "bower/bower",
+      "url": "https://github.com/bower/bower.git"
+    },
+    {
+      "commits": [
+        "2c6689e2aa29f4b66a4874a2f3003431e9db48d1",
+        "59451ec61eb112184e688e802963905e93290169"
+      ],
+      "records": 2,
+      "repository_key": "bpmn-io/min-dash",
+      "url": "https://github.com/bpmn-io/min-dash.git"
+    },
+    {
+      "commits": [
+        "556cb686e190f1c0f7517dcf613f88ec8395b656",
+        "d24f14f8be70d94129d76026e8b0f4f9170c8c3e"
+      ],
+      "records": 3,
+      "repository_key": "bradleyfalzon/ghinstallation",
+      "url": "https://github.com/bradleyfalzon/ghinstallation.git"
     },
     {
       "commits": [
@@ -505,6 +1003,44 @@
     },
     {
       "commits": [
+        "85994cd6348b50f2fd1b73c54e20881416f44a30",
+        "9ac5a5eaaac8a11eb70ec2febd13745c8764ae02"
+      ],
+      "records": 3,
+      "repository_key": "browserify/browserify-sign",
+      "url": "https://github.com/browserify/browserify-sign.git"
+    },
+    {
+      "commits": [
+        "493d8d8ff437f680338bf7397398fda884ad462e",
+        "7431b5766805cbf880c1b3d0f38d484357844ff7",
+        "e3102a8cd4830a3ac85cd0dd011cc002fdde33bb",
+        "ea4768bd09be327904b4ac075d9328c7c7ee2404"
+      ],
+      "records": 4,
+      "repository_key": "browserify/pbkdf2",
+      "url": "https://github.com/browserify/pbkdf2.git"
+    },
+    {
+      "commits": [
+        "00c7f234aa3bdbd427ffeb929bacbb05334eb3e9",
+        "f2a258e9f2d0fcd113bfbaa49706e1ac0d979ba5"
+      ],
+      "records": 2,
+      "repository_key": "browserify/sha.js",
+      "url": "https://github.com/browserify/sha.js.git"
+    },
+    {
+      "commits": [
+        "f2931a3ff2a3a31abf84ef01a7400b270aad6405",
+        "f9914ad9effc865ccc27d816255625890b31ca51"
+      ],
+      "records": 3,
+      "repository_key": "browserslist/browserslist",
+      "url": "https://github.com/browserslist/browserslist.git"
+    },
+    {
+      "commits": [
         "3688b75888a01ef1dcb236e5f8b0a83710849d1a",
         "d8cf6930028372079d977138ae9eaa03ae2f50bb"
       ],
@@ -517,11 +1053,40 @@
         "1a29609e0929ccd5666069e2e7213c2c69fa4ac2",
         "61b32cfdfa0f5d368ef7c7daef28ce12d538740f",
         "91ac96899e492584984ded0c8f9a08f10b473717",
-        "a69e7e01cd4ad67bdfd3ac2c080b9212af16f4b0"
+        "a69e7e01cd4ad67bdfd3ac2c080b9212af16f4b0",
+        "df3ea76ece10095374fd1c9a22a4fb85a44efc42",
+        "e015c376c426ffb48c325e47081849584b9457ca"
       ],
-      "records": 5,
+      "records": 8,
       "repository_key": "buger/jsonparser",
       "url": "https://github.com/buger/jsonparser.git"
+    },
+    {
+      "commits": [
+        "1201f754e39265d2aac58edf49dc380bac334388",
+        "6a37cefc09589d50f7087444a9bfc149bac5b0ca"
+      ],
+      "records": 3,
+      "repository_key": "bugsink/bugsink",
+      "url": "https://github.com/bugsink/bugsink.git"
+    },
+    {
+      "commits": [
+        "5a06a10ed63b1c30652fc1115d0331bf0f7d345d",
+        "a08ee48e796ae66c54fca6a087b4adce7d1d6c06"
+      ],
+      "records": 2,
+      "repository_key": "buildbot/buildbot",
+      "url": "https://github.com/buildbot/buildbot.git"
+    },
+    {
+      "commits": [
+        "1ac3c8ac4f2b1e1df9675228290bda6b9586ba42",
+        "69b3d4c7cf41c6628efb34ed79ad35e9e22bbf82"
+      ],
+      "records": 3,
+      "repository_key": "bytom/bytom",
+      "url": "https://github.com/Bytom/bytom.git"
     },
     {
       "commits": [
@@ -565,12 +1130,41 @@
     },
     {
       "commits": [
-        "411d76798d73446fff4a0244f0475f1ea8bf42dc",
-        "7b0b426a76fd77b89817e0eafcccaed8d15b8cf4"
+        "f45d92e176acf0232aade63ee4ddac8747252a79",
+        "f4bd4ebe3fe5abd2be2bcea1c07043c8b0b70eea"
       ],
       "records": 2,
+      "repository_key": "capricorn86/happy-dom",
+      "url": "https://github.com/capricorn86/happy-dom.git"
+    },
+    {
+      "commits": [
+        "81d1ea72bcee4441278a809a95fc0f91dc916402",
+        "e20fce630d55e4ca9b0a1e325a5fea6997489831"
+      ],
+      "records": 2,
+      "repository_key": "caronc/apprise",
+      "url": "https://github.com/caronc/apprise.git"
+    },
+    {
+      "commits": [
+        "3d12ac8dc2282369296c3386815c00a06c6a92fe",
+        "411d76798d73446fff4a0244f0475f1ea8bf42dc",
+        "7b0b426a76fd77b89817e0eafcccaed8d15b8cf4",
+        "f01839123fa04ac6cc0fe0bedf31d20da32957f7"
+      ],
+      "records": 4,
       "repository_key": "casdoor/casdoor",
       "url": "https://github.com/casdoor/casdoor.git"
+    },
+    {
+      "commits": [
+        "1436af2a0927bf790b70e246fcb2a7ff2159be02",
+        "f934b228b5e2cb94d6c8576d3aac05493f667c69"
+      ],
+      "records": 2,
+      "repository_key": "chaijs/get-func-name",
+      "url": "https://github.com/chaijs/get-func-name.git"
     },
     {
       "commits": [
@@ -601,12 +1195,39 @@
     },
     {
       "commits": [
+        "7ac384b87814cc72e20248e3f6f1c1b3e1b91a03",
+        "f53edc548f737aadfdd486a0043bdd5f5c068bbf"
+      ],
+      "records": 2,
+      "repository_key": "chakra-ui/zag",
+      "url": "https://github.com/chakra-ui/zag.git"
+    },
+    {
+      "commits": [
         "000ab5164f0be68cf1ea6b6e7227f11c0e388a42",
         "62e2d5cacc058d94cbbebd5936ac7f944578f3c0"
       ],
       "records": 2,
       "repository_key": "charmbracelet/soft-serve",
       "url": "https://github.com/charmbracelet/soft-serve.git"
+    },
+    {
+      "commits": [
+        "90393f9d5ab836c3f00ca988798d218b7d48f06d",
+        "c006ce9faa43d31edb34924f1df7b79c137096cf"
+      ],
+      "records": 3,
+      "repository_key": "chbrown/rfc6902",
+      "url": "https://github.com/chbrown/rfc6902.git"
+    },
+    {
+      "commits": [
+        "020976044d113fc0bcbbaf995e91d05e2829a145",
+        "fd0f5682510f4636ae115896f475310229b9b6e7"
+      ],
+      "records": 2,
+      "repository_key": "chimurai/http-proxy-middleware",
+      "url": "https://github.com/chimurai/http-proxy-middleware.git"
     },
     {
       "commits": [
@@ -619,12 +1240,77 @@
     },
     {
       "commits": [
+        "4a1310dd1a94176bb22036662c530dad48059ca4",
+        "58faeb9f7d9b73d8f9724a92519e6bb55a07f4ee"
+      ],
+      "records": 3,
+      "repository_key": "ciscoheat/sveltekit-superforms",
+      "url": "https://github.com/ciscoheat/sveltekit-superforms.git"
+    },
+    {
+      "commits": [
+        "4974db6b05b4bf4bcb95f7f1216618e6105dbc05",
+        "99f7cd473ef98d1cf38a8c171c04dfa4992b9142",
+        "bd02018b65c5b81d7ede195d00d0fcbac3aa33be",
+        "c2fe437f88be850a6edf7a32470772428819fab5"
+      ],
+      "records": 4,
+      "repository_key": "ckan/ckan",
+      "url": "https://github.com/ckan/ckan.git"
+    },
+    {
+      "commits": [
+        "b210e90c6cf84e662ef6c7daf93a92355a961bf2",
+        "faeeab477482e83bac22ca43d2042c6ac95d565b"
+      ],
+      "records": 2,
+      "repository_key": "ckeditor/ckeditor5",
+      "url": "https://github.com/ckeditor/ckeditor5.git"
+    },
+    {
+      "commits": [
         "e9fbcf4472fbc9432386f5137616069ab2f676be",
         "efe91f68ebf8a9e3d21491dc57da7b8a746415d8"
       ],
       "records": 3,
       "repository_key": "clastix/capsule-proxy",
       "url": "https://github.com/clastix/capsule-proxy.git"
+    },
+    {
+      "commits": [
+        "707b80383c192250772386e7f590abc0835cd510",
+        "ef134824a7f4110ada53ea6c173111a4fa2f48f3"
+      ],
+      "records": 2,
+      "repository_key": "claviska/jquery-minicolors",
+      "url": "https://github.com/claviska/jquery-minicolors.git"
+    },
+    {
+      "commits": [
+        "64fb2bcbdbb87a74af90dd723d5ef4a99fceeb73",
+        "7d882ddc46053e142e5c28f5ebde007e0b7523e2"
+      ],
+      "records": 2,
+      "repository_key": "clearml/clearml",
+      "url": "https://github.com/clearml/clearml.git"
+    },
+    {
+      "commits": [
+        "0c2eea6338a2323cfff000160b9b5a56a38d2a06",
+        "3f6a16a9f8c7fe9676aa8d8f47b399310dd231c3"
+      ],
+      "records": 3,
+      "repository_key": "cli/cli",
+      "url": "https://github.com/cli/cli.git"
+    },
+    {
+      "commits": [
+        "0e835663df32b09b828528c07a5507686e6d975e",
+        "aadb7ee466420d129b25a23755dfdc0527edbb47"
+      ],
+      "records": 2,
+      "repository_key": "clickhouse/ch-go",
+      "url": "https://github.com/ClickHouse/ch-go.git"
     },
     {
       "commits": [
@@ -657,12 +1343,23 @@
       "commits": [
         "10191d9042f0407fd8b0c933213cb2b0dad530f4",
         "5f64bcd13477b29cd7ddff6fff3c65dfac3423ca",
+        "69bf56a594a8eb3fecad18dec96e1c7e0e08400b",
+        "76f0f7a98da001fa04e5bc0407c6702f91096bfa",
         "9abe2d30dc69114443ef39480e11b485dd9e830f",
         "a8db4e009ef217484598ba1fd1c595b54e0f6422"
       ],
-      "records": 4,
+      "records": 7,
       "repository_key": "cloudflare/cfrpki",
       "url": "https://github.com/cloudflare/cfrpki.git"
+    },
+    {
+      "commits": [
+        "c218168412a286494ab28fb62dd786c8feef4d20",
+        "f261819e99ea169843bd5aa3e643d046260ff511"
+      ],
+      "records": 3,
+      "repository_key": "cloudflare/gokey",
+      "url": "https://github.com/cloudflare/gokey.git"
     },
     {
       "commits": [
@@ -685,13 +1382,24 @@
     {
       "commits": [
         "54dc81deefcd799300119d0b9bc19c935a0881b5",
+        "7968e50429efab40ffa8f57fecdfbd5a73d23630",
+        "7e1289d552794bdbeb551be78456115c87dcb3da",
         "83375198c8488974b33a44bcbf39c72407569d4c",
         "ed20843dc3df20a25fcaf6b538647e11c4d68d87",
         "f3347130ac48f2ff996af9ef66c97be2dda9cba9"
       ],
-      "records": 4,
+      "records": 6,
       "repository_key": "cloudreve/cloudreve",
       "url": "https://github.com/cloudreve/cloudreve.git"
+    },
+    {
+      "commits": [
+        "25e71790c1e7c09a8d270a234e57c1a53ee77aa2",
+        "7178b3380720e910d283036a8d39879a94105515"
+      ],
+      "records": 2,
+      "repository_key": "cnlh/nps",
+      "url": "https://github.com/cnlh/nps.git"
     },
     {
       "commits": [
@@ -704,12 +1412,30 @@
     },
     {
       "commits": [
+        "55d0333907117c9231ffdf555ae8824705993bbb",
+        "cdb228ac736369c685865b122b736cd0d397836c"
+      ],
+      "records": 2,
+      "repository_key": "codemirror/codemirror",
+      "url": "https://github.com/codemirror/CodeMirror.git"
+    },
+    {
+      "commits": [
         "47d6d3ada5aadef6d221f3d612401eb3dad9299e",
         "dded82bb4712a30e158ffbe2d3eb90ef00947b9b"
       ],
       "records": 3,
       "repository_key": "coder/code-server",
       "url": "https://github.com/coder/code-server.git"
+    },
+    {
+      "commits": [
+        "06006cec23a723bc7d76df75ce2c2d795a447902",
+        "acc37d2c1002b6242718c467da73caeaf2826709"
+      ],
+      "records": 2,
+      "repository_key": "coderedcorp/coderedcms",
+      "url": "https://github.com/coderedcorp/coderedcms.git"
     },
     {
       "commits": [
@@ -767,6 +1493,15 @@
     },
     {
       "commits": [
+        "181d7d583ae5293cd47cc99b14ad13352875f3e3",
+        "39f6ddf357c7d8392e2690d1d01fd9146aa08570"
+      ],
+      "records": 2,
+      "repository_key": "commenthol/serialize-to-js",
+      "url": "https://github.com/commenthol/serialize-to-js.git"
+    },
+    {
+      "commits": [
         "091671e19b3779e439f5ad4a6b4b89aa20a33778",
         "095f8811af19676e0edea5427eeb2fea5adb0e50",
         "38cb4cc025e5ed28764b4adc363a0bbf41f3c7cb",
@@ -775,6 +1510,15 @@
       "records": 6,
       "repository_key": "concourse/concourse",
       "url": "https://github.com/concourse/concourse.git"
+    },
+    {
+      "commits": [
+        "6fdd9818a4d8142107b7ecd767d839c9707700d9",
+        "f4400580b658c1fcb3cacc52dfb6104ea3c3aa82"
+      ],
+      "records": 3,
+      "repository_key": "containerd/imgcrypt",
+      "url": "https://github.com/containerd/imgcrypt.git"
     },
     {
       "commits": [
@@ -793,6 +1537,15 @@
       "records": 3,
       "repository_key": "containers/common",
       "url": "https://github.com/containers/common.git"
+    },
+    {
+      "commits": [
+        "634605d06e738aec8332bcfd69162e7509ac7aaf",
+        "8ad47b442feae0a21bff51a6058227fa1e45bb41"
+      ],
+      "records": 3,
+      "repository_key": "containers/image",
+      "url": "https://github.com/containers/image.git"
     },
     {
       "commits": [
@@ -846,9 +1599,10 @@
     {
       "commits": [
         "35d875319621bd129a38b2b823abf4a2f6cda536",
-        "e970988bea563e05e8b8f53fa7bcc134b5bf5c5f"
+        "e970988bea563e05e8b8f53fa7bcc134b5bf5c5f",
+        "eb39516a3c96b90d0ae5f51293972395ec3ef358"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "corydolphin/flask-cors",
       "url": "https://github.com/corydolphin/flask-cors.git"
     },
@@ -872,10 +1626,12 @@
     },
     {
       "commits": [
+        "75effcb1a25851a736e82dba1f7d8cee93ee159e",
         "aaf6efe91693e39c1926c3c5f6c604d2236e0879",
-        "db3b399a8d7dabf7f073db73894bee98311d7909"
+        "db3b399a8d7dabf7f073db73894bee98311d7909",
+        "e8f2aa618d728a4cd9fbbecf872bda6d25427f88"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "cri-o/cri-o",
       "url": "https://github.com/cri-o/cri-o.git"
     },
@@ -899,12 +1655,41 @@
     },
     {
       "commits": [
+        "795bea2b66066bad6459d5a1b1a33a0eb658ddf3",
+        "b4acaef1df23ea3ca36936fc2d8ef8d157a58e04"
+      ],
+      "records": 2,
+      "repository_key": "ctfer-io/terraform-provider-ctfd",
+      "url": "https://github.com/ctfer-io/terraform-provider-ctfd.git"
+    },
+    {
+      "commits": [
+        "45442918591d25e7ab555469df384df468df5dbc",
+        "8dccce6ac8dff3db44d7e9074094c7303a5ff5dd",
+        "972f0275ee8d5dbba4b1530da7c145c269b31ef5",
+        "c21d034d2fcd051ffd64afeafc68cbcb39d26551"
+      ],
+      "records": 5,
+      "repository_key": "cubefs/cubefs",
+      "url": "https://github.com/cubefs/cubefs.git"
+    },
+    {
+      "commits": [
         "c361baa18dbdcb3344a41110f4c48ad85bf48f80",
         "c861f5a83fb8d90800f1680f855fee551161ac2b"
       ],
       "records": 3,
       "repository_key": "cure53/dompurify",
       "url": "https://github.com/cure53/DOMPurify.git"
+    },
+    {
+      "commits": [
+        "4084ea18f96d9a953315f5555fca45f26639b8be",
+        "b4021d784a97e25151a5353aa763a741e9a148f5"
+      ],
+      "records": 2,
+      "repository_key": "cyanomiko/dcnnt-py",
+      "url": "https://github.com/cyanomiko/dcnnt-py.git"
     },
     {
       "commits": [
@@ -917,12 +1702,41 @@
     },
     {
       "commits": [
-        "3a3cec2b51577c4970e6fc4c199cda6418c09a9d",
-        "cb0f186667b55086346165fc8c00defa1f44a9c2"
+        "1e72dc9b7379cd669a7aa74fb2660b8c78591d0b",
+        "4479555ae3f9d56d7657d6179a5bac3123eb4e2b"
       ],
       "records": 2,
+      "repository_key": "cyberdrop-dl/cyberdrop-dl",
+      "url": "https://github.com/Cyberdrop-DL/cyberdrop-dl.git"
+    },
+    {
+      "commits": [
+        "50321b3007db1ccafdc6b1cfd6bdc3689c19a502",
+        "7be6ba815c4face65a61b0e284a617fc4fc1a758"
+      ],
+      "records": 2,
+      "repository_key": "dadrus/heimdall",
+      "url": "https://github.com/dadrus/heimdall.git"
+    },
+    {
+      "commits": [
+        "0f61971eb67b722f9cc85950671c93be5635e908",
+        "3a3cec2b51577c4970e6fc4c199cda6418c09a9d",
+        "cb0f186667b55086346165fc8c00defa1f44a9c2",
+        "dbb064c2ddda74265b8174edd9775e1302ca6ba0"
+      ],
+      "records": 5,
       "repository_key": "dagster-io/dagster",
       "url": "https://github.com/dagster-io/dagster.git"
+    },
+    {
+      "commits": [
+        "39a229007b748fb1f08e3f0e29ea515ea0844ce2",
+        "bfd727b6cf1daa671c3528d1d681f55b70e8fb19"
+      ],
+      "records": 2,
+      "repository_key": "danday74/git-diff",
+      "url": "https://github.com/danday74/git-diff.git"
     },
     {
       "commits": [
@@ -935,12 +1749,45 @@
     },
     {
       "commits": [
+        "842cc758c780afbd8914c6391905a90f10d26945",
         "ab72092a8a938923c2bb51a2cd14ca26614827fa",
+        "afce4be8e05fb180e50a9d9e38465f1a82295e1b",
         "f4cfecc48856d5f0fbf7f840fbecdb17544fd30e"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "dask/distributed",
       "url": "https://github.com/dask/distributed.git"
+    },
+    {
+      "commits": [
+        "14b3858005c52ccae64953b2920beefd0514a2e4",
+        "37c7d0767ba28f4df46117d478f97652594c491c",
+        "5ca1d2e930c4f2c423c94306e2cfba28b6066c02",
+        "8e814deb3ae6457ea1a4f7b0d3a0e64db0734f13",
+        "98af5c8c1e9c15fa888c900252e76116b0ec25d1",
+        "9aa6a725b2c71d537d3c18d1c15621395ebb879c"
+      ],
+      "records": 7,
+      "repository_key": "datadog/guarddog",
+      "url": "https://github.com/DataDog/guarddog.git"
+    },
+    {
+      "commits": [
+        "2531cdd9d1d73f9eaa87c16967f60cb276c1971b",
+        "5ac01d7a16c72ff878087b946d29058566b40632"
+      ],
+      "records": 3,
+      "repository_key": "datadog/import-in-the-middle",
+      "url": "https://github.com/DataDog/import-in-the-middle.git"
+    },
+    {
+      "commits": [
+        "a51cbe99fd3d02aa5582f97d4af1615d11a1ea03",
+        "d878f888142e4811f839ea3e099ad1de64d74698"
+      ],
+      "records": 2,
+      "repository_key": "datatables/datatablessrc",
+      "url": "https://github.com/DataTables/DataTablesSrc.git"
     },
     {
       "commits": [
@@ -953,12 +1800,30 @@
     },
     {
       "commits": [
+        "e10b8aca2164c632cf0ab5fdbb16db0ec9176189",
+        "e547954a48bac9394ef6eb98432e429dce9a7709"
+      ],
+      "records": 2,
+      "repository_key": "dbt-labs/dbt-common",
+      "url": "https://github.com/dbt-labs/dbt-common.git"
+    },
+    {
+      "commits": [
         "25bb064e5dca172181e29b07a5db039ec5f76f8c",
         "bd20ea9533d0cda30809d929db85b1b76cef855a"
       ],
       "records": 2,
       "repository_key": "decentraland/single-sign-on-client",
       "url": "https://github.com/decentraland/single-sign-on-client.git"
+    },
+    {
+      "commits": [
+        "6ff430ec39ab6ca08e31bb70fbe87bd707a0617e",
+        "715df5f73359d222fd7876e948d14290180e3c88"
+      ],
+      "records": 2,
+      "repository_key": "denpiligrim/repostat",
+      "url": "https://github.com/denpiligrim/repostat.git"
     },
     {
       "commits": [
@@ -1000,6 +1865,24 @@
     },
     {
       "commits": [
+        "5d52e8cf360410ee697afd90937e6042c3a8653b",
+        "ad8881d6d1edc3fd35b7e51f0718fb1e8500f6e5"
+      ],
+      "records": 3,
+      "repository_key": "diegohaz/bodymen",
+      "url": "https://github.com/diegohaz/bodymen.git"
+    },
+    {
+      "commits": [
+        "1987fefcb3b7508253a29502a008d5063a873cef",
+        "fecef6e7f63cc66ac9f33684bf6547bd83ea9705"
+      ],
+      "records": 3,
+      "repository_key": "diegohaz/querymen",
+      "url": "https://github.com/diegohaz/querymen.git"
+    },
+    {
+      "commits": [
         "236845d96c71207259f91638d0138bba8e2fd624",
         "700d977d39f9f8f896c55b0763eebb940a2c087e",
         "817e2ce0d0f6d8a25bc9c2670615c38a9ffdc51c",
@@ -1020,6 +1903,15 @@
     },
     {
       "commits": [
+        "0224f1e364b023fa5d584420c9f664ac661cfabe",
+        "241d1cbe47a68f5d271ce4d27ad5e32e2c360ec3"
+      ],
+      "records": 2,
+      "repository_key": "django-cms/django-cms",
+      "url": "https://github.com/django-cms/django-cms.git"
+    },
+    {
+      "commits": [
         "294bb04af1b6d1f0bff49c3e4ea624f22d99e918",
         "eb05f193c9771a68dcc8cfac6674a0d48a52ee9d"
       ],
@@ -1029,10 +1921,12 @@
     },
     {
       "commits": [
+        "04483bdac3b5196737516398b5ce0383875a5c60",
+        "2c7065e0c4296e0c692fb4a7ee19c7357583af30",
         "7097c9c4c0b255ec1f10f3ea14fa2b9c47f6c706",
         "a22eb0673fe0b7784f99c6b5fd343b64a6700f06"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "django-helpdesk/django-helpdesk",
       "url": "https://github.com/django-helpdesk/django-helpdesk.git"
     },
@@ -1049,6 +1943,15 @@
     },
     {
       "commits": [
+        "860523d288793d0ebc4867ea0d5234712562bc32",
+        "8dbe0dc3eea5c689d4f76b37b93fe216cf1f00d4"
+      ],
+      "records": 2,
+      "repository_key": "dlitz/pycrypto",
+      "url": "https://github.com/dlitz/pycrypto.git"
+    },
+    {
+      "commits": [
         "83c5131acd40ec6207c863954cafb0d9e30a072c",
         "d5ebb60bddbabea0439213501f4f6ed494b23cba"
       ],
@@ -1059,11 +1962,40 @@
     {
       "commits": [
         "32203b77bf5d64afcdffcb0fd21b2b9035e64e25",
-        "c24f7f6f0b87a87f6dd3755f69eb0969ebb029c9"
+        "6c13bdb7bdbcc2de4b36906a5e982092e4456d95",
+        "c24f7f6f0b87a87f6dd3755f69eb0969ebb029c9",
+        "ff2a66f12752471277fe81a64ad6c4b2c08111fe"
       ],
-      "records": 2,
+      "records": 5,
       "repository_key": "docsifyjs/docsify",
       "url": "https://github.com/docsifyjs/docsify.git"
+    },
+    {
+      "commits": [
+        "68824912016c0ebff2a2a0943f360f11fd5f951b",
+        "a4384210d4d0d6b18e6fdb7e155de96d4a1cf9f3"
+      ],
+      "records": 2,
+      "repository_key": "documize/community",
+      "url": "https://github.com/documize/community.git"
+    },
+    {
+      "commits": [
+        "27509ee629bac09823b2db7b99c18b51327ec0d5",
+        "9117ffd5a3863e44c92fcd58564c0da22be858f4"
+      ],
+      "records": 2,
+      "repository_key": "dojo/dojo",
+      "url": "https://github.com/dojo/dojo.git"
+    },
+    {
+      "commits": [
+        "47d1b302b5b23d94e875b77b9b9a8c4f5622c9da",
+        "5491effdb1b586f1a5f5b173460fe26e23abcfe6"
+      ],
+      "records": 2,
+      "repository_key": "dojo/dojox",
+      "url": "https://github.com/dojo/dojox.git"
     },
     {
       "commits": [
@@ -1094,12 +2026,39 @@
     },
     {
       "commits": [
+        "00830681eb79f9d63d4306fc75fe10933e3ac1a1",
+        "57b9a933c9d23d34bd5a055536db824de66db553"
+      ],
+      "records": 2,
+      "repository_key": "dylanpiercey/local-devices",
+      "url": "https://github.com/DylanPiercey/local-devices.git"
+    },
+    {
+      "commits": [
         "324c62b4709204955931a187362f8999805b1d8e",
         "329d59d70be67d7dad2a6cd67bedd4aa05af3a1f"
       ],
       "records": 2,
       "repository_key": "dynamoose/dynamoose",
       "url": "https://github.com/dynamoose/dynamoose.git"
+    },
+    {
+      "commits": [
+        "a772258ebb9ba1910ad07fd59c48ed7415c46766",
+        "eb3f54603f58ea706d0c03fd6eb76c94176eae52"
+      ],
+      "records": 2,
+      "repository_key": "easy-team/easywebpack-cli",
+      "url": "https://github.com/easy-team/easywebpack-cli.git"
+    },
+    {
+      "commits": [
+        "87026c4eee1ed28775383807087343a750707bf3",
+        "bda3b9298868e5bab5043f0d1f173e25fddb32a6"
+      ],
+      "records": 2,
+      "repository_key": "eat-pray-ai/yutu",
+      "url": "https://github.com/eat-pray-ai/yutu.git"
     },
     {
       "commits": [
@@ -1130,12 +2089,63 @@
     },
     {
       "commits": [
-        "6df850c259b98c00428527da5769f0a578ad91ac",
-        "aeca65779d573976981587ca1d1461399e1b59dd"
+        "aa332a59116c8398976434b57ea477c6823054f8",
+        "ddefb57595a369eeec88d001786161389e1ee406"
       ],
-      "records": 3,
+      "records": 2,
+      "repository_key": "eggjs/extend2",
+      "url": "https://github.com/eggjs/extend2.git"
+    },
+    {
+      "commits": [
+        "988826e336035b39a8608182d7b73c0e3cd78c7b",
+        "f6dc70fdaa814f7b83d1e8059279814d5b46013e"
+      ],
+      "records": 2,
+      "repository_key": "ekoopmans/html2pdf.js",
+      "url": "https://github.com/eKoopmans/html2pdf.js.git"
+    },
+    {
+      "commits": [
+        "7279a983481d05c51aa451e86146f98aaa42fee9",
+        "741a0190ddae0f408b22ae3b5f0f4c3f5cf4f11d",
+        "7a791a424ff3a3f7783f8750919f1e98639924a8",
+        "a28008ec07805e595f699d5a9c5674cf640fe625",
+        "cedddb6a672bf047d98b0053677310583d55ea45",
+        "e8e0fcc26129e71ea42185e465df3b98c067ef8d"
+      ],
+      "records": 6,
+      "repository_key": "eladnava/mailgen",
+      "url": "https://github.com/eladnava/mailgen.git"
+    },
+    {
+      "commits": [
+        "6df850c259b98c00428527da5769f0a578ad91ac",
+        "9bd7de84ab9c31bb4e1c0a348a7b7c26817a0996",
+        "aeca65779d573976981587ca1d1461399e1b59dd",
+        "d245c144cc1a4e2f2bbcd78dc3b3af36d9fa0cca"
+      ],
+      "records": 5,
       "repository_key": "elastic/beats",
       "url": "https://github.com/elastic/beats.git"
+    },
+    {
+      "commits": [
+        "224cc6a28ddfcf4d1a184a25d10833cf153e3bda",
+        "d421d4bd3ced889a4143c5c3ab6d95e3be249eee"
+      ],
+      "records": 2,
+      "repository_key": "electron/packager",
+      "url": "https://github.com/electron/packager.git"
+    },
+    {
+      "commits": [
+        "045703228b9fd9928aa7b9133bf6c93602ee6092",
+        "063c56446135176971f532bd0eb2e88a0b137d43"
+      ],
+      "records": 2,
+      "repository_key": "element-plus/element-plus",
+      "url": "https://github.com/element-plus/element-plus.git"
     },
     {
       "commits": [
@@ -1157,10 +2167,23 @@
     },
     {
       "commits": [
-        "029a4dc8aa2d2e77229fc636cbc3af78fd3dd532",
-        "769e4bc958376e2363566c8f7042202b410becdc"
+        "0b13e5868ae695276fd8e40ffffb887bbc3006f5",
+        "9b9eb92e32a7a4b43b6d5108668941701c33e221"
       ],
-      "records": 2,
+      "records": 3,
+      "repository_key": "elysiajs/elysia-cors",
+      "url": "https://github.com/elysiajs/elysia-cors.git"
+    },
+    {
+      "commits": [
+        "029a4dc8aa2d2e77229fc636cbc3af78fd3dd532",
+        "02f40de2d19b43afc28bbabc85099eb499ad211b",
+        "71aaf5a51f7d379158bf3279690ff5d161b9e44e",
+        "769e4bc958376e2363566c8f7042202b410becdc",
+        "a7be60a07f48c06b3cdd5a7d35eb820b3df5736c",
+        "dc9669364a154ec6d134e542f6a63c31b5afe6e8"
+      ],
+      "records": 8,
       "repository_key": "emiago/sipgo",
       "url": "https://github.com/emiago/sipgo.git"
     },
@@ -1203,20 +2226,55 @@
     {
       "commits": [
         "01175202349585cb6680bd1214051d441e8db3f2",
-        "0a81f1eb077bab8caae283a2490cd7be9af179c6"
+        "0a81f1eb077bab8caae283a2490cd7be9af179c6",
+        "552e8eab56861720b1d4e5474fb65741643358f9",
+        "ec0b41bf9be9244808ea579067933ff225e92193"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "ericcornelissen/shescape",
       "url": "https://github.com/ericcornelissen/shescape.git"
     },
     {
       "commits": [
+        "1f923bc09f5f053f60b6ba2bd419d4b94cbe1db3",
         "5a329541cf32a359ee1f69748738f91231b26eba",
-        "8b7ed817f6b3b385767a7db87f304f98c8a73766"
+        "8b7ed817f6b3b385767a7db87f304f98c8a73766",
+        "998986109f8c2313bd61325ddfe7f5dcd48f9232",
+        "9f6a655945bffbe3c3f2913e546e9fc7d4e88e6e",
+        "c99bf891d99788b30d721718d43eda8f12766b1e"
       ],
-      "records": 3,
+      "records": 9,
       "repository_key": "escape-technologies/graphql-armor",
       "url": "https://github.com/Escape-Technologies/graphql-armor.git"
+    },
+    {
+      "commits": [
+        "071be842f0bd58de4863cdf2ab86d60f49912abf",
+        "b283f64099ad6c6b5043387c091691d21b387805",
+        "bd4bf23c59f0e4886df671cdebd5abaeb1e0d916",
+        "e73b1dc40fef68819969fdbe9060a47dcc4cae1b"
+      ],
+      "records": 4,
+      "repository_key": "eslint/rewrite",
+      "url": "https://github.com/eslint/rewrite.git"
+    },
+    {
+      "commits": [
+        "6fd0e7a29844700afe2d20c0da855e2272727804",
+        "9d77b88c320733ff6689d938d85d246a3af9af16"
+      ],
+      "records": 3,
+      "repository_key": "esm-dev/esm.sh",
+      "url": "https://github.com/esm-dev/esm.sh.git"
+    },
+    {
+      "commits": [
+        "37d2b3c7977a4ccbec59726ca7549cb776661455",
+        "63cce916e2804f8bfe8f1cb66340a151869fcc72"
+      ],
+      "records": 2,
+      "repository_key": "esphome/esphome",
+      "url": "https://github.com/esphome/esphome.git"
     },
     {
       "commits": [
@@ -1229,12 +2287,39 @@
     },
     {
       "commits": [
+        "626e58cc5af1db3691b41fca7b06c28ea43141b1",
+        "d7c93b0c0d7fd8a429512dc12c809c10a8175022"
+      ],
+      "records": 2,
+      "repository_key": "ether/etherpad-lite",
+      "url": "https://github.com/ether/etherpad-lite.git"
+    },
+    {
+      "commits": [
+        "106d196ec4a6451efedc60ab15957f231fa85639",
+        "6d1e292eefa70b5cb76cd03ff61fc6c4550d7c36"
+      ],
+      "records": 2,
+      "repository_key": "ethereum/go-ethereum",
+      "url": "https://github.com/ethereum/go-ethereum.git"
+    },
+    {
+      "commits": [
         "611b36bc0119c9c24d826e8b56824dff0b8fb573",
         "685bae61c203d29ed189f4b066a5223a9bb774c6"
       ],
       "records": 2,
       "repository_key": "ethyca/fides",
       "url": "https://github.com/ethyca/fides.git"
+    },
+    {
+      "commits": [
+        "1c077147acd0a6ec9f8ee80d83a3e9688fbb9444",
+        "bc63068af54e83a8d8c59d93e0a08f271d4dfe79"
+      ],
+      "records": 2,
+      "repository_key": "eugeny/tabby",
+      "url": "https://github.com/Eugeny/tabby.git"
     },
     {
       "commits": [
@@ -1256,6 +2341,15 @@
     },
     {
       "commits": [
+        "5e1ea8f550c6ebed3c3c8895a911a7ddd47e6019",
+        "f9c491874b858a32fcae15045f169fd7d02f90dc"
+      ],
+      "records": 3,
+      "repository_key": "ewen-lbh/ffcss",
+      "url": "https://github.com/ewen-lbh/ffcss.git"
+    },
+    {
+      "commits": [
         "53ca3e9c2b9e9b295f6abf7f4ad2730a9b70f68c",
         "6491bc2491a07a8072e5d40f27eab6430585c42c"
       ],
@@ -1274,12 +2368,30 @@
     },
     {
       "commits": [
+        "14e53888cdfd1b9798faf5b634c4206409e27fc4",
+        "2767a954932d5811a66c786824980b0075d6e27a"
+      ],
+      "records": 2,
+      "repository_key": "express-rate-limit/express-rate-limit",
+      "url": "https://github.com/express-rate-limit/express-rate-limit.git"
+    },
+    {
+      "commits": [
         "bac1e6a8530e1efd0028800b9b588a37adb0d203",
         "d3b6a633311654a5afc8102fc1c5c331a9eca684"
       ],
       "records": 2,
       "repository_key": "expressjs/basic-auth-connect",
       "url": "https://github.com/expressjs/basic-auth-connect.git"
+    },
+    {
+      "commits": [
+        "b204886a6744b0b6d297cd0e849d75de836f3b63",
+        "e20e3512e085c1162e8ffe36ac65c705a8017251"
+      ],
+      "records": 3,
+      "repository_key": "expressjs/body-parser",
+      "url": "https://github.com/expressjs/body-parser.git"
     },
     {
       "commits": [
@@ -1292,6 +2404,15 @@
     },
     {
       "commits": [
+        "0f74eca337508e006052a0ae48fb2754c076ec76",
+        "4b695edf967ce179cdf4009fe8cddd184b7511ee"
+      ],
+      "records": 2,
+      "repository_key": "expressjs/morgan",
+      "url": "https://github.com/expressjs/morgan.git"
+    },
+    {
+      "commits": [
         "25aa09275861e3ed6fc5d2a1a60b9ac3df4a93ba",
         "35a3fb105d93104132e8ce7d8721ab68142ea7ae",
         "6800989bdc12782ca2605d3b8bf7f2876a16551a",
@@ -1300,6 +2421,15 @@
       "records": 4,
       "repository_key": "external-secrets/external-secrets",
       "url": "https://github.com/external-secrets/external-secrets.git"
+    },
+    {
+      "commits": [
+        "102efafb291ce1916985514440d3bf8a6826890a",
+        "457473e72f00a579ab830aae8877860ce34b6a7d"
+      ],
+      "records": 2,
+      "repository_key": "fabiocaccamo/utils.js",
+      "url": "https://github.com/fabiocaccamo/utils.js.git"
     },
     {
       "commits": [
@@ -1321,12 +2451,48 @@
     },
     {
       "commits": [
+        "65f6bbd683404be1bb569b8d1be84b5d4c74a324",
+        "ee8e058c8b90cb008f3ee151c52aec40cad1174a"
+      ],
+      "records": 2,
+      "repository_key": "facebook/nuclide",
+      "url": "https://github.com/facebook/nuclide.git"
+    },
+    {
+      "commits": [
         "166a5ddf88aca0d0235e48c624681eec095e9ef8",
         "ca09ae82715e33c9ac77b3fa55495cf84ba891c7"
       ],
       "records": 3,
       "repository_key": "facebook/react-native",
       "url": "https://github.com/facebook/react-native.git"
+    },
+    {
+      "commits": [
+        "a6140a17dd0300a35cfc9cff999545f267889411",
+        "a88660493568d6144a551424a8139d6c876635f6"
+      ],
+      "records": 2,
+      "repository_key": "faisalman/ua-parser-js",
+      "url": "https://github.com/faisalman/ua-parser-js.git"
+    },
+    {
+      "commits": [
+        "54586208f904012f57c50b46cc1ad32bcbe4bfb7",
+        "70994dbf77c9aea4edcf2dffbb46c777376a7814"
+      ],
+      "records": 3,
+      "repository_key": "faker-js/faker",
+      "url": "https://github.com/faker-js/faker.git"
+    },
+    {
+      "commits": [
+        "632a237e7fb6b3b7a30e0de8fab2ee72ca5bf722",
+        "957a24b66d5915e6d0a6ac988c9dbcee86373e9b"
+      ],
+      "records": 2,
+      "repository_key": "fastify/busboy",
+      "url": "https://github.com/fastify/busboy.git"
     },
     {
       "commits": [
@@ -1350,12 +2516,48 @@
     },
     {
       "commits": [
+        "20d0795edee290435da4dc13bfa640484006cadd",
+        "dea227dda606900cc01870d08541b4dcc69d3889"
+      ],
+      "records": 2,
+      "repository_key": "fastify/fastify-reply-from",
+      "url": "https://github.com/fastify/fastify-reply-from.git"
+    },
+    {
+      "commits": [
         "d44cd56eb724490babf7b452fdbbdd37ea2effba",
         "ed987d6f1aa1718b0f221a1d25006a26a7df383c"
       ],
       "records": 2,
       "repository_key": "fastify/middie",
       "url": "https://github.com/fastify/middie.git"
+    },
+    {
+      "commits": [
+        "0f2d85f0b2d556f2b6c70423dcebdbd29d95e3dc",
+        "4c536ccc58343fe5b283016d618ad8e7fd6a1c2c"
+      ],
+      "records": 2,
+      "repository_key": "feathersjs-ecosystem/feathers-sequelize",
+      "url": "https://github.com/feathersjs-ecosystem/feathers-sequelize.git"
+    },
+    {
+      "commits": [
+        "28b3c03c63bdbff53115fdaa46c56980e7942acc",
+        "3c3da6d688e62a1f832f549d3271c80ce3a47b01"
+      ],
+      "records": 2,
+      "repository_key": "feathersjs/feathers",
+      "url": "https://github.com/feathersjs/feathers.git"
+    },
+    {
+      "commits": [
+        "6cf9094e12361a0aa306752e9d9fd8bfaaf51c85",
+        "b27f38a67573f4c989710c9bfb726dd4c1eeb929"
+      ],
+      "records": 2,
+      "repository_key": "fedora-infra/python-fedora",
+      "url": "https://github.com/fedora-infra/python-fedora.git"
     },
     {
       "commits": [
@@ -1377,6 +2579,15 @@
     },
     {
       "commits": [
+        "0979c6001d9d57c2aac3157c11b007397158922a",
+        "5e1a63c13c9b65ed927e8eb797d8cc7da0dae243"
+      ],
+      "records": 2,
+      "repository_key": "fgribreau/node-request-retry",
+      "url": "https://github.com/fgribreau/node-request-retry.git"
+    },
+    {
+      "commits": [
         "148b3c59422401ff00f255ae3044282d7a42192b",
         "24781badd413ee20333aba5cce1919d676e01889",
         "4094fb359babac70e88d0ed4bfe3bd100744aad6",
@@ -1385,6 +2596,62 @@
       "records": 4,
       "repository_key": "filebrowser/filebrowser",
       "url": "https://github.com/filebrowser/filebrowser.git"
+    },
+    {
+      "commits": [
+        "325f520de716c1d2d2b4e8dc2f82c7ccc5fac764",
+        "d1c650afb95fad0742b98d95f2eb2cf031393abb"
+      ],
+      "records": 2,
+      "repository_key": "filosottile/edwards25519",
+      "url": "https://github.com/FiloSottile/edwards25519.git"
+    },
+    {
+      "commits": [
+        "245dd26e19b6c16aca7e1b7e597ed5784c2984ba",
+        "9cf727fcc3d049551b16ae0698ac33dc2fe45ada",
+        "ab0f643571cef59a8f916be0cade1f312fd83bee",
+        "e60188d47f59d00f7faf7ebb2c0d8e338014a0f8"
+      ],
+      "records": 5,
+      "repository_key": "firebase/firebase-js-sdk",
+      "url": "https://github.com/firebase/firebase-js-sdk.git"
+    },
+    {
+      "commits": [
+        "068a2b08dc308c7ab4b569617f5fc8821237e3a0",
+        "dbb8573c047ad249341d568e665efdba47403128"
+      ],
+      "records": 2,
+      "repository_key": "firebase/firebase-tools",
+      "url": "https://github.com/firebase/firebase-tools.git"
+    },
+    {
+      "commits": [
+        "6628c8b63bc503fef0748829fb41fba66c30970c",
+        "e396ff62f588732989137d6c40d46b310e51ef2b"
+      ],
+      "records": 2,
+      "repository_key": "firebase/superstatic",
+      "url": "https://github.com/firebase/superstatic.git"
+    },
+    {
+      "commits": [
+        "19397625c157c8e1abfe051b048b47c276672d0f",
+        "8af10e0b022464fdcb2da3d0ea5bbd2f11c0acd1"
+      ],
+      "records": 3,
+      "repository_key": "flask-admin/flask-admin",
+      "url": "https://github.com/flask-admin/flask-admin.git"
+    },
+    {
+      "commits": [
+        "7bc7c30510672efbd3db215844b53c52122ab757",
+        "b1b7427c6ea6c7a027fa188c6be557f3795e732b"
+      ],
+      "records": 2,
+      "repository_key": "flipped-aurora/gin-vue-admin",
+      "url": "https://github.com/flipped-aurora/gin-vue-admin.git"
     },
     {
       "commits": [
@@ -1406,10 +2673,12 @@
     },
     {
       "commits": [
+        "080a76d0e125b37bf81717368a61d5dc37aa56c8",
         "8526b4a1b2ab3a2e4044299377df623a661caa76",
+        "9865ca45490e4d0f7b6944870318408344570aff",
         "c4f847f85176991f95ab9c88af63b1294de8649b"
       ],
-      "records": 2,
+      "records": 5,
       "repository_key": "follow-redirects/follow-redirects",
       "url": "https://github.com/follow-redirects/follow-redirects.git"
     },
@@ -1479,12 +2748,39 @@
     },
     {
       "commits": [
+        "5e1479cc686f058992557669b13fd3761a1b6024",
+        "a63c83d4dbc2711a87d9fbe20ac9fde3f002e03a"
+      ],
+      "records": 3,
+      "repository_key": "free5gc/udm",
+      "url": "https://github.com/free5gc/udm.git"
+    },
+    {
+      "commits": [
         "acdb6a60525791df17072b768345aaacb03fe934",
         "f6603daa34a93a658f0e176cb0b9ee5a6643b262"
       ],
       "records": 2,
       "repository_key": "freeopcua/opcua-asyncio",
       "url": "https://github.com/FreeOpcUa/opcua-asyncio.git"
+    },
+    {
+      "commits": [
+        "7f22148516d58e21a8b7670dde927d614c0d15c2",
+        "cf013b85ab95d64c63cbe46d6cb14695474924e7"
+      ],
+      "records": 2,
+      "repository_key": "frontfin/mesh-web-sdk",
+      "url": "https://github.com/FrontFin/mesh-web-sdk.git"
+    },
+    {
+      "commits": [
+        "304203f36a7d7ce9ddb85d22a5134a747da0a5f3",
+        "ddb9d31ef0ec56f578bdacf99ebe9d68455ed8ca"
+      ],
+      "records": 2,
+      "repository_key": "furlongm/openvpn-monitor",
+      "url": "https://github.com/furlongm/openvpn-monitor.git"
     },
     {
       "commits": [
@@ -1497,12 +2793,57 @@
     },
     {
       "commits": [
+        "01f0625d6a177f9c5df9281f12a27c814c2d8bcf",
+        "38ff7ec89f595dbe5971c3577fa29a142b4b2416"
+      ],
+      "records": 2,
+      "repository_key": "gchq/cyberchef",
+      "url": "https://github.com/gchq/CyberChef.git"
+    },
+    {
+      "commits": [
+        "2de63b68b3aa6c08848f261ace550a37959ef231",
+        "75a7a9f2b5a9d443e5cd67427e259e92516d2fc1"
+      ],
+      "records": 2,
+      "repository_key": "geddy/geddy",
+      "url": "https://github.com/geddy/geddy.git"
+    },
+    {
+      "commits": [
+        "3ad0fc047653e15b29b01d122848a729feb4ec78",
+        "607b226a356cb61a239ffaba2fb3db1c9dea4bac"
+      ],
+      "records": 2,
+      "repository_key": "geelen/mcp-remote",
+      "url": "https://github.com/geelen/mcp-remote.git"
+    },
+    {
+      "commits": [
+        "239ec404d348280b50bbf671327709e8857fc5f4",
+        "fa2f5a7a6f1b58aa07dc6eabc3f51f87972aeaa1"
+      ],
+      "records": 2,
+      "repository_key": "gen2brain/go-unarr",
+      "url": "https://github.com/gen2brain/go-unarr.git"
+    },
+    {
+      "commits": [
         "2ac536bf8f2dd03c24b2eff35b69578b4efae94e",
         "7f295beeecc1c1f14308a93c82413bb334045af6"
       ],
       "records": 2,
       "repository_key": "genieacs/genieacs",
       "url": "https://github.com/genieacs/genieacs.git"
+    },
+    {
+      "commits": [
+        "6aa8ef14ffdee4ba1044349ab948e1a1fbfaf419",
+        "c301579e0ac4034c19bece63c08bf628613700b4"
+      ],
+      "records": 2,
+      "repository_key": "geopandas/geopandas",
+      "url": "https://github.com/geopandas/geopandas.git"
     },
     {
       "commits": [
@@ -1519,12 +2860,34 @@
     },
     {
       "commits": [
+        "03b6f6bc2c16e2ef75b087f9849006c5ae29de8f",
+        "0c67558ae7fe08738912d4c5233b53ead048da3b",
+        "6db508f7949d117c7dff748a3c82c3a272bf7cfd",
+        "e217316cf76ceb6f46e7a7a27699c90fb4ef594d"
+      ],
+      "records": 5,
+      "repository_key": "getsentry/sentry",
+      "url": "https://github.com/getsentry/sentry.git"
+    },
+    {
+      "commits": [
+        "35bdc87dee3498794e34c1ad35dd9927950c8766",
         "4371b2c87f16f4f044847b7ebac49fff8a3ade21",
+        "b4b08cd252fc244f02791f8e5f4b8527d76eae26",
         "ddbda3c02c35aba8c5235e0cf07fc5bf656f81be"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "getsentry/sentry-javascript",
       "url": "https://github.com/getsentry/sentry-javascript.git"
+    },
+    {
+      "commits": [
+        "31efa62c90e5b88c6c15b55f6908a25133d65958",
+        "763e40aa4cb57ecced467f48f78f335c87e9bdff"
+      ],
+      "records": 2,
+      "repository_key": "getsentry/sentry-python",
+      "url": "https://github.com/getsentry/sentry-python.git"
     },
     {
       "commits": [
@@ -1534,6 +2897,24 @@
       "records": 2,
       "repository_key": "gin-contrib/cors",
       "url": "https://github.com/gin-contrib/cors.git"
+    },
+    {
+      "commits": [
+        "7e394af647018d1c90b5aa4d492a553447b1b697",
+        "c88d2ecdd3bb07f7bdd75296e3ee676febf14f58"
+      ],
+      "records": 3,
+      "repository_key": "github/github-mcp-server",
+      "url": "https://github.com/github/github-mcp-server.git"
+    },
+    {
+      "commits": [
+        "32b7ea3f29ae8f256f9d19768387be42678ddf30",
+        "c07aff405f96b4476d5fde163e1277b434539559"
+      ],
+      "records": 3,
+      "repository_key": "github/paste-markdown",
+      "url": "https://github.com/github/paste-markdown.git"
     },
     {
       "commits": [
@@ -1580,6 +2961,24 @@
       "records": 3,
       "repository_key": "go-macaron/csrf",
       "url": "https://github.com/go-macaron/csrf.git"
+    },
+    {
+      "commits": [
+        "105f7185be505f070bfb19df4c3a4535058e0f84",
+        "577fed8730d79f583eb48dfc81674164e1fc471e"
+      ],
+      "records": 3,
+      "repository_key": "go-resty/resty",
+      "url": "https://github.com/go-resty/resty.git"
+    },
+    {
+      "commits": [
+        "3b00266a13fa69284f4b3f4b37d29be8f8e02f31",
+        "c97d2429a6cce31162cf8ed297261fef3233783f"
+      ],
+      "records": 2,
+      "repository_key": "go-sonic/sonic",
+      "url": "https://github.com/go-sonic/sonic.git"
     },
     {
       "commits": [
@@ -1697,6 +3096,15 @@
     },
     {
       "commits": [
+        "3d28d0ba00c12a9d54cd7737dd5000d04fbf6e4e",
+        "eb8cf40b12dbe79304f1133c06fb73419383cd95"
+      ],
+      "records": 2,
+      "repository_key": "google/exposure-notifications-verification-server",
+      "url": "https://github.com/google/exposure-notifications-verification-server.git"
+    },
+    {
+      "commits": [
         "33eb3991247bc4ad8deaa51e9d702e0b0da87ead",
         "b6e905e7ae52937f02b5ca494dd1c6a3ac7a1003"
       ],
@@ -1706,12 +3114,48 @@
     },
     {
       "commits": [
+        "17fb769d6a91f0a8cbccfab18f64977b158a6a31",
+        "6f021e8a1a3e075e705afa94351a6266f20214cc"
+      ],
+      "records": 2,
+      "repository_key": "google/mesop",
+      "url": "https://github.com/google/mesop.git"
+    },
+    {
+      "commits": [
         "5b0b0c758755332afdd3a056532b3aadcadbc87d",
         "e67c4e198ca099cb7c16957a80f6c5331d90a672"
       ],
       "records": 2,
       "repository_key": "google/osv-scalibr",
       "url": "https://github.com/google/osv-scalibr.git"
+    },
+    {
+      "commits": [
+        "54853e227fd7567303234d9c45cb338924d78195",
+        "80a66021205e032a424fff87b3dc6d92da58aa77"
+      ],
+      "records": 3,
+      "repository_key": "googleapis/mcp-toolbox",
+      "url": "https://github.com/googleapis/mcp-toolbox.git"
+    },
+    {
+      "commits": [
+        "965e4f0cd348b6576ef1fe2b4226a388269e619a",
+        "d7b94fede71f018f129f7d21feb58c895d28dadc"
+      ],
+      "records": 2,
+      "repository_key": "gookit/goutil",
+      "url": "https://github.com/gookit/goutil.git"
+    },
+    {
+      "commits": [
+        "145859d0eaee1a6f5925ffb93851c976449c3311",
+        "95d1ae3e197eee3a25d24abb7b079a60b578854d"
+      ],
+      "records": 3,
+      "repository_key": "gopacket/gopacket",
+      "url": "https://github.com/gopacket/gopacket.git"
     },
     {
       "commits": [
@@ -1733,10 +3177,21 @@
     },
     {
       "commits": [
-        "7cf911a26ace737e1a55b7dc073e307a25f7fd1d",
-        "dbe91ee404f6f004740ce16b4a8267b60f7725ae"
+        "90663712d74cb411cbef281bc1e08c19d1a76145",
+        "a4d79d4487c2430a17d9dc8a1f74d1a6ed6908ca"
       ],
       "records": 2,
+      "repository_key": "gorilla/handlers",
+      "url": "https://github.com/gorilla/handlers.git"
+    },
+    {
+      "commits": [
+        "32f4a0e1790a709f722d0f3b2341f139d003180a",
+        "7cf911a26ace737e1a55b7dc073e307a25f7fd1d",
+        "dbe91ee404f6f004740ce16b4a8267b60f7725ae",
+        "ead99b9b5081d473c61743cfed5e8290702317d2"
+      ],
+      "records": 4,
       "repository_key": "goshs-labs/goshs",
       "url": "https://github.com/goshs-labs/goshs.git"
     },
@@ -1752,11 +3207,22 @@
     {
       "commits": [
         "15050a311b73d76d8b9223bafe7fa7ba71240011",
-        "c99eb471f98938843a7414664342baf5f56e0847"
+        "405f1069c026bb08f319fb5a44e5c67c33208318",
+        "c99eb471f98938843a7414664342baf5f56e0847",
+        "f1d1215c7c60195ed0efc20dfcc11e0ca3b14397"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "gotenberg/gotenberg",
       "url": "https://github.com/gotenberg/gotenberg.git"
+    },
+    {
+      "commits": [
+        "3e661cdfb4beeb9fe2ad507cdb8104c0b17d072c",
+        "9d30d0534442bb5ea6bc5e341b97889c1c7b02b0"
+      ],
+      "records": 2,
+      "repository_key": "gouniverse/cms",
+      "url": "https://github.com/gouniverse/cms.git"
     },
     {
       "commits": [
@@ -1778,6 +3244,15 @@
     },
     {
       "commits": [
+        "3ed4342711e3ec849552df09b1fe2fbf2ca5c29a",
+        "f75f37f39151d1bb36acdad9a2f9e0f2617631c3"
+      ],
+      "records": 3,
+      "repository_key": "gramps-project/gramps-web-api",
+      "url": "https://github.com/gramps-project/gramps-web-api.git"
+    },
+    {
+      "commits": [
         "7125f49f3766840dbd47a768d48c0a591dcc5b04",
         "e350cea1724eb3476464561a380fb6a64e61e4e7"
       ],
@@ -1788,9 +3263,11 @@
     {
       "commits": [
         "0f215333eeeb7cbb9a6d6e73a689de787e77f1eb",
-        "1802e1281135cba83eb4acd86b58293fe121e2a5"
+        "112740bdd41de7d5eb01e13ba49d406bfc463f69",
+        "1802e1281135cba83eb4acd86b58293fe121e2a5",
+        "6bfc3974192e954f71cc5d1cd04baaaec3b76383"
       ],
-      "records": 2,
+      "records": 5,
       "repository_key": "gtsteffaniak/filebrowser",
       "url": "https://github.com/gtsteffaniak/filebrowser.git"
     },
@@ -1805,6 +3282,33 @@
     },
     {
       "commits": [
+        "8150aeba833183e14c2291a8a148b8f79d1d68d8",
+        "c5a587ceb8d8f580c9ff6f1cb6493087bc087f77"
+      ],
+      "records": 3,
+      "repository_key": "guillaumepotier/gettext.js",
+      "url": "https://github.com/guillaumepotier/gettext.js.git"
+    },
+    {
+      "commits": [
+        "571f4e6d077f7f21c6aed655ae380d85a7a5d3b8",
+        "651bb8ebb97a029be13656c0476d48db85887451"
+      ],
+      "records": 2,
+      "repository_key": "guybedford/devcert",
+      "url": "https://github.com/guybedford/devcert.git"
+    },
+    {
+      "commits": [
+        "16dcbe264b6b4a5ecf409661b42836dd286fd43f",
+        "ea5b1f377e196a4492e05ff070eba8b30b7372c4"
+      ],
+      "records": 2,
+      "repository_key": "guymograbi/kill-by-port",
+      "url": "https://github.com/GuyMograbi/kill-by-port.git"
+    },
+    {
+      "commits": [
         "399257cb406fbeda313d88c1e288a15124fc82af",
         "401c9b8f149ace41d6404c4653472bcae8211594",
         "459a1c6593365b0810e9c502df7c3e82837321d7",
@@ -1816,10 +3320,48 @@
     },
     {
       "commits": [
-        "1ad65ba793377928aa5a2dfc819888c5c9793394",
-        "aab2496e930dce5ee1ab28eecec94e0e45f03580"
+        "4e6ace6b55686acd6125f608ef6ab3ab1efb057f",
+        "de0d69901c357f36a39b7e13eebef6c930652baa"
       ],
       "records": 2,
+      "repository_key": "h3js/srvx",
+      "url": "https://github.com/h3js/srvx.git"
+    },
+    {
+      "commits": [
+        "129cd0d4089f7220ca4ad7f468ee20a53c1600ca",
+        "e62db0d62ebabbec39c767b953b92fb4b4d08a81"
+      ],
+      "records": 3,
+      "repository_key": "h44z/wg-portal",
+      "url": "https://github.com/h44z/wg-portal.git"
+    },
+    {
+      "commits": [
+        "07f671da14ce63a80f4e52432b32e8d178d75fd3",
+        "a5a8577d76f0b1a4f76f7e1bfef66c876eefb15e"
+      ],
+      "records": 3,
+      "repository_key": "hakobe/paranoidhttp",
+      "url": "https://github.com/hakobe/paranoidhttp.git"
+    },
+    {
+      "commits": [
+        "83f02417beab924ce2fe6ee7d6fcfab11d2dafd5",
+        "b751602d8cb7194ee62a61e085069679525138c4"
+      ],
+      "records": 2,
+      "repository_key": "hapijs/bassmaster",
+      "url": "https://github.com/hapijs/bassmaster.git"
+    },
+    {
+      "commits": [
+        "119047ef897c3edf2ebcc927f161475bdab63fbd",
+        "1ad65ba793377928aa5a2dfc819888c5c9793394",
+        "aab2496e930dce5ee1ab28eecec94e0e45f03580",
+        "d47f57abf23bdaa84f61aed2bac94ae5f358afb7"
+      ],
+      "records": 4,
       "repository_key": "hapijs/hapi",
       "url": "https://github.com/hapijs/hapi.git"
     },
@@ -1834,12 +3376,30 @@
     },
     {
       "commits": [
+        "249ba1755ed6977fbc208463c87364bf884ad655",
+        "71e9232bb84ad30ab0a5f62647b07144d44e2930"
+      ],
+      "records": 2,
+      "repository_key": "hapijs/nes",
+      "url": "https://github.com/hapijs/nes.git"
+    },
+    {
+      "commits": [
         "369c67e67c63da510c8a9ab021e54a92ccf1f788",
         "b3282f51a80ec2c49d389d01234186d5a767e948"
       ],
       "records": 2,
       "repository_key": "happyhackingspace/gakido",
       "url": "https://github.com/HappyHackingSpace/gakido.git"
+    },
+    {
+      "commits": [
+        "de4dc75f6ba629ccd2e097f5963235846be622e6",
+        "f51340ecd5778952405044b203d3a2d4c8a46833"
+      ],
+      "records": 3,
+      "repository_key": "haris-musa/excel-mcp-server",
+      "url": "https://github.com/haris-musa/excel-mcp-server.git"
     },
     {
       "commits": [
@@ -1879,6 +3439,15 @@
     },
     {
       "commits": [
+        "23702d0c00e2ee7ad769ac9956c0f2d22b6cd983",
+        "36b68b2f68a3ed10ee7ecbb0cb9f6b1dc5da49cc"
+      ],
+      "records": 2,
+      "repository_key": "hashicorp/go-getter",
+      "url": "https://github.com/hashicorp/go-getter.git"
+    },
+    {
+      "commits": [
         "21818843f06370229cbc1201dbdafdcfeceffe5d",
         "6c4863c5f61b0cdfb609927f6f67e17d90454197",
         "e8238305ef0b9ef37be3efd86a8d34bfbed5f63f",
@@ -1891,9 +3460,11 @@
     {
       "commits": [
         "0f2314fb62193c4be94328cc026fcb7ec1e9b893",
-        "1c3e25b0fda77460c40387f5ebe10c59893a7d11"
+        "1c3e25b0fda77460c40387f5ebe10c59893a7d11",
+        "6db3cf8e5b4cfb2a3cd1d99a813b50b2d5d363bb",
+        "e32641c9ce8b7c1b766f7d0368a7aec93d3438ce"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "hashicorp/terraform",
       "url": "https://github.com/hashicorp/terraform.git"
     },
@@ -1905,6 +3476,15 @@
       "records": 3,
       "repository_key": "hashicorp/vault-ssh-helper",
       "url": "https://github.com/hashicorp/vault-ssh-helper.git"
+    },
+    {
+      "commits": [
+        "501142cb815ac964b0c600c491885b67386870c2",
+        "ad298047312123e2fb781cd6d7b9668ed1b51edc"
+      ],
+      "records": 2,
+      "repository_key": "heartexlabs/label-studio",
+      "url": "https://github.com/heartexlabs/label-studio.git"
     },
     {
       "commits": [
@@ -1944,6 +3524,44 @@
     },
     {
       "commits": [
+        "9830881ef68328f8ea9c7901db1d11690677e7d1",
+        "f96d1b67d02394f03309b67a27066b9ee0a63f96"
+      ],
+      "records": 2,
+      "repository_key": "hivesolutions/netius",
+      "url": "https://github.com/hivesolutions/netius.git"
+    },
+    {
+      "commits": [
+        "1344416378ba3bbc19006bd849bcfdbb508e86fd",
+        "2989d39239d2f46e584c1e1180ba46b9768afb2a",
+        "b3aa80d54a67da45e9e237e349486fb9c162b2ac",
+        "c8f199881aa954025f9b022f0f6b4fa7136466ad"
+      ],
+      "records": 5,
+      "repository_key": "hiyouga/llama-factory",
+      "url": "https://github.com/hiyouga/LLaMA-Factory.git"
+    },
+    {
+      "commits": [
+        "5a4b2e9ffe5a0be7f8843d4ab038599d3ae5f9d4",
+        "7c0e7cb82d2b094a915e83c4aa53425f3fb082d4"
+      ],
+      "records": 2,
+      "repository_key": "hlfshell/controlled-merge",
+      "url": "https://github.com/hlfshell/controlled-merge.git"
+    },
+    {
+      "commits": [
+        "ead36e1d687645da9c3be8befdaaef622ea33106",
+        "ecb19a046432f3e9d9490c10c74c1d6f123c18e0"
+      ],
+      "records": 2,
+      "repository_key": "hokaccha/node-jwt-simple",
+      "url": "https://github.com/hokaccha/node-jwt-simple.git"
+    },
+    {
+      "commits": [
         "598f093bf0fecdefaa3d95d1ddae71317a05321e",
         "b9306a5e521b855b6dddf4b92136a2c3c24b82e2"
       ],
@@ -1964,12 +3582,23 @@
     },
     {
       "commits": [
+        "8cea466fd05e6d2e99c28011fc0e2c2d3f3397c9",
         "9e1cdee836baeb13f33e857a582b29546185c324",
-        "cd076e117cfe4cb8d31f9eb11d2e8f38a6cb8faf"
+        "cd076e117cfe4cb8d31f9eb11d2e8f38a6cb8faf",
+        "dd9b9a9b23e3896403c90a740e7f1f0892feb402"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "honojs/node-server",
       "url": "https://github.com/honojs/node-server.git"
+    },
+    {
+      "commits": [
+        "655353fc345b6a2512839a5bfc7086a5c7c614cf",
+        "b96ecae4dc69fc0a83c7c2d3f1dde600c20a1b41"
+      ],
+      "records": 3,
+      "repository_key": "horovod/horovod",
+      "url": "https://github.com/horovod/horovod.git"
     },
     {
       "commits": [
@@ -1979,6 +3608,24 @@
       "records": 2,
       "repository_key": "http-party/node-http-proxy",
       "url": "https://github.com/http-party/node-http-proxy.git"
+    },
+    {
+      "commits": [
+        "1591be276561bbdb019c0279f1d33cb18a650e1b",
+        "8b34431b91b32903c8821b1d7621bf81a029d8e4"
+      ],
+      "records": 3,
+      "repository_key": "huandu/facebook",
+      "url": "https://github.com/huandu/facebook.git"
+    },
+    {
+      "commits": [
+        "959825da1fcb58ec0151e7fa51628e4bc1bb60ca",
+        "f989ef9b4cc6c0039a7a82458eebca49e2b58b4b"
+      ],
+      "records": 2,
+      "repository_key": "huggingface/datasets",
+      "url": "https://github.com/huggingface/datasets.git"
     },
     {
       "commits": [
@@ -1997,6 +3644,15 @@
       "records": 2,
       "repository_key": "huggingface/transformers",
       "url": "https://github.com/huggingface/transformers.git"
+    },
+    {
+      "commits": [
+        "20ef0ef55dfa028caddaedbcb33efbdb04d18e13",
+        "e8fb281aa66897b94d629a19d6ccb4c30d36779c"
+      ],
+      "records": 2,
+      "repository_key": "hughsk/flat",
+      "url": "https://github.com/hughsk/flat.git"
     },
     {
       "commits": [
@@ -2039,11 +3695,24 @@
     {
       "commits": [
         "3f4558e23c0a9958f9a0e20aabc64aa8fd51840e",
-        "4d2b65e34c6d01800273009d60756205c08cb0c3"
+        "4d2b65e34c6d01800273009d60756205c08cb0c3",
+        "62006f61b55951048dbace4ebd9e483274838699",
+        "9c261dd8df63fe2644708695d2eb85495784e415",
+        "c75063d7ca5800948e9c09c0a6efe9809b5d39f7",
+        "dd927fe1c805e53790f73cfe10c7a4ded3bc5bdb"
       ],
-      "records": 2,
+      "records": 6,
       "repository_key": "icewhaletech/casaos-userservice",
       "url": "https://github.com/IceWhaleTech/CasaOS-UserService.git"
+    },
+    {
+      "commits": [
+        "46578df0695269a16f1c94171f1429873f90ed99",
+        "aaf6c54c9a8c6b7fc891a6ffada481dd688d9e26"
+      ],
+      "records": 2,
+      "repository_key": "identitypython/pysaml2",
+      "url": "https://github.com/IdentityPython/pysaml2.git"
     },
     {
       "commits": [
@@ -2056,6 +3725,15 @@
     },
     {
       "commits": [
+        "acd814433d1021aa8783362521b0bd151fdfc9d2",
+        "e42d3bf31e7c66dc741a96de79daef0ba76f74a1"
+      ],
+      "records": 2,
+      "repository_key": "illagrenan/django-make-app",
+      "url": "https://github.com/illagrenan/django-make-app.git"
+    },
+    {
+      "commits": [
         "8994131c7c3ee8da1699e04700c95e0e683a0c68",
         "e62c61f1c58126310e9d7faac1b2e7ad1de9ea82"
       ],
@@ -2065,10 +3743,12 @@
     },
     {
       "commits": [
+        "09e305c053edc8e8b030fecbaf67f1f4848f5f98",
+        "3d4fed6842aa8930ec224d0ad75b0079b858e081",
         "62f8d08a93d301285dcd1dabcc7ba10c6c65b689",
         "947d65cf29fe26e5e4d38ca8a17e44c7402e437c"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "imgproxy/imgproxy",
       "url": "https://github.com/imgproxy/imgproxy.git"
     },
@@ -2092,12 +3772,23 @@
     },
     {
       "commits": [
+        "44540e70ab4e20a12f14ddba5218a33749a86736",
         "524e8e93eadcd8484905b1147020a35f5dce6038",
-        "982be1f5be9343d30f689eef6f61858409fe4598"
+        "982be1f5be9343d30f689eef6f61858409fe4598",
+        "d7a07ccc7001915f049479f8ab51fd86baae8f82"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "indico/indico",
       "url": "https://github.com/indico/indico.git"
+    },
+    {
+      "commits": [
+        "33df26b5771e824f303a79ec6407409376baa64b",
+        "6db7c3818569423b94ebcf2bdff90fcfb9c47f6d"
+      ],
+      "records": 2,
+      "repository_key": "indutny/bn.js",
+      "url": "https://github.com/indutny/bn.js.git"
     },
     {
       "commits": [
@@ -2121,6 +3812,15 @@
     },
     {
       "commits": [
+        "d59cf72971f9b7110d9c179dc8ae8b7a11dbd6d2",
+        "e2367c741097b3e967e1abc5046296291d2caa98"
+      ],
+      "records": 3,
+      "repository_key": "inspektor-gadget/inspektor-gadget",
+      "url": "https://github.com/inspektor-gadget/inspektor-gadget.git"
+    },
+    {
+      "commits": [
         "1984a5d4bd447b9206f9e0f9d2110f45eecf827d",
         "d86046a0e6b02ecaaf7cdb74346d0477130221c2"
       ],
@@ -2131,9 +3831,10 @@
     {
       "commits": [
         "43391d20e7c85403cb59bdb21b5d542819f54042",
+        "d657ce8f4b3b6b198a8f6e3d09e2b57a5d019fb8",
         "db04efef4e1ab6662a4e5f544815276d1fa81abc"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "intlify/vue-i18n",
       "url": "https://github.com/intlify/vue-i18n.git"
     },
@@ -2145,6 +3846,24 @@
       "records": 2,
       "repository_key": "inveniosoftware/invenio-drafts-resources",
       "url": "https://github.com/inveniosoftware/invenio-drafts-resources.git"
+    },
+    {
+      "commits": [
+        "5759b60a48e7e178fb417a900ed543f29dc5dc86",
+        "7bffa49f3cdd44dffdcf14e11e57db6295273b36"
+      ],
+      "records": 2,
+      "repository_key": "inventree/inventree",
+      "url": "https://github.com/inventree/InvenTree.git"
+    },
+    {
+      "commits": [
+        "997e619a9dd482a60a8d945c44f977c4a1f93698",
+        "eff565ae6ace1c8458f187245690bff0513f1b9e"
+      ],
+      "records": 3,
+      "repository_key": "invoke-ai/invokeai",
+      "url": "https://github.com/invoke-ai/InvokeAI.git"
     },
     {
       "commits": [
@@ -2163,6 +3882,15 @@
       "records": 2,
       "repository_key": "ionicabizau/parse-url",
       "url": "https://github.com/ionicabizau/parse-url.git"
+    },
+    {
+      "commits": [
+        "6a7767c49df4be3efd5e32a68a1ea1fa449cbd03",
+        "82ede5cccb2e8d13e4f62599203a4389f6d8e936"
+      ],
+      "records": 2,
+      "repository_key": "ionicabizau/set-or-get.js",
+      "url": "https://github.com/IonicaBizau/set-or-get.js.git"
     },
     {
       "commits": [
@@ -2211,6 +3939,15 @@
     },
     {
       "commits": [
+        "4d83d04948f16804026eaf4449ac02c75ba907a4",
+        "c57355dc2033ad90b7050d681b2c3ba548ff0004"
+      ],
+      "records": 2,
+      "repository_key": "iterative/pydrive2",
+      "url": "https://github.com/iterative/PyDrive2.git"
+    },
+    {
+      "commits": [
         "603c8c1e90db3f22fc332cd7cbaeeb1a52c9c584",
         "826a89229b8b1cdf18e4190afa437d3df9901b9c",
         "dfd198003a03dbb96e4607b0d3a0bb9a7398ccb7",
@@ -2228,6 +3965,24 @@
       "records": 2,
       "repository_key": "jahlives/openssl_encrypt",
       "url": "https://github.com/jahlives/openssl_encrypt.git"
+    },
+    {
+      "commits": [
+        "8485862a5c1ade090d5122980b28e88c10ed6e25",
+        "b45734ea1d206abc1ed2a90bdc779708066d49f3"
+      ],
+      "records": 2,
+      "repository_key": "jamesturk/django-markupfield",
+      "url": "https://github.com/jamesturk/django-markupfield.git"
+    },
+    {
+      "commits": [
+        "88ddbe0b0a4dd13cc345996108c9869493f2c690",
+        "edcf3c88f3fb582e84358b385c49d33d04c04224"
+      ],
+      "records": 2,
+      "repository_key": "jandedobbeleer/oh-my-posh",
+      "url": "https://github.com/JanDeDobbeleer/oh-my-posh.git"
     },
     {
       "commits": [
@@ -2251,6 +4006,15 @@
     },
     {
       "commits": [
+        "2bf9faee787eb004abbdfb6f4cc2fb06653defd5",
+        "a55bfd93f576893a158714152f09328afbdea7dc"
+      ],
+      "records": 2,
+      "repository_key": "jaredhanson/oauth2orize-fprm",
+      "url": "https://github.com/jaredhanson/oauth2orize-fprm.git"
+    },
+    {
+      "commits": [
         "4f8f86cbed25414902405e16391857a2c8a5e4ea",
         "8e3bcdff145a2219033bd782fc517229fe3e05ea"
       ],
@@ -2260,12 +4024,48 @@
     },
     {
       "commits": [
+        "7e69a5539236386e747fb240ae87ea65ed64bb2c",
+        "8cfd88e44ebd3f07e3a2eaf376a3e758b6c4ca19"
+      ],
+      "records": 2,
+      "repository_key": "jarofghosts/glance",
+      "url": "https://github.com/jarofghosts/glance.git"
+    },
+    {
+      "commits": [
         "e4eaeca6493b21cd515b582fd6c0af09ede54507",
         "ef8391480c25332fc74d6cf841eab2969e18db27"
       ],
       "records": 2,
       "repository_key": "jasonraimondi/url-to-png",
       "url": "https://github.com/jasonraimondi/url-to-png.git"
+    },
+    {
+      "commits": [
+        "8000c7f41305ddb421528dd00b6292ffd121c2c2",
+        "fe8e963b3489e4cceaa2c1f26f2bcc2ef405364c"
+      ],
+      "records": 3,
+      "repository_key": "jaspernbrouwer/powerline-gitstatus",
+      "url": "https://github.com/jaspernbrouwer/powerline-gitstatus.git"
+    },
+    {
+      "commits": [
+        "42f249cabbbf5c026398e6d3b350f6f9536ea572",
+        "da9a768017135d15ee8ed270838604db16fa7853"
+      ],
+      "records": 2,
+      "repository_key": "jcbrand/converse.js",
+      "url": "https://github.com/jcbrand/converse.js.git"
+    },
+    {
+      "commits": [
+        "1af2facb6d95976c532b7f8f82747d454a092272",
+        "edb60577888e36ba5139bee2b8050d8123654ab7"
+      ],
+      "records": 2,
+      "repository_key": "jessfraz/pastebinit",
+      "url": "https://github.com/jessfraz/pastebinit.git"
     },
     {
       "commits": [
@@ -2287,12 +4087,30 @@
     },
     {
       "commits": [
+        "47677a3638e3583e42f3a05cc7f0b30293d2acc8",
+        "cd79906612c6158972fa83d405df2141eb792d8d"
+      ],
+      "records": 2,
+      "repository_key": "jhuckaby/pixl-class",
+      "url": "https://github.com/jhuckaby/pixl-class.git"
+    },
+    {
+      "commits": [
         "79975a1defa648f40625100cf68462d74d6d5ec7",
         "af6d2a78877e7277cd01c825b7fb50edb5956963"
       ],
       "records": 2,
       "repository_key": "jitbit/htmlsanitizer",
       "url": "https://github.com/jitbit/HtmlSanitizer.git"
+    },
+    {
+      "commits": [
+        "680a5ebe1194edda16fa93baaa56ff14fe0e3d7f",
+        "89dbd30acf85168dca7ea2ec4d1a7ae5c71ce939"
+      ],
+      "records": 2,
+      "repository_key": "joaonuno/flat-to-nested-js",
+      "url": "https://github.com/joaonuno/flat-to-nested-js.git"
     },
     {
       "commits": [
@@ -2305,12 +4123,59 @@
     },
     {
       "commits": [
+        "72762a200fc19d997a0f84bce578c28698dc5270",
+        "8c26a7a2834f4ed630160c9ff3e5d127af5a5bd8"
+      ],
+      "records": 2,
+      "repository_key": "johannschopplich/nuxt-api-party",
+      "url": "https://github.com/johannschopplich/nuxt-api-party.git"
+    },
+    {
+      "commits": [
+        "19953a8c089b0328c470acaaaf6accdfcb34da11",
+        "f6cba02d11a1d293593be0e942aff60bfd5a5711"
+      ],
+      "records": 3,
+      "repository_key": "jonschlinkert/assign-deep",
+      "url": "https://github.com/jonschlinkert/assign-deep.git"
+    },
+    {
+      "commits": [
         "aef804bf3e56484a6e463e35f5f74599523aee69",
         "c873f341327ad885ff4d0f23b3d3bca31b0343e5"
       ],
       "records": 2,
       "repository_key": "jonschlinkert/defaults-deep",
       "url": "https://github.com/jonschlinkert/defaults-deep.git"
+    },
+    {
+      "commits": [
+        "1df992ce6d5a1292048e5fe9c52c5382f941ee0b",
+        "4da96c0047906d22a4d6964a668d3abaca122e50"
+      ],
+      "records": 3,
+      "repository_key": "jonschlinkert/kind-of",
+      "url": "https://github.com/jonschlinkert/kind-of.git"
+    },
+    {
+      "commits": [
+        "11e5dd56de8a6aed0b1ed022089dbce6968d82a5",
+        "12cbc0b9437f9d72e1003df173bb30a001d51df9",
+        "2c33634da7129a5aefcc262d2fec2e72224404e5",
+        "7be7e50163dc4ef467ace5371186a77028a66cc9"
+      ],
+      "records": 4,
+      "repository_key": "jonschlinkert/merge-deep",
+      "url": "https://github.com/jonschlinkert/merge-deep.git"
+    },
+    {
+      "commits": [
+        "578b0bc5e74e14de9ef4975f504dc698796bdf9c",
+        "7705bdf88ff0263242c07c824d20526203876668"
+      ],
+      "records": 2,
+      "repository_key": "jonschlinkert/mixin-deep",
+      "url": "https://github.com/jonschlinkert/mixin-deep.git"
     },
     {
       "commits": [
@@ -2323,10 +4188,22 @@
     },
     {
       "commits": [
-        "8d2d48d81b3c233fb64eb2ec1d7a9e1cf6a55a90",
-        "a60f3c8d9dd714244aed7a5569c3dccaa3a4e761"
+        "092e386cf49f2a1450625617da8e0137ed067c3e",
+        "c33544bf7de6f4af05b58c4072e28bc786fb3f45"
       ],
       "records": 2,
+      "repository_key": "josdejong/jsoneditor",
+      "url": "https://github.com/josdejong/jsoneditor.git"
+    },
+    {
+      "commits": [
+        "4a9378789a50cd2b1f53803f3eb2a82fbc1c9ee4",
+        "8d2d48d81b3c233fb64eb2ec1d7a9e1cf6a55a90",
+        "a2858e266ad2baf7a71730629b76e10881a15330",
+        "a60f3c8d9dd714244aed7a5569c3dccaa3a4e761",
+        "ecb80514e80bce4e6ec7e71db8ff79954f07c57e"
+      ],
+      "records": 7,
       "repository_key": "josdejong/mathjs",
       "url": "https://github.com/josdejong/mathjs.git"
     },
@@ -2335,7 +4212,7 @@
         "6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe",
         "9a8cac3cb8ae89fd0a9b3ae2dfde27cd1aa5a60a"
       ],
-      "records": 2,
+      "records": 3,
       "repository_key": "josdejong/typed-function",
       "url": "https://github.com/josdejong/typed-function.git"
     },
@@ -2363,10 +4240,23 @@
     },
     {
       "commits": [
-        "5d8f29eef363d043a8fec4eb86d42cadb5fa5f7d",
-        "b8d6646ec67c73372dddfbc9aadff45571a96136"
+        "8b456acbc919e98a9f04b399c1581bbf213d83bd",
+        "f7c491ede51f886a988af9b266797cb24591d18c"
       ],
       "records": 2,
+      "repository_key": "jpeer264/node-git-commit-info",
+      "url": "https://github.com/JPeer264/node-git-commit-info.git"
+    },
+    {
+      "commits": [
+        "5d8f29eef363d043a8fec4eb86d42cadb5fa5f7d",
+        "69cb17ed774b427f7e2ffcdf197968231725c30e",
+        "7a490d8f39bd988027568ddcf51755e1f4688902",
+        "aa5bcdcc51549160a90b7966871a8b63849ee4b5",
+        "b8d6646ec67c73372dddfbc9aadff45571a96136",
+        "cfe74a19b671b0983b3b13dbf959619cfe926de9"
+      ],
+      "records": 6,
       "repository_key": "jquery-validation/jquery-validation",
       "url": "https://github.com/jquery-validation/jquery-validation.git"
     },
@@ -2408,12 +4298,39 @@
     },
     {
       "commits": [
+        "0e2b07f8dbda6ce46684f55450f67c66e35bb306",
+        "2d9eed5d3e9710d7e7fecc6f6437c39fe73a4097"
+      ],
+      "records": 2,
+      "repository_key": "js-data/js-data",
+      "url": "https://github.com/js-data/js-data.git"
+    },
+    {
+      "commits": [
         "6893518341bb4e5363285df086b3158302d3b216",
         "c6e384908c9c6127d18831d16ab0bd96e1231867"
       ],
       "records": 3,
       "repository_key": "jshttp/on-headers",
       "url": "https://github.com/jshttp/on-headers.git"
+    },
+    {
+      "commits": [
+        "30942896d27cb8a806b965a5ca9ef9f686be24ee",
+        "8e4acf8aff5f446aa66323e12394ac5615c3b260"
+      ],
+      "records": 2,
+      "repository_key": "jsonpath-plus/jsonpath",
+      "url": "https://github.com/JSONPath-Plus/JSONPath.git"
+    },
+    {
+      "commits": [
+        "17509f0bf9436566085a10ad49946c5e5022d3c1",
+        "5ded76092429c6eb8a4af941b14fbde40a38fff4"
+      ],
+      "records": 2,
+      "repository_key": "jugmac00/flask-reuploaded",
+      "url": "https://github.com/jugmac00/flask-reuploaded.git"
     },
     {
       "commits": [
@@ -2427,9 +4344,11 @@
     {
       "commits": [
         "265f6cd6586383eebebbfc3c45da2eaa153d9e63",
-        "b13381281cead487cbdbfd6a69fb097ea5e456c3"
+        "b13381281cead487cbdbfd6a69fb097ea5e456c3",
+        "c0b095bdc52bc4c36dc88deddbadabc49f8371e5",
+        "ec5602085a81ca7c954f6780c6a3aef0b1e200cf"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "juliangruber/brace-expansion",
       "url": "https://github.com/juliangruber/brace-expansion.git"
     },
@@ -2444,12 +4363,23 @@
     },
     {
       "commits": [
+        "3d83e49090289c431da253e2bdb8dc479cbcb157",
+        "505140f96f27c105c2cd4cb38d9afdf4ff4b34d6",
         "a5683aca0b0e412672ac6218d09f74d44ca0de5a",
         "e4a3141b82c6f8e9972e598e1b464a66677df227"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "jupyter-server/jupyter_server",
       "url": "https://github.com/jupyter-server/jupyter_server.git"
+    },
+    {
+      "commits": [
+        "1ff189e1b30f0820238e95427c035a9150a5e43f",
+        "ce4bd99aec31d81d759fa8eeb8643179392ec66f"
+      ],
+      "records": 2,
+      "repository_key": "jupyter/nbconvert",
+      "url": "https://github.com/jupyter/nbconvert.git"
     },
     {
       "commits": [
@@ -2462,6 +4392,24 @@
     },
     {
       "commits": [
+        "5a46ef793a2a3097364d93c726fb4c3e25218bba",
+        "7dd54c25a4253badd8ea68895437e5a66a59090d"
+      ],
+      "records": 2,
+      "repository_key": "jupyterhub/jupyter-remote-desktop-proxy",
+      "url": "https://github.com/jupyterhub/jupyter-remote-desktop-proxy.git"
+    },
+    {
+      "commits": [
+        "21f388dbc08a6198b297b83a2dfd3c45b8e81981",
+        "9c5ec277d3cda5a59de2d8c8117efa77bd941127"
+      ],
+      "records": 3,
+      "repository_key": "jupyterhub/jupyterhub",
+      "url": "https://github.com/jupyterhub/jupyterhub.git"
+    },
+    {
+      "commits": [
         "0e68e71d93507fcc391e398bc84abd0666b28190",
         "a689700740b44846e76f8f1dc4bdf230a2cb5c0d"
       ],
@@ -2471,21 +4419,21 @@
     },
     {
       "commits": [
+        "7971fbca9707eb01455ca2d73416ac091f96908b",
+        "9b59fa65857734599c34b0b3dff4c2b62293a68d"
+      ],
+      "records": 3,
+      "repository_key": "kap-sh/zapros",
+      "url": "https://github.com/kap-sh/zapros.git"
+    },
+    {
+      "commits": [
         "0fca7228bd313ae5aa938d61311377e88ce6e682",
         "e7da78c5b4b960f8b66c254059ad9ebc544a91a6"
       ],
       "records": 3,
       "repository_key": "kapilduraphe/mcp-watch",
       "url": "https://github.com/kapilduraphe/mcp-watch.git"
-    },
-    {
-      "commits": [
-        "28a0bf51139969e9dc52085b72024e0c5447cfbe",
-        "ff289955e81aab89086eef09254cbf88573d415c"
-      ],
-      "records": 2,
-      "repository_key": "katex/katex",
-      "url": "https://github.com/KaTeX/KaTeX.git"
     },
     {
       "commits": [
@@ -2507,32 +4455,74 @@
     },
     {
       "commits": [
-        "55e54b55d05ba636bc125a8f3d39f0052d13f8f6",
-        "7f707d5dc29532f13b7500592d19ab9a2accb44f"
+        "51f1a52e170f21c1264c6de1dc781d5b5e2a5d09",
+        "6318c613230cd36d0cae5f2a9c5c1492731a60ae"
       ],
       "records": 2,
+      "repository_key": "kerberos-io/agent",
+      "url": "https://github.com/kerberos-io/agent.git"
+    },
+    {
+      "commits": [
+        "190a9470e234bbd9ac5d5de43f5a19aead9a2c21",
+        "55e54b55d05ba636bc125a8f3d39f0052d13f8f6",
+        "7f707d5dc29532f13b7500592d19ab9a2accb44f",
+        "e4bd6b7bc8116432bf8fde87c5f06417005f88ea"
+      ],
+      "records": 4,
       "repository_key": "keycloak/keycloak-nodejs-connect",
       "url": "https://github.com/keycloak/keycloak-nodejs-connect.git"
     },
     {
       "commits": [
         "37617beaead92652db6fe7217ade6cb0fe5e990b",
+        "7d8765b10ee9e0c62a48abf18dfd4c50bad23f12",
+        "95ce3d86bd2c53009108ffda2dcf553312d733db",
         "bf6417f229ca53a6a161c4bce3e5545f223f00cf",
         "e08b10d86c3717006774e787542c190e2ba24fc7",
         "f969d397f92962b553f8c5bcbbeeb3bbdeca9456"
       ],
-      "records": 4,
+      "records": 6,
       "repository_key": "keylime/keylime",
       "url": "https://github.com/keylime/keylime.git"
     },
     {
       "commits": [
-        "1b7ccd141d47f365edeccc57d7316cb0913d748b",
-        "b8eeefa0b1e8795e21ded99f2ffb7b34c6ab063c"
+        "46d45a30b064698989b8fe20470feb2352c7302e",
+        "9fb88b246950ce4de754a43fe6416f20403577b1"
       ],
       "records": 2,
+      "repository_key": "keystonejs/keystone",
+      "url": "https://github.com/keystonejs/keystone.git"
+    },
+    {
+      "commits": [
+        "1b7ccd141d47f365edeccc57d7316cb0913d748b",
+        "47d3c8c23597900af708bdc60aced3ae5d2064c1",
+        "b8eeefa0b1e8795e21ded99f2ffb7b34c6ab063c",
+        "d7027109a5f3894cc4f4f90cd571092a5b8b75d4"
+      ],
+      "records": 4,
       "repository_key": "khoj-ai/khoj",
       "url": "https://github.com/khoj-ai/khoj.git"
+    },
+    {
+      "commits": [
+        "7be1cb4511a8236d5203a924bc0aa4db008aafb8",
+        "ec6082049dba9e44a21f35fb7b123d42ce1a1a7e"
+      ],
+      "records": 2,
+      "repository_key": "kitabisa/teler",
+      "url": "https://github.com/kitabisa/teler.git"
+    },
+    {
+      "commits": [
+        "a2b169ffdef1d7c1755bade8138578423b35011b",
+        "a54cbbf73d6978c01f947b2c64f2db1986ecfb2c"
+      ],
+      "records": 3,
+      "repository_key": "kiwitcms/kiwi",
+      "url": "https://github.com/kiwitcms/kiwi.git"
     },
     {
       "commits": [
@@ -2542,6 +4532,15 @@
       "records": 2,
       "repository_key": "kjur/jsrsasign",
       "url": "https://github.com/kjur/jsrsasign.git"
+    },
+    {
+      "commits": [
+        "9433f4bbc9652bdde82bbe380984e32f8cfc89c4",
+        "d5c91ecb0aa1cae03fe2d9811d193c952e714f17"
+      ],
+      "records": 2,
+      "repository_key": "kludex/python-multipart",
+      "url": "https://github.com/Kludex/python-multipart.git"
     },
     {
       "commits": [
@@ -2581,12 +4580,52 @@
     },
     {
       "commits": [
+        "422c551c63d00f24e2bbbdf492f262a5935bb1f0",
+        "433b20c9e5954113e8d7a23a25e9d5bb750c3034",
+        "6e51eb15169598be1130e8bbe06e67b1d4907275",
+        "769fd75cc6b30d72493b370b5a3ae2332ca03c5b",
+        "d5081a15207cd58ed9251c0d0055095a34d3a1ce",
+        "ff25eb4a7f2392df46481fe86355161067687312"
+      ],
+      "records": 6,
+      "repository_key": "koajs/koa",
+      "url": "https://github.com/koajs/koa.git"
+    },
+    {
+      "commits": [
+        "aacbd7fc7d317add80319f1bb86a156b70cfdd7b",
+        "d3d937645f62f37d3115d6aa90bb510fd856e6a2"
+      ],
+      "records": 2,
+      "repository_key": "kobezzza/collection",
+      "url": "https://github.com/kobezzza/Collection.git"
+    },
+    {
+      "commits": [
+        "cc3d54bff4c6495beaa1c7483379cd04542c557f",
+        "e639238f0e56ac0ad886e5bbe920e1903969422b"
+      ],
+      "records": 2,
+      "repository_key": "komari-monitor/komari",
+      "url": "https://github.com/komari-monitor/komari.git"
+    },
+    {
+      "commits": [
         "1329e10afdcb35ceb015a40808a322f888ddef49",
         "1d6f852cd6534f4bea978cbdc85c583803d79f77"
       ],
       "records": 2,
       "repository_key": "kopia/kopia",
       "url": "https://github.com/kopia/kopia.git"
+    },
+    {
+      "commits": [
+        "560b2d8ef452bbba20ffed69dc155d63ac757b74",
+        "b1bdb92638426fab978f31e1330b6833015cabf0"
+      ],
+      "records": 3,
+      "repository_key": "kornelski/http-cache-semantics",
+      "url": "https://github.com/kornelski/http-cache-semantics.git"
     },
     {
       "commits": [
@@ -2600,20 +4639,33 @@
     {
       "commits": [
         "1140eba630ce1c5194872e90122df0e154790d65",
+        "39cd37ce1610bd890388e26591c569db1cbab542",
+        "4041083e9d9aa5d8262fd402ebf223b00d82f372",
         "b6a14f0f3f4ce9c0c75c1a2d73cb1c5d43f0e565"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "kozea/weasyprint",
       "url": "https://github.com/Kozea/WeasyPrint.git"
     },
     {
       "commits": [
+        "15a1585230748c8ae6f8274c202e0c87309142f5",
         "2aec4298639bf30fb88a00b356bf404d3551b8c0",
-        "a47aca9cb199d558e02ce406e9838356803e204f"
+        "a47aca9cb199d558e02ce406e9838356803e204f",
+        "de95cca5329730cf9dcdd85c634633693b3ab3db"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "kpdecker/jsdiff",
       "url": "https://github.com/kpdecker/jsdiff.git"
+    },
+    {
+      "commits": [
+        "7ef42bf1c16900d13e6376f8be5ecdbfdfb44aaf",
+        "8205703d0b66ba888ef8a7da0c800037fbf2ac72"
+      ],
+      "records": 2,
+      "repository_key": "kubeoperator/kubeoperator",
+      "url": "https://github.com/KubeOperator/KubeOperator.git"
     },
     {
       "commits": [
@@ -2644,6 +4696,42 @@
     },
     {
       "commits": [
+        "bcae0438ad8386321a300413d71c982a11b7b5b7",
+        "bfcb914fe9d667e39c6172257a324ef63f7f18b8"
+      ],
+      "records": 3,
+      "repository_key": "kubev2v/assisted-migration-agent",
+      "url": "https://github.com/kubev2v/assisted-migration-agent.git"
+    },
+    {
+      "commits": [
+        "231758914dddbf1a5ec717c82751b9a8d47c5098",
+        "6ea563fa94d8ca803f8dd9394cefd8cae36bb0ee"
+      ],
+      "records": 2,
+      "repository_key": "kubevirt/kubevirt",
+      "url": "https://github.com/kubevirt/kubevirt.git"
+    },
+    {
+      "commits": [
+        "0965877f115753371a2570f10a63c455d2b2cde3",
+        "530d2152bb96a6ac240f47f78d9dccd2e84487b9"
+      ],
+      "records": 2,
+      "repository_key": "kucherenko/blamer",
+      "url": "https://github.com/kucherenko/blamer.git"
+    },
+    {
+      "commits": [
+        "5f557c970817fe8c578ec3f7ad3bcbcef4cf5538",
+        "d474da7b89c0d3397cd681e79c7bcc592bff144b"
+      ],
+      "records": 2,
+      "repository_key": "kylefarris/clamscan",
+      "url": "https://github.com/kylefarris/clamscan.git"
+    },
+    {
+      "commits": [
         "0a602bff2f442f6c26d5e047ca8f8715179f6d24",
         "4f43c7d2280eabb586d1db4b4ae1361aa99eca3f"
       ],
@@ -2653,10 +4741,12 @@
     },
     {
       "commits": [
+        "53d08d8095b98deba672c9bd2b2d1393b4b312a8",
         "5f42a0bad8ca0812b676f11f8674f87403ca2367",
-        "8777672fb17bdf252bd2e7d8de3441e240404a60"
+        "8777672fb17bdf252bd2e7d8de3441e240404a60",
+        "cbd7d4ca24de1c55396fc3295e9fc3215832be7c"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "kyverno/kyverno",
       "url": "https://github.com/kyverno/kyverno.git"
     },
@@ -2681,11 +4771,22 @@
     {
       "commits": [
         "57d750bc9aeb0f98d53ed4b924458b54984c15ff",
+        "a2de167b95debad83a0f0c7925a88c0198db812e",
+        "a7213453c75e9959660fc022357954327612a62a",
         "fbe966903bcfbf0afe8d71b7f5c154314f404bd4"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "laurent22/joplin",
       "url": "https://github.com/laurent22/joplin.git"
+    },
+    {
+      "commits": [
+        "5e707cec12b4a52dfb2057b662e8bf4edd3693f3",
+        "f756b41d63bf3d488a2cb042918638c9851bf2b0"
+      ],
+      "records": 2,
+      "repository_key": "layui/layui",
+      "url": "https://github.com/layui/layui.git"
     },
     {
       "commits": [
@@ -2698,12 +4799,41 @@
     },
     {
       "commits": [
-        "084ad7890bfe360c67fc41e1635fde73cb4fce0a",
-        "cec2b1f349d130065e561349a0336a239528267f"
+        "8609b69af230985a12c9d6dda519ec88b12e6838",
+        "943c02e10f0f8349e609474810eab5fa460d1a51"
       ],
       "records": 2,
+      "repository_key": "lf-edge/ekuiper",
+      "url": "https://github.com/lf-edge/ekuiper.git"
+    },
+    {
+      "commits": [
+        "084ad7890bfe360c67fc41e1635fde73cb4fce0a",
+        "3bf5d395cbca1488eea6e87cd771e4613b661c30",
+        "89335e39f51eba5ffd71d6706fbc5054dd0aec2d",
+        "cec2b1f349d130065e561349a0336a239528267f"
+      ],
+      "records": 4,
       "repository_key": "libp2p/js-libp2p",
       "url": "https://github.com/libp2p/js-libp2p.git"
+    },
+    {
+      "commits": [
+        "8116c5d7fed26994c0d4f10f0e56e57386ab0949",
+        "d710d689510d50e800f53b3cd773cbca20b1f86f"
+      ],
+      "records": 3,
+      "repository_key": "lightning-ai/pytorch-lightning",
+      "url": "https://github.com/Lightning-AI/pytorch-lightning.git"
+    },
+    {
+      "commits": [
+        "492fda428634ddf13efa5d630ca080a32ffcfd94",
+        "acbf1fd71011e6b9e1e6a911128056a19862f681"
+      ],
+      "records": 2,
+      "repository_key": "lin-snow/ech0",
+      "url": "https://github.com/lin-snow/Ech0.git"
     },
     {
       "commits": [
@@ -2713,6 +4843,15 @@
       "records": 2,
       "repository_key": "lirantal/lockfile-lint",
       "url": "https://github.com/lirantal/lockfile-lint.git"
+    },
+    {
+      "commits": [
+        "0624d627427736c6db5f5504366d990d1813b0c4",
+        "cbeec2b2a275d819fb534137a155df14729706f8"
+      ],
+      "records": 2,
+      "repository_key": "litejs/uri-template-lite",
+      "url": "https://github.com/litejs/uri-template-lite.git"
     },
     {
       "commits": [
@@ -2727,12 +4866,77 @@
     },
     {
       "commits": [
+        "38f99c3374ca4e9bd75f3ec34f3edb249eb391cf",
+        "bfdb84813260f0edbf759f2fde1e8c816c1478b8"
+      ],
+      "records": 2,
+      "repository_key": "ljharb/npm-lockfile",
+      "url": "https://github.com/ljharb/npm-lockfile.git"
+    },
+    {
+      "commits": [
+        "f6a7abff1f13d644db9b05fe4f2c98ada6bf8482",
+        "fbc5206c25b4d1851cea683f02c10756c521d15a"
+      ],
+      "records": 3,
+      "repository_key": "ljharb/qs",
+      "url": "https://github.com/ljharb/qs.git"
+    },
+    {
+      "commits": [
+        "5799416ed454aa4ec9afafc895b4e31760ea1abe",
+        "c7de931fa4ed0975ea9756983c88334fe4b8cde5"
+      ],
+      "records": 2,
+      "repository_key": "ljharb/shell-quote",
+      "url": "https://github.com/ljharb/shell-quote.git"
+    },
+    {
+      "commits": [
         "752a6836a02e5c23303ce6781e7698e35b52eae7",
         "b709bd77b6c1fad68a30a4888baa6f2337eaef6f"
       ],
       "records": 2,
       "repository_key": "llamastack/llama-stack",
       "url": "https://github.com/llamastack/llama-stack.git"
+    },
+    {
+      "commits": [
+        "5e415baeda9e94c3747721e2a0860b2234f617f4",
+        "7c74ec7de3254143ec3c557677f5355a90a3d07f",
+        "9ebf57588aa596c4fa3bb64209e10ade395aee90",
+        "d010f2d0edc3ab87ecabb27b9160f91317aa2722"
+      ],
+      "records": 5,
+      "repository_key": "llk/scratch-svg-renderer",
+      "url": "https://github.com/LLK/scratch-svg-renderer.git"
+    },
+    {
+      "commits": [
+        "90b9da45f4084958535338d1c4d71a22d6136aab",
+        "b67ba75d8b1df4268a9d6727bbc4f32f153c9131"
+      ],
+      "records": 3,
+      "repository_key": "llk/scratch-vm",
+      "url": "https://github.com/LLK/scratch-vm.git"
+    },
+    {
+      "commits": [
+        "8d59583dca16f218b99213d641733d8ba77f182c",
+        "c609c77f246aa10efe54e2b96516d5a27fd220be"
+      ],
+      "records": 2,
+      "repository_key": "lobehub/lobe-chat",
+      "url": "https://github.com/lobehub/lobe-chat.git"
+    },
+    {
+      "commits": [
+        "243b723896c3c82f5496b6008f9aa1be52741899",
+        "eb863321990e7e5514aa14f68b8d9978ece9e65e"
+      ],
+      "records": 2,
+      "repository_key": "locutusjs/locutus",
+      "url": "https://github.com/locutusjs/locutus.git"
     },
     {
       "commits": [
@@ -2745,12 +4949,57 @@
     },
     {
       "commits": [
+        "1a863f3df332f1732e8fec519f1d686561313a3e",
+        "d57406c6737692a3a106b58a35406290cddb23e5"
+      ],
+      "records": 2,
+      "repository_key": "loopbackio/loopback-connector-postgresql",
+      "url": "https://github.com/loopbackio/loopback-connector-postgresql.git"
+    },
+    {
+      "commits": [
         "32dc76a08515c3730ddaa11153004225f8d7e53b",
         "6cfae01a0d3727c517afe512fc8fec1d99acf875"
       ],
       "records": 2,
       "repository_key": "louislam/uptime-kuma",
       "url": "https://github.com/louislam/uptime-kuma.git"
+    },
+    {
+      "commits": [
+        "0cbf2c60503909d29feaa37818417f4f0139178b",
+        "2b9ec49e231107b1a83b04a1bc1a66a8d14cea1c"
+      ],
+      "records": 2,
+      "repository_key": "lukeed/dset",
+      "url": "https://github.com/lukeed/dset.git"
+    },
+    {
+      "commits": [
+        "200e8d1fd383a54790ee6fc8228264c21954e38e",
+        "4e73d313abc1b954bbc8afafa66f47a2d323da86"
+      ],
+      "records": 2,
+      "repository_key": "lukeed/klona",
+      "url": "https://github.com/lukeed/klona.git"
+    },
+    {
+      "commits": [
+        "bc80d5898d1e5e8a3d325d355eda0c325c8dcfc2",
+        "e8fadc9c79db70c090a5ef02e0438574f59b9952"
+      ],
+      "records": 2,
+      "repository_key": "lukeed/nestie",
+      "url": "https://github.com/lukeed/nestie.git"
+    },
+    {
+      "commits": [
+        "58a5c3671e2f36b26810e77ead9e0dd471902f9b",
+        "d34e56e0e0e969b71aa1ea87bd8fb1d2e7d11ed7"
+      ],
+      "records": 2,
+      "repository_key": "lukeed/tempura",
+      "url": "https://github.com/lukeed/tempura.git"
     },
     {
       "commits": [
@@ -2762,6 +5011,24 @@
       "records": 4,
       "repository_key": "lxc/incus",
       "url": "https://github.com/lxc/incus.git"
+    },
+    {
+      "commits": [
+        "1f534e2b957c0ea537c42d87fc262cb7069f0b1c",
+        "6be1d081b49c97cfd7b3fbd934a193b668629109"
+      ],
+      "records": 2,
+      "repository_key": "lxml/lxml",
+      "url": "https://github.com/lxml/lxml.git"
+    },
+    {
+      "commits": [
+        "0e44d4ccd714a7f90316590f4c8db36dced8235c",
+        "f94ee0b63936dae954ff50d5b5e8ea7cb9b284e6"
+      ],
+      "records": 3,
+      "repository_key": "lxsmnsyc/seroval",
+      "url": "https://github.com/lxsmnsyc/seroval.git"
     },
     {
       "commits": [
@@ -2812,39 +5079,112 @@
     },
     {
       "commits": [
-        "e5c757d71efbf660b5f77bde9faad99f2743238f",
-        "e9606ab0f42f4c1a6611bc3c52de299b0aba7726"
+        "1da69f3cd913a39fa948708e01478663bf48bc27",
+        "ac8580b7ef6c55584198c0c84efc2104ad4cc0c7"
       ],
       "records": 2,
+      "repository_key": "maplibre/maplibre-gl-js",
+      "url": "https://github.com/maplibre/maplibre-gl-js.git"
+    },
+    {
+      "commits": [
+        "593a3b3dbe357480c26ae252282b327759044541",
+        "e5c757d71efbf660b5f77bde9faad99f2743238f",
+        "e9606ab0f42f4c1a6611bc3c52de299b0aba7726",
+        "f894ed8656d7bdd7438ab8148c5a02546cb15183"
+      ],
+      "records": 5,
       "repository_key": "mar10/wsgidav",
       "url": "https://github.com/mar10/wsgidav.git"
     },
     {
       "commits": [
         "78489d4621dc4358dc5974af0c727feb0b7331cb",
-        "c24d4806398f30be6b12acd6c60d1d7c68cfd12a"
+        "c24d4806398f30be6b12acd6c60d1d7c68cfd12a",
+        "dc35cdfecf4f9b918d9c40faa92e2ad0d71501c4",
+        "fdd55c8cf6260ae23bb411dc9d9269def5cf75d6"
       ],
-      "records": 2,
+      "records": 5,
       "repository_key": "marimo-team/marimo",
       "url": "https://github.com/marimo-team/marimo.git"
     },
     {
       "commits": [
-        "1b587e2455cbd30779f5052d2d2d46d58463a3e2",
-        "b69e745584a34fcfd858df33e4631e420da07b9f"
+        "4b4bbcae5e0990a5b172378e507b33a59012ed26",
+        "76469e83dc1a1e3ed943b483b554003a666bddf7",
+        "d2782d892a51201b25d3eeab172201ad5a53a24c",
+        "ffc49ab46b5b751cd2be0aabb146f2ef84986101"
+      ],
+      "records": 4,
+      "repository_key": "markdown-it/markdown-it",
+      "url": "https://github.com/markdown-it/markdown-it.git"
+    },
+    {
+      "commits": [
+        "18c1c8921ff9d2ce18c7c47de59ae03f1c4dfeec",
+        "5c4a101121fc3e868026189c7a73f7f19eef90ac"
+      ],
+      "records": 2,
+      "repository_key": "mastercactapus/proxyprotocol",
+      "url": "https://github.com/mastercactapus/proxyprotocol.git"
+    },
+    {
+      "commits": [
+        "96d3dfe2ef0465d47324ed4d13e91ba0816a173f",
+        "f2c9e136ed100a873d29f7b15efaf5353d521b74"
+      ],
+      "records": 2,
+      "repository_key": "mat-sz/lettersanitizer",
+      "url": "https://github.com/mat-sz/lettersanitizer.git"
+    },
+    {
+      "commits": [
+        "12ab947261cda104ac87548429c69ce5014bbf02",
+        "c231cbd3d5147ee920a37b6ee9dd236b376bcf5a"
+      ],
+      "records": 2,
+      "repository_key": "materialsproject/pymatgen",
+      "url": "https://github.com/materialsproject/pymatgen.git"
+    },
+    {
+      "commits": [
+        "2792d0490f3771488bad346981b8c26479a872c3",
+        "7595fbf58c67fd8f0f879498f865f4871e652ddb"
+      ],
+      "records": 2,
+      "repository_key": "matrix-org/dendrite",
+      "url": "https://github.com/matrix-org/dendrite.git"
+    },
+    {
+      "commits": [
+        "6a49c18a298a1144e3cb2dfd06b56dc0c467731b",
+        "723fd495dde835d078b9f2074b6b62c06dea4575"
       ],
       "records": 3,
+      "repository_key": "matrix-org/gomatrixserverlib",
+      "url": "https://github.com/matrix-org/gomatrixserverlib.git"
+    },
+    {
+      "commits": [
+        "1b587e2455cbd30779f5052d2d2d46d58463a3e2",
+        "4c6723a5e7beda65cdf1ae5dbb882e8beaac8552",
+        "b69e745584a34fcfd858df33e4631e420da07b9f",
+        "cfc6358c8c80276862cfae5071d74999c6b144e0"
+      ],
+      "records": 6,
       "repository_key": "matrix-org/matrix-appservice-bridge",
       "url": "https://github.com/matrix-org/matrix-appservice-bridge.git"
     },
     {
       "commits": [
         "062f3ace8b08e86e9f63c004ffdb85942af1b94e",
+        "0afb064635d37e039067b5b3d6423448b93026d3",
         "1835e047f269001054be4c68867797aa12372a0f",
+        "5fa23ed5f8df16d8c077bb105c3b47990328a9df",
         "74f02c8e11f16ed1b355700092c1aa9c036a11bd",
         "faadd07f90f4c588a1196ebaa837427e20d48461"
       ],
-      "records": 6,
+      "records": 9,
       "repository_key": "matrix-org/matrix-appservice-irc",
       "url": "https://github.com/matrix-org/matrix-appservice-irc.git"
     },
@@ -2856,6 +5196,15 @@
       "records": 3,
       "repository_key": "matrix-org/matrix-js-sdk",
       "url": "https://github.com/matrix-org/matrix-js-sdk.git"
+    },
+    {
+      "commits": [
+        "218b2801995b174085cb1c8fafe2d3aa661f85bd",
+        "ea4c33717fd74ef7d6f49490625a0fa10e3f5bbc"
+      ],
+      "records": 3,
+      "repository_key": "matrix-org/pinecone",
+      "url": "https://github.com/matrix-org/pinecone.git"
     },
     {
       "commits": [
@@ -2882,6 +5231,17 @@
       "records": 10,
       "repository_key": "mattermost/mattermost",
       "url": "https://github.com/mattermost/mattermost.git"
+    },
+    {
+      "commits": [
+        "429cfaf2a301a369414d1ca18a3364e85901c8d1",
+        "cd6da06fc32678b8ab83a21a1fedbe084315798a",
+        "d48893c8558e5a61f5fdd188bbee5ec7cb73887b",
+        "f68b41980e1274e05cf91c687e2af1a73c5e36ca"
+      ],
+      "records": 4,
+      "repository_key": "mattermost/mattermost-plugin-calls",
+      "url": "https://github.com/mattermost/mattermost-plugin-calls.git"
     },
     {
       "commits": [
@@ -2921,32 +5281,114 @@
     },
     {
       "commits": [
-        "2b72a7c87e36a6c20ae30290de0cab23a3277f48",
-        "c9d88b67e127b2dcc7b46e328df468257fb2dc30"
+        "91121a41d04a09d28bcd4d0e8cd535b8582d2c08",
+        "9e0e0fad5a251de5b42feb326c4204eb04080805"
       ],
       "records": 3,
+      "repository_key": "matthewmueller/dom-iterator",
+      "url": "https://github.com/matthewmueller/dom-iterator.git"
+    },
+    {
+      "commits": [
+        "959561879693bf4a576f99c6733b50b01186aa08",
+        "fe8a821a20629594668288cdfcfe74dd07b62bbf"
+      ],
+      "records": 2,
+      "repository_key": "matthewwithanm/python-markdownify",
+      "url": "https://github.com/matthewwithanm/python-markdownify.git"
+    },
+    {
+      "commits": [
+        "17b901cd192d2c90d7f9f347bd3073b28b482699",
+        "2b72a7c87e36a6c20ae30290de0cab23a3277f48",
+        "6e2a930978671b4530c00fd7cda287c0f9a5b6ef",
+        "c9d88b67e127b2dcc7b46e328df468257fb2dc30"
+      ],
+      "records": 6,
       "repository_key": "mattiasw/exifreader",
       "url": "https://github.com/mattiasw/ExifReader.git"
     },
     {
       "commits": [
-        "49264e0037e313a0a3e033450b5c184112516d8f",
-        "7eaba6ade1b11e0bb275f1eb63ba49071aca24dd"
+        "51ca0db1fdcccb25c18496cf4724813edef3fb19",
+        "b107e453ede7b58adcccae74a3e474c012eec85d"
       ],
       "records": 2,
+      "repository_key": "mattkrick/sanitize-svg",
+      "url": "https://github.com/mattkrick/sanitize-svg.git"
+    },
+    {
+      "commits": [
+        "15443a1f2aa682a6aa37f1705ac628de5b866ad1",
+        "20e82600ac9462e679c8a45e5723315f21e2c774",
+        "77fbef144d05def5d16fc22c37caa64c0a7efeba",
+        "85da345bf1acc18ca441741e5cf4aa0ed0d69314"
+      ],
+      "records": 4,
+      "repository_key": "mcollina/msgpack5",
+      "url": "https://github.com/mcollina/msgpack5.git"
+    },
+    {
+      "commits": [
+        "15ee698583c98dadc456639d6245580d17a24baf",
+        "49264e0037e313a0a3e033450b5c184112516d8f",
+        "7eaba6ade1b11e0bb275f1eb63ba49071aca24dd",
+        "c120527315e159ee48570f73936691f33113ec25"
+      ],
+      "records": 4,
       "repository_key": "mde/ejs",
       "url": "https://github.com/mde/ejs.git"
     },
     {
       "commits": [
         "19e54c78d5864aec43986e8f96be8d15998daa80",
+        "622db6d8d6e650d6de4300c97779de50e3331095",
         "6ea641cc8648b025ed5f30b090c2abd4d1a5249f",
         "88805fd3da03bd7a5e60947adb49d182011f1277",
-        "926b2aa1099f177f82d0a998da4b43e69fe56ec8"
+        "926b2aa1099f177f82d0a998da4b43e69fe56ec8",
+        "ac43ca8f80c042f0256fb551ea5203863dec4481"
       ],
-      "records": 4,
+      "records": 6,
       "repository_key": "medialize/uri.js",
       "url": "https://github.com/medialize/uri.js.git"
+    },
+    {
+      "commits": [
+        "35a125585e5e9ec31ee60094a08ae92337cff75a",
+        "71f2ebefa3494da21550fb525216818776cde67f"
+      ],
+      "records": 2,
+      "repository_key": "mem0ai/mem0",
+      "url": "https://github.com/mem0ai/mem0.git"
+    },
+    {
+      "commits": [
+        "26ede9b0156be0c3c2ca65261af42a0b02614608",
+        "3d22fa5d2435de5acc18de6f88474a6e8675a60e"
+      ],
+      "records": 3,
+      "repository_key": "mermaid-js/mermaid",
+      "url": "https://github.com/mermaid-js/mermaid.git"
+    },
+    {
+      "commits": [
+        "4b4ef64683b7bf594668f22f0b46e85850129d8b",
+        "8e995ce21af02d32ef61689c1e1748a745917f13"
+      ],
+      "records": 2,
+      "repository_key": "meshery/meshery",
+      "url": "https://github.com/meshery/meshery.git"
+    },
+    {
+      "commits": [
+        "748e20d4a363d89b841d62213f5b0c6b4bed788f",
+        "8f7e1e230975f6f763a090f647d34a4cad7977c1",
+        "cbab8bf0683560245d11f96581d6338b0103acc4",
+        "f38c42a1d3eba246941ef8d7f645072d53c58785"
+      ],
+      "records": 5,
+      "repository_key": "mesop-dev/mesop",
+      "url": "https://github.com/mesop-dev/mesop.git"
     },
     {
       "commits": [
@@ -2959,12 +5401,39 @@
     },
     {
       "commits": [
+        "4a4be03d5e13ce5408b8be3dee970d15212ca532",
+        "ab67989719abb4dcc774d02de266151905b8d45a"
+      ],
+      "records": 2,
+      "repository_key": "mhr3/unzip-stream",
+      "url": "https://github.com/mhr3/unzip-stream.git"
+    },
+    {
+      "commits": [
         "3af1afc53b78b56ada131437f399e69060a22a2f",
         "80e168787ed608e83a065033ee94c8bfc3025ce7"
       ],
       "records": 2,
       "repository_key": "mhsanaei/3x-ui",
       "url": "https://github.com/MHSanaei/3x-ui.git"
+    },
+    {
+      "commits": [
+        "37934142c1aeea48b6fb03edbdcf90e45b5cb4a1",
+        "abdafb0cae1e0c00f184abbadc692f4eaa98f451"
+      ],
+      "records": 2,
+      "repository_key": "micromatch/braces",
+      "url": "https://github.com/micromatch/braces.git"
+    },
+    {
+      "commits": [
+        "50d2dfac4b70edb0973bad02b5dd07f9343afd17",
+        "f49c8e1379ea4b147d5bff1b3be5b0ff45792e41"
+      ],
+      "records": 2,
+      "repository_key": "microsoft/go-crypto-winnative",
+      "url": "https://github.com/microsoft/go-crypto-winnative.git"
     },
     {
       "commits": [
@@ -2977,6 +5446,33 @@
     },
     {
       "commits": [
+        "85e0f12bd868974b891601a141974f929dec36b8",
+        "98cffa82a372ff942194c925a12a311253587167"
+      ],
+      "records": 2,
+      "repository_key": "microsoft/maker.js",
+      "url": "https://github.com/microsoft/maker.js.git"
+    },
+    {
+      "commits": [
+        "b4fd3608116d8b1c42319d060d49eb6da85f25e7",
+        "c27402da2487075be577f06aa79df627fb9d6853"
+      ],
+      "records": 3,
+      "repository_key": "microsoft/prompty",
+      "url": "https://github.com/microsoft/prompty.git"
+    },
+    {
+      "commits": [
+        "a8f2bc1dd57a2471b1a832a407f5328b481f513f",
+        "d635599f03488c857e1919fcc8303cc5a09e9a0a"
+      ],
+      "records": 2,
+      "repository_key": "microsoft/taskweaver",
+      "url": "https://github.com/microsoft/TaskWeaver.git"
+    },
+    {
+      "commits": [
         "cc4b24e5d4e9874976d45e8c69d9799d1c367a7c",
         "f759e9090aaf00a43c616d7cbd133c44bb1ed01e"
       ],
@@ -2986,12 +5482,48 @@
     },
     {
       "commits": [
+        "669f0b59cfc31efd6ea50bb50c320de2f3be2300",
+        "daabded122a89d323357c4c401e879701864cb2f"
+      ],
+      "records": 2,
+      "repository_key": "middleapi/orpc",
+      "url": "https://github.com/middleapi/orpc.git"
+    },
+    {
+      "commits": [
         "43913f2f4fbd7dcff930b8a809e709591e4dd79e",
         "862243b3b1e77ca9f73771fc95a7148d11cebb55"
       ],
       "records": 3,
       "repository_key": "miekg/dns",
       "url": "https://github.com/miekg/dns.git"
+    },
+    {
+      "commits": [
+        "b15ffe9e50e110d7174ccd944f642079e1dcf9ee",
+        "bc689124a25960f6e481ea308d3ccf03bbfaec5e"
+      ],
+      "records": 2,
+      "repository_key": "miguelgrinberg/flask-httpauth",
+      "url": "https://github.com/miguelgrinberg/flask-httpauth.git"
+    },
+    {
+      "commits": [
+        "a9ddbc2bc86eb48f6976b85d195b6a94e81ffb22",
+        "b7a8b32600e60759a7ad3921ec4a2750bf173482"
+      ],
+      "records": 2,
+      "repository_key": "mikaelbr/mversion",
+      "url": "https://github.com/mikaelbr/mversion.git"
+    },
+    {
+      "commits": [
+        "40bff16432c156bce28c0949b825ce4c93397975",
+        "527ad58eb486e32438f7198fb88315c20449d792"
+      ],
+      "records": 2,
+      "repository_key": "milamer/parse-nested-form-data",
+      "url": "https://github.com/milamer/parse-nested-form-data.git"
     },
     {
       "commits": [
@@ -3031,6 +5563,15 @@
     },
     {
       "commits": [
+        "7a95b06812af120141c84f6bc28551ac5586f9b9",
+        "bdcfb13484f0b85703a4c1ddfd71cb21840e7fde"
+      ],
+      "records": 2,
+      "repository_key": "mljar/plotai",
+      "url": "https://github.com/mljar/plotai.git"
+    },
+    {
+      "commits": [
         "13bb35978155fdcfe3a8968d01a773477e03369e",
         "baf03faf88fece56a89534d12ce048e5ee36e50e"
       ],
@@ -3040,12 +5581,39 @@
     },
     {
       "commits": [
+        "d3a184119e4479ea6a63590bc41f01dc06e3fa99",
+        "fa851d93a2036a37cce73e098f7dbc80a6c48765"
+      ],
+      "records": 2,
+      "repository_key": "modelcontextprotocol/python-sdk",
+      "url": "https://github.com/modelcontextprotocol/python-sdk.git"
+    },
+    {
+      "commits": [
         "78b7bbde07948049b916d76b4769faee461ff930",
         "fbfd63ced8e1f6bee9ccd0dd93f1b8fe087f9f22"
       ],
       "records": 3,
       "repository_key": "modelcontextprotocol/registry",
       "url": "https://github.com/modelcontextprotocol/registry.git"
+    },
+    {
+      "commits": [
+        "862e717ff714987bd5577318df09858e14883863",
+        "dcb47d2d94a3a33340053d2df550ae68d2795a3f"
+      ],
+      "records": 3,
+      "repository_key": "modelcontextprotocol/servers",
+      "url": "https://github.com/modelcontextprotocol/servers.git"
+    },
+    {
+      "commits": [
+        "a0c9b13484748acab9e5dc8317a7e89c06b52e37",
+        "b392f02ffcf37c088dbd114fedf25026ec3913d3"
+      ],
+      "records": 3,
+      "repository_key": "modelcontextprotocol/typescript-sdk",
+      "url": "https://github.com/modelcontextprotocol/typescript-sdk.git"
     },
     {
       "commits": [
@@ -3094,6 +5662,24 @@
     },
     {
       "commits": [
+        "4211bfc8f15746be4019bba557e29a7ba83d54c5",
+        "f2a813afcfd0dd6e63812ea74c46ecc627f6a6a6"
+      ],
+      "records": 3,
+      "repository_key": "moment/moment",
+      "url": "https://github.com/moment/moment.git"
+    },
+    {
+      "commits": [
+        "7915ac567ab19700e44ad6b5d8ef0b85e48a9e75",
+        "ce955a301ff372e8e9fb3a5b516620c60e7a082a"
+      ],
+      "records": 2,
+      "repository_key": "moment/moment-timezone",
+      "url": "https://github.com/moment/moment-timezone.git"
+    },
+    {
+      "commits": [
         "5c61cacb99f33ad762882f37385318b0bdbb14ed",
         "b1f8050d49d66be3bc499cb317a1e1de45390e51"
       ],
@@ -3121,12 +5707,41 @@
     },
     {
       "commits": [
-        "2189378ed476d34b3cd39ba7f1199dbf12b8e51b",
-        "3fecf1333e6d71ae72edf48c71dc665e40df7605"
+        "28c6cbb666bb4e299d885032fb909fb42e77f5a9",
+        "8d34ee5819cfc983d57e49b45d8c5ef70a76d79b"
       ],
       "records": 2,
+      "repository_key": "moscajs/aedes",
+      "url": "https://github.com/moscajs/aedes.git"
+    },
+    {
+      "commits": [
+        "bde3b169be817ebc200a401b1f98f732783515d7",
+        "c60b64af5bb8c09189071522a1f6796cb44340b0"
+      ],
+      "records": 2,
+      "repository_key": "motioneye-project/motioneye",
+      "url": "https://github.com/motioneye-project/motioneye.git"
+    },
+    {
+      "commits": [
+        "17ffdc2a96417a63a0147156dc045e90d0d14c64",
+        "2189378ed476d34b3cd39ba7f1199dbf12b8e51b",
+        "3fecf1333e6d71ae72edf48c71dc665e40df7605",
+        "93e99c97ef734c811408cb842b22223dffd7bfae"
+      ],
+      "records": 4,
       "repository_key": "mout/mout",
       "url": "https://github.com/mout/mout.git"
+    },
+    {
+      "commits": [
+        "8d416c5ee780efe5daa237368bd9bd1b1af75c12",
+        "f77e0f6392177a06e46a49abd61a4d9f035e57fd"
+      ],
+      "records": 2,
+      "repository_key": "mozilla/bleach",
+      "url": "https://github.com/mozilla/bleach.git"
     },
     {
       "commits": [
@@ -3145,6 +5760,42 @@
       "records": 2,
       "repository_key": "mozilla/readability",
       "url": "https://github.com/mozilla/readability.git"
+    },
+    {
+      "commits": [
+        "9391ef8da6a6a98c6a9f8c97f101adb900523681",
+        "bb19235ac074df05c545c8d2d2235916d2aef0b8"
+      ],
+      "records": 3,
+      "repository_key": "mpetroff/pannellum",
+      "url": "https://github.com/mpetroff/pannellum.git"
+    },
+    {
+      "commits": [
+        "0f5de4f5da1014f81c00d309f93b1a1e709341e4",
+        "4a582355216b620176a291ff319d740e619d583e"
+      ],
+      "records": 3,
+      "repository_key": "mrdoob/three.js",
+      "url": "https://github.com/mrdoob/three.js.git"
+    },
+    {
+      "commits": [
+        "0fdd0bb6d0273178cd940afc323ccbce19688229",
+        "dd154d63966b8edd9396d3c323d16aa1597e3e3a"
+      ],
+      "records": 2,
+      "repository_key": "mrodrig/json-2-csv",
+      "url": "https://github.com/mrodrig/json-2-csv.git"
+    },
+    {
+      "commits": [
+        "c91995de97c598deaf6fda7109ea886a50f50109",
+        "d8bb3b39efcd129994f7a3b01b632164144ec43e"
+      ],
+      "records": 2,
+      "repository_key": "mrrio/jspdf",
+      "url": "https://github.com/MrRio/jsPDF.git"
     },
     {
       "commits": [
@@ -3202,6 +5853,17 @@
     },
     {
       "commits": [
+        "088b47a660b13003644e4399c48f0d4593fb4e59",
+        "4e387f61c4a5cef792f6a2f42467013290bf95dc",
+        "7e70dd8f758f3f494c4e14a281cea35b7d8d0d13",
+        "bd26122c838e6a55e7d7ac49b4ccc01a49999a01"
+      ],
+      "records": 4,
+      "repository_key": "naturalintelligence/fast-xml-parser",
+      "url": "https://github.com/NaturalIntelligence/fast-xml-parser.git"
+    },
+    {
+      "commits": [
         "175964b17a8bdd092e59b91d99cd81b61506b837",
         "8c707b4e0ccfb5f05cea3c69a8ef51d0a63e15f1",
         "9e79b5cbf2a48c1e4344df00fea4ed3844ea965d",
@@ -3222,10 +5884,30 @@
     },
     {
       "commits": [
-        "4593f5889c482fc0e29060222757c0fececa94fa",
-        "cbdf737cd6e7cefa52d05ecea2ae4af95c464614"
+        "2bbc498c5029238637206661dbac9e44d37d17c5",
+        "faef02a13d61cc511d23689902f33edba00cae5b"
       ],
       "records": 2,
+      "repository_key": "neocotic/convert-svg",
+      "url": "https://github.com/neocotic/convert-svg.git"
+    },
+    {
+      "commits": [
+        "d946be38e0ca3abb35f8ab13a3bed84243412f02",
+        "e5a085afe6abfaea1d1a78f54c45af9ef43ca1f9"
+      ],
+      "records": 2,
+      "repository_key": "nescalante/urlregex",
+      "url": "https://github.com/nescalante/urlregex.git"
+    },
+    {
+      "commits": [
+        "4593f5889c482fc0e29060222757c0fececa94fa",
+        "63aba59e4593d1e95882014f794594c98cb19d7a",
+        "83558ae774a990a7916141d3abe0b6548ff3a8b2",
+        "cbdf737cd6e7cefa52d05ecea2ae4af95c464614"
+      ],
+      "records": 4,
       "repository_key": "nestjs/nest",
       "url": "https://github.com/nestjs/nest.git"
     },
@@ -3258,12 +5940,30 @@
     },
     {
       "commits": [
+        "6e15bdcb2d93c1ad5ee3889f702607637e79db50",
+        "7a4bf038b119ae65ffbff67645e65d6ab9c4f847"
+      ],
+      "records": 2,
+      "repository_key": "nextauthjs/next-auth",
+      "url": "https://github.com/nextauthjs/next-auth.git"
+    },
+    {
+      "commits": [
         "61d38eec521703e41e4933d18d5a5ef6f854abd5",
         "6f4ec53d967478e69917078e6f73f448001bf107"
       ],
       "records": 2,
       "repository_key": "nicolargo/glances",
       "url": "https://github.com/nicolargo/glances.git"
+    },
+    {
+      "commits": [
+        "0010d28de1b15d51db3976080e26357fa7144436",
+        "7aa934294e59bc7359651a852e73bd5785b9b99b"
+      ],
+      "records": 2,
+      "repository_key": "nicolas-van/modern-async",
+      "url": "https://github.com/nicolas-van/modern-async.git"
     },
     {
       "commits": [
@@ -3276,12 +5976,30 @@
     },
     {
       "commits": [
+        "0029ba71b6ad0d8ec0baa2ecc6256d038bdd9b56",
+        "4679bc5867a3d215947f10b1d6b5821449979859"
+      ],
+      "records": 2,
+      "repository_key": "nmanousos/email-existence",
+      "url": "https://github.com/nmanousos/email-existence.git"
+    },
+    {
+      "commits": [
         "28802387292baee467e042e168d92597b5bbbe3d",
         "e87b093fd678a9ea39c5b17b2a1bdfc4691eedc7"
       ],
       "records": 3,
       "repository_key": "node-fetch/node-fetch",
       "url": "https://github.com/node-fetch/node-fetch.git"
+    },
+    {
+      "commits": [
+        "045e3b9c54211fdb95f96edf363679845b195cec",
+        "58495fee0cd64148bc4dccdc57c2d701c41acbd4"
+      ],
+      "records": 3,
+      "repository_key": "node-saml/node-saml",
+      "url": "https://github.com/node-saml/node-saml.git"
     },
     {
       "commits": [
@@ -3305,12 +6023,34 @@
     },
     {
       "commits": [
+        "59b6e76b712350e9e6aad7773e7375a1de009cf9",
         "6a8e05f9a485188ed730ac81e81ae221352ef480",
-        "6b4ff5e92474186b0c0381021ba4120f883c1995"
+        "6b4ff5e92474186b0c0381021ba4120f883c1995",
+        "9d4ce5e2895365c943d2bdf7e7c8ac1be3ec51a3",
+        "a567ef3c6e61eb319f0bfc2671d91061afb01235",
+        "e18afbf1edcafb7add2c4c7b22abc8d6ebc2fa61"
       ],
-      "records": 3,
+      "records": 9,
       "repository_key": "nodeca/js-yaml",
       "url": "https://github.com/nodeca/js-yaml.git"
+    },
+    {
+      "commits": [
+        "52460d936c52f03c9907bc99ac5e890970cef83c",
+        "76f514ab391468acede450f1354f7663644fe3c1"
+      ],
+      "records": 3,
+      "repository_key": "nodee-apps/utils",
+      "url": "https://github.com/nodee-apps/utils.git"
+    },
+    {
+      "commits": [
+        "7bd83e1650d8d6e6b8b436c5367c8cd27c4fcb3c",
+        "b1a5b316473ac92d783f3d54ee048d54082da38d"
+      ],
+      "records": 2,
+      "repository_key": "nodef/heroku-addonpool",
+      "url": "https://github.com/nodef/heroku-addonpool.git"
     },
     {
       "commits": [
@@ -3325,6 +6065,15 @@
     },
     {
       "commits": [
+        "921a67df4cfb38f0b411037d7b26fbd4d5411b08",
+        "bb325f156d35c28d78a18c7f61c0f2a54a2b7854"
+      ],
+      "records": 2,
+      "repository_key": "nodemailer/mailparser",
+      "url": "https://github.com/nodemailer/mailparser.git"
+    },
+    {
+      "commits": [
         "4e58450eb490e5097a74b2b2cce35a8d9e21856e",
         "a82e060d978f27e5f41369a9a9807b1e3dedc2e2"
       ],
@@ -3334,12 +6083,39 @@
     },
     {
       "commits": [
+        "70c48c16f99affa29236ac13b16a37f43da38ae0",
+        "d3e663322a13043ca63aaba235d8cf3900e0c8cf"
+      ],
+      "records": 2,
+      "repository_key": "nolimits4web/swiper",
+      "url": "https://github.com/nolimits4web/swiper.git"
+    },
+    {
+      "commits": [
+        "1e4527ffe8688d4f5325283d7cf2cf2d61f14c6b",
+        "6a77d2fa6e1462693cf8e46f930da96ec1b0bb22"
+      ],
+      "records": 2,
+      "repository_key": "npm/fstream",
+      "url": "https://github.com/npm/fstream.git"
+    },
+    {
+      "commits": [
         "09e540b09a951ded299ee028e7f1bd21cef5a6da",
         "18bf9b97fb1deecdba01ffb05580370846255c88"
       ],
       "records": 3,
       "repository_key": "npm/npm-registry-fetch",
       "url": "https://github.com/npm/npm-registry-fetch.git"
+    },
+    {
+      "commits": [
+        "8a59ae36c09259c6f845217be837f2f522542f9c",
+        "99097738b5561639e9bf247c55d8103236618bf3"
+      ],
+      "records": 2,
+      "repository_key": "nuxt-modules/mdc",
+      "url": "https://github.com/nuxt-modules/mdc.git"
     },
     {
       "commits": [
@@ -3428,6 +6204,15 @@
     },
     {
       "commits": [
+        "85ba51ac9dc47a3e232a19926791219ef9de20ee",
+        "877720d2d9bb90dc8233706e81ffa03f99fc9dc8"
+      ],
+      "records": 2,
+      "repository_key": "oliversalzburg/i18n-node-angular",
+      "url": "https://github.com/oliversalzburg/i18n-node-angular.git"
+    },
+    {
+      "commits": [
         "276e3f62ddb87f9cb87903b19203e35db01a0c95",
         "d74da9314005954dd49fa20dabf272247bc76519"
       ],
@@ -3437,10 +6222,34 @@
     },
     {
       "commits": [
+        "8aa2789e8f759c73f1517abe9a0abd44e86644ad",
+        "c2752646d865e17976dcd2582cefb18fc5c4c0fc",
+        "d41207cbb82afc56ea79e84db532608aa24ab4aa",
+        "e5f012bdfe16cc424f0f0effcda0a0af085add17"
+      ],
+      "records": 4,
+      "repository_key": "ome/omero-web",
+      "url": "https://github.com/ome/omero-web.git"
+    },
+    {
+      "commits": [
+        "25a22dc9e6da4648d23749f0a589e47e6aed991b",
+        "7ca0cca3c9a65c04c489edf68f0e080424a26868",
+        "b10358603f301451d20a737cdfd870917de8245d",
+        "b18dab9dff4f3b7e01e7359984d7af51caf8b88c"
+      ],
+      "records": 4,
+      "repository_key": "omnigent-ai/omnigent",
+      "url": "https://github.com/omnigent-ai/omnigent.git"
+    },
+    {
+      "commits": [
+        "0c45fc64f0c0aeb23fe515c95e29f6485803de65",
+        "4155bfe068bf211b49a0b3ffd06e78cbaf1b40fa",
         "4fc3b404f718abb789f4ce4272c39c7a138c7a82",
         "833e7fcc2bc8406b9c76836a51ae173f50c56bf0"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "omphalos/crud-file-server",
       "url": "https://github.com/omphalos/crud-file-server.git"
     },
@@ -3452,6 +6261,15 @@
       "records": 3,
       "repository_key": "onosproject/onos-lib-go",
       "url": "https://github.com/onosproject/onos-lib-go.git"
+    },
+    {
+      "commits": [
+        "1994d0cf646b5403537bdd70dee7e8de718183bf",
+        "9e70cc1e21a15239c81111062c0b37df4b5a8026"
+      ],
+      "records": 3,
+      "repository_key": "open-cluster-management-io/ocm",
+      "url": "https://github.com/open-cluster-management-io/ocm.git"
     },
     {
       "commits": [
@@ -3473,6 +6291,15 @@
     },
     {
       "commits": [
+        "234eadd91ae4b83bf548972ff7237db90b1125f3",
+        "371bf6afbd7cfa3253fa1674f5444064e86ef0ac"
+      ],
+      "records": 3,
+      "repository_key": "open-telemetry/opentelemetry-collector-contrib",
+      "url": "https://github.com/open-telemetry/opentelemetry-collector-contrib.git"
+    },
+    {
+      "commits": [
         "37aa18dd0e8bb19a42ebe9ce00e6218f06565b30",
         "d45961bcda453fcbdb6469c22d6e88a1f9970a53"
       ],
@@ -3488,6 +6315,24 @@
       "records": 2,
       "repository_key": "open-webui/open-webui",
       "url": "https://github.com/open-webui/open-webui.git"
+    },
+    {
+      "commits": [
+        "1d1178840703a72d9082b7fc4aea0a3326c5d294",
+        "5f6b411161100c15196c8149c0b1df5537c88a05"
+      ],
+      "records": 2,
+      "repository_key": "openclarity/kubeclarity",
+      "url": "https://github.com/openclarity/kubeclarity.git"
+    },
+    {
+      "commits": [
+        "69974c1d6d553e9bd98b86b78c6fe4c712b8b131",
+        "eaae40ae4ce009e60633f16f7f19600c74557f6f"
+      ],
+      "records": 3,
+      "repository_key": "openclaw/crabbox",
+      "url": "https://github.com/openclaw/crabbox.git"
     },
     {
       "commits": [
@@ -3509,12 +6354,32 @@
     },
     {
       "commits": [
+        "7b5ed20c608c7b9b36d1950a386678e0a89f8175",
+        "89546d7683acbd79a660d390480b8eb0bec2d006"
+      ],
+      "records": 2,
+      "repository_key": "openlistteam/openlist-frontend",
+      "url": "https://github.com/OpenListTeam/OpenList-Frontend.git"
+    },
+    {
+      "commits": [
         "6ce29e743165890c10346f4c71d5bf79f1ecaf6f",
         "85646c441fe8c9e591a3ca2c54594d0d7c74080d"
       ],
       "records": 2,
       "repository_key": "openmeterio/openmeter",
       "url": "https://github.com/openmeterio/openmeter.git"
+    },
+    {
+      "commits": [
+        "17f639bc8d4df7057ce72cbcc8303af7300df3b5",
+        "327d3e5392a6f59a4270569d200c7f7a2bfc4cbc",
+        "4df86e53a79ca1a2998326f6e526d3856992aee6",
+        "6b43e02a254853f5ff508ebd1b07541f78b7c566"
+      ],
+      "records": 4,
+      "repository_key": "openpgpjs/openpgpjs",
+      "url": "https://github.com/openpgpjs/openpgpjs.git"
     },
     {
       "commits": [
@@ -3536,10 +6401,21 @@
     },
     {
       "commits": [
-        "b1ac90f7914d91b25144cc4063fa994fb5019ee3",
-        "cc6ce4acbc2f72ab8d3ae62f8e7effc36fd54302"
+        "818dc0f1e0bd2c05817d5ccf90fc45f63c052220",
+        "8881a42af169a2d7c912b1434911f978883c83f3"
       ],
       "records": 2,
+      "repository_key": "openstack/ceilometer",
+      "url": "https://github.com/openstack/ceilometer.git"
+    },
+    {
+      "commits": [
+        "b1ac90f7914d91b25144cc4063fa994fb5019ee3",
+        "c0623627b92193acab0b3594a40c45eea46ee51e",
+        "cc6ce4acbc2f72ab8d3ae62f8e7effc36fd54302",
+        "eb99e45829a1b4c93db5692bdbf636a86faa56c4"
+      ],
+      "records": 4,
       "repository_key": "openstack/glance",
       "url": "https://github.com/openstack/glance.git"
     },
@@ -3563,6 +6439,33 @@
     },
     {
       "commits": [
+        "947315f0903c823b0fdd9d99c60078814587272c",
+        "a43f0666c8f127a8ec1175211a6bc3e9cf239004"
+      ],
+      "records": 3,
+      "repository_key": "openstack/manila",
+      "url": "https://github.com/openstack/manila.git"
+    },
+    {
+      "commits": [
+        "28de8c36c9dbe4aaf4d062e6fb6099afd437f49b",
+        "9b319d0feeef0ab3d13357a3914d9268ca699522"
+      ],
+      "records": 2,
+      "repository_key": "openstack/murano",
+      "url": "https://github.com/openstack/murano.git"
+    },
+    {
+      "commits": [
+        "c235232501a74b4e7bebdbe2efc16106a4d837ec",
+        "e610a5eb9e71aa2549fb11e2139370d227787da2"
+      ],
+      "records": 2,
+      "repository_key": "openstack/neutron",
+      "url": "https://github.com/openstack/neutron.git"
+    },
+    {
+      "commits": [
         "3eba22ff09c81a61750fbb4882e5f1f01a20fdf5",
         "4b90fdf9af8de53fb6536d27b8fc654a0c011e2f"
       ],
@@ -3581,12 +6484,30 @@
     },
     {
       "commits": [
+        "233f53978846c400be4c7d9ae7aea976e6ab2357",
+        "754633988931e4095530f6b13389c254096eb485"
+      ],
+      "records": 2,
+      "repository_key": "openstack/swift",
+      "url": "https://github.com/openstack/swift.git"
+    },
+    {
+      "commits": [
         "386ddc22680e8e9be3a34241067b0e34a192ebea",
         "61774984aa2bacfe89867fc39a402a6a4cfb8f33"
       ],
       "records": 3,
       "repository_key": "openstack/trove",
       "url": "https://github.com/openstack/trove.git"
+    },
+    {
+      "commits": [
+        "39c7a2da84a2ddddfe046ea80e98800518920516",
+        "b0ba23a53e881204e4bca4cef75305edb4f9e8b4"
+      ],
+      "records": 2,
+      "repository_key": "optimalbits/redbird",
+      "url": "https://github.com/OptimalBits/redbird.git"
     },
     {
       "commits": [
@@ -3605,6 +6526,15 @@
       "records": 3,
       "repository_key": "oras-project/oras-go",
       "url": "https://github.com/oras-project/oras-go.git"
+    },
+    {
+      "commits": [
+        "80b5fe73b94f120a3a5561952d6d4b0f8d7e928d",
+        "b8189efe3858a8d6e4bae1e41d3fb6b14c1bd55d"
+      ],
+      "records": 2,
+      "repository_key": "orval-labs/orval",
+      "url": "https://github.com/orval-labs/orval.git"
     },
     {
       "commits": [
@@ -3661,12 +6591,23 @@
     },
     {
       "commits": [
+        "73d6504063bfa00666a92b07a28aaf906c532f09",
+        "941efd4a36ed0f27e13758874f95e3aa1d3ee163"
+      ],
+      "records": 3,
+      "repository_key": "pallets/flask",
+      "url": "https://github.com/pallets/flask.git"
+    },
+    {
+      "commits": [
         "033c20015c7ca899ab52eb921bb0f08e6d3dd145",
         "48b0687e05a5466a91cd5812d604fa37ad0943b4",
+        "716795349a41d4983a9a4771f7d883c96ea17be7",
         "767b23617628419ae3709ccfb02f9602ae9fe51f",
-        "90457bbf33b8662926ae65cdde4c4c32e756e403"
+        "90457bbf33b8662926ae65cdde4c4c32e756e403",
+        "d84a1743e4158733222105ff3b9c9d5da108868f"
       ],
-      "records": 4,
+      "records": 6,
       "repository_key": "pallets/jinja",
       "url": "https://github.com/pallets/jinja.git"
     },
@@ -3687,6 +6628,15 @@
       "records": 2,
       "repository_key": "pallets/werkzeug",
       "url": "https://github.com/pallets/werkzeug.git"
+    },
+    {
+      "commits": [
+        "4766c34d66e3d1ef6211f18bc80f24198e8b77ff",
+        "476d00078dfb2827d7c9ee0f2392c81b864f7bc5"
+      ],
+      "records": 2,
+      "repository_key": "panates/putil-merge",
+      "url": "https://github.com/panates/putil-merge.git"
     },
     {
       "commits": [
@@ -3717,6 +6667,17 @@
     },
     {
       "commits": [
+        "2a2a0e6514357b9eda07c2f8afbd3f04727a7cd9",
+        "2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b",
+        "515d21fee0b05be5ab934af5acb79d1d977e8026",
+        "65c90d949c0f8a9709759dff9e76bbe07061812b"
+      ],
+      "records": 5,
+      "repository_key": "patrickjuchli/basic-ftp",
+      "url": "https://github.com/patrickjuchli/basic-ftp.git"
+    },
+    {
+      "commits": [
         "99d410bb7e0d607c56e68b420720a586dc0dd300",
         "ca195f0178989d6f59eafb7af965806f829e20f7"
       ],
@@ -3744,6 +6705,51 @@
     },
     {
       "commits": [
+        "6853e2642dfa281d4a9958fbc6c95b7e32d84831",
+        "ccc4885f60ed87e9738b5b122bcdd061ca63e4c2"
+      ],
+      "records": 3,
+      "repository_key": "pdm-project/pdm",
+      "url": "https://github.com/pdm-project/pdm.git"
+    },
+    {
+      "commits": [
+        "75e5471040ccb5674ea8d25c2aa16c80ccb70b2a",
+        "ae51c3b6dda160d48696a2974cc485f79a0f73ab"
+      ],
+      "records": 2,
+      "repository_key": "perses/perses",
+      "url": "https://github.com/perses/perses.git"
+    },
+    {
+      "commits": [
+        "1141f9aedab989fa1470883b929104f99f80a840",
+        "807dba930f8718f9126cad59d949b8fd3539b059"
+      ],
+      "records": 3,
+      "repository_key": "phun-ky/defaults-deep",
+      "url": "https://github.com/phun-ky/defaults-deep.git"
+    },
+    {
+      "commits": [
+        "e12c4694ed2068fb08e40209b4dcd2609796752b",
+        "edcfe3568382922ba3e3b65896e6e7272f972261"
+      ],
+      "records": 2,
+      "repository_key": "piccolo-orm/piccolo",
+      "url": "https://github.com/piccolo-orm/piccolo.git"
+    },
+    {
+      "commits": [
+        "7330f714649ae4f10de73837f5c9fcfdc7979697",
+        "fe5b8052cafd35fcdafe9210e100e9050b37d2a0"
+      ],
+      "records": 2,
+      "repository_key": "pillarjs/resolve-path",
+      "url": "https://github.com/pillarjs/resolve-path.git"
+    },
+    {
+      "commits": [
         "408cba6f4948b3573831ede6a1cfeeedc8cc0bf9",
         "98a5b89982b38e79db684177cf94730ce7fc7aed",
         "ae4f2989491b392ae2ef3b0015a019770ae65d35",
@@ -3752,6 +6758,15 @@
       "records": 4,
       "repository_key": "pillarjs/send",
       "url": "https://github.com/pillarjs/send.git"
+    },
+    {
+      "commits": [
+        "c824574c3a05073dec2f5e9c219e22ffff8de445",
+        "e0c3e5748c1c3a1a0cab7790872bf0b3ec648bb4"
+      ],
+      "records": 2,
+      "repository_key": "pinchtab/pinchtab",
+      "url": "https://github.com/pinchtab/pinchtab.git"
     },
     {
       "commits": [
@@ -3775,6 +6790,72 @@
     },
     {
       "commits": [
+        "01aa5b8eefd0c0934c6aebd2bd6b6fa7d3c7d715",
+        "fa9f074a33a8059c76c960b1fbee39f308002423"
+      ],
+      "records": 3,
+      "repository_key": "pion/stun",
+      "url": "https://github.com/pion/stun.git"
+    },
+    {
+      "commits": [
+        "7519c26ac5508573c35fa3a9c4717b013993d129",
+        "b2b7e9ee6f8819c35cceb59fa6f2f12b3ffc63d0"
+      ],
+      "records": 2,
+      "repository_key": "pipecat-ai/pipecat",
+      "url": "https://github.com/pipecat-ai/pipecat.git"
+    },
+    {
+      "commits": [
+        "3b5b8feeb3175a3e16ea7e0e09fdf5b8d2b87b08",
+        "deee138a8cbc918463d8af5ce8c2bec33c3fd164",
+        "ff73dbf144c4c2daa67799a50dfff59cd455c63c"
+      ],
+      "records": 4,
+      "repository_key": "pkrumins/node-tree-kill",
+      "url": "https://github.com/pkrumins/node-tree-kill.git"
+    },
+    {
+      "commits": [
+        "2b95e660793b807e692476c7dc1f19849235eec8",
+        "ed82247c9ab7990ad76ec2bf1498c2b2830b6f1a"
+      ],
+      "records": 2,
+      "repository_key": "play-with-docker/play-with-docker",
+      "url": "https://github.com/play-with-docker/play-with-docker.git"
+    },
+    {
+      "commits": [
+        "3da710a2cd68587f0bf34f2e7ea1167d6eeee087",
+        "43a10d96cfdf93496ef86125853ab1a24b26a3d2"
+      ],
+      "records": 2,
+      "repository_key": "plone/products.cmfplone",
+      "url": "https://github.com/plone/Products.CMFPlone.git"
+    },
+    {
+      "commits": [
+        "2789a287ac45ad9039fb9161d465ba13241fff0a",
+        "58d9f82d2d50ca9a87edbe16fed91762e57c109c",
+        "7e09611051e0224505c34cd92e7d476dd077ead8",
+        "c4f9477a3ee0aa22d569834e0dc7e9c8deeca15b"
+      ],
+      "records": 4,
+      "repository_key": "plone/volto",
+      "url": "https://github.com/plone/volto.git"
+    },
+    {
+      "commits": [
+        "b5d2da2639a49a95e0bdb3bc0c987cb6406b8259",
+        "c1c4d4df05f3d019e74ed209bae345d2c38d8962"
+      ],
+      "records": 2,
+      "repository_key": "pofider/phantom-html-to-pdf",
+      "url": "https://github.com/pofider/phantom-html-to-pdf.git"
+    },
+    {
+      "commits": [
         "2b474465cac7832077747477046c3a0ff8393c39",
         "f20542c4bf2cc691e4c324f7ec79e02e46d95511"
       ],
@@ -3784,10 +6865,21 @@
     },
     {
       "commits": [
+        "d9f131a2c58ee86ef3d08a73af34c969ba03a28e",
+        "e02ae6b2fb69668d1cd7d07cb873dfcdd9cf1e42"
+      ],
+      "records": 2,
+      "repository_key": "portainer/portainer",
+      "url": "https://github.com/portainer/portainer.git"
+    },
+    {
+      "commits": [
+        "74e25ae9f4efaa56a41a449064a655d7da78072c",
         "7beca139e70f9075c6b19700fcb00dd8033e5da8",
+        "95663d3eb7ba26f4854dd19d3b4f4425760cf56c",
         "decea51421682341401575b3740709fda0e12930"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "postcss/postcss",
       "url": "https://github.com/postcss/postcss.git"
     },
@@ -3811,12 +6903,39 @@
     },
     {
       "commits": [
+        "19de05e5fc91b51c7a7e4ef00c1b407de2bda7b4",
+        "96ff96cfdc7ad6dd86e2289fcd5a37ee70c8926e"
+      ],
+      "records": 3,
+      "repository_key": "prest/prest",
+      "url": "https://github.com/prest/prest.git"
+    },
+    {
+      "commits": [
+        "13b56a9c594bc3792500d4e12cbb4053d4372f7d",
+        "e002e78c343154e1c0ddf9d6a0bb85689e1a5c7c"
+      ],
+      "records": 2,
+      "repository_key": "prismjs/prism",
+      "url": "https://github.com/PrismJS/prism.git"
+    },
+    {
+      "commits": [
         "2291e0b91415b3775b3357bc282af11296702de9",
         "4014c8475626f20f158921ae0cf98ed259ae4d59"
       ],
       "records": 2,
       "repository_key": "project-monai/monai",
       "url": "https://github.com/Project-MONAI/MONAI.git"
+    },
+    {
+      "commits": [
+        "8a99a3ed231fdcd8467e986182b4705342b6a15e",
+        "af4a46b331a408a096f43200a306b0f4378dec4a"
+      ],
+      "records": 2,
+      "repository_key": "project-zot/zot",
+      "url": "https://github.com/project-zot/zot.git"
     },
     {
       "commits": [
@@ -3849,10 +6968,34 @@
     },
     {
       "commits": [
-        "302225334678490ec66b3614a9dddb8a02c5f4fe",
-        "74ea7cf7a6a27a4eeb2ae24e162bcc942a6706d5"
+        "56b1e64979dae757b67a21d326e16acee39f2267",
+        "7afd0a39f41d6df5fda6fa10c319cdf829027d3e",
+        "b5f1391dff5515894830a6570e6d73f5511b2e8f",
+        "e66379f451b0393c27d87b37fa7d271619e16b0d"
+      ],
+      "records": 4,
+      "repository_key": "protobufjs/protobuf.js",
+      "url": "https://github.com/protobufjs/protobuf.js.git"
+    },
+    {
+      "commits": [
+        "ac1f71563aeccf73cf13ece00f231d9d6c66a514",
+        "fe241ccc443acbabbd75c8240d2fbc06ba4e52d6"
       ],
       "records": 3,
+      "repository_key": "psf/black",
+      "url": "https://github.com/psf/black.git"
+    },
+    {
+      "commits": [
+        "302225334678490ec66b3614a9dddb8a02c5f4fe",
+        "66d21cb07bd6255b1280291c4fafb71803cdb3b7",
+        "7341690e842a23cf18ded0abd9229765fa88c4e2",
+        "74ea7cf7a6a27a4eeb2ae24e162bcc942a6706d5",
+        "8b9bc8fc0f63be84602387913c4b689f19efd028",
+        "96ba401c1296ab1dda74a2365ef36d88f7d144ef"
+      ],
+      "records": 7,
       "repository_key": "psf/requests",
       "url": "https://github.com/psf/requests.git"
     },
@@ -3864,6 +7007,24 @@
       "records": 2,
       "repository_key": "psi-4ward/psitransfer",
       "url": "https://github.com/psi-4ward/psitransfer.git"
+    },
+    {
+      "commits": [
+        "cf43beedb05131937ef46f365ab0a0c6fa6ac618",
+        "ed0156594a44c6429743e314e9b5a313fad60730"
+      ],
+      "records": 2,
+      "repository_key": "psychobunny/nodebb-plugin-blog-comments",
+      "url": "https://github.com/psychobunny/nodebb-plugin-blog-comments.git"
+    },
+    {
+      "commits": [
+        "32acfe8f197dc44c54e8af32c7d7b19aa9d350fb",
+        "4767cafea0af3d3f935553df0f9a8a6e76d470c2"
+      ],
+      "records": 3,
+      "repository_key": "pugjs/pug",
+      "url": "https://github.com/pugjs/pug.git"
     },
     {
       "commits": [
@@ -3898,6 +7059,33 @@
     },
     {
       "commits": [
+        "7b29beba7759f0b810b5d5375a50469c4f8947b3",
+        "d41a814759a9fb49584ca8ab3f7295de49a85aa0"
+      ],
+      "records": 2,
+      "repository_key": "pyca/pyopenssl",
+      "url": "https://github.com/pyca/pyopenssl.git"
+    },
+    {
+      "commits": [
+        "51c32698ce029140cb69a26921d017e3edda80fa",
+        "de96d810ee4e309d118982fe7084a46a2bcd600d"
+      ],
+      "records": 3,
+      "repository_key": "pydantic/httpx2",
+      "url": "https://github.com/pydantic/httpx2.git"
+    },
+    {
+      "commits": [
+        "6d1526bf8ad93a3d259b1fd357f0c40e4ed9dbf5",
+        "f8f7019ffdf9b4e05faf95e1f04e204aa4c91f98"
+      ],
+      "records": 2,
+      "repository_key": "pyeve/eve",
+      "url": "https://github.com/pyeve/eve.git"
+    },
+    {
+      "commits": [
         "e4359018537af376cf24bd13616d861e2fb76f65",
         "fdd2ecfd325af2f419d91c62b2551e2c3922f686"
       ],
@@ -3917,11 +7105,26 @@
     {
       "commits": [
         "1320bac4ff80d76b8fba2c8b4b4614a40fb9c6c3",
-        "e46bdda9711392fec0c45c1175bae6db847cb30b"
+        "389cb799d0da9a840749fcd14878928467ed49b4",
+        "3d88026460834e559764b07882663074ee4ee8be",
+        "71df02c412998aa07c358ad04388e1573b3c5348",
+        "e46bdda9711392fec0c45c1175bae6db847cb30b",
+        "f2b92314da012b9fffa36b3f3e67748a37ef464a"
       ],
-      "records": 3,
+      "records": 8,
       "repository_key": "pypa/pip",
       "url": "https://github.com/pypa/pip.git"
+    },
+    {
+      "commits": [
+        "250a6d17978f9f6ac3ac887091f2d32886fbbb0b",
+        "6d07b8d17890dda58d944ac51e58f54af92d52af",
+        "8419f006d4e34c4ecfc7a0bd1bc6993855adc3cc",
+        "d8390feaa99091d1ba9626bec0e4ba7072fc507a"
+      ],
+      "records": 6,
+      "repository_key": "pypa/setuptools",
+      "url": "https://github.com/pypa/setuptools.git"
     },
     {
       "commits": [
@@ -3934,12 +7137,40 @@
     },
     {
       "commits": [
+        "95d8423bd24992deea5b9df32555fa1741679e2c",
+        "f0554edaddd091fd93716aaf8c8d94dc101d8b0a"
+      ],
+      "records": 3,
+      "repository_key": "pytest-dev/pytest",
+      "url": "https://github.com/pytest-dev/pytest.git"
+    },
+    {
+      "commits": [
         "04d3b87cbc1db020d28c7cfb44fe194558efbdde",
         "292a40829feefda98c8509dcdbbb4a57af9bd6a6"
       ],
       "records": 3,
       "repository_key": "python-hyper/h2",
       "url": "https://github.com/python-hyper/h2.git"
+    },
+    {
+      "commits": [
+        "77e36a9cb51a930047ab8d4bed527e4c4d8a9854",
+        "8cfb02c547740e16dbfe7aba77bad84b297cec2c"
+      ],
+      "records": 3,
+      "repository_key": "python-hyper/hpack",
+      "url": "https://github.com/python-hyper/hpack.git"
+    },
+    {
+      "commits": [
+        "3957526fb1852e84b90f423d9fef34c7af25b85a",
+        "6ea80326a34ee6093219628d7690bced50c49a3f",
+        "8b4912919f13916f10efadb7cb9261c121083ba8"
+      ],
+      "records": 6,
+      "repository_key": "python-ldap/python-ldap",
+      "url": "https://github.com/python-ldap/python-ldap.git"
     },
     {
       "commits": [
@@ -3954,6 +7185,15 @@
     },
     {
       "commits": [
+        "9ebf24fa4f8e6065765a4d48f87cb7a4d826dd95",
+        "b5b9a04d2caf58bf7cf94eb7ae4a1ebbe60ea455"
+      ],
+      "records": 3,
+      "repository_key": "python-poetry/cleo",
+      "url": "https://github.com/python-poetry/cleo.git"
+    },
+    {
+      "commits": [
         "689ac7b249d047ad57598cfe505fd4de66d8617f",
         "ed59537ac3709cfbdbf95d957de801c13872991a"
       ],
@@ -3963,12 +7203,34 @@
     },
     {
       "commits": [
+        "10c80e2ebabeccd4e9c84ad0e16e1db74148ed4c",
         "31c3e0c7edb187004d8abbde7e9c4f7ef9098138",
-        "7033ff73993a4c3666d989930bbc15e87925abc9"
+        "7033ff73993a4c3666d989930bbc15e87925abc9",
+        "cd16cfa589d6a44e06cdc1fb59fd2438f087e423"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "python-social-auth/social-app-django",
       "url": "https://github.com/python-social-auth/social-app-django.git"
+    },
+    {
+      "commits": [
+        "62f1e82e032eb16565e676d39e0db0cac7e34ace",
+        "8508cce37d4f18266715d6bcebed4b382b704380",
+        "8b7a12c52e52a06408e9231647839ddb4665e8ae",
+        "91052dc6d54c0a9292704440bc6bc1892f8dd4b2"
+      ],
+      "records": 6,
+      "repository_key": "pytorchlightning/pytorch-lightning",
+      "url": "https://github.com/pytorchlightning/pytorch-lightning.git"
+    },
+    {
+      "commits": [
+        "1f9dbf83b17419a06d63c14ef3fbd29dbc1b8ce5",
+        "a57e36e14f32bfb48d8a1953b375ed22a35ef186"
+      ],
+      "records": 3,
+      "repository_key": "pytroll/donfig",
+      "url": "https://github.com/pytroll/donfig.git"
     },
     {
       "commits": [
@@ -3982,11 +7244,31 @@
     {
       "commits": [
         "1cba6967e7af156e9d9f610db7753419138c732a",
+        "2e8c8c8df83ba310f52d1651a426bad879e0bd38",
+        "a750d8c6485cbc134e339abcda6459b537a889c6",
         "b78fca114133051805d00043a404b25a33835f4d"
       ],
-      "records": 2,
+      "records": 4,
       "repository_key": "qiskit/qiskit-ibm-runtime",
       "url": "https://github.com/Qiskit/qiskit-ibm-runtime.git"
+    },
+    {
+      "commits": [
+        "44122eb5575ee8824b15664763db0f20b51d149f",
+        "8eb74da825c0d8d2e9508d73c672bcae36ba555a"
+      ],
+      "records": 2,
+      "repository_key": "quantizor/markdown-to-jsx",
+      "url": "https://github.com/quantizor/markdown-to-jsx.git"
+    },
+    {
+      "commits": [
+        "cb4351c75f87a4fbec3b6140c40ee2993f574372",
+        "f4ccf0a8d55288490e729233fe2885eec15f74d0"
+      ],
+      "records": 2,
+      "repository_key": "quernest/arr-flatten-unflatten",
+      "url": "https://github.com/Quernest/arr-flatten-unflatten.git"
     },
     {
       "commits": [
@@ -3996,6 +7278,15 @@
       "records": 2,
       "repository_key": "queueforge/clickmigrate",
       "url": "https://github.com/QueueForge/ClickMigrate.git"
+    },
+    {
+      "commits": [
+        "7b769f7a31992d99f6b7058c9bc0ee1b1d89402d",
+        "ca31dd355cbe5fc6c5807992d9d1149c66c96a50"
+      ],
+      "records": 2,
+      "repository_key": "quic-go/quic-go",
+      "url": "https://github.com/quic-go/quic-go.git"
     },
     {
       "commits": [
@@ -4031,10 +7322,19 @@
     },
     {
       "commits": [
+        "2d5a99e6515e760cb6c4871f7e73f6eefacbb762",
+        "64a2e4010522d60b90c389634f24df77b603d85d"
+      ],
+      "records": 2,
+      "repository_key": "ray-project/ray",
+      "url": "https://github.com/ray-project/ray.git"
+    },
+    {
+      "commits": [
         "bf7b69130a364b5c6fcb8e623bffe43054994c65",
         "fe32e8da464cef622528725f647029a8fd7d95a6"
       ],
-      "records": 2,
+      "records": 3,
       "repository_key": "raynos/min-document",
       "url": "https://github.com/Raynos/min-document.git"
     },
@@ -4051,6 +7351,35 @@
     },
     {
       "commits": [
+        "ade12549f3c0ddab3d7382c581bc04a3c1f989ec",
+        "b7958c95813550d2126fccd8e142da6e6efe6df7"
+      ],
+      "records": 3,
+      "repository_key": "reflex-dev/reflex",
+      "url": "https://github.com/reflex-dev/reflex.git"
+    },
+    {
+      "commits": [
+        "24bd1e05a788c1add7f3037f4532ea552b2cee07",
+        "a5511b382b818deb970dd402090369dba8a59856"
+      ],
+      "records": 2,
+      "repository_key": "refraction-networking/utls",
+      "url": "https://github.com/refraction-networking/utls.git"
+    },
+    {
+      "commits": [
+        "305381bd36eee074fb238b64302a252668daad1d",
+        "482727c0af652648e0a7c9a83f7e1a04248bb2b7",
+        "6531bcd2ab285af88f91831e30d8a03f5b9fe20d",
+        "e57e55fe3dcfc7938267017eef571e5318948a4c"
+      ],
+      "records": 4,
+      "repository_key": "rejetto/hfs",
+      "url": "https://github.com/rejetto/hfs.git"
+    },
+    {
+      "commits": [
         "3a5b5ad0e5cf9918c646509563f5c41a89226ff3",
         "f29c6c95631368afa1b475f824854a781e690c02"
       ],
@@ -4060,12 +7389,30 @@
     },
     {
       "commits": [
+        "2dbc80ffb767ee58e6b27d9d81d58fa1ee8bea28",
+        "3b281a90f46a481fabf5aafd13208f426db45265"
+      ],
+      "records": 2,
+      "repository_key": "remorses/genql",
+      "url": "https://github.com/remorses/genql.git"
+    },
+    {
+      "commits": [
         "f272681b3a50e2c4cbb6a8533795e1453382c822",
         "f4959541af2a607258ce197e7a07b79e6e8a8356"
       ],
       "records": 2,
       "repository_key": "remy/undefsafe",
       "url": "https://github.com/remy/undefsafe.git"
+    },
+    {
+      "commits": [
+        "1e941fd885c799f2d38f4084a6f4cb9438813c8f",
+        "a9946a3b18ff12443ba5138f13c43eec4a539a52"
+      ],
+      "records": 2,
+      "repository_key": "renovatebot/renovate",
+      "url": "https://github.com/renovatebot/renovate.git"
     },
     {
       "commits": [
@@ -4105,6 +7452,24 @@
     },
     {
       "commits": [
+        "db495357d7557ceb5c034de91a7a574bd12f9b9f",
+        "e9848fc1b5c92e175adb18afa0850f6e7dfc0b5c"
+      ],
+      "records": 2,
+      "repository_key": "richardgirges/express-fileupload",
+      "url": "https://github.com/richardgirges/express-fileupload.git"
+    },
+    {
+      "commits": [
+        "2eb16e9a008dbd8547bfa0e73f8f72b3f30789ba",
+        "ca1404ee6e83fcbafb66b09ed0d543850a15b654"
+      ],
+      "records": 3,
+      "repository_key": "robbert229/jwt",
+      "url": "https://github.com/robbert229/jwt.git"
+    },
+    {
+      "commits": [
         "5ce8afdd1671b08c774ce106b000605ba8fccf78",
         "837a3cc7b1ef111d4597eb58aa5b7a9b91b665b6"
       ],
@@ -4129,6 +7494,24 @@
       "records": 2,
       "repository_key": "romitou/insatutorat",
       "url": "https://github.com/Romitou/INSATutorat.git"
+    },
+    {
+      "commits": [
+        "3d515ba9ba0cd9990d248bdf62bcf05d51261a88",
+        "d730803b8e4e94c20c7580d90f94d1e05f9f58de"
+      ],
+      "records": 3,
+      "repository_key": "ronf/asyncssh",
+      "url": "https://github.com/ronf/asyncssh.git"
+    },
+    {
+      "commits": [
+        "64c556717b4879bf8d4c30067cf6e70d899a3dc0",
+        "90387d97c7a8f458a08dd3b72a4b0574000af5f8"
+      ],
+      "records": 3,
+      "repository_key": "rooseveltframework/teddy",
+      "url": "https://github.com/rooseveltframework/teddy.git"
     },
     {
       "commits": [
@@ -4179,6 +7562,15 @@
     },
     {
       "commits": [
+        "3c6a6353df7c8879e931973b81a49a47f6c2b399",
+        "bc0365668c6c1a4c871f960881c1e615cb28570e"
+      ],
+      "records": 2,
+      "repository_key": "sahellebusch/flattenizer",
+      "url": "https://github.com/sahellebusch/flattenizer.git"
+    },
+    {
+      "commits": [
         "44d673994791482c8aec902e0f949c354ce8dc0f",
         "b19021ade3d0b71c89d35cb00eb9e589a121faa5"
       ],
@@ -4206,6 +7598,15 @@
     },
     {
       "commits": [
+        "a0cef507a90adaac7dbbe9c404f09a50bdefb348",
+        "ef532ed1c51be12155bc1f9baecad09a7c587e04"
+      ],
+      "records": 2,
+      "repository_key": "samholmes/node-open-graph",
+      "url": "https://github.com/samholmes/node-open-graph.git"
+    },
+    {
+      "commits": [
         "a64058cf21b8aada501bba923c9aab66fb6febf0",
         "e314ffa6ce5480db09abd0bb2d51e974fd6a9a3f"
       ],
@@ -4230,6 +7631,15 @@
       "records": 2,
       "repository_key": "schollz/croc",
       "url": "https://github.com/schollz/croc.git"
+    },
+    {
+      "commits": [
+        "c09fb17375c4c47b49524c688288af1fe20e730a",
+        "ca8d3f1b5b82cc2279b452be469a9666d3ed401d"
+      ],
+      "records": 3,
+      "repository_key": "schollz/rwtxt",
+      "url": "https://github.com/schollz/rwtxt.git"
     },
     {
       "commits": [
@@ -4273,10 +7683,39 @@
     },
     {
       "commits": [
-        "7dc35e3889e3fa0859b96be41092717444cc2a38",
-        "c876192aa6ce1f67e22b26a4d175b8478615f42d"
+        "4ca94bcda0fa2720594506853d85e00c8212968f",
+        "55f88d661c28598d059cf81dbfd38dacb945662f"
       ],
-      "records": 3,
+      "records": 2,
+      "repository_key": "sehmaschine/django-grappelli",
+      "url": "https://github.com/sehmaschine/django-grappelli.git"
+    },
+    {
+      "commits": [
+        "63fa143023aa3b54e9a9231c7625549ef4d7f17a",
+        "ca90b34c4a9333438cc4d69faeb43362bb991e5a"
+      ],
+      "records": 2,
+      "repository_key": "semantic-release/semantic-release",
+      "url": "https://github.com/semantic-release/semantic-release.git"
+    },
+    {
+      "commits": [
+        "aa343a5013d274c88eca48be703531ea8d621195",
+        "e569815854166db5f71c2e722408f8957fb9e804"
+      ],
+      "records": 2,
+      "repository_key": "sequa-ai/sequa-mcp",
+      "url": "https://github.com/sequa-ai/sequa-mcp.git"
+    },
+    {
+      "commits": [
+        "75c1fdbc676d73a28a5e0bca49b2a6d4a9f8708c",
+        "7dc35e3889e3fa0859b96be41092717444cc2a38",
+        "c876192aa6ce1f67e22b26a4d175b8478615f42d",
+        "ee4017379db0059566ecb5424274ad4e2d66bc68"
+      ],
+      "records": 5,
       "repository_key": "sequelize/sequelize",
       "url": "https://github.com/sequelize/sequelize.git"
     },
@@ -4318,6 +7757,15 @@
     },
     {
       "commits": [
+        "c7128a8946c3701df95c285810eb75b2de18bf82",
+        "fc3c53afc05a5e806ee757bfcf534cf01983f8ff"
+      ],
+      "records": 2,
+      "repository_key": "sickchill/sickchill",
+      "url": "https://github.com/SickChill/sickchill.git"
+    },
+    {
+      "commits": [
         "966b99c45c0debbc30fc52f485658a379ddbebe5",
         "a5efd816a239e6c9e5ea7c0d43c02c04504d7b60"
       ],
@@ -4327,12 +7775,32 @@
     },
     {
       "commits": [
+        "1c1e861c9f241ce082b86bef6bedc7da9b676294",
+        "32dae8f2875d404c0ce2e8483d91902793ada173",
+        "4cb4a3d01122ffaec9feaae768a5814092f6f9b5",
+        "bad34c59da4927f4b3730a524136a438fb9174e3"
+      ],
+      "records": 4,
+      "repository_key": "siemens/kas",
+      "url": "https://github.com/siemens/kas.git"
+    },
+    {
+      "commits": [
         "7008d7fa0ba625b2a423746dcfb5299f93fe234c",
         "75b11eae2de528bf89ede3fb1f7ed057ddbb4d24"
       ],
       "records": 2,
       "repository_key": "signalk/set-system-time",
       "url": "https://github.com/SignalK/set-system-time.git"
+    },
+    {
+      "commits": [
+        "765a0e57608b9ef390e1eeeea8595b9054c63a5a",
+        "90f8520e1754b20ba0cb33d412ee15006711b85f"
+      ],
+      "records": 3,
+      "repository_key": "sigstore/fulcio",
+      "url": "https://github.com/sigstore/fulcio.git"
     },
     {
       "commits": [
@@ -4363,12 +7831,30 @@
     },
     {
       "commits": [
+        "295e4a2e87464fc1838d6278308bf151bc14ba73",
+        "f257ca6edb64848c3b04b54d41e347c54fe57c05"
+      ],
+      "records": 3,
+      "repository_key": "simonw/datasette",
+      "url": "https://github.com/simonw/datasette.git"
+    },
+    {
+      "commits": [
         "8e9af9e508c276229479d37b7faece2d91cfcc61",
         "c0d018ffa921cd2460b80f766b7969fbe63678fc"
       ],
       "records": 2,
       "repository_key": "simonwaldherr/zplgfa",
       "url": "https://github.com/SimonWaldherr/zplgfa.git"
+    },
+    {
+      "commits": [
+        "01d694b9985a66c3d7119fc9f74ce8ed4f0f21b5",
+        "8807d8254f202ea4852662e2d26fdfa438e1591b"
+      ],
+      "records": 2,
+      "repository_key": "sipeed/picoclaw",
+      "url": "https://github.com/sipeed/picoclaw.git"
     },
     {
       "commits": [
@@ -4389,6 +7875,24 @@
       "records": 4,
       "repository_key": "skoranga/node-dns-sync",
       "url": "https://github.com/skoranga/node-dns-sync.git"
+    },
+    {
+      "commits": [
+        "4905c03fd593b5ee86499a2342e97d818c26fbcb",
+        "db856cd8433a204c8b45979c70a4da1e119d949d"
+      ],
+      "records": 2,
+      "repository_key": "skyvern-ai/skyvern",
+      "url": "https://github.com/Skyvern-AI/skyvern.git"
+    },
+    {
+      "commits": [
+        "bb94179fa4c64bda3d3a66ab112f39f9563e0c2c",
+        "ffd31ac0a87e03b0224cb8363094bfe602242888"
+      ],
+      "records": 3,
+      "repository_key": "smallstep/certificates",
+      "url": "https://github.com/smallstep/certificates.git"
     },
     {
       "commits": [
@@ -4419,6 +7923,15 @@
     },
     {
       "commits": [
+        "2c55b278a491bf45313ecc0825cf800e2f7ff5c1",
+        "6045ccf5aa3ad5dbd976acb1e722a9692a5d55fb"
+      ],
+      "records": 2,
+      "repository_key": "socketio/engine.io-client",
+      "url": "https://github.com/socketio/engine.io-client.git"
+    },
+    {
+      "commits": [
         "1fa1f46cd420ac5b57bb4c04c959b58f3c79158c",
         "4f7edb46ecff64f523ef14a1aa560fae9d7f431c"
       ],
@@ -4437,21 +7950,83 @@
     },
     {
       "commits": [
+        "4b12efef9c31117c36a0a0f1c3aa32114e86364b",
+        "53ba39c7886c614d27633d347dbd93faac9dbdc0"
+      ],
+      "records": 2,
+      "repository_key": "soketi/soketi",
+      "url": "https://github.com/soketi/soketi.git"
+    },
+    {
+      "commits": [
+        "2a150c5552b8ce2f2a12ae4a3fd33882d5827afd",
+        "6c44722312131f4ac8a1af40f0f861c85efe01b0"
+      ],
+      "records": 2,
+      "repository_key": "soldair/node-floody",
+      "url": "https://github.com/soldair/node-floody.git"
+    },
+    {
+      "commits": [
+        "2e890261b66cbc54ae01d0c79c71b0fd18379e7e",
+        "d3d0ab1949c5e0888bc044ab1abe3b2693087c0b"
+      ],
+      "records": 2,
+      "repository_key": "sonnyp/json8",
+      "url": "https://github.com/sonnyp/JSON8.git"
+    },
+    {
+      "commits": [
+        "0bd0767eb463e3170b25b847a3e2e4811949df8a",
         "48a99c95078bab306cb56bb1a05420d88bf15a64",
+        "5fd872c64c53af37015f366295e0c2418c969757",
         "d7759d3ddae5fe99a340c88a1d370d65cfa73fd6"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "sosreport/sos",
       "url": "https://github.com/sosreport/sos.git"
     },
     {
       "commits": [
-        "91232d80e4914fd82b42628bb2e2b061abb3dcfc",
-        "e05ac61989a7fb9dd7dcde6cfd72dc48328719a3"
+        "be277f7ed76ff921aee159a44f03e77a8563a003",
+        "ffc2cc34563de67fe1a04f7ba5d78fa2d4564424"
       ],
       "records": 2,
+      "repository_key": "spectolabs/hoverfly",
+      "url": "https://github.com/SpectoLabs/hoverfly.git"
+    },
+    {
+      "commits": [
+        "1ca453f6ef87a2a9e9876f52b6cb38d13532ccf2",
+        "668158f0558d486082c0dc672a6ac39ba05ced6a",
+        "880b92d7243dcf2b83bf31dc365a858d8b5e6767",
+        "a91d9feb516a4360503dca9cfe63a35927b9befa"
+      ],
+      "records": 4,
+      "repository_key": "spotipy-dev/spotipy",
+      "url": "https://github.com/spotipy-dev/spotipy.git"
+    },
+    {
+      "commits": [
+        "000ed85e4e48771eff460bf4fc721fb43de80e08",
+        "411b4ac6cf054e61a8fb44c236990fda1e41ade4",
+        "7c5b28ac47755598e8c5bdfc995eaf220132e672",
+        "91232d80e4914fd82b42628bb2e2b061abb3dcfc",
+        "925760291d6efec64fda6e9dd1fd9cfbd5be068c",
+        "e05ac61989a7fb9dd7dcde6cfd72dc48328719a3"
+      ],
+      "records": 7,
       "repository_key": "sqlalchemy/mako",
       "url": "https://github.com/sqlalchemy/mako.git"
+    },
+    {
+      "commits": [
+        "468a23fc89af89f632cc023a10c031e4bc781797",
+        "efe7f66d16e9479e242d3876c2a4a878ee190568"
+      ],
+      "records": 3,
+      "repository_key": "sqls-server/sqls",
+      "url": "https://github.com/sqls-server/sqls.git"
     },
     {
       "commits": [
@@ -4482,6 +8057,24 @@
     },
     {
       "commits": [
+        "08790d29e0026b6c09f899ab6340d7e6de80a69b",
+        "53868a878e93f29c43437f96dbc990b548e48d1d"
+      ],
+      "records": 2,
+      "repository_key": "stacklok/minder",
+      "url": "https://github.com/stacklok/minder.git"
+    },
+    {
+      "commits": [
+        "94dcc6fc45e0fed96187cb52aaffadf76dbbc0a3",
+        "e24faa552b49b44d38e027bc4ca6a7e5ac301e74"
+      ],
+      "records": 2,
+      "repository_key": "stampit-org/supermixer",
+      "url": "https://github.com/stampit-org/supermixer.git"
+    },
+    {
+      "commits": [
         "998c92b59db5d2372f62d49f67805d8875d8b299",
         "d136170666e9510eb63c2572551805807bd4c17f"
       ],
@@ -4500,6 +8093,17 @@
     },
     {
       "commits": [
+        "07a524ba0144ef870258c91c7070a11a2e3aa592",
+        "83deb7fcb7421f2d01eeb7475b18d72f16084aed",
+        "9f4969c2c84338b026300dafb55698e05b1d6fbc",
+        "cbebb20fd48588d36fc7ff3e874c128eb89692f4"
+      ],
+      "records": 4,
+      "repository_key": "stefanprodan/podinfo",
+      "url": "https://github.com/stefanprodan/podinfo.git"
+    },
+    {
+      "commits": [
         "df2a7d2db01d38a527a542c28c7d52c033c97d38",
         "ec8efd63295656fbfe8743620179c489bc5a242f"
       ],
@@ -4509,10 +8113,39 @@
     },
     {
       "commits": [
-        "0c6e0953ae1e62afae9329de7ae6d6a5e21b95b8",
-        "909d84b5d830742a38482c5986259067f196fd12"
+        "245473493057c08911852ea8c82db4818ad6c9be",
+        "898630d8df48cf3ddb8b9942f59168b93216e3f8"
       ],
       "records": 2,
+      "repository_key": "stephenmcd/mezzanine",
+      "url": "https://github.com/stephenmcd/mezzanine.git"
+    },
+    {
+      "commits": [
+        "1402490d14f4125b08f3b2d6c86d3baa0feae6fb",
+        "1effd8e5012a5da05a9776512fac3e39b11f2d2d"
+      ],
+      "records": 2,
+      "repository_key": "steveukx/git-js",
+      "url": "https://github.com/steveukx/git-js.git"
+    },
+    {
+      "commits": [
+        "810db626c18ebc261d5f4299d0f0eac38d5eb3cf",
+        "aebee636ad26f387850a6c8ab820ce4aac3f9adb"
+      ],
+      "records": 2,
+      "repository_key": "stranger6667/pyanyapi",
+      "url": "https://github.com/Stranger6667/pyanyapi.git"
+    },
+    {
+      "commits": [
+        "0c6e0953ae1e62afae9329de7ae6d6a5e21b95b8",
+        "48f5eeadaf32e2ccfff33983c0e295f613c4b951",
+        "909d84b5d830742a38482c5986259067f196fd12",
+        "a0da7e73e1496d835fe71a2febb14f70170135c7"
+      ],
+      "records": 4,
       "repository_key": "strapi/strapi",
       "url": "https://github.com/strapi/strapi.git"
     },
@@ -4527,12 +8160,39 @@
     },
     {
       "commits": [
+        "868b5c22ddad59772b447080183e7c7101bb18e0",
+        "db5592449b4dfe20c0002198820ca693601b4efb"
+      ],
+      "records": 2,
+      "repository_key": "styria-digital/django-rest-framework-jwt",
+      "url": "https://github.com/Styria-Digital/django-rest-framework-jwt.git"
+    },
+    {
+      "commits": [
         "05f2390cde2455eaed7eac9072e78940e89d7ca2",
         "9aa4e66eb90ec595d2dba55e6f9c2dd9a668b309"
       ],
       "records": 2,
       "repository_key": "substack/node-syntax-error",
       "url": "https://github.com/substack/node-syntax-error.git"
+    },
+    {
+      "commits": [
+        "610c78c527d4d2c9d2ec834de4df275851200bfd",
+        "d33c3993c0c735f23cbedc60fa59fce69354f19d"
+      ],
+      "records": 2,
+      "repository_key": "sunscrapers/djoser",
+      "url": "https://github.com/sunscrapers/djoser.git"
+    },
+    {
+      "commits": [
+        "c2c60da05d5c73621d0ce7ea02770bacd79ec8b1",
+        "fc9f5036b202def57a247000d68290d9c0185399"
+      ],
+      "records": 3,
+      "repository_key": "supply-chain-tools/gitverify",
+      "url": "https://github.com/supply-chain-tools/gitverify.git"
     },
     {
       "commits": [
@@ -4590,6 +8250,15 @@
     },
     {
       "commits": [
+        "193962882122abf85ff5f5bcc86404933e71c07d",
+        "c2569550de3bf4558ea099237a630ccb9a3b0af8"
+      ],
+      "records": 2,
+      "repository_key": "sylabs/sif",
+      "url": "https://github.com/sylabs/sif.git"
+    },
+    {
+      "commits": [
         "1db126f6fd295a25934e933e6aeb3fda99063013",
         "6e59f31cb97ff59e323850aa1339a38a11358429",
         "c08791793e843d4c9c1f2fc1d9d12abef747378f",
@@ -4598,6 +8267,33 @@
       "records": 5,
       "repository_key": "sylabs/singularity",
       "url": "https://github.com/sylabs/singularity.git"
+    },
+    {
+      "commits": [
+        "0d7a77ba85c69f9e427981b906c9a4941c4c0f9c",
+        "fb4fdaf4c0a79c22cad000c42ac1394e3ccb6a97"
+      ],
+      "records": 2,
+      "repository_key": "syncthing/syncthing",
+      "url": "https://github.com/syncthing/syncthing.git"
+    },
+    {
+      "commits": [
+        "bd999c1c3fe7ee5f30ede2cf704cf03e400347b4",
+        "fc61714c67981945a9cd5632288558d229dabbef"
+      ],
+      "records": 2,
+      "repository_key": "takluyver/pyxdg",
+      "url": "https://github.com/takluyver/pyxdg.git"
+    },
+    {
+      "commits": [
+        "a3ffac95b322b7460d04b9fea10529725a635305",
+        "fcbc36f381798b4362179c0cdf9961b437c7b619"
+      ],
+      "records": 2,
+      "repository_key": "taoyuan/ntesseract",
+      "url": "https://github.com/taoyuan/ntesseract.git"
     },
     {
       "commits": [
@@ -4610,12 +8306,59 @@
     },
     {
       "commits": [
+        "03085c2da23b179c4a51f59a03cb40aa4e85a613",
+        "42be5331299944821be75222a2b930d7eba02078",
+        "480b995a31727593f58b361af979054d17d84340",
+        "7af4b5086af9268f7cc8b41f5a174ade675d8ab4"
+      ],
+      "records": 5,
+      "repository_key": "tendermint/tendermint",
+      "url": "https://github.com/tendermint/tendermint.git"
+    },
+    {
+      "commits": [
+        "3aaa5d9717162b245ae4569232bbe7d8673c913f",
+        "56eba45d786c51419d305c300c26b414f3f92bce"
+      ],
+      "records": 3,
+      "repository_key": "terriajs/terriajs-server",
+      "url": "https://github.com/TerriaJS/terriajs-server.git"
+    },
+    {
+      "commits": [
         "4509da1409376afa77102031b12df74c0aea476a",
         "f32fda8b35e9fe9329f87da65c31149362a03f97"
       ],
       "records": 3,
       "repository_key": "thedotmack/claude-mem",
       "url": "https://github.com/thedotmack/claude-mem.git"
+    },
+    {
+      "commits": [
+        "25e4b4f2618578a656ef3cb4946a1b475f736736",
+        "ed4e9e23dfd80f1a74218446b3c91a5f69e47381"
+      ],
+      "records": 3,
+      "repository_key": "theecryptochad/merge-guard",
+      "url": "https://github.com/TheeCryptoChad/merge-guard.git"
+    },
+    {
+      "commits": [
+        "29aae36c83127913c24e881bc1f95dbb0f0961e6",
+        "d361e2ea24e427581343dee5c7a32b485d79fcc0"
+      ],
+      "records": 2,
+      "repository_key": "theupdateframework/go-tuf",
+      "url": "https://github.com/theupdateframework/go-tuf.git"
+    },
+    {
+      "commits": [
+        "2977188139d065ff3356c3cb4aec60c582b57e0e",
+        "b913d88ad46ad4e97f24449443b96beb99546585"
+      ],
+      "records": 2,
+      "repository_key": "theupdateframework/python-tuf",
+      "url": "https://github.com/theupdateframework/python-tuf.git"
     },
     {
       "commits": [
@@ -4646,10 +8389,21 @@
     },
     {
       "commits": [
-        "3f38fe1610d20168e91f76d432212de30727eb2e",
-        "447e192e3fb92e64c12e5354a56a4a7133f69d73"
+        "260f9cd2ac5ceac3976978850bb47dcb391720f6",
+        "871b1e202b0f6fb393409e8962cfdc958fb0f1c1"
       ],
-      "records": 2,
+      "records": 3,
+      "repository_key": "thomaspoignant/scim-patch",
+      "url": "https://github.com/thomaspoignant/scim-patch.git"
+    },
+    {
+      "commits": [
+        "3b986d13677b30fe6651c8c72ebb25957ac0a40d",
+        "3f38fe1610d20168e91f76d432212de30727eb2e",
+        "447e192e3fb92e64c12e5354a56a4a7133f69d73",
+        "471ef279700e9f79941d451acf88abe1601df875"
+      ],
+      "records": 4,
       "repository_key": "thumbor/thumbor",
       "url": "https://github.com/thumbor/thumbor.git"
     },
@@ -4665,11 +8419,31 @@
     {
       "commits": [
         "5100d6926a4bea3753fc72352fca70654f04cedc",
+        "9f58baa7a613f89dfdc764c39e47fd3a15606153",
+        "bf4efcb3c18d1825b2988603dea5909140a5302b",
         "f0ee9ebde4b619767ae4ac03e8e42addb530f6bc"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "tidwall/gjson",
       "url": "https://github.com/tidwall/gjson.git"
+    },
+    {
+      "commits": [
+        "8c84f1b03adf1df5b4e6d07a49043d13dbbf9ee1",
+        "b601901653ec94765f0f6cea9f0dd9ed951967eb"
+      ],
+      "records": 3,
+      "repository_key": "tinfoil-factory/netfoil",
+      "url": "https://github.com/tinfoil-factory/netfoil.git"
+    },
+    {
+      "commits": [
+        "1f7be78bc68927996647cd45b4367f8975a3ea05",
+        "c4d8b44ab53b9810b76a04caec249762d8c7fbc7"
+      ],
+      "records": 2,
+      "repository_key": "tiny-conf/tiny-conf",
+      "url": "https://github.com/tiny-conf/tiny-conf.git"
     },
     {
       "commits": [
@@ -4691,12 +8465,57 @@
     },
     {
       "commits": [
+        "8142b25bca3133ea060bcc1889277dc482327a63",
+        "99ec49e431c70af6275b3c4e00c7be34be51753c"
+      ],
+      "records": 2,
+      "repository_key": "tjatse/ansi-html",
+      "url": "https://github.com/Tjatse/ansi-html.git"
+    },
+    {
+      "commits": [
+        "5b5e6a9e2d3686d6179911caf381165bcdb84c5e",
+        "b10505baa7ba0701f830a05f3007c0a6bdd00eb7"
+      ],
+      "records": 2,
+      "repository_key": "tmlmobilidade/go",
+      "url": "https://github.com/tmlmobilidade/go.git"
+    },
+    {
+      "commits": [
+        "7987544670c37fdef659f8ee9e5db20fae118705",
+        "e001e38738c17219a1d9dd8c31f7d82b9c0013c7"
+      ],
+      "records": 2,
+      "repository_key": "tojocky/node-printer",
+      "url": "https://github.com/tojocky/node-printer.git"
+    },
+    {
+      "commits": [
         "01cd3f0464747973ec329e9fb1ea12743d3235cc",
         "ddf28a1336fca6c4905085e43d6227191bbaefa4"
       ],
       "records": 2,
       "repository_key": "tooljet/tooljet",
       "url": "https://github.com/tooljet/tooljet.git"
+    },
+    {
+      "commits": [
+        "687da671c075cde76be2d3e907d5384c970efadc",
+        "b7b7cc793c3226aa83f820ce5c277e81862d32eb"
+      ],
+      "records": 2,
+      "repository_key": "tootallnate/node-http-proxy-agent",
+      "url": "https://github.com/TooTallNate/node-http-proxy-agent.git"
+    },
+    {
+      "commits": [
+        "96e2303d059e6be0c9e0c4773226d14b4758de52",
+        "aff22f47a62b2955f2c2276e16b3069b2807504e"
+      ],
+      "records": 3,
+      "repository_key": "tootallnate/plist.js",
+      "url": "https://github.com/TooTallNate/plist.js.git"
     },
     {
       "commits": [
@@ -4712,11 +8531,22 @@
         "1e1faeb20d2291038e10b98f2046a4058135e767",
         "6192491ab2631e7c1d317c221f18ea613e2c18a5",
         "79e84ada0a4455a2fe2383bed6436f231290276a",
-        "b3f901561d66ab799a4a99279893b94cad7ae4ff"
+        "b3f901561d66ab799a4a99279893b94cad7ae4ff",
+        "c812bbcab8981797d3a1b9993fc42dad3d246f04",
+        "fcdf74ca6eee6b559502845944e66ada2f460eba"
       ],
-      "records": 4,
+      "records": 6,
       "repository_key": "totaljs/framework",
       "url": "https://github.com/totaljs/framework.git"
+    },
+    {
+      "commits": [
+        "4e613f84ed2ae029559f539464df83fa91feb316",
+        "cc372d09dcd5a5eabdc6ed4cf365bdb0be004d44"
+      ],
+      "records": 2,
+      "repository_key": "tqdm/tqdm",
+      "url": "https://github.com/tqdm/tqdm.git"
     },
     {
       "commits": [
@@ -4753,6 +8583,24 @@
     },
     {
       "commits": [
+        "496980fdc2bc980ca120aed511cffdf8766d9ffe",
+        "aca8d4f898b436ff6754e1a9ab96cae976c8a853"
+      ],
+      "records": 3,
+      "repository_key": "trevp/tlslite",
+      "url": "https://github.com/trevp/tlslite.git"
+    },
+    {
+      "commits": [
+        "d059ebb792401ded3129cd9402d7392dc34b81e3",
+        "e7b1f97390980475746332e8bd3e8e1c339825b8"
+      ],
+      "records": 2,
+      "repository_key": "tryton/trytond",
+      "url": "https://github.com/tryton/trytond.git"
+    },
+    {
+      "commits": [
         "046a164f89a0f08d3239ecebd750360f8914df33",
         "18e371e1c3d8df8c793c76f8548a2d8c5e09a9e6",
         "4a930de12fb67e88fefcb8822104152f42b27abc",
@@ -4773,12 +8621,30 @@
     },
     {
       "commits": [
+        "d57fe3bd8578b0b8f9847647fd046bccf825a7ef",
+        "f351757a15b9d2bd9d4222c69dcfd2316f46b5d1"
+      ],
+      "records": 3,
+      "repository_key": "typeorm/typeorm",
+      "url": "https://github.com/typeorm/typeorm.git"
+    },
+    {
+      "commits": [
         "01d7af8c983ee5954c63734f4fa46cb23ae3246d",
         "98b469dbb7fb51e4c306dc2860355307801e8897"
       ],
       "records": 2,
       "repository_key": "ueberdosis/tiptap",
       "url": "https://github.com/ueberdosis/tiptap.git"
+    },
+    {
+      "commits": [
+        "7fd42873603012acb8c55a4fc3eaac9ab18e6559",
+        "d0d4d6ed91c378d5201ac60dcd8e7c3303412d66"
+      ],
+      "records": 2,
+      "repository_key": "ulab-uiuc/tiny-scientist",
+      "url": "https://github.com/ulab-uiuc/tiny-scientist.git"
     },
     {
       "commits": [
@@ -4791,12 +8657,48 @@
     },
     {
       "commits": [
+        "638fa63e8104cb7e3b5f7b6338fff2d0b684aa18",
+        "78d6de6bce1e961f023969da3ec8a00dd80c9ae8"
+      ],
+      "records": 2,
+      "repository_key": "umputun/remark42",
+      "url": "https://github.com/umputun/remark42.git"
+    },
+    {
+      "commits": [
         "9423fae877e2ab6b4aecc4db79a0ed63039d4703",
         "9653940a75c2ef2b1a503b24cbadd707cccffa8c"
       ],
       "records": 2,
       "repository_key": "unclechu/node-deep-extend",
       "url": "https://github.com/unclechu/node-deep-extend.git"
+    },
+    {
+      "commits": [
+        "6178d6b6ed4996818af810656bb2eb901f13b1dc",
+        "8b9354800a1d157cb9503a3ec414ef1e4700dc1c"
+      ],
+      "records": 2,
+      "repository_key": "unitech/pm2",
+      "url": "https://github.com/Unitech/pm2.git"
+    },
+    {
+      "commits": [
+        "3942bfbbcaa72084bd4284846c83bd61ed7c8b29",
+        "d3ef16dabe861713192ba8679c5db8e0ac143f9b"
+      ],
+      "records": 2,
+      "repository_key": "unjs/defu",
+      "url": "https://github.com/unjs/defu.git"
+    },
+    {
+      "commits": [
+        "5cd9e676711af3f4e4b5398ddf6ca8d52c1c7e1f",
+        "a7b94e69ff6159de8ddfd4940c90db4708c0d67e"
+      ],
+      "records": 2,
+      "repository_key": "unjs/ufo",
+      "url": "https://github.com/unjs/ufo.git"
     },
     {
       "commits": [
@@ -4808,6 +8710,15 @@
       "records": 5,
       "repository_key": "unleash/unleash",
       "url": "https://github.com/Unleash/unleash.git"
+    },
+    {
+      "commits": [
+        "88df2346855f70cec9713b362ca32a4691dc271a",
+        "ef45a1355375a8244063793a19059b4f62fc8788"
+      ],
+      "records": 2,
+      "repository_key": "unshiftio/url-parse",
+      "url": "https://github.com/unshiftio/url-parse.git"
     },
     {
       "commits": [
@@ -4847,6 +8758,26 @@
     },
     {
       "commits": [
+        "7b0699e8a5452522df5b875407412deef4c84960",
+        "c1af2bfd7aa59a4482aa7f6ec4b9208c1d350b5c"
+      ],
+      "records": 2,
+      "repository_key": "v2fly/v2ray-core",
+      "url": "https://github.com/v2fly/v2ray-core.git"
+    },
+    {
+      "commits": [
+        "45901ec4f1276d192da6d0eb10a60b64722356c1",
+        "496fc8b2a7f5997acaaec33cc44d0b8dba5fb5e1",
+        "d457ecaf55b0f3d8bd379d82757425d0d13dd382",
+        "f2e3633f22fd3016656789d100bc451d857e7488"
+      ],
+      "records": 4,
+      "repository_key": "validatorjs/validator.js",
+      "url": "https://github.com/validatorjs/validator.js.git"
+    },
+    {
+      "commits": [
         "e0f1841b310f6f610e8137db2506cf683ce154d0",
         "e39a262faf1cd4c554bf1b8e57eeea082da995c0"
       ],
@@ -4883,6 +8814,24 @@
     },
     {
       "commits": [
+        "7ca78f19a51859de09171daa3b0cefcc9df90a16",
+        "930399bb9839a8baf3d349614106d78268775eed"
+      ],
+      "records": 3,
+      "repository_key": "vercel/ai",
+      "url": "https://github.com/vercel/ai.git"
+    },
+    {
+      "commits": [
+        "b83b36d7266fb1bd779fd19a2f98bab17a04d999",
+        "caae2988ba2a37765d055c4eee63d383320ee662"
+      ],
+      "records": 2,
+      "repository_key": "vercel/ms",
+      "url": "https://github.com/vercel/ms.git"
+    },
+    {
+      "commits": [
         "019628571641dec57aaf349ba0c360e3964e6f12",
         "669426f454e032a2a823bc66df3a8d19e306ac83",
         "6b12c60c61ee80cb0443ccd20de82ca9b4422ddd",
@@ -4912,12 +8861,30 @@
     },
     {
       "commits": [
+        "b7da3627de262c01b20f1583324d265098a2d09c",
+        "e7ce4000e9fe4d957332df1056640a22ebea28ee"
+      ],
+      "records": 2,
+      "repository_key": "vgno/koa-remove-trailing-slashes",
+      "url": "https://github.com/vgno/koa-remove-trailing-slashes.git"
+    },
+    {
+      "commits": [
         "b3acf663641fca0f7a966525a72845af7ec5fab2",
         "bba6e179252f38925e1c7341791b65ecb24378cf"
       ],
       "records": 3,
       "repository_key": "videojs/video.js",
       "url": "https://github.com/videojs/video.js.git"
+    },
+    {
+      "commits": [
+        "84dc0992b4d5657ba3d36813d25eb2cd4f19bf3a",
+        "baba40332080b38b33840d2614df6d4142dedaf6"
+      ],
+      "records": 2,
+      "repository_key": "viking04/merge",
+      "url": "https://github.com/viking04/merge.git"
     },
     {
       "commits": [
@@ -4948,6 +8915,26 @@
     },
     {
       "commits": [
+        "329c40a600dedc790fca36f2d460dc3d40186f7c",
+        "582fba0b9a52b13fcff6beaaa3bfbd532bc5359d"
+      ],
+      "records": 2,
+      "repository_key": "vitejs/vite-plugin-react",
+      "url": "https://github.com/vitejs/vite-plugin-react.git"
+    },
+    {
+      "commits": [
+        "51e14b959e2e40d39c7fca507aa6cf2ab07e8e1d",
+        "9dcbd7de3180f47e94f54989fb5c66daea00c920",
+        "b04c38de2cc71c8cb89296fd7c602dc950ffdc00",
+        "c565cab615bc962bda061dcd645aa7506c59ca4a"
+      ],
+      "records": 6,
+      "repository_key": "vitessio/vitess",
+      "url": "https://github.com/vitessio/vitess.git"
+    },
+    {
+      "commits": [
         "7268f6e38ebbb3d61700f16c638c6eba0c88bb0c",
         "82daf9f5756e1868be0aa751afaec4726beca12a"
       ],
@@ -4957,12 +8944,30 @@
     },
     {
       "commits": [
+        "04dff4642ee82a447b0c6973f386191c375249cf",
+        "46b3e76e28b9b3eee73693720c9ec48820228b72"
+      ],
+      "records": 2,
+      "repository_key": "volcengine/openviking",
+      "url": "https://github.com/volcengine/OpenViking.git"
+    },
+    {
+      "commits": [
         "305a05831a462fb2c353d3cbbff55a0733286f8c",
         "801421617b46e0e1c1a2f2d593b7cbf487cffddc"
       ],
       "records": 2,
       "repository_key": "voodoocreation/ts-deepmerge",
       "url": "https://github.com/voodoocreation/ts-deepmerge.git"
+    },
+    {
+      "commits": [
+        "72ba7505aff2a8314e82aa5082379a77504a1fcb",
+        "74fae4454b1fc5167beb3e2eba1c59ba3343fed4"
+      ],
+      "records": 3,
+      "repository_key": "vuejs/vue-cli",
+      "url": "https://github.com/vuejs/vue-cli.git"
     },
     {
       "commits": [
@@ -4978,9 +8983,11 @@
     {
       "commits": [
         "335ece5f962e72364a8a75ca179a036cdca1a4ac",
-        "5fe901e5d86ed02dbbb63039a897582951266afd"
+        "5fe901e5d86ed02dbbb63039a897582951266afd",
+        "b59a7379300fe74bbd5b536bdfeeb503d6857f8e",
+        "d9a41e7f24d08c024acc9a3094940199df94db34"
       ],
-      "records": 3,
+      "records": 6,
       "repository_key": "wagtail/wagtail",
       "url": "https://github.com/wagtail/wagtail.git"
     },
@@ -4995,6 +9002,24 @@
     },
     {
       "commits": [
+        "e611aed4e571c2a86103f5cee48791ca6b460360",
+        "e9d4f6cd5d567d95349c3a28d0dcce99c1866a23"
+      ],
+      "records": 2,
+      "repository_key": "walinejs/waline",
+      "url": "https://github.com/walinejs/waline.git"
+    },
+    {
+      "commits": [
+        "1d6bfcdcce157c8daa42d0a056d4f3ee871c447a",
+        "3d7090c08c333fcfb10ad9e2d6cf72e2acb7d87f"
+      ],
+      "records": 2,
+      "repository_key": "waysact/webpack-subresource-integrity",
+      "url": "https://github.com/waysact/webpack-subresource-integrity.git"
+    },
+    {
+      "commits": [
         "40f2cc32279f0f8a51016c3c6870a2c0c808e6c0",
         "54a8d2765ec589684e588991b6816657cf848ac2"
       ],
@@ -5004,12 +9029,23 @@
     },
     {
       "commits": [
+        "7c299936e48136d14918c2736748ac1eac665722",
+        "9706d125b42481178d2b423de245f5d2faadbf40",
         "b4e1ddbd6d40fb30863f6263a67bcdf411a0c6df",
         "d4f83efaeac65850ff842cc7d69d2961ce577d4c"
       ],
-      "records": 3,
+      "records": 5,
       "repository_key": "web2py/web2py",
       "url": "https://github.com/web2py/web2py.git"
+    },
+    {
+      "commits": [
+        "8ed041c6635d807b3da8960ad49e125e3d1b0e80",
+        "bd6cc71cda1b6660bd28f9dd35064b7cd49003bc"
+      ],
+      "records": 2,
+      "repository_key": "web3/web3.js",
+      "url": "https://github.com/web3/web3.js.git"
     },
     {
       "commits": [
@@ -5022,19 +9058,32 @@
     },
     {
       "commits": [
+        "5ac3d7f2cdce6da63a8dfb07e9dbbd95756bf7a2",
+        "955e057abc6cc83cbc3fa1e1ef67a49758bf5a61"
+      ],
+      "records": 2,
+      "repository_key": "webpack/webpack",
+      "url": "https://github.com/webpack/webpack.git"
+    },
+    {
+      "commits": [
         "80cd9eea54975fe632a518d8bd902a260f374e7c",
         "f21ed0f44aceb6132abb591ee8b60d770b6e489f"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "webpack/webpack-dev-server",
       "url": "https://github.com/webpack/webpack-dev-server.git"
     },
     {
       "commits": [
         "00c425ec77993773d823f018f64a5c44e17023ff",
-        "990306d1446faf346c76452409a4c11455690514"
+        "29293ed11b679e0366fa0f6bb9310b330dafd795",
+        "753937ff1ddc0938513267b4d6d5139a6ad41746",
+        "990306d1446faf346c76452409a4c11455690514",
+        "c0327ec15a54d701eb6ccefaa8bef328cfc03086",
+        "ce2a3d62437995a47e6056d485a33d21b6a8f867"
       ],
-      "records": 3,
+      "records": 7,
       "repository_key": "websockets/ws",
       "url": "https://github.com/websockets/ws.git"
     },
@@ -5049,12 +9098,66 @@
     },
     {
       "commits": [
+        "6bec52dca158481258315ba0fc2f11206df7b719",
+        "ce599d306f81e3ebb0f6eaa5b540d701a6d4085d"
+      ],
+      "records": 2,
+      "repository_key": "whyour/qinglong",
+      "url": "https://github.com/whyour/qinglong.git"
+    },
+    {
+      "commits": [
         "20a61371de5b51380bbdb0c7935b30b0625ac227",
         "c528cc7df19d81a60d53f900d6dca78ac1312671"
       ],
       "records": 3,
       "repository_key": "whyrusleeping/tar-utils",
       "url": "https://github.com/whyrusleeping/tar-utils.git"
+    },
+    {
+      "commits": [
+        "9769cc160b06296b1a060389661061daa71ed231",
+        "aebe8bcb3618bb07c6753e3f5c982c1fe6adea64"
+      ],
+      "records": 2,
+      "repository_key": "withstudiocms/studiocms",
+      "url": "https://github.com/withstudiocms/studiocms.git"
+    },
+    {
+      "commits": [
+        "10e3cc3c22aba65a51b2a3d1365490454be95f07",
+        "35629664cc5d3aea4c3d083d075fe26e7c346b59"
+      ],
+      "records": 2,
+      "repository_key": "wong2/mcp-cli",
+      "url": "https://github.com/wong2/mcp-cli.git"
+    },
+    {
+      "commits": [
+        "dc457291cf3d976f5cfbc15fce71c95a733d3699",
+        "f7846fc0c323da8325422cab32623491757f1b88"
+      ],
+      "records": 2,
+      "repository_key": "wooey/wooey",
+      "url": "https://github.com/wooey/Wooey.git"
+    },
+    {
+      "commits": [
+        "491ecd56bdd81c6c8e2ccd688542af272f9220f1",
+        "c03827cd2f9933619c23894ce7c98401ea824020"
+      ],
+      "records": 2,
+      "repository_key": "woorank/robots-txt-guard",
+      "url": "https://github.com/Woorank/robots-txt-guard.git"
+    },
+    {
+      "commits": [
+        "29f8edea9afc91fbeaeb9761f5d410be82f1a1e6",
+        "31353f0fef14ad8bc1f61c028971bd30b9e1909b"
+      ],
+      "records": 2,
+      "repository_key": "wordops/wordops",
+      "url": "https://github.com/WordOps/WordOps.git"
     },
     {
       "commits": [
@@ -5105,6 +9208,15 @@
     },
     {
       "commits": [
+        "198c0451fad188390390395ccfc84ab371def4c7",
+        "93f729c6d1bf45666a1dc21d5cae3aefe1b18043"
+      ],
+      "records": 2,
+      "repository_key": "yaireo/tagify",
+      "url": "https://github.com/yairEO/tagify.git"
+    },
+    {
+      "commits": [
         "0284a5bcf92b5a7ee015300ce3051baf7ae4718d",
         "f149714c1d548f9f0cbc5c95be3aef5eff1becde"
       ],
@@ -5120,6 +9232,78 @@
       "records": 3,
       "repository_key": "yeoman/environment",
       "url": "https://github.com/yeoman/environment.git"
+    },
+    {
+      "commits": [
+        "2adbaa4891b9690853ef10216189189f5ad7dc73",
+        "cc5a75ef5eca9fedfd19ef55d323dcde07b0da35"
+      ],
+      "records": 2,
+      "repository_key": "yi-ge/unzip",
+      "url": "https://github.com/yi-ge/unzip.git"
+    },
+    {
+      "commits": [
+        "9725f5eff3c16735133383c58957f08ecea65eb4",
+        "c56639532a923d9a1600fb863ec7551b188b5d19"
+      ],
+      "records": 2,
+      "repository_key": "yomguithereal/baobab",
+      "url": "https://github.com/Yomguithereal/baobab.git"
+    },
+    {
+      "commits": [
+        "49181f4ec9ae1472c6675cab56bbc01e723855af",
+        "8b131e239b92db889ac5d8fd02bee1d3a035fd9d"
+      ],
+      "records": 2,
+      "repository_key": "yonle/bostr",
+      "url": "https://github.com/Yonle/bostr.git"
+    },
+    {
+      "commits": [
+        "6018e4c61110f43d254fdc749dc6baf3dc997ce7",
+        "aab0bda75ea9dd27aa37d0d8524d7cf41b3c4a9a"
+      ],
+      "records": 3,
+      "repository_key": "yosefhayim/ebay-mcp",
+      "url": "https://github.com/YosefHayim/ebay-mcp.git"
+    },
+    {
+      "commits": [
+        "56b51bd4bdff640a4eb2e16e8558ce7b709a95b6",
+        "c4c0f0138ab5afbac58e03915d446680421bde28"
+      ],
+      "records": 2,
+      "repository_key": "youngerheart/nodeserver",
+      "url": "https://github.com/youngerheart/nodeserver.git"
+    },
+    {
+      "commits": [
+        "33e94e9034ffc52e29639386a191abd9b455d84b",
+        "82bdf202c53460bac9106cc9b4b34a0a16cae0ed"
+      ],
+      "records": 2,
+      "repository_key": "yubico/yubihsm-connector",
+      "url": "https://github.com/Yubico/yubihsm-connector.git"
+    },
+    {
+      "commits": [
+        "a541d75bb50f1b542c096d8bc8082c3549f5c059",
+        "f67ef3c519d08e84d11c9a8d00c351283236a11f"
+      ],
+      "records": 2,
+      "repository_key": "yusing/godoxy",
+      "url": "https://github.com/yusing/godoxy.git"
+    },
+    {
+      "commits": [
+        "16e6e3ad8921a4e18ccc8c2afe474db7d002c001",
+        "680acf3e33b00855c903320b0f32db2e6d5a0d20"
+      ],
+      "records": 2,
+      "repository_key": "yzhao062/pyod",
+      "url": "https://github.com/yzhao062/pyod.git"
     },
     {
       "commits": [
@@ -5152,6 +9336,15 @@
     },
     {
       "commits": [
+        "2220ddd5b58f6252069a4f99f9475441ad0b50cd",
+        "48bd69eaa3cbd30558bd218327ac103d1457e919"
+      ],
+      "records": 2,
+      "repository_key": "zjonsson/node-unzipper",
+      "url": "https://github.com/ZJONSSON/node-unzipper.git"
+    },
+    {
+      "commits": [
         "7eead067898852ebd3e0f143bc51295928528dfa",
         "c49ddb0f2770cab57f76475f4571e8e842181b87"
       ],
@@ -5161,10 +9354,12 @@
     },
     {
       "commits": [
+        "3737596ec9f28c34a073cc845bd2f4c0a80cb671",
         "57a2acb3ac7bfe320dcc8d7771f20710cd91bbe9",
+        "a2891c0d11af329c23fd5f173b32025453b962ff",
         "d701cc36cccac36b21fa200f1f2d1945a9a215e6"
       ],
-      "records": 2,
+      "records": 5,
       "repository_key": "zopefoundation/restrictedpython",
       "url": "https://github.com/zopefoundation/RestrictedPython.git"
     },
@@ -5176,6 +9371,15 @@
       "records": 2,
       "repository_key": "zopefoundation/zodb",
       "url": "https://github.com/zopefoundation/ZODB.git"
+    },
+    {
+      "commits": [
+        "2abdf14620f146857dc8e3ffd2b6a754884c331d",
+        "334d59021bcee7e07c2b983448f559f735f759e3"
+      ],
+      "records": 2,
+      "repository_key": "zopefoundation/zope",
+      "url": "https://github.com/zopefoundation/Zope.git"
     }
   ]
 }

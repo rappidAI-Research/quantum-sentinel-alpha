@@ -4,425 +4,425 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:modoboa': ['ISC']}
-  - repository_key: modoboa/modoboa
+  # registry (deps.dev): {'npm:@seal-security/mongoose-fixed': ['MIT'], 'npm:mongoose': ['MIT']}
+  - repository_key: automattic/mongoose
     decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected ISC>"
-    license_file: LICENSE
-    license_file_sha256: a21bc447cb14aeb926e102b2afdc25b9741625db193c91c8f07a020115364845
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/modoboa/modoboa
-      - https://github.com/modoboa/modoboa/blob/38d778cc71e370216e067d054ce0169ad83078c8/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@mozilla/readability': ['Apache-2.0']}
-  - repository_key: mozilla/readability
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE.md
-    license_file_sha256: a5b1e8181751ce05b85b7bfaa832b785e87086250a5148e679d17ca9bdcfa958
+    license_file_sha256: b15cc7d4a0c19e709470e3057b90763b775acd82051047abe224a4ecfa90e4b3
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/mozilla/readability
-      - https://github.com/mozilla/readability/blob/1c4d63be3e7344c3dfdf76ebb05fd0d32de93eb3/LICENSE.md
+      - https://github.com/Automattic/mongoose
+      - https://github.com/Automattic/mongoose/blob/f1efabf350522257364aa5c2cb36e441cf08f1a2/LICENSE.md
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:hellojs': ['MIT']}
-  - repository_key: mrswitch/hello.js
+  # registry (deps.dev): {'PyPI:taipy': ['Apache-2.0']}
+  - repository_key: avaiga/taipy
     decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
     license_file: LICENSE
-    license_file_sha256: bae0e427821c5760a5b3947a933075d556ffebcd78afa057ce09956d3cf37ed2
+    license_file_sha256: d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/MrSwitch/hello.js
-      - https://github.com/MrSwitch/hello.js/blob/7ab50aeff2d41991f08d4ad6c0481125eea8f6b7/LICENSE
+      - https://github.com/Avaiga/taipy
+      - https://github.com/Avaiga/taipy/blob/129fd407ffca49ee4ab853772c88d0c873e038dd/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:aws-cdk-aws-codebuild': ['Apache-2.0'], 'PyPI:aws-cdk-lib': ['Apache-2.0'], 'npm:aws-cdk': ['Apache-2.0'], 'npm:aws-cdk-lib': ['Apache-2.0']}
+  - repository_key: aws/aws-cdk
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 9040c5f3ac4951087513d33b50f28a6c77a9044745c48532a067d3c1007bcca8
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/aws/aws-cdk
+      - https://github.com/aws/aws-cdk/blob/4bee768f07e73ab5fe466f9ad3d1845456a0513b/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/Azure/aad-pod-identity': ['MIT']}
+  - repository_key: azure/aad-pod-identity
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 27ebda9d51f0a56b7e281ccd8230a27236dcb51c05f64b07869ecf6e965d68b0
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Azure/aad-pod-identity
+      - https://github.com/Azure/aad-pod-identity/blob/7e01970391bde6c360d077066ca17d059204cb5d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@azure/ms-rest-nodeauth': ['MIT']}
+  - repository_key: azure/ms-rest-nodeauth
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 27ebda9d51f0a56b7e281ccd8230a27236dcb51c05f64b07869ecf6e965d68b0
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Azure/ms-rest-nodeauth
+      - https://github.com/Azure/ms-rest-nodeauth/blob/1b8dcfb6d7e1c8a0a00044286021a841961cf636/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:sails': ['MIT']}
+  - repository_key: balderdashy/sails
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: 7bb65f46ebc4f8afb5eed904bf29ddc2e7231edb0e88d127d78400e46509fc78
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/balderdashy/sails
+      - https://github.com/balderdashy/sails/blob/4a023dc5095a4b30fdc8535f705ed34cd22d2f7d/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:cookiejar': ['MIT']}
+  - repository_key: bmeck/node-cookiejar
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 3d51f096fd603973bc8e6c659e449176a689d1d55b6b3bf8c2c9dea77348124e
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/bmeck/node-cookiejar
+      - https://github.com/bmeck/node-cookiejar/blob/eaa00021caf6ae09449dde826108153b578348e5/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:bower': ['MIT']}
+  - repository_key: bower/bower
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 5fd00c68fcc6c2456eed74c167a57ccfa5de94b850e9abb113ddf15eed3e36a1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/bower/bower
+      - https://github.com/bower/bower/blob/45c6bfa86f6e57731b153baca9e0b41a1cc699e3/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:aws-lambda-multipart-parser': ['MIT']}
-  - repository_key: myshenin/aws-lambda-multipart-parser
+  # registry (deps.dev): {'npm:min-dash': ['MIT']}
+  - repository_key: bpmn-io/min-dash
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 921cbd9b449ad3e85a997e853b96c43b02bed4ea524b144ebcd353c8cce31aff
+    license_file_sha256: 21b28e21af7e43fbdc4a77d166146024baacc509cf9c8c4986fb0248724fdd30
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/myshenin/aws-lambda-multipart-parser
-      - https://github.com/myshenin/aws-lambda-multipart-parser/blob/56ccb03af4dddebc2b2defb348b6558783d5757e/LICENSE
+      - https://github.com/bpmn-io/min-dash
+      - https://github.com/bpmn-io/min-dash/blob/2c6689e2aa29f4b66a4874a2f3003431e9db48d1/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@braintree/sanitize-url': ['MIT']}
+  - repository_key: braintree/sanitize-url
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 0984740e0c3d725c8044dec7edcefe1dbce180ef5a7bc710c251e19607000158
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/braintree/sanitize-url
+      - https://github.com/braintree/sanitize-url/blob/e5afda45d9833682b705f73fc2c1265d34832183/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:pbkdf2': ['MIT']}
+  - repository_key: browserify/pbkdf2
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a9667a8bf55e7f20cf894cb47774f94ebd4eb366408aafb980f1f6547bcdc10a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/browserify/pbkdf2
+      - https://github.com/browserify/pbkdf2/blob/e3102a8cd4830a3ac85cd0dd011cc002fdde33bb/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:@netlify/ipx': ['MIT']}
-  - repository_key: netlify/netlify-ipx
+  # registry (deps.dev): {'npm:happy-dom': ['MIT']}
+  - repository_key: capricorn86/happy-dom
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 3ee7c4b649b783688f1186c9aa0da50e331027514c9bfa143f27983e23783c71
+    license_file_sha256: 46a5fbffa79b8dc33e512852b5ac5da71317eee5ce122ddb601cf1add07848cf
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/netlify/netlify-ipx
-      - https://github.com/netlify/netlify-ipx/blob/dfa7505a8d47a76fd527570dc40737a61500759b/LICENSE
+      - https://github.com/capricorn86/happy-dom
+      - https://github.com/capricorn86/happy-dom/blob/f4bd4ebe3fe5abd2be2bcea1c07043c8b0b70eea/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@nuxt/icon': ['MIT']}
-  - repository_key: nuxt/icon
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:get-func-name': ['MIT']}
+  - repository_key: chaijs/get-func-name
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 8bc4db5c938ab39541bb4421be07f18e708bc138bef3c585fd7992faf9e6f307
+    license_file_sha256: e5aee0714b6ecc416454b968d1017570ef609f20d8722ab84b07acd550b78198
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/nuxt/icon
-      - https://github.com/nuxt/icon/blob/4564518c2b2ed8235a7715056ccdfce96ca3d0ff/LICENSE
+      - https://github.com/chaijs/get-func-name
+      - https://github.com/chaijs/get-func-name/blob/f934b228b5e2cb94d6c8576d3aac05493f667c69/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:dfir-unfurl': ['Apache-2.0']}
-  - repository_key: obsidianforensics/unfurl
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/obsidianforensics/unfurl
-      - https://github.com/obsidianforensics/unfurl/blob/4c0a07ab1e9af3a1ddf0e7f47153ec9ba77946dd/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@octokit/plugin-paginate-rest': ['MIT']}
-  - repository_key: octokit/plugin-paginate-rest.js
+  # registry (deps.dev): {'npm:pathval': ['MIT']}
+  - repository_key: chaijs/pathval
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 8cd41c03a45ebf957a00d335d9dfab638b7ddba797a7d2f23bc1c4157a50db72
+    license_file_sha256: 5d45910e7ed82fecc3e29b40a5b3a17ceb609fda19f860aa2ec180d87f4f9d4a
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/octokit/plugin-paginate-rest.js
-      - https://github.com/octokit/plugin-paginate-rest.js/blob/bb6c4f945d8023902cf387391d2b2209261044ab/LICENSE
+      - https://github.com/chaijs/pathval
+      - https://github.com/chaijs/pathval/blob/21a9046cfa0c2697cb41990f3b4316db410e6c8a/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@octokit/request-error': ['MIT']}
-  - repository_key: octokit/request-error.js
+  # registry (deps.dev): {'Go:chainguard.dev/apko': ['Apache-2.0']}
+  - repository_key: chainguard-dev/apko
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/chainguard-dev/apko
+      - https://github.com/chainguard-dev/apko/blob/6604826b19e36e9bc6e196592800fad93738f4a1/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:chainguard.dev/melange': ['Apache-2.0']}
+  - repository_key: chainguard-dev/melange
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/chainguard-dev/melange
+      - https://github.com/chainguard-dev/melange/blob/2f95c9f4355ed993f2670bf1bb82d88b0f65e9e4/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@zag-js/core': ['MIT']}
+  - repository_key: chakra-ui/zag
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 304e4a73f6212adaf242c78fcbe1dfcebd78d8bab53b007fe69b39fc968292b7
+    license_file_sha256: 2e9d3d03c7f5bd727f8e53dda3795edc0873e6479d0cb32225b9390c1db72433
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/octokit/request-error.js
-      - https://github.com/octokit/request-error.js/blob/d558320874a4bc8d356babf1079e6f0056a59b9e/LICENSE
+      - https://github.com/chakra-ui/zag
+      - https://github.com/chakra-ui/zag/blob/f53edc548f737aadfdd486a0043bdd5f5c068bbf/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@okta/oidc-middleware': ['Apache-2.0']}
-  - repository_key: okta/okta-oidc-middleware
+  # registry (deps.dev): {'npm:@claviska/jquery-minicolors': ['MIT']}
+  - repository_key: claviska/jquery-minicolors
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: a2e04d21af4070b3105ccbc04a86b386b5c810299d57c511f5c204fb8d0bc7e4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/claviska/jquery-minicolors
+      - https://github.com/claviska/jquery-minicolors/blob/ef134824a7f4110ada53ea6c173111a4fa2f48f3/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:clearml': ['Apache-2.0']}
+  - repository_key: clearml/clearml
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
     license_file: LICENSE
-    license_file_sha256: a63684ed93d3f22474aa79aba4fe848aece64e14d2966250fde68935b58698c0
+    license_file_sha256: 438496d1ac6c8b98d0c1aefc137b634c3ae5af693f577cc95ea31918cdeaa5d6
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/okta/okta-oidc-middleware
-      - https://github.com/okta/okta-oidc-middleware/blob/5d10b3ccdd5d6893de4d8b58696094267d30c113/LICENSE
+      - https://github.com/clearml/clearml
+      - https://github.com/clearml/clearml/blob/64fb2bcbdbb87a74af90dd723d5ef4a99fceeb73/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:rtslib-fb': ['Apache-2.0']}
-  - repository_key: open-iscsi/rtslib-fb
+  # registry (deps.dev): {'Go:github.com/cloudevents/sdk-go/v2': ['Apache-2.0']}
+  - repository_key: cloudevents/sdk-go
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: COPYING
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/open-iscsi/rtslib-fb
-      - https://github.com/open-iscsi/rtslib-fb/blob/b23d061ee0fa7924d2cdce6194c313b9ee06c468/COPYING
+      - https://github.com/cloudevents/sdk-go
+      - https://github.com/cloudevents/sdk-go/blob/de2f28370b0d2a0f64f92c0c6139fa4b8a7c3851/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:richie': ['MIT']}
-  - repository_key: openfun/richie
+  # registry (deps.dev): {'npm:codemirror': ['MIT']}
+  - repository_key: codemirror/codemirror
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: e4b2a31481359292b305f4768b0abf4461e11cce576b07657d9adc1d3b022e90
+    license_file_sha256: a3f2fe2ac6b471aa80c737c5d283dd049bdc903a73835ee6d4d2cac02fdd53bf
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/openfun/richie
-      - https://github.com/openfun/richie/blob/a1b5bbda3403d7debb466c303a32852925fcba5f/LICENSE
+      - https://github.com/codemirror/CodeMirror
+      - https://github.com/codemirror/CodeMirror/blob/55d0333907117c9231ffdf555ae8824705993bbb/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/openmeterio/openmeter': ['Apache-2.0']}
-  - repository_key: openmeterio/openmeter
+  # registry (deps.dev): {'PyPI:aiosmtplib': ['MIT']}
+  - repository_key: cole/aiosmtplib
     decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 4096585cf0343b0713e8e7d6df73e90bb97797428b160f305e4c326f93c9b802
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/openmeterio/openmeter
-      - https://github.com/openmeterio/openmeter/blob/6ce29e743165890c10346f4c71d5bf79f1ecaf6f/LICENSE
+      - https://github.com/cole/aiosmtplib
+      - https://github.com/cole/aiosmtplib/blob/9fab7ba1361dbf7622ede1315a24be805cff09c9/LICENSE.txt
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:safer-eval': ['MIT']}
+  - repository_key: commenthol/safer-eval
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a56bbc5d06a8b703e940e62e4866428b7fb1079abd1443989fdf8a3ac3e8b555
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/commenthol/safer-eval
+      - https://github.com/commenthol/safer-eval/blob/1c29f6a6e304fb650c05056e217e457a0d2cc3c5/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:glance': ['Apache-2.0']}
-  - repository_key: openstack/glance
+  # registry (deps.dev): {'npm:serialize-to-js': ['MIT']}
+  - repository_key: commenthol/serialize-to-js
     decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    license_file_sha256: 54ee758f5a0da62258d53c39856d540f2b48d5ed76ae83b7af5ad010c6a06ea2
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/openstack/glance
-      - https://github.com/openstack/glance/blob/b1ac90f7914d91b25144cc4063fa994fb5019ee3/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:nova': ['Apache-2.0']}
-  - repository_key: openstack/nova
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/openstack/nova
-      - https://github.com/openstack/nova/blob/3eba22ff09c81a61750fbb4882e5f1f01a20fdf5/LICENSE
+      - https://github.com/commenthol/serialize-to-js
+      - https://github.com/commenthol/serialize-to-js/blob/181d7d583ae5293cd47cc99b14ad13352875f3e3/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/caller_abstention': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:oras.land/oras-go/v2': ['Apache-2.0']}
-  - repository_key: oras-project/oras-go
+  # registry (deps.dev): {'Go:github.com/corazawaf/coraza/v3': ['Apache-2.0'], 'Go:github.com/jptosso/coraza-waf': ['Apache-2.0']}
+  - repository_key: corazawaf/coraza
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
     license_file: LICENSE
-    license_file_sha256: eccb04b94c71454ea03f00ecb518b997952c4f2f23aca50baab98230f5c8dc00
+    license_file_sha256: aac51bcb84fa282e8214f6301da5948eee11caf9d4699b144fdc3222db7c4de9
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/oras-project/oras-go
-      - https://github.com/oras-project/oras-go/blob/4683c46ef078091544f5f55fd25102f002806991/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:werkzeug': ['BSD-3-Clause']}
-  - repository_key: pallets/werkzeug
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 17ce21f3e3d902e0be1eafbfdb9d83df2847ea6a8873e5946d750f6df3ad8d73
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pallets/werkzeug
-      - https://github.com/pallets/werkzeug/blob/1034edc7f901dd645ec6e462754111b39002bd65/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:jspdf': ['MIT']}
-  - repository_key: parallax/jspdf
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: dc388ec35ff463288cdde3588a36fd4ed12a45deff053243b37309acc9ef583b
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/parallax/jsPDF
-      - https://github.com/parallax/jsPDF/blob/56b46d45b052346f5995b005a34af5dcdddd5437/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/caller_abstention': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:vm2': ['MIT']}
-  - repository_key: patriksimek/vm2
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.md
-    license_file_sha256: e325ac4bbebba34d3461267f44d85852cade58d3a53a4c21fd5880452a98f925
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/patriksimek/vm2
-      - https://github.com/patriksimek/vm2/blob/ca195f0178989d6f59eafb7af965806f829e20f7/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:send': ['MIT']}
-  - repository_key: pillarjs/send
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pillarjs/send
-      - https://github.com/pillarjs/send/blob/ae4f2989491b392ae2ef3b0015a019770ae65d35/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@posthog/plugin-server': ['MIT']}
-  - repository_key: posthog/posthog
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 7fa82b617424ab9e8759434447045e399037fa4ef03012320a33694cbd446d77
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/PostHog/posthog
-      - https://github.com/PostHog/posthog/blob/6e8f035f9acd339c5ba87ba6ea40fc1ab3053d42/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:sanitize-html': ['MIT']}
-  - repository_key: punkave/sanitize-html
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 24526b61784870909780321dac50fcd3a33ff0bdfd507549dd63163899237bd1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/punkave/sanitize-html
-      - https://github.com/punkave/sanitize-html/blob/5d205a1005ba0df80e21d8c64a15bb3accdb2403/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:pypdf': ['BSD-3-Clause']}
-  - repository_key: py-pdf/pypdf
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
-    license_file: LICENSE
-    license_file_sha256: a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/py-pdf/pypdf
-      - https://github.com/py-pdf/pypdf/blob/7a4c8246ed48d9d328fb596942271da47b6d109c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:poetry': ['MIT']}
-  - repository_key: python-poetry/poetry
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 1786f071a510648a24695f295117f02bae0bbf0fb7c6730aafe9c93a3e4bf7ee
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/python-poetry/poetry
-      - https://github.com/python-poetry/poetry/blob/ed59537ac3709cfbdbf95d957de801c13872991a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:qiskit-ibm-runtime': ['Apache-2.0']}
-  - repository_key: qiskit/qiskit-ibm-runtime
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE.txt
-    license_file_sha256: 7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/Qiskit/qiskit-ibm-runtime
-      - https://github.com/Qiskit/qiskit-ibm-runtime/blob/b78fca114133051805d00043a404b25a33835f4d/LICENSE.txt
+      - https://github.com/corazawaf/coraza
+      - https://github.com/corazawaf/coraza/blob/4722c9ad0d502abd56b8d6733c6b47eb4111742d/LICENSE
     notes: ""

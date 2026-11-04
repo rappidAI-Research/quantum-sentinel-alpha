@@ -1,59 +1,88 @@
 {
-  "abstentions_checked": 193,
+  "abstentions_checked": 339,
   "abstentions_invalid": 1,
-  "broad_spans": 61,
+  "broad_spans": 89,
   "correspondence": {
-    "moderate": 156,
-    "strong": 357,
-    "weak": 96
+    "moderate": 305,
+    "strong": 663,
+    "weak": 178
   },
   "correspondence_by_language": {
     "go": {
-      "moderate": 45,
-      "strong": 127,
-      "weak": 35
+      "moderate": 72,
+      "strong": 187,
+      "weak": 55
     },
     "javascript": {
-      "moderate": 43,
-      "strong": 70,
-      "weak": 24
+      "moderate": 92,
+      "strong": 169,
+      "weak": 57
     },
     "python": {
-      "moderate": 48,
-      "strong": 107,
-      "weak": 19
+      "moderate": 98,
+      "strong": 197,
+      "weak": 38
     },
     "typescript": {
-      "moderate": 20,
-      "strong": 53,
-      "weak": 18
+      "moderate": 43,
+      "strong": 110,
+      "weak": 28
     }
   },
   "exclusions_by_reason": {
     "abstention_constant_arguments": 1,
-    "later_fix_changes_same_function": 100,
-    "reported_incomplete_fix": 35
+    "broad_localization_span": 89,
+    "later_fix_changes_same_function": 129,
+    "reported_incomplete_fix": 50,
+    "split_leakage_near_duplicate_of_temporal_quarantine": 2,
+    "split_leakage_near_duplicate_of_validation": 1
   },
   "fix_pattern_by_family": {
-    "authn_authz": "56/80",
-    "code_injection": "8/14",
-    "command_injection": "11/29",
-    "crypto_tls_integrity": "21/31",
-    "deserialization_input_validation": "28/46",
-    "information_exposure": "32/51",
-    "path_traversal": "40/62",
-    "prototype_pollution": "23/28",
-    "redirect_ssrf": "34/37",
-    "resource_limits_redos": "104/114",
-    "sql_injection": "2/8",
-    "xss_output_encoding": "24/56"
+    "authn_authz": "87/122",
+    "code_injection": "14/29",
+    "command_injection": "25/63",
+    "crypto_tls_integrity": "33/51",
+    "deserialization_input_validation": "60/94",
+    "information_exposure": "50/84",
+    "path_traversal": "80/123",
+    "prototype_pollution": "75/86",
+    "redirect_ssrf": "52/56",
+    "resource_limits_redos": "158/185",
+    "sql_injection": "4/13",
+    "xss_output_encoding": "60/126"
   },
-  "fix_pattern_consistent": "383/556",
-  "groups": 612,
-  "later_fix_checked": 605,
+  "fix_pattern_consistent": "698/1032",
+  "groups": 1158,
+  "later_fix_checked": 1131,
   "later_fix_incomplete_lookups": 0,
   "manual": {
     "items": 44,
+    "outside_sample": [
+      "sgg-197c0ab0d1c44038:pair",
+      "sgg-2cf2e703a76ead51:pair",
+      "sgg-2d72a3657eaed109:pair",
+      "sgg-378c9eabbade1342:pair",
+      "sgg-5897b76eb6545eaf:pair",
+      "sgg-5c1d4ee9c47c0718:pair",
+      "sgg-61303eb81d08544d:pair",
+      "sgg-6c129031942f38e7:pair",
+      "sgg-833b5d2892ae09f0:pair",
+      "sgg-8f3bada0bcb025d5:pair",
+      "sgg-94aae1b326b6db26:abstention",
+      "sgg-94aae1b326b6db26:pair",
+      "sgg-9fdd249e6aa6c400:pair",
+      "sgg-a0ed92c4c6886c55:abstention",
+      "sgg-a5f02a80b981def2:pair",
+      "sgg-ad7e8d2a7b80113a:pair",
+      "sgg-c1a60674e227f82e:pair",
+      "sgg-c9ed921e8a719557:pair",
+      "sgg-d65e52544908013d:pair",
+      "sgg-da053d422e655ad7:abstention",
+      "sgg-e5ebc27cb1aa1f13:pair",
+      "sgg-f432d98ac64a89d4:pair",
+      "sgg-ff8062cb8b49243d:pair"
+    ],
+    "pending": [],
     "rates": {
       "abstention_valid": {
         "error_rate": 0.0,
@@ -69,7 +98,7 @@
         "error_rate": 0.0,
         "errors": 0,
         "judged": 32,
-        "uncertain_or_partial": 2,
+        "uncertain_or_partial": 4,
         "wilson95": [
           0.0,
           0.107
@@ -79,7 +108,7 @@
         "error_rate": 0.0,
         "errors": 0,
         "judged": 32,
-        "uncertain_or_partial": 7,
+        "uncertain_or_partial": 11,
         "wilson95": [
           0.0,
           0.107
@@ -89,7 +118,7 @@
         "error_rate": 0.0,
         "errors": 0,
         "judged": 32,
-        "uncertain_or_partial": 1,
+        "uncertain_or_partial": 2,
         "wilson95": [
           0.0,
           0.107
@@ -99,25 +128,82 @@
         "error_rate": 0.031,
         "errors": 1,
         "judged": 32,
-        "uncertain_or_partial": 2,
+        "uncertain_or_partial": 1,
         "wilson95": [
           0.006,
           0.157
         ]
       },
       "localization": {
-        "error_rate": 0.062,
-        "errors": 2,
+        "error_rate": 0.125,
+        "errors": 4,
         "judged": 32,
         "uncertain_or_partial": 8,
         "wilson95": [
-          0.017,
-          0.201
+          0.05,
+          0.281
         ]
       }
     },
-    "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer"
+    "rates_after_automated_exclusions": {
+      "abstention_valid": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 11,
+        "wilson95": [
+          0.0,
+          0.259
+        ]
+      },
+      "advisory_matches_code": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 29,
+        "wilson95": [
+          0.0,
+          0.117
+        ]
+      },
+      "cwe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 29,
+        "wilson95": [
+          0.0,
+          0.117
+        ]
+      },
+      "fix_addresses_weakness": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 29,
+        "wilson95": [
+          0.0,
+          0.117
+        ]
+      },
+      "hard_negative_safe": {
+        "error_rate": 0.034,
+        "errors": 1,
+        "judged": 29,
+        "wilson95": [
+          0.006,
+          0.172
+        ]
+      },
+      "localization": {
+        "error_rate": 0.034,
+        "errors": 1,
+        "judged": 29,
+        "wilson95": [
+          0.006,
+          0.172
+        ]
+      }
+    },
+    "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer",
+    "sample_items": 44
   },
-  "post_fix_invalidated": 61,
+  "post_fix_invalidated": 94,
   "span_lines_median": 2
 }

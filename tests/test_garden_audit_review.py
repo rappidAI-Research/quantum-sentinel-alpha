@@ -238,9 +238,11 @@ def test_manual_wrong_verdicts_become_exclusions_and_report_renders() -> None:
             }
         ],
         "exclusions": [],
-        "sample": [],
+        "sample": [{"group_id": "g1", "language": "python", "item": "pair"}, {"group_id": "g2", "language": "python", "item": "pair"}, {"group_id": "g3", "language": "python", "item": "abstention"}],
     }
+    manual["items"].append({"group_id": "g9", "item": "pair", "cwe": "wrong"})  # no longer sampled: not counted
     summary = audit.summarize(result, manual)
+    assert summary["manual"]["pending"] == ["g3:abstention"] and summary["manual"]["outside_sample"] == ["g9:pair"]
     assert summary["manual"]["rates"]["cwe"] == {"judged": 2, "errors": 1, "uncertain_or_partial": 0, "error_rate": 0.5, "wilson95": [round(audit.wilson_interval(1, 2)[0], 3), round(audit.wilson_interval(1, 2)[1], 3)]}
     text = audit.report_markdown(summary, result, manual)
     assert "No exploit, test or patch was executed" in text and "manual review | 2" in text
@@ -265,3 +267,26 @@ def test_later_fix_of_an_unrelated_same_named_function_is_ignored() -> None:
 
     later = {"id": "GHSA-6666-7777-8888", "references": [{"type": "FIX", "url": f"https://github.com/example/webapp/commit/{'c' * 40}"}]}
     assert audit.later_fixes(group, [later], Other()) == []
+
+
+def test_broad_localization_span_excludes_the_vulnerable_record() -> None:
+    results = [
+        {"group_id": "g1", "records": {"vulnerable": "v1", "post_fix": "p1"}, "span": {"broad": True}},
+        {"group_id": "g2", "records": {"vulnerable": "v2", "post_fix": "p2"}, "span": {"broad": False}},
+    ]
+    assert audit.audit_exclusions(results, {}) == [{"record_id": "v1", "reason": "broad_localization_span"}]
+
+
+def test_rates_after_automated_exclusions_count_only_surviving_items() -> None:
+    manual = {"reviewer": "t", "items": [
+        {"group_id": "g1", "item": "pair", "localization": "imprecise"},
+        {"group_id": "g2", "item": "pair", "localization": "precise"},
+    ]}
+    result = {
+        "groups": [{"group_id": "g1", "records": {"vulnerable": "v1"}}, {"group_id": "g2", "records": {"vulnerable": "v2"}}],
+        "exclusions": [{"record_id": "v1", "reason": "broad_localization_span"}],
+        "sample": [{"group_id": "g1", "item": "pair"}, {"group_id": "g2", "item": "pair"}],
+    }
+    summary = audit.summarize(result, manual)
+    assert summary["manual"]["rates"]["localization"]["errors"] == 1
+    assert summary["manual"]["rates_after_automated_exclusions"]["localization"] == {"judged": 1, "errors": 0, "error_rate": 0.0, "wilson95": [0.0, round(audit.wilson_interval(0, 1)[1], 3)]}

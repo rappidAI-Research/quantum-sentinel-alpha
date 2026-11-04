@@ -1,7 +1,7 @@
 # Manual stratified review of audit/sample.jsonl (see AUDIT_REPORT.md). Verdict values are validated by
 # sentinel.garden.audit.load_manual_review. `exclude_records` are excluded by curate; labels are never changed.
 reviewer: Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer
-reviewed_at: '2026-11-04'
+reviewed_at: '2026-11-04 (second batch after the full-population expansion: 23 items)'
 method: Read the OSV advisory text, the vulnerable excerpt with its span, the function-level upstream patch, the automated audit signals and, for abstentions, the caller excerpt and context. No code, exploit
   or test was executed.
 items:
@@ -336,3 +336,202 @@ items:
   item: abstention
   language: typescript
   abstention_valid: 'yes'
+- group_id: sgg-1ba9f5f9b8213713
+  item: pair
+  language: go
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: A bare `*` allowlist pattern matched every variable; the fix skips the empty prefix. The leak is information exposure (CWE-200/526) rather than CWE-94.
+- group_id: sgg-9a87435a79b3349d
+  item: pair
+  language: go
+  advisory_matches_code: partly
+  fix_addresses_weakness: partly
+  localization: acceptable
+  cwe: defensible
+  hard_negative_safe: 'no'
+  notes: The referenced commit is the earlier key-sanitization fix; this advisory reports its bypass through newlines in metadata VALUES, so the post-fix function is still vulnerable to the advisory's weakness.
+    Post-fix hard negative excluded.
+  exclude_reason: hard_negative_bypass_reported
+  exclude_records:
+  - sg-go-post-fix-4dcf82264e4d764b
+- group_id: sgg-dd2540e9ef9070a7
+  item: pair
+  language: go
+  advisory_matches_code: partly
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+  notes: Same weakness class as the advisory (raw event data in logs), in the JavaScript processor's panic log rather than the ingest-failure log the advisory names.
+- group_id: sgg-aadae65f2b8d7fca
+  item: pair
+  language: go
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: acceptable
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: Unknown permission bits passed the subset check; privilege escalation fits CWE-269/863 better than CWE-276.
+- group_id: sgg-9915084ff621f21a
+  item: pair
+  language: javascript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-150398c418b2726a
+  item: pair
+  language: javascript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-ebb0552b053865d2
+  item: pair
+  language: javascript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: Type-check bypass via a forged `constructor`; CWE-20/843 would fit better than CWE-668.
+- group_id: sgg-4d22372094e3927e
+  item: pair
+  language: javascript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-cc0359cb47ebe31f
+  item: abstention
+  language: javascript
+  abstention_valid: 'yes'
+  notes: Whether `_fetch` loads remote content depends on the withheld `isExternal`.
+- group_id: sgg-43393369d98afab2
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: acceptable
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: The fix adds the per-VPN `show_disconnect` authorization gate plus input validation; missing authorization (CWE-862) fits better than CWE-287.
+- group_id: sgg-123b519ef15fb572
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-b47d9a3914f75c61
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: acceptable
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: eval() of the transformation string; code injection (CWE-94/95) rather than command injection (CWE-77).
+- group_id: sgg-f708915d207b7600
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-b45decb20b03bc54
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: imprecise
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: The span runs over the whole docstring (lines 4-49) between the changed signature and the added `trusted` guard; deserialization fits CWE-502 better than CWE-20. Excluded.
+  exclude_reason: imprecise_span
+  exclude_records:
+  - sg-py-post-fix-98724cd848848cb0
+  - sg-py-vulnerable-71603b5b8bb376f6
+- group_id: sgg-6a6f6a8af2df4498
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: acceptable
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-415b5d7d0fa33898
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-b983c4b59064d327
+  item: pair
+  language: python
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: acceptable
+  cwe: defensible
+  hard_negative_safe: 'yes'
+  notes: Insertion point before `return spec`; the added helper is part of the fixed excerpt.
+- group_id: sgg-de85f68ff3591bd7
+  item: abstention
+  language: python
+  abstention_valid: 'yes'
+- group_id: sgg-415b5d7d0fa33898
+  item: abstention
+  language: python
+  abstention_valid: 'yes'
+  notes: Whether the basetemp containment check is meaningful depends on the withheld `getbasetemp`.
+- group_id: sgg-39ededf4f6bfcfb9
+  item: pair
+  language: typescript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: imprecise
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: The 24-line span is dominated by a variable rename (imput -> input) committed with the fix; the security change is the three jsStringEscape calls. Code injection fits CWE-94 better than CWE-77.
+    Excluded.
+  exclude_reason: imprecise_span
+  exclude_records:
+  - sg-ts-post-fix-e729aeb3e9f9d3f9
+  - sg-ts-vulnerable-18e653b2f32f3ca2
+- group_id: sgg-61d6829955024685
+  item: pair
+  language: typescript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: questionable
+  hard_negative_safe: 'yes'
+  notes: Missing timestamp validation allows replay of a LogoutRequest; CWE-294/613 fit better than CWE-347.
+- group_id: sgg-b051576fffe3640d
+  item: pair
+  language: typescript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+- group_id: sgg-42f7b788706518a3
+  item: pair
+  language: typescript
+  advisory_matches_code: 'yes'
+  fix_addresses_weakness: 'yes'
+  localization: precise
+  cwe: defensible
+  hard_negative_safe: 'yes'
+  notes: '`Buffer.from(...).buffer` exposed the pooled ArrayBuffer around the JSON.'

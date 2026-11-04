@@ -27,7 +27,7 @@ from jsonschema import Draft202012Validator
 from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.io import validate_cases
 from sentinel.garden import build as build_module
-from sentinel.garden import render
+from sentinel.garden import render, syntax
 from sentinel.garden.build import ExtractionSettings, Rejected
 from sentinel.garden.audit import OsvQuery, load_exclusions, load_manual_review, manual_exclusions, run_audit, summarize
 from sentinel.garden.audit import report_markdown as audit_report_markdown
@@ -48,7 +48,7 @@ from sentinel.garden.split import SplitSettings, assign_split, check_split_invar
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "configs" / "garden" / "seed_v1.yaml"
-PIPELINE_VERSION = "1"
+PIPELINE_VERSION = "2"  # 2: Go/JS/TS structure from tree-sitter parse trees
 MANIFEST_DROP_FIELDS = ("input", "target")  # code, context, evidence text and patch stay out of Git
 
 
@@ -349,6 +349,7 @@ def statistics(config: GardenConfig, records: list[dict[str, Any]], build_log: l
     return {
         "dataset_id": config.dataset_id,
         "pipeline_version": PIPELINE_VERSION,
+        "syntax_versions": syntax.versions(),
         "config_sha256": config.sha256,
         "split_policy": {"policy_id": config.split.policy_id, "sha256": file_sha256(PROJECT_ROOT / config.raw["split"]["policy"])},
         "discovery": discovery_stats,
@@ -732,6 +733,11 @@ def check(config: GardenConfig) -> dict[str, Any]:
         raise ValueError("candidates.jsonl does not match stats.json (regenerate with `build` + `curate`)")
     if stats["config_sha256"] != config.sha256:
         raise ValueError("garden config changed since the manifest was generated (rerun the pipeline)")
+    if stats.get("syntax_versions") != syntax.versions():
+        raise ValueError(
+            f"parser/grammar versions {syntax.versions()} differ from the ones the manifest was built with "
+            f"{stats.get('syntax_versions')} (install the versions pinned in pyproject.toml)"
+        )
     policy_path = PROJECT_ROOT / config.raw["split"]["policy"]
     if stats["split_policy"] != {"policy_id": config.split.policy_id, "sha256": file_sha256(policy_path)}:
         raise ValueError("split policy changed since the manifest was generated")
