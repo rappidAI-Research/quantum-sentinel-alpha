@@ -11,6 +11,12 @@ requires-python = ">=3.11"
 dependencies = [
   "jsonschema>=4.23,<5",
   "PyYAML>=6.0,<7",
+  # Sentinel Garden parses Go/JavaScript/TypeScript with tree-sitter. Exact pins: the grammar
+  # decides function boundaries and normalized hashes, so a version change is a dataset change.
+  "tree-sitter==0.26.0",
+  "tree-sitter-go==0.25.0",
+  "tree-sitter-javascript==0.25.0",
+  "tree-sitter-typescript==0.23.2",
 ]
 
 [project.optional-dependencies]

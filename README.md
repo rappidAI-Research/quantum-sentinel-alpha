@@ -8,7 +8,7 @@ The model and the Sentinel Engine are separate layers. The model remains indepen
 
 ## Current phase
 
-Phase 0: repository and contract foundation. No model has been frozen or trained, no dataset source is approved for training, and no paid AWS workload has been launched.
+Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained, no dataset source or repository is approved for training, and no paid AWS workload has been launched.
 
 See `docs/STATUS.md` for the operational source of truth.
 
@@ -19,7 +19,7 @@ python -m sentinel.foundation
 pytest -q
 ```
 
-The foundation check validates the versioned finding contract, the Sentinel Garden source registry, the public evaluation case files, the coding-regression reference solutions and the bake-off config. It intentionally does not perform network calls or GPU work. CI (`.github/workflows/ci.yml`) runs both commands on every pull request.
+The foundation check validates the versioned finding contract, the Sentinel Garden source registry and repository approvals, the public evaluation case files, the coding-regression reference solutions, the (optional) bake-off config, the selected training foundation and the committed Sentinel Garden manifest. It intentionally does not perform network calls or GPU work. CI (`.github/workflows/ci.yml`) runs both commands on every pull request.
 
 ## Evaluation harness
 
@@ -55,4 +55,16 @@ python -m sentinel.eval.run_model --model Qwen/Qwen3.5-4B --revision <sha> \
 python -m sentinel.eval.compare runs/qwen35-4b.json runs/qwen35-9b.json
 ```
 
-The identical 4B vs 9B bake-off is configured in `configs/model/bakeoff_qwen35.yaml`. See `docs/BAKEOFF.md`.
+The optional 4B vs 9B bake-off is configured in `configs/model/bakeoff_qwen35.yaml` (`docs/BAKEOFF.md`); its `qwen35-9b` candidate is also the foundation baseline run.
+
+## Sentinel Garden (training data)
+
+Sentinel Garden discovers GitHub-reviewed advisories through OSV, resolves each one to its upstream fix commit and parent, and turns single-function fixes into vulnerable / fixed (hard negative) / abstention records with provenance, license evidence, quality checks, deduplication, contamination checks and a repository-level split. Training export is default-deny.
+
+```bash
+python -m sentinel.garden discover   # network: OSV metadata
+python -m sentinel.garden run        # network: upstream git; then offline curation
+python -m sentinel.garden check      # offline consistency check of the committed manifest
+```
+
+Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v1/` holds only metadata, statistics and the review queue. See `docs/SENTINEL_GARDEN.md` and `docs/DATA_GOVERNANCE.md`.

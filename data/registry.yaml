@@ -136,3 +136,24 @@ sources:
     notes: >-
       16 clean-room Python coding tasks with reference solutions and hidden tests, used only
       to detect general coding regressions in the foundation bake-off. Never a training source.
+
+  - source_id: ghsa-osv-fix-commits
+    role: train_candidate
+    revision: null
+    license: upstream repository license, per repository (recorded per record by Sentinel Garden)
+    license_status: review_required
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: ready
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/rappidAI-Research/quantum-sentinel-alpha/blob/main/docs/SENTINEL_GARDEN.md
+    notes: >-
+      Function-level vulnerable/fixed code resolved by Sentinel Garden from upstream fix commits
+      referenced by GitHub-reviewed advisories (discovered via osv / github-advisory-db metadata).
+      Code is fetched by immutable commit SHA and is not committed to this repository. Training use
+      additionally requires a per-repository approval in data/garden/approvals.yaml. A source-level
+      approval here does not approve any repository.

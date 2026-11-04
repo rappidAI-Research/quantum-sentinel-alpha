@@ -1,0 +1,40 @@
+# Selected training foundation for Quantum Sentinel Alpha.
+# Source of truth for the base model. Validated by `python -m sentinel.foundation`
+# (sentinel/foundation_model.py). Decision record: docs/FOUNDATION.md.
+#
+# Changing `model_id` or `revision` is a deliberate, reviewed decision: update the decision
+# record, the bake-off candidate pin and docs/STATUS.md in the same change.
+schema_version: "1.0"
+foundation_status: selected
+
+model_id: Qwen/Qwen3.5-9B
+revision: c202236235762e1c871ad0ccb60c8ee5ba337b9a   # immutable Hugging Face commit SHA
+license: Apache-2.0
+architecture: Qwen3_5ForConditionalGeneration
+bf16_weight_gib: 19.3
+metadata_verified_at: "2026-11-04"   # revision, license and architecture read from the HF API; no weights downloaded
+
+decision:
+  date: "2026-11-04"
+  decided_by: rappidAI Research (Masterplan v1.2, November 2026)
+  replaces: the planned Qwen3.5-4B vs Qwen3.5-9B QuickEval bake-off as a selection gate
+  basis: expected_capability     # NOT an experimentally demonstrated security advantage
+  rationale:
+    - Larger capacity is expected to help multi-step code reasoning, CWE discrimination and evidence-backed explanation.
+    - Expected headroom for patch generation and abstention behaviour after security fine-tuning.
+    - Fits unquantized in bf16 on one 48 GB L40S for evaluation; QLoRA (4-bit base) training fits the same class of GPU.
+    - Apache-2.0 license keeps the open-weight release path compatible.
+  not_claimed:
+    - No QuickEval or coding-regression result exists for either Qwen3.5 checkpoint.
+    - 9B has not been shown to outperform 4B on security tasks.
+  open_evidence:
+    - Foundation baseline run of the selected checkpoint on QuickEval v1 and coding-v1 (before any adapter).
+
+# The former bake-off stays available as an optional comparison; it is not a prerequisite.
+optional_comparison:
+  bakeoff_config: configs/model/bakeoff_qwen35.yaml
+  baseline_candidate: qwen35-9b      # must carry the same model_id and revision as above
+  alternatives:
+    - model_id: Qwen/Qwen3.5-4B
+      revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+      role: optional_efficiency_comparison

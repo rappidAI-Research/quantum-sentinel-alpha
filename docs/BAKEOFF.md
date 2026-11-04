@@ -1,6 +1,6 @@
-# Qwen3.5-4B vs Qwen3.5-9B QuickEval Bake-off
+# Qwen3.5-4B vs Qwen3.5-9B QuickEval Bake-off (optional)
 
-Status: **prepared, not run.** Running it needs a CUDA GPU and explicit approval for any paid instance.
+Status: **optional, not run.** Qwen3.5-9B is the selected training foundation (`docs/FOUNDATION.md`, `configs/model/foundation.yaml`). The bake-off is no longer a selection gate or a prerequisite for training. It remains available as an efficiency comparison, and its `qwen35-9b` candidate is the path for the **foundation baseline run** of the selected checkpoint. Running anything here needs a CUDA GPU and explicit approval for any paid instance.
 
 ## What is held identical
 
@@ -33,6 +33,14 @@ A run is marked non-reportable if the loaded model revision or the loaded parame
    ```
 
 5. Keep both artifacts. They hold every raw (reasoning-stripped) output, parsed prediction and per-case latency, so results can be audited or re-scored later.
+
+## Foundation baseline only
+
+The baseline of the selected foundation needs only the 9B candidate:
+
+```bash
+python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json
+```
 
 ## Reading the result
 

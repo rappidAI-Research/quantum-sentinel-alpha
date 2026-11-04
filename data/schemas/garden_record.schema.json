@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rappidai-research.com/schemas/quantum-sentinel-alpha/garden-record-v1.json",
+  "title": "Sentinel Garden Record",
+  "description": "One function-level training/staging record derived from an upstream security fix. `input` uses the same fields as an evaluation case so the QuickEval prompt renders it unchanged; `target` mirrors the QuickEval output contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "dataset_id", "record_id", "group_id", "pair_id", "kind", "input", "target", "localization", "provenance"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "dataset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "record_id": {"type": "string", "pattern": "^sg-(py|js|ts|go)-(vulnerable|post-fix|caller-abstention)-[0-9a-f]{16}$"},
+    "group_id": {"type": "string", "pattern": "^sgg-[0-9a-f]{16}$"},
+    "pair_id": {"type": ["string", "null"], "pattern": "^sgp-[0-9a-f]{16}$"},
+    "kind": {"enum": ["vulnerable", "post_fix", "caller_abstention"]},
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "file", "context", "code"],
+      "properties": {
+        "language": {"enum": ["python", "javascript", "typescript", "go"]},
+        "file": {"type": "string", "minLength": 1, "pattern": "^(?!/).+"},
+        "context": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "code": {"type": "string", "minLength": 1}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "cwe", "alternate_cwes", "start_line", "end_line", "evidence", "evidence_source", "patch"],
+      "properties": {
+        "decision": {"enum": ["finding", "no_finding", "abstain"]},
+        "cwe": {"type": ["string", "null"], "pattern": "^CWE-[1-9][0-9]*$"},
+        "alternate_cwes": {"type": "array", "items": {"type": "string", "pattern": "^CWE-[1-9][0-9]*$"}, "uniqueItems": true},
+        "start_line": {"type": ["integer", "null"], "minimum": 1},
+        "end_line": {"type": ["integer", "null"], "minimum": 1},
+        "evidence": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "evidence_source": {"enum": ["advisory_summary", "derived_template"]},
+        "patch": {"type": ["string", "null"]},
+        "label_scope": {"type": "string", "minLength": 1}
+      }
+    },
+    "localization": {
+      "type": "object",
+      "required": ["method"],
+      "properties": {
+        "method": {"enum": ["upstream_fix_diff", "not_applicable"]},
+        "span_kind": {"enum": ["changed_lines", "insertion_point", "mixed"]},
+        "file_span": {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 2, "maxItems": 2},
+        "changed_lines": {"type": "integer", "minimum": 1},
+        "fix_added_top_level_lines": {"type": "integer", "minimum": 0},
+        "diff_consistent": {"type": "boolean"},
+        "withheld_callee": {"type": "string"},
+        "call_line": {"type": "integer", "minimum": 1}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code_source_id", "metadata_source_ids", "advisory_id", "aliases", "ecosystem", "packages", "published",
+        "osv_modified", "osv_record_sha256", "repository", "repository_key", "vulnerable_revision", "fixed_revision",
+        "fix_committed_at", "file_path", "license", "excerpt_revision", "excerpt_function", "excerpt_file_lines",
+        "content_sha256", "normalized_sha256"
+      ],
+      "properties": {
+        "code_source_id": {"type": "string"},
+        "metadata_source_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "advisory_id": {"type": "string", "pattern": "^GHSA-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}$"},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "ecosystem": {"enum": ["PyPI", "npm", "Go"]},
+        "packages": {"type": "array", "items": {"type": "string"}},
+        "published": {"type": "string", "minLength": 10},
+        "osv_modified": {"type": "string"},
+        "osv_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "repository": {"type": "string", "pattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "repository_key": {"type": "string", "pattern": "^[a-z0-9_.-]+/[a-z0-9_.-]+$"},
+        "vulnerable_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "fixed_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "fix_committed_at": {"type": "string", "minLength": 10},
+        "file_path": {"type": "string", "minLength": 1},
+        "license": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["detected", "category", "files", "status"],
+          "properties": {
+            "detected": {"type": "string"},
+            "category": {"enum": ["permissive", "weak_copyleft", "strong_copyleft", "unknown", "none"]},
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["path", "sha256"],
+                "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+              }
+            },
+            "status": {"enum": ["unreviewed", "reviewed"]}
+          }
+        },
+        "excerpt_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "excerpt_function": {"type": "string", "minLength": 1},
+        "excerpt_file_lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 2, "maxItems": 2}
+        },
+        "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "split": {"enum": ["train", "validation", "holdout_reserved", "temporal_quarantine"]},
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "failed_checks", "flags"],
+      "properties": {
+        "status": {"enum": ["accepted", "rejected"]},
+        "failed_checks": {"type": "array", "items": {"type": "string"}},
+        "flags": {"type": "array", "items": {"type": "string"}},
+        "duplicate_of": {"type": "string"}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approval_status", "blockers"],
+      "properties": {
+        "approval_status": {"enum": ["training_approved", "pending_review", "excluded"]},
+        "blockers": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
