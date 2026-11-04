@@ -7,7 +7,7 @@ SentinelBench is the private, versioned evaluation holdout described by the Quan
 | File | Cases | Purpose |
 | --- | --- | --- |
 | `public_seed.jsonl` | 12 | Tiny synthetic harness seed for scorer/unit tests. Not model-quality evidence. |
-| `quickeval_v1.jsonl` | 86 | Clean-room synthetic QuickEval used for the identical Qwen3.5-4B vs 9B bake-off. |
+| `quickeval_v1.jsonl` | 86 | Clean-room synthetic QuickEval for the Qwen3.5-9B foundation baseline and the optional 4B vs 9B bake-off. |
 
 `quickeval_v1.jsonl` contains 37 vulnerable cases, 34 hard negatives and 15 abstention cases across Python (30), JavaScript/TypeScript (18/12) and Go (26). 30 vulnerable cases are paired via `pair_id` with a fixed or look-alike secure neighbour. `pair_accuracy` only credits a model that gets both sides right.
 
@@ -23,6 +23,8 @@ All cases were written clean-room for this project. They contain no copied upstr
 ## Non-synthetic cases
 
 Cases derived from real repositories or public benchmarks (`source_kind: private_holdout` / `public_eval`) must carry `provenance.origin: upstream_derived` with an `upstream` block (source ID, repository, 40-character revision, file, license, license and redistribution status). They belong in the Git-ignored `eval/sentinelbench/private/` directory. Validation refuses non-synthetic cases in the public tree. Where redistribution rights are unclear, keep only metadata publicly and the snippet privately, or write a clean-room equivalent.
+
+Sentinel Garden exports its `holdout_reserved` records in this format (`artifacts/garden/seed_v1/holdout_reserved.eval_cases.jsonl`). Their identities are public, so they serve temporal/generalization checks; they are not a private holdout. Every Garden record is checked against all cases in this directory (including `private/`) for contamination.
 
 ## Targets
 

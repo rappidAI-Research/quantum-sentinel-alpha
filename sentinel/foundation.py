@@ -7,6 +7,9 @@ from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.bakeoff import load_bakeoff
 from sentinel.eval.coding_regression import execute, load_tasks
 from sentinel.eval.io import PROJECT_ROOT, assert_publicly_committable, case_set_sha256, load_jsonl, validate_cases
+from sentinel.foundation_model import load_foundation, validate_foundation
+from sentinel.garden import pipeline as garden
+from sentinel.garden.governance import load_approvals
 
 BAKEOFF_CONFIG = PROJECT_ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
 
@@ -42,7 +45,27 @@ def main() -> int:
 
     bakeoff = load_bakeoff(BAKEOFF_CONFIG)
     pinned = sum(1 for c in bakeoff.candidates.values() if c.revision)
-    print(f"bake-off config: {bakeoff.bakeoff_id} OK ({pinned}/{len(bakeoff.candidates)} revisions pinned)")
+    print(f"bake-off config (optional): {bakeoff.bakeoff_id} OK ({pinned}/{len(bakeoff.candidates)} revisions pinned)")
+
+    foundation = load_foundation()
+    validate_foundation(foundation)
+    print(
+        f"training foundation: {foundation.model_id}@{foundation.revision} OK "
+        f"(selected, basis={foundation.basis}, baseline candidate {foundation.baseline_candidate} matches)"
+    )
+
+    approvals = load_approvals()
+    approved_repos = sum(1 for a in approvals.values() if a["decision"] == "approved_for_training")
+    print(f"garden approvals: {len(approvals)} entries, {approved_repos} repositories approved for training OK")
+    config = garden.load_config(garden.DEFAULT_CONFIG_PATH)
+    if (config.committed_dir / "manifest.jsonl").is_file():
+        result = garden.check(config)
+        print(
+            f"garden dataset: {config.dataset_id} {result['records']} records, {result['accepted']} accepted, "
+            f"{result['training_approved']} training-approved OK (metadata only, no code committed)"
+        )
+    else:
+        print(f"garden dataset: {config.dataset_id} not generated yet")
     return 0
 
 

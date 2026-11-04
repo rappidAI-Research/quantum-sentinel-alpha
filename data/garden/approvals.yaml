@@ -1,0 +1,24 @@
+# Sentinel Garden repository approvals (schema: data/schemas/garden_approvals.schema.json).
+#
+# DEFAULT-DENY: a repository that is not listed here is NOT approved for training, whatever its
+# license. Public availability and a detected permissive license are not approvals.
+#
+# Only an authorized reviewer adds an entry, after reading the repository's license and terms at
+# the pinned revision. The entry is bound to the reviewed license file content (sha256); if the
+# upstream license file differs, the approval no longer applies. The review queue with the exact
+# license file hashes is generated in data/garden/seed_v1/REVIEW_QUEUE.md.
+#
+# Example (illustrative only - not an approval):
+#   - repository_key: owner/repo
+#     decision: approved_for_training          # or: blocked
+#     license_spdx: MIT
+#     license_file: LICENSE
+#     license_file_sha256: <64 hex chars from REVIEW_QUEUE.md>
+#     terms_status: approved_for_project
+#     redistribution_status: not_redistributed  # weights trained on it; code not republished
+#     reviewer: <name of authorized reviewer>
+#     reviewed_at: "2026-11-04"
+#     evidence_urls: [https://github.com/owner/repo/blob/<revision>/LICENSE]
+#     notes: ""
+approvals_version: "1.0"
+repositories: []
