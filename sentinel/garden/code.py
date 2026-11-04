@@ -688,7 +688,17 @@ def module_imports(language: str, source: str) -> set[tuple[str, str]]:
         elif match := _JS_SIDE_EFFECT.match(text):
             pairs.add((match.group(2), "<side-effect>"))
         elif match := _JS_REQUIRE_PARTS.match(text):
-            pairs.add((match.group(3), " ".join(match.group(1).split())))
+            binding, module = " ".join(match.group(1).split()), match.group(3)
+            if binding.startswith("{") and binding.endswith("}"):
+                # `const { exec, spawn: run } = require(m)` binds `exec` and `run` individually
+                for part in binding[1:-1].split(","):
+                    part = part.split("=")[0].strip()
+                    if not part or part.startswith("..."):
+                        continue
+                    imported, _, local = (x.strip() for x in part.partition(":"))
+                    pairs.add((module, f"{imported} as {local}" if local else imported))
+            else:
+                pairs.add((module, binding))
         else:
             pairs.add(("<statement>", re.sub(r"\s+", "", text)))
     return pairs
@@ -903,6 +913,46 @@ def method_receiver(language: str, source: str, fn: Function) -> str | None:
     if re.search(r"\bfunction\b", header) or re.search(rf"\b(?:const|let|var)\s+{re.escape(fn.name)}\b", header):
         return None
     return "method"
+
+
+def owner_class(language: str, source: str, fn: Function) -> str | None:
+    """The class a Python or JS/TS method belongs to (`X.prototype.f = ...` belongs to `X`), as
+    `name@line` so two classes with the same name stay distinct. None when it has no class."""
+    if language == "python":
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                tree = ast.parse(source)
+        except (SyntaxError, ValueError):
+            return None
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef):
+                for item in node.body:
+                    if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) and fn.start <= item.lineno <= fn.end:
+                        return f"{node.name}@{node.lineno}"
+        return None
+    if language not in {"javascript", "typescript"}:
+        return None
+    masked = mask_c_like(source, language)
+    lines = masked.splitlines()
+    header = "\n".join(lines[fn.start - 1 : fn.end]).split("{", 1)[0]
+    if match := re.match(r"\s*([A-Za-z_$][\w$]*)\s*\.\s*prototype\s*\.", header):
+        return match.group(1)  # identified by name: prototype methods are attached by name
+    offsets = [0]
+    for line in masked.splitlines(keepends=True):
+        offsets.append(offsets[-1] + len(line))
+    start = offsets[fn.start - 1]
+    best: tuple[int, str] | None = None
+    for match in re.finditer(r"\bclass\s+([A-Za-z_$][\w$]*)[^{;]*\{", masked):
+        depth, i = 1, match.end()
+        while i < len(masked) and depth:
+            depth += {"{": 1, "}": -1}.get(masked[i], 0)
+            i += 1
+        if match.end() <= start < i and (best is None or match.start() > best[0]):
+            best = (match.start(), match.group(1))
+    if best is None:
+        return None
+    return f"{best[1]}@{masked.count(chr(10), 0, best[0]) + 1}"
 
 
 def _go_receiver(masked_function: str) -> tuple[str, str] | None:

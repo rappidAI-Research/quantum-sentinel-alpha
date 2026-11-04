@@ -1,19 +1,19 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 113,
+      "abstain": 111,
       "finding": 350,
       "no_finding": 350
     },
     "by_kind": {
-      "caller_abstention": 113,
+      "caller_abstention": 111,
       "post_fix": 350,
       "vulnerable": 350
     },
     "by_language": {
       "go": 296,
       "javascript": 179,
-      "python": 214,
+      "python": 212,
       "typescript": 124
     },
     "by_language_and_decision": {
@@ -23,7 +23,7 @@
       "javascript/abstain": 21,
       "javascript/finding": 79,
       "javascript/no_finding": 79,
-      "python/abstain": 24,
+      "python/abstain": 22,
       "python/finding": 95,
       "python/no_finding": 95,
       "typescript/abstain": 18,
@@ -31,16 +31,16 @@
       "typescript/no_finding": 53
     },
     "by_split": {
-      "holdout_reserved": 98,
-      "temporal_quarantine": 79,
+      "holdout_reserved": 97,
+      "temporal_quarantine": 78,
       "train": 563,
       "validation": 73
     },
     "by_split_and_decision": {
-      "holdout_reserved/abstain": 13,
+      "holdout_reserved/abstain": 12,
       "holdout_reserved/finding": 42,
       "holdout_reserved/no_finding": 43,
-      "temporal_quarantine/abstain": 13,
+      "temporal_quarantine/abstain": 12,
       "temporal_quarantine/finding": 33,
       "temporal_quarantine/no_finding": 33,
       "train/abstain": 77,
@@ -166,12 +166,12 @@
       "2018": 30,
       "2019": 29,
       "2020": 36,
-      "2021": 60,
+      "2021": 59,
       "2022": 63,
       "2023": 54,
       "2024": 78,
       "2025": 108,
-      "2026": 308
+      "2026": 307
     },
     "flags": {
       "coarse_cwe": 56,
@@ -181,14 +181,14 @@
     },
     "license_category": {
       "none": 26,
-      "permissive": 652,
+      "permissive": 650,
       "strong_copyleft": 90,
       "unknown": 31,
       "weak_copyleft": 14
     },
     "license_detected": {
       "AGPL-3.0": 86,
-      "Apache-2.0": 217,
+      "Apache-2.0": 215,
       "BSD-2-Clause": 35,
       "BSD-3-Clause": 51,
       "GPL-2.0": 2,
@@ -292,23 +292,23 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 813,
-      "source_not_approved:ghsa-osv-fix-commits": 813,
-      "source_not_approved:github-advisory-db": 813,
-      "source_not_approved:osv": 813,
-      "split:holdout_reserved": 98,
-      "split:temporal_quarantine": 79
+      "repository_not_reviewed": 811,
+      "source_not_approved:ghsa-osv-fix-commits": 811,
+      "source_not_approved:github-advisory-db": 811,
+      "source_not_approved:osv": 811,
+      "split:holdout_reserved": 97,
+      "split:temporal_quarantine": 78
     },
     "by_approval_status": {
-      "excluded": 230,
+      "excluded": 228,
       "pending_review": 636
     },
     "training_approved": 0
   },
-  "manifest_sha256": "9acd3635b10a4d213d857071e29d9c45fe883490e99abf6559a433e2e8a4ddb9",
+  "manifest_sha256": "c72b73529bb88b807cd1289e65e1e519d99954113b84241858485c9b19190a96",
   "pipeline_version": "1",
   "records": {
-    "accepted": 813,
+    "accepted": 811,
     "failed_checks": {
       "label_conflict_exact": 4,
       "label_conflict_near": 3,
@@ -318,6 +318,6 @@
       "syntax_well_formed": 2
     },
     "rejected": 53,
-    "total": 866
+    "total": 864
   }
 }

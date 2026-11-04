@@ -13,9 +13,9 @@ registry sources it depends on are approved. Accepted records are a non-approved
 | --- | ---: | ---: | ---: | ---: |
 | go | 123 | 123 | 50 | 296 |
 | javascript | 79 | 79 | 21 | 179 |
-| python | 95 | 95 | 24 | 214 |
+| python | 95 | 95 | 22 | 212 |
 | typescript | 53 | 53 | 18 | 124 |
-| **Total** | 350 | 350 | 113 | 813 |
+| **Total** | 350 | 350 | 111 | 811 |
 
 Complete vulnerable/fixed pairs: 348.
 
@@ -25,8 +25,8 @@ Complete vulnerable/fixed pairs: 348.
 | --- | ---: | ---: | ---: | ---: |
 | train | 243 | 243 | 77 | 221 |
 | validation | 32 | 31 | 10 | 27 |
-| holdout_reserved | 42 | 43 | 13 | 34 |
-| temporal_quarantine | 33 | 33 | 13 | 28 |
+| holdout_reserved | 42 | 43 | 12 | 34 |
+| temporal_quarantine | 33 | 33 | 12 | 28 |
 
 ## CWE distribution of accepted findings
 
@@ -208,7 +208,7 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 866 built, 813 accepted, 53 rejected.
+Records: 864 built, 811 accepted, 53 rejected.
 
 | Failed check | Records |
 | --- | ---: |
@@ -233,7 +233,7 @@ Flags on accepted records (not rejections):
 | Detected license | Records |
 | --- | ---: |
 | AGPL-3.0 | 86 |
-| Apache-2.0 | 217 |
+| Apache-2.0 | 215 |
 | BSD-2-Clause | 35 |
 | BSD-3-Clause | 51 |
 | GPL-2.0 | 2 |
@@ -255,19 +255,19 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 230 |
+| excluded | 228 |
 | pending_review | 636 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 813 |
-| source_not_approved:ghsa-osv-fix-commits | 813 |
-| source_not_approved:github-advisory-db | 813 |
-| source_not_approved:osv | 813 |
-| split:holdout_reserved | 98 |
-| split:temporal_quarantine | 79 |
+| repository_not_reviewed | 811 |
+| source_not_approved:ghsa-osv-fix-commits | 811 |
+| source_not_approved:github-advisory-db | 811 |
+| source_not_approved:osv | 811 |
+| split:holdout_reserved | 97 |
+| split:temporal_quarantine | 78 |
 
 ## Fix commit year (accepted records)
 
@@ -282,9 +282,9 @@ Blockers on accepted records:
 | 2018 | 30 |
 | 2019 | 29 |
 | 2020 | 36 |
-| 2021 | 60 |
+| 2021 | 59 |
 | 2022 | 63 |
 | 2023 | 54 |
 | 2024 | 78 |
 | 2025 | 108 |
-| 2026 | 308 |
+| 2026 | 307 |

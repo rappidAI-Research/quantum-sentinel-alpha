@@ -768,3 +768,38 @@ def test_javascript_object_and_prototype_methods() -> None:
     assert code.calls_outer_function("javascript", "function h(p) {\n  return internals.isFileHidden(p);\n}\n", "isFileHidden", "obj:internals")
     assert not code.calls_outer_function("javascript", "function h(p) {\n  return other.isFileHidden(p);\n}\n", "isFileHidden", "obj:internals")
     assert code.calls_outer_function("javascript", "function g() {\n  this._generateBoundary();\n}\n", "_generateBoundary", "method")
+
+
+# --- Eleventh review round ----------------------------------------------------------------------
+
+
+def test_self_call_in_another_class_is_not_a_caller() -> None:
+    old = (
+        "class Unsafe:\n    def list_orders(self, conn, status):\n        query = 'SELECT %s' % status\n        return conn.execute(query)\n\n\n"
+        "class Safe:\n    def list_orders(self, conn, status):\n        return []\n\n"
+        "    def orders_view(self, conn):\n        status = 'open'\n        return self.list_orders(conn, status)\n"
+    )
+    new = old.replace("query = 'SELECT %s' % status", "query = ('SELECT ?', status)")
+    records = build({"a.py": old}, {"a.py": new})
+    assert any(r["kind"] == "vulnerable" for r in records)
+    assert not [r for r in records if r["kind"] == "caller_abstention"]
+
+
+def test_owner_class_for_python_and_javascript() -> None:
+    py = "class A:\n    def f(self):\n        return 1\n\nclass B:\n    def f(self):\n        return 2\n"
+    owners = [code.owner_class("python", py, f) for f in code.find_functions("python", py)]
+    assert owners == ["A@1", "B@5"]
+    js = "class A {\n  f() {\n    return 1;\n  }\n}\nclass B {\n  f() {\n    return this.g();\n  }\n}\nX.prototype.h = function () {\n  return 3;\n};\n"
+    owners = {(f.name, f.start): code.owner_class("javascript", js, f) for f in code.find_functions("javascript", js)}
+    assert owners == {("f", 2): "A@1", ("f", 7): "B@6", ("h", 11): "X"}
+
+
+def test_destructured_require_rebinding_is_refused() -> None:
+    old = "const { exec } = require('child_process');\n\nfunction run(command) {\n  return exec(command);\n}\n"
+    new = "const { exec, quote } = require('safe-exec');\n\nfunction run(command) {\n  return exec(command.trim());\n}\n"
+    with pytest.raises(Rejected, match="module_import_rebound"):
+        build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-78"]))
+    same_module = "const { execFile } = require('child_process');\n\nfunction run(command) {\n  return execFile(command);\n}\n"
+    assert code.rebound_imports("javascript", old, same_module, "a.js") == []
+    aliased = "const { spawn: exec } = require('child_process');\n"
+    assert code.rebound_imports("javascript", old, aliased, "a.js") == ["exec"]

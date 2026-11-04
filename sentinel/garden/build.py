@@ -295,6 +295,10 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
             continue
         if not code.calls_outer_function(change.language, _excerpt(change.old_source, caller), callee.name, receiver):
             continue  # shadowed inside the caller, or called on another object
+        if receiver == "method":
+            owner = code.owner_class(change.language, change.old_source, callee)
+            if owner is None or code.owner_class(change.language, change.old_source, caller) != owner:
+                continue  # `self.f()` / `this.f()` in another class reaches that class's `f`
         return caller, number
     return None
 
