@@ -538,3 +538,24 @@ def test_removed_block_comment_still_separates_tokens() -> None:
     assert code.normalized_sha256("javascript", a) != code.normalized_sha256("javascript", b)
     records = build({"a.js": a}, {"a.js": b}, candidate("npm", ["CWE-682"]))
     assert any(r["kind"] == "vulnerable" for r in records)
+
+
+# --- Seventh review round -----------------------------------------------------------------------
+
+
+def test_go_function_text_inside_raw_strings_and_comments_is_not_a_function() -> None:
+    source = (
+        "package a\n\n"
+        "var sample = `\nfunc embedded(input string) string {\n\toutput := input\n\treturn output\n}\n`\n\n"
+        "/*\nfunc commented() {\n}\n*/\n\n"
+        "func real(x string) string {\n\tt := `\n}\n`\n\treturn x + t\n}\n"
+    )
+    functions = {(f.name, f.start, f.end) for f in code.find_functions("go", source)}
+    assert functions == {("real", 15, 20)}
+
+
+def test_fix_inside_a_go_raw_string_sample_is_not_extracted() -> None:
+    old = "package a\n\nvar sample = `\nfunc embedded(input string) string {\n\toutput := input\n\treturn output\n}\n`\n"
+    new = old.replace("output := input", "output := escape(input)")
+    with pytest.raises(Rejected):
+        build({"a.go": old}, {"a.go": new}, candidate("Go", ["CWE-79"]))

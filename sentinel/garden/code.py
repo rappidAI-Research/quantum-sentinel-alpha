@@ -316,7 +316,9 @@ _GO_FUNC = re.compile(r"^func\s*(?:\([^)]*\)\s*)?([A-Za-z_]\w*)\s*[\[(]")
 
 
 def _go_functions(source: str) -> list[Function]:
-    lines = source.splitlines()
+    # Scan the string/comment mask (same line coordinates): function-shaped text inside a raw string
+    # or block comment is not a function, and a `}` inside a raw string does not end one.
+    lines = mask_c_like(source, "go").splitlines()
     functions = []
     for index, line in enumerate(lines):
         match = _GO_FUNC.match(line)
