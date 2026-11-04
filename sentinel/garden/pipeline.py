@@ -706,7 +706,9 @@ def reconstruct(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
         "status_or_split_drift": status_drift,
         "unreachable_repositories": unreachable,
         "exports": (config.workdir / "SHA256SUMS").read_text(encoding="utf-8").splitlines(),
-        "ok": not mismatched and not unexpected and not status_drift,
+        # Missing upstream data can legitimately shift deduplication (a kept duplicate disappears);
+        # without missing records any acceptance/split drift means the rebuild is not deterministic.
+        "ok": not mismatched and not unexpected and (not status_drift or bool(missing)),
     }
     _write_json(config.workdir / "reconstruction_report.json", report)
     log(
