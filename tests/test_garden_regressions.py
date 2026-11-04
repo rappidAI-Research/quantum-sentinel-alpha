@@ -559,3 +559,51 @@ def test_fix_inside_a_go_raw_string_sample_is_not_extracted() -> None:
     new = old.replace("output := input", "output := escape(input)")
     with pytest.raises(Rejected):
         build({"a.go": old}, {"a.go": new}, candidate("Go", ["CWE-79"]))
+
+
+# --- Eighth review round ------------------------------------------------------------------------
+
+
+def _dedup_record(index: int, decision: str) -> dict:
+    body = "\n".join(f"    total = total + values[{i}] * {i}" for i in range(40))
+    source = f"def score(values):\n    total = 0\n{body}\n    return total + {index}\n"
+    kind = {"finding": "vulnerable", "no_finding": "post_fix"}[decision]
+    return {
+        "record_id": f"sg-py-{kind}-{index:04d}",
+        "group_id": f"g{index}",
+        "kind": kind,
+        "input": {"language": "python", "code": source},
+        "target": {"decision": decision},
+        "provenance": {"normalized_sha256": code.normalized_sha256("python", source)},
+    }
+
+
+def test_large_copy_families_are_still_compared() -> None:
+    from sentinel.garden.quality import deduplicate
+
+    family = [_dedup_record(i, "finding" if i % 2 else "no_finding") for i in range(65)]
+    rejected = deduplicate(family, QUALITY)
+    assert {reason for reason, _ in rejected.values()} == {"label_conflict_near", "near_duplicate"}
+    # every post-fix copy conflicts with a vulnerable copy; every further vulnerable copy is a duplicate
+    assert all(record["record_id"] in rejected for record in family[2:])
+
+
+def test_similar_pairs_equals_brute_force() -> None:
+    import itertools
+    import random
+
+    from sentinel.garden.quality import _similar_pairs
+
+    rng = random.Random(7)
+    common = set(range(30))
+    fingerprints = {}
+    for i in range(120):
+        base = set(rng.sample(sorted(common), rng.randint(0, 30))) if i % 3 else set(common)
+        fingerprints[f"r{i:03d}"] = base | {1000 + rng.randint(0, 40) for _ in range(rng.randint(0, 6))}
+    for threshold in (0.3, 0.5, 0.85, 0.92, 1.0):
+        expected = sorted(
+            (a, b, code.jaccard(fingerprints[a], fingerprints[b]))
+            for a, b in itertools.combinations(sorted(fingerprints), 2)
+            if code.jaccard(fingerprints[a], fingerprints[b]) >= threshold
+        )
+        assert _similar_pairs(fingerprints, threshold) == expected

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 import textwrap
 from collections import Counter, defaultdict
@@ -222,24 +223,35 @@ def check_pairs(records: list[dict[str, Any]]) -> dict[str, list[str]]:
 # --------------------------------------------------------------------------------------------
 
 
-def _similar_pairs(fingerprints: dict[str, set[int]], threshold: float, max_postings: int = 64) -> list[tuple[str, str, float]]:
-    """Record-id pairs with Jaccard >= threshold, via an inverted shingle index."""
+def _similar_pairs(fingerprints: dict[str, set[int]], threshold: float) -> list[tuple[str, str, float]]:
+    """All record-id pairs with Jaccard >= threshold (exact, no missed pairs).
+
+    Prefix filtering: shingles are ordered globally by rarity; a set of size n only indexes its first
+    n - ceil(threshold * n) + 1 shingles. Two sets with Jaccard >= threshold share at least
+    ceil(threshold * n) shingles, so their prefixes must intersect. Frequent shingles are thereby kept
+    out of most posting lists without dropping any candidate pair; every candidate is then verified
+    with the exact Jaccard similarity.
+    """
+    if threshold <= 0:
+        raise ValueError("threshold must be positive")
+    frequency: Counter[int] = Counter(s for shingles in fingerprints.values() for s in shingles)
+    rank = {s: i for i, s in enumerate(sorted(frequency, key=lambda s: (frequency[s], s)))}
     index: dict[int, list[str]] = defaultdict(list)
-    for record_id in sorted(fingerprints):
-        for shingle in fingerprints[record_id]:
-            index[shingle].append(record_id)
     pairs = []
     for record_id in sorted(fingerprints):
-        overlap: Counter[str] = Counter()
-        for shingle in fingerprints[record_id]:
-            postings = index[shingle]
-            if len(postings) > max_postings:
-                continue
-            overlap.update(other for other in postings if other > record_id)
-        for other, shared in overlap.items():
-            score = code.jaccard(fingerprints[record_id], fingerprints[other])
+        shingles = fingerprints[record_id]
+        if not shingles:
+            continue
+        ordered = sorted(shingles, key=rank.__getitem__)
+        prefix = ordered[: len(ordered) - math.ceil(threshold * len(ordered) - 1e-9) + 1]
+        candidates: set[str] = set()
+        for shingle in prefix:
+            candidates.update(index[shingle])
+            index[shingle].append(record_id)
+        for other in candidates:
+            score = code.jaccard(shingles, fingerprints[other])
             if score >= threshold:
-                pairs.append((record_id, other, score))
+                pairs.append((other, record_id, score))
     return sorted(pairs)
 
 
