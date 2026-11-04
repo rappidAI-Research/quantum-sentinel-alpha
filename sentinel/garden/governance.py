@@ -5,7 +5,9 @@ A record is `training_approved` only if ALL of the following hold:
 - its split is train or validation (never holdout_reserved / temporal_quarantine);
 - every registry source it depends on is `production_approved` and none is eval-only;
 - its repository has an `approved_for_training` entry in data/garden/approvals.yaml whose reviewed
-  license file hash matches the license file recorded for the record's fixed revision.
+  license file hash matches the license file recorded for the record's fixed revision;
+- if the reviewer-confirmed license is not permissive (copyleft, unknown, custom), the approval
+  carries a written `non_permissive_justification`.
 
 Anything else is `pending_review` (could become trainable after review) or `excluded` (can never be
 trained on in this dataset version). Blockers are listed by name; nothing is approved implicitly.
@@ -19,6 +21,8 @@ from typing import Any
 
 import yaml
 from jsonschema import Draft202012Validator
+
+from sentinel.garden.licenses import category_of
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 APPROVALS_PATH = PROJECT_ROOT / "data" / "garden" / "approvals.yaml"
@@ -74,6 +78,9 @@ def gate(
         recorded = {f["path"]: f["sha256"] for f in provenance["license"]["files"]}
         if recorded.get(approval["license_file"]) != approval["license_file_sha256"]:
             pending.append("repository_approval_license_mismatch")
+        # copyleft, unknown and custom licenses need an explicit written basis, never a plain approval
+        if category_of(approval["license_spdx"]) != "permissive" and not approval.get("non_permissive_justification"):
+            pending.append("non_permissive_license_requires_justification")
 
     if excluded:
         return "excluded", excluded + pending

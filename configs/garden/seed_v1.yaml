@@ -21,8 +21,8 @@ discovery:
   published_before: "2026-11-01T00:00:00Z"   # snapshot bound; later advisories are ignored
   # Advisories are visited in sha256(salt + id) order - a deterministic, date-independent sample.
   sample_salt: sentinel-garden-seed-v1
-  inspect_per_ecosystem: 1400               # advisory records inspected per ecosystem
-  max_candidates_per_ecosystem: 600         # cap on usable candidates per ecosystem
+  inspect_per_ecosystem: 100000             # advisory records inspected per ecosystem (all of them)
+  max_candidates_per_ecosystem: 5000        # cap on usable candidates per ecosystem
   max_candidates_per_repository: 4          # limits one project dominating the seed
   workers: 8
 
@@ -52,14 +52,7 @@ quality:
   shingle_size: 5
 
 split:
-  salt: sentinel-garden-seed-v1-split
-  validation_per_mille: 100                 # repository-level buckets
-  holdout_reserved_per_mille: 100
-  # Fixes committed on/after the cutoff never enter train/validation. 2026-07-01 lies four months
-  # after the selected foundation checkpoint was published (2026-02-27), so post-cutoff fixes stay
-  # unseen by both the foundation and our adapters and remain usable for a temporal holdout.
-  temporal_cutoff: "2026-07-01T00:00:00Z"
-  temporal_cutoff_status: provisional       # to be frozen before large-scale collection
+  policy: configs/garden/split_policy.yaml   # frozen; shared by all Garden dataset versions
 
 contamination:
   eval_case_dirs: [eval/sentinelbench]      # includes the Git-ignored private/ directory when present

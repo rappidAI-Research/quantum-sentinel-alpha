@@ -1,0 +1,21 @@
+# Sentinel Garden split policy - FROZEN on 2026-11-04 (docs/SENTINEL_GARDEN.md#splits).
+#
+# Shared by every Sentinel Garden dataset version, so a repository is assigned to the same split
+# in every version and can never move from holdout/validation into training. Changing any value
+# below is a new policy (new `policy_id`), re-splits every dataset and must be decided explicitly;
+# tests/test_garden_split_policy.py pins these values.
+policy_id: sentinel-garden-split-v1
+status: frozen
+frozen_at: "2026-11-04"
+
+# Repository-level buckets by sha256(salt + "\0" + repository_key) % 1000.
+salt: sentinel-garden-seed-v1-split
+validation_per_mille: 100
+holdout_reserved_per_mille: 100
+
+# Fixes committed on/after the cutoff never enter train or validation.
+# Rationale: the selected foundation checkpoint (Qwen/Qwen3.5-9B@c202236...) was published on
+# 2026-02-27. A cutoff four months later keeps every newer fix unseen by our adapters, gives a
+# temporal holdout window that is also outside the foundation's pre-training period, and leaves
+# 2018-2026H1 history (the bulk of reviewed advisories) available for training.
+temporal_cutoff: "2026-07-01T00:00:00Z"

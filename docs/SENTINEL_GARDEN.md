@@ -11,7 +11,10 @@ python -m sentinel.garden discover   # OSV export -> frozen candidate list      
 python -m sentinel.garden build      # fix commit + parent -> raw records              (network: GitHub git)
 python -m sentinel.garden curate     # quality, dedup, contamination, split, gate      (offline)
 python -m sentinel.garden run        # build + curate
+python -m sentinel.garden audit      # automated quality audit (network: OSV API, upstream git)
+python -m sentinel.garden review     # rights-review evidence and queue (network: deps.dev, upstream git)
 python -m sentinel.garden verify     # rebuild from the frozen candidates, compare hashes
+python -m sentinel.garden reconstruct  # fresh checkout -> full records + SHA256SUMS (see "Reconstruction")
 python -m sentinel.garden check      # offline manifest consistency (also run by `sentinel.foundation` / CI)
 ```
 
@@ -51,9 +54,42 @@ Dataset level:
 
 ## Splits
 
-- Repository-level buckets by salted sha256 of the repository key: 80 % train, 10 % validation, 10 % `holdout_reserved`. A repository never appears in two buckets.
-- Temporal cutoff (provisional, `2026-07-01`): a fix committed on/after it never enters train or validation. In a train/validation repository it becomes `temporal_quarantine`; in a holdout repository it stays a holdout candidate.
+The split policy is **frozen** in `configs/garden/split_policy.yaml` (`sentinel-garden-split-v1`, frozen 2026-11-04) and shared by every Garden dataset version, so a repository keeps its split across versions and can never move from holdout or validation into training. `tests/test_garden_split_policy.py` pins the values; changing them means a new policy ID and an explicit decision.
+
+- Repository-level buckets by `sha256(salt + "\0" + repository_key) % 1000`: 80 % train, 10 % validation, 10 % `holdout_reserved`. A repository never appears in two buckets.
+- Temporal cutoff `2026-07-01`: a fix committed on/after it never enters train or validation. In a train/validation repository it becomes `temporal_quarantine`; in a holdout repository it stays a holdout candidate. Rationale: the selected checkpoint was published on 2026-02-27; four months later every newer fix is unseen by our adapters and outside the foundation's pre-training period, while 2018 to mid-2026 history stays available for training.
 - `holdout_reserved` records are also exported as `upstream_derived` evaluation cases (`holdout_reserved.eval_cases.jsonl`, validated against `eval_case.schema.json`). Their identities are public (the candidate list and salt are committed), so they are a **reservation for temporal/generalization checks, not a private holdout**. A private SentinelBench holdout must come from sources that are not listed publicly.
+
+## Quality audit
+
+`python -m sentinel.garden audit` checks every fix group with real evidence and writes `data/garden/seed_v1/audit/` (report: `AUDIT_REPORT.md`):
+
+| Check | Evidence | Effect |
+| --- | --- | --- |
+| Advisory ↔ code correspondence | full OSV advisory text and the upstream commit message: function, file or changed identifier named; commit cites the advisory | strength strong / moderate / weak, reported |
+| Fix pattern vs CWE family | remediation indicators in the changed lines (e.g. parameterised queries for CWE-89, path normalisation for CWE-22) | heuristic flag for manual review, never an exclusion |
+| Hard-negative validity | every other OSV advisory of the same package: a later upstream fix that changes the same function, an advisory that calls this fix incomplete, or a later fix commit in the same repository that cannot be read (unverified) | `post_fix` record excluded; an incomplete recheck keeps the exclusions of the previous run |
+| Abstention validity | the call passes non-constant data; the caller does not duplicate the vulnerable code | abstention excluded |
+| Split leakage | the same advisory/CVE or fix commit in two splits, or near-identical code (Jaccard ≥ 0.7) across splits | train-side record excluded; holdout/validation records are never moved |
+| Localization precision | span length and share of the function | a broad span (> 12 lines and > 40 % of the function) excludes the vulnerable record (and with it the group): in the manual sample every broad span was imprecise |
+
+A deterministic stratified sample (per language: pairs round-robin over CWE families, plus abstentions) is reviewed by hand; verdicts are stored with the reviewer's identity in `audit/manual_review.yaml` and reported with Wilson 95 % intervals. Rates count only items of the current sample (sampled items without a verdict are reported as pending; a verdict on a group that is no longer sampled keeps its exclusions but is not counted), once for the whole sample and once for the items that survive the automated exclusions - the estimate for the exported data. Exclusions (`audit/exclusions.yaml`, automated and manual sections) are applied by `curate` as failed checks `audit:<reason>`; records are only ever excluded, never relabelled. No exploit or test is executed.
+
+## Rights review
+
+`python -m sentinel.garden review` prepares the repository-level review (tiers A-D, license files at every used revision, deps.dev cross-check, approval templates). Process and source dossiers: `docs/RIGHTS_REVIEW.md`.
+
+## Reconstruction after a fresh checkout
+
+Upstream code is not committed. To rebuild every record:
+
+```bash
+pip install -e '.[dev]'
+python -m sentinel.garden reconstruct   # needs anonymous HTTPS access to github.com only
+cd artifacts/garden/seed_v1 && sha256sum -c SHA256SUMS
+```
+
+`reconstruct` checks that every repository in `data/garden/seed_v1/EXTERNAL_RESOURCES.json` is reachable, rebuilds all records from the frozen `candidates.jsonl` at the pinned commits, compares every content hash with `manifest.jsonl`, re-curates, writes the exports with `SHA256SUMS` and a `reconstruction_report.json`. Committed metadata is never modified. If an upstream repository or commit has disappeared, its records are listed as missing (`missing_because_unreachable`) and are **not substituted**; the remaining records are still exported. Any content-hash mismatch, unexpected record or change of acceptance/split fails the reconstruction (exit code 1). OSV and deps.dev are only needed to re-run `discover`, `audit` or `review`, not to reconstruct.
 
 ## Governance gate
 

@@ -14,7 +14,7 @@ from sentinel.garden.pipeline import DEFAULT_CONFIG_PATH, curate_records, load_c
 from sentinel.garden.split import SplitSettings, assign_split, check_split_invariants, repository_bucket
 from tests.garden_fixtures import PY_NEW, PY_OLD, SETTINGS, FakeRepo, candidate
 
-SPLIT = SplitSettings("salt", 100, 100, "2026-07-01T00:00:00Z", "provisional")
+SPLIT = SplitSettings("salt", 100, 100, "2026-07-01T00:00:00Z")
 
 
 def built() -> list[dict]:
@@ -184,3 +184,35 @@ def test_rendering_matches_eval_prompt_and_contract() -> None:
         assert record["input"]["code"].splitlines()[0] in example["messages"][1]["content"]
         assert render.reply_matches_contract(record)
     validate_cases([render.to_eval_case(r) for r in built()])
+
+
+def test_non_permissive_license_needs_written_justification() -> None:
+    record = curated_record()
+    entry = approval(record, license_spdx="AGPL-3.0")
+    status, blockers = gate(record, approved_sources(), {entry["repository_key"]: entry})
+    assert status == "pending_review" and blockers == ["non_permissive_license_requires_justification"]
+    entry["non_permissive_justification"] = "Counsel memo 2026-12: training-only use of AGPL code is acceptable."
+    assert gate(record, approved_sources(), {entry["repository_key"]: entry})[0] == "training_approved"
+
+
+def test_exports_are_checksummed_and_hold_no_unapproved_training_records(tmp_path: Path) -> None:
+    import hashlib
+
+    from sentinel.garden.pipeline import EXPORT_FILES, external_resources, write_exports
+
+    config = load_config(DEFAULT_CONFIG_PATH)
+    records = curate_records(config, built())
+    write_exports(tmp_path, records)
+    assert (tmp_path / "train.jsonl").read_text() == "" and (tmp_path / "train.chat.jsonl").read_text() == ""
+    sums = dict(reversed(line.split("  ")) for line in (tmp_path / "SHA256SUMS").read_text().splitlines())
+    assert set(sums) == set(EXPORT_FILES)
+    for name, digest in sums.items():
+        assert hashlib.sha256((tmp_path / name).read_bytes()).hexdigest() == digest
+    resources = external_resources(records)
+    assert resources["repositories"][0]["commits"] == sorted({"a" * 40, "b" * 40})
+
+    forged = copy.deepcopy(records)
+    forged[0]["governance"]["approval_status"] = "training_approved"
+    forged[0]["split"] = "holdout_reserved"
+    with pytest.raises(AssertionError, match="gate invariant"):
+        write_exports(tmp_path, forged)

@@ -105,6 +105,9 @@ class UpstreamRepo:
         path = self.path / "shallow"
         return set(path.read_text(encoding="utf-8").split()) if path.is_file() else set()
 
+    def commit_message(self, sha: str) -> str:
+        return str(self._git("log", "-1", "--format=%B", sha))
+
     def changed_files(self, parent: str, sha: str) -> list[tuple[str, str]]:
         out = str(self._git("diff", "--name-status", "--no-renames", "--no-ext-diff", parent, sha))
         files = []
