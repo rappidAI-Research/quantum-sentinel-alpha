@@ -405,3 +405,105 @@ def test_joining_or_splitting_code_lines_is_significant_where_semicolons_are_ins
             continue  # removing a blank line is cosmetic
         joined = "\n".join(lines[:k] + [lines[k] + " " + lines[k + 1].strip()] + lines[k + 2 :]) + "\n"
         assert code.normalized_sha256(language, joined) != code.normalized_sha256(language, source), (language, k)
+
+
+# --- Fifth review round -------------------------------------------------------------------------
+
+
+def test_call_followed_by_returned_object_is_not_a_method() -> None:
+    old = "function render(input) {\n  validate(input)\n  return {\n    html: input.html\n  }\n}\n"
+    new = "function render(input) {\n  validate(input)\n  return {\n    html: escape(input.html)\n  }\n}\n"
+    assert [f.name for f in code.find_functions("javascript", old)] == ["render"]
+    records = build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-79"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    assert vulnerable["provenance"]["excerpt_function"] == "render"
+    assert vulnerable["input"]["code"].startswith("function render(input) {")
+
+
+@pytest.mark.parametrize(
+    "signature",
+    ["function f(a) {", "  m(a) {", "  m(a)\n  {", "const f = (a) => {", "const f = (a): number => {", "  async m(a): Promise<{ x: number }> {"],
+)
+def test_signature_continuations_are_still_accepted(signature: str) -> None:
+    source = ("class C {\n" if signature.startswith("  ") else "") + signature + "\n  return a\n}\n" + ("}\n" if signature.startswith("  ") else "")
+    assert code.find_functions("typescript", source)
+
+
+@pytest.mark.parametrize(
+    ("a", "b"),
+    [("a + ++b", "a++ + b"), ("a - -b", "a-- b"), ("x = !== y", "x = != = y"), ("a & &b", "a && b"), ("1.5", "1 . 5")],
+)
+def test_operator_boundaries_are_significant(a: str, b: str) -> None:
+    def wrap(expression: str) -> str:
+        return f"function f(a, b, x, y) {{\n  return {expression};\n}}\n"
+
+    assert code.normalized_sha256("javascript", wrap(a)) != code.normalized_sha256("javascript", wrap(b))
+
+
+def test_spacing_around_single_operators_is_still_cosmetic() -> None:
+    assert code.normalized_sha256("javascript", "f(a+b);\n") == code.normalized_sha256("javascript", "f( a + b );\n")
+
+
+def test_function_local_import_replacement_is_a_logic_change() -> None:
+    old = "def load(data):\n    from pickle import loads\n    return loads(data)\n"
+    new = "def load(data):\n    from json import loads\n    return loads(data)\n"
+    records = build({"a.py": old}, {"a.py": new}, candidate(cwes=["CWE-502"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    assert vulnerable["input"]["code"].splitlines()[vulnerable["target"]["start_line"] - 1].strip() == "from pickle import loads"
+
+
+def test_local_require_is_code_but_top_level_imports_are_noise() -> None:
+    js = "const fs = require('fs');\nfunction run(cmd) {\n  const cp = require('child_process');\n  return cp.exec(cmd);\n}\n"
+    noise = code.noise_lines("javascript", js)
+    assert 1 in noise and 3 not in noise
+    py = "import os\n\ndef f():\n    import subprocess\n    return subprocess\n"
+    noise = code.noise_lines("python", py)
+    assert 1 in noise and 4 not in noise
+
+
+@pytest.mark.parametrize(
+    ("path", "ecosystem", "old_imports", "new_imports", "rejected"),
+    [
+        ("a.py", "PyPI", "from pickle import loads\n", "from json import loads\n", True),
+        ("a.py", "PyPI", "import pickle as codec\n", "import json as codec\n", True),
+        ("a.py", "PyPI", "from x import a\n", "from x import a, b\n", False),
+        ("a.py", "PyPI", "from urllib.parse import unquote_plus\n", "from urllib.parse import unquote\n", False),
+        ("a.py", "PyPI", "import jinja2\n", "import jinja2.sandbox\n", False),
+        ("a.py", "PyPI", "import xml.etree.ElementTree as ET\n", "from xml.etree import ElementTree as ET\n", False),
+        ("a.py", "PyPI", "from collections.abc import Callable\n", "from collections.abc import Callable\nfrom typing import Callable\n", False),
+        ("a.go", "Go", 'import (\n\t"text/template"\n)\n', 'import (\n\t"html/template"\n)\n', True),
+        ("a.js", "npm", "import { render } from 'unsafe-tpl';\n", "import { render } from 'safe-tpl';\n", True),
+        ("a.js", "npm", "import { a } from 'm';\n", "import { a, b } from 'm';\n", False),
+        ("a.go", "Go", 'import (\n\t"math/rand"\n)\n', 'import (\n\t"crypto/rand"\n)\n', True),
+        ("a.go", "Go", 'import (\n\t"fmt"\n)\n', 'import (\n\t"fmt"\n\t"html"\n)\n', False),
+    ],
+)
+def test_module_level_rebinding_is_refused_but_additive_or_removed_imports_are_fine(
+    path: str, ecosystem: str, old_imports: str, new_imports: str, rejected: bool
+) -> None:
+    body = {
+        "a.py": ("\n\ndef run(x):\n    y = x\n    return loads(y)\n", "\n\ndef run(x):\n    y = clean(x)\n    return loads(y)\n"),
+        "a.js": ("\nfunction run(x) {\n  const y = x;\n  return render(y);\n}\n", "\nfunction run(x) {\n  const y = clean(x);\n  return render(y);\n}\n"),
+        "a.go": ("\nfunc run(x string) int {\n\ty := x\n\treturn len(y)\n}\n", "\nfunc run(x string) int {\n\ty := clean(x)\n\treturn len(y)\n}\n"),
+    }[path]
+    prefix = "package a\n\n" if path.endswith(".go") else ""
+    old, new = prefix + old_imports + body[0], prefix + new_imports + body[1]
+    if rejected:
+        with pytest.raises(Rejected) as excinfo:
+            build({path: old}, {path: new}, candidate(ecosystem, ["CWE-20"]))
+        assert excinfo.value.reason == "module_import_rebound"
+    else:
+        assert any(r["kind"] == "vulnerable" for r in build({path: old}, {path: new}, candidate(ecosystem, ["CWE-20"])))
+
+
+def test_relative_and_absolute_imports_of_the_same_module_are_not_rebound() -> None:
+    old = "from pkg.ecdsa import Ecdsa\nfrom pkg.views import View\n"
+    new = "from .ecdsa import Ecdsa\nfrom ..pkg.views import View\n"
+    assert code.rebound_imports("python", old, new, "src/pkg/__init__.py") == []
+    assert code.rebound_imports("python", "from pickle import loads\n", "from json import loads\n", "a.py") == ["loads"]
+
+
+def test_module_level_imports_in_try_blocks_are_noise_but_function_imports_are_code() -> None:
+    source = "try:\n    from html import escape\nexcept ImportError:\n    from cgi import escape\n\n\ndef f(x):\n    import json\n    return json.dumps(escape(x))\n"
+    noise = code.noise_lines("python", source)
+    assert {2, 4} <= noise and 8 not in noise

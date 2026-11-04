@@ -130,6 +130,11 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
         old_lines, new_lines = old_source.splitlines(), new_source.splitlines()
         old_functions = code.find_functions(language, old_source)
         new_functions = code.find_functions(language, new_source)
+        # Module-level imports are context, but a local name re-bound to another module changes the
+        # behaviour of unchanged code outside the function-level diff.
+        rebound = code.rebound_imports(language, old_source, new_source, path)
+        if rebound:
+            raise Rejected("module_import_rebound", f"{path}: {', '.join(rebound)}")
         old_noise, new_noise = code.noise_lines(language, old_source), code.noise_lines(language, new_source)
         old_trivial, new_trivial = code.trivial_lines(language, old_source), code.trivial_lines(language, new_source)
         for hunk in hunks:

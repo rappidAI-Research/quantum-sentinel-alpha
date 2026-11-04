@@ -425,8 +425,12 @@ def _js_functions(source: str, language: str) -> list[Function]:
                 k += 1
                 continue
             elif c == "{":
-                text = "".join(between)
-                # allow return-type annotations and `=>`, but not a statement end or assignment
+                text = "".join(between).strip()
+                # Only a signature continuation may separate `)` and the body: nothing, `=>`, or a
+                # return-type annotation (`: T` / `: T =>`). Anything else - e.g. `return` in
+                # semicolon-free code after a call - means the parentheses were a call.
+                if text and text != "=>" and not in_type:
+                    return None
                 if ";" in text or re.search(r"(?<![=!<>])=(?!>)", text):
                     return None
                 return k
@@ -489,8 +493,9 @@ def _js_functions(source: str, language: str) -> list[Function]:
 # --------------------------------------------------------------------------------------------
 
 _BRACKETS_ONLY = re.compile(r"^[\s(){}\[\];,]*$")
-_JS_IMPORT_START = re.compile(r"^\s*(?:import(?=[\s{*'\"])(?!\s*\()|export\s*(?:type\s+)?(?:\*|\{[^}]*\}?)\s*(?:as\s+\w+\s*)?from\b)")
-_JS_REQUIRE = re.compile(r"^\s*(?:export\s+)?(?:const|let|var)\s+[^=]+=\s*require\(\s*['\"][^'\"]*['\"]\s*\)\s*[;,]?\s*$")
+# Top-level only (column 0): a `require` inside a function decides which implementation it calls.
+_JS_IMPORT_START = re.compile(r"^(?:import(?=[\s{*'\"])(?!\s*\()|export\s*(?:type\s+)?(?:\*|\{[^}]*\}?)\s*(?:as\s+\w+\s*)?from\b)")
+_JS_REQUIRE = re.compile(r"^(?:export\s+)?(?:const|let|var)\s+[^=]+=\s*require\(\s*['\"][^'\"]*['\"]\s*\)\s*[;,]?\s*$")
 
 
 def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
@@ -514,6 +519,10 @@ def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
             ):
                 imports.update(range(first.start[0], statement[-1].end[0] + 1))
             statement = []
+    # Only imports outside functions are noise (module level, also inside `try:`/`if` blocks): a
+    # function-local import decides which implementation the function calls (pickle vs json).
+    functions = _python_functions(source)
+    imports = {n for n in imports if not any(f.start < n <= f.end for f in functions)}
     return code_lines, imports
 
 
@@ -604,6 +613,127 @@ def trivial_lines(language: str, source: str) -> set[int]:
     return noise | brackets
 
 
+_JS_IMPORT_FROM = re.compile(r"^(?:import|export)\s+(?:type\s+)?(.*?)\s*from\s*(['\"])(.+?)\2", re.S)
+_JS_SIDE_EFFECT = re.compile(r"^import\s*(['\"])(.+?)\1")
+_JS_REQUIRE_PARTS = re.compile(r"^(?:export\s+)?(?:const|let|var)\s+(.+?)\s*=\s*require\(\s*(['\"])(.+?)\2")
+_GO_IMPORT_SPEC = re.compile(r'^\s*(?:import\s*\(?\s*)?([\w.]+\s+)?"([^"]+)"')
+
+
+def module_imports(language: str, source: str) -> set[tuple[str, str]]:
+    """Module-level imported bindings as (module, binding) pairs, for detecting non-additive changes."""
+    pairs: set[tuple[str, str]] = set()
+    if language == "python":
+        try:
+            tree = _parse_python(source)
+        except (SyntaxError, ValueError):
+            lines = source.splitlines()
+            return {("<line>", re.sub(r"\s+", "", lines[n - 1])) for n in import_statement_lines(language, source)}
+        for node in tree.body:
+            if isinstance(node, ast.Import):
+                pairs.update((alias.name, alias.asname or alias.name) for alias in node.names)
+            elif isinstance(node, ast.ImportFrom):
+                module = "." * node.level + (node.module or "")
+                pairs.update((module, f"{alias.name} as {alias.asname or alias.name}") for alias in node.names)
+        return pairs
+    lines = source.splitlines()
+    numbers = sorted(import_statement_lines(language, source))
+    if language == "go":
+        for n in numbers:
+            match = _GO_IMPORT_SPEC.match(lines[n - 1])
+            if match:
+                pairs.add((match.group(2), (match.group(1) or "").strip()))
+        return pairs
+    statements: list[str] = []
+    previous = -2
+    for n in numbers:
+        if n == previous + 1 and lines[n - 1][:1].isspace() or (statements and n == previous + 1 and lines[n - 1].lstrip().startswith("}")):
+            statements[-1] += "\n" + lines[n - 1]
+        else:
+            statements.append(lines[n - 1])
+        previous = n
+    for statement in statements:
+        text = statement.strip()
+        if match := _JS_IMPORT_FROM.match(text):
+            clause, module = match.group(1), match.group(3)
+            for part in re.split(r"[{},]", clause):
+                part = " ".join(part.split())
+                if part:
+                    pairs.add((module, part))
+        elif match := _JS_SIDE_EFFECT.match(text):
+            pairs.add((match.group(2), "<side-effect>"))
+        elif match := _JS_REQUIRE_PARTS.match(text):
+            pairs.add((match.group(3), " ".join(match.group(1).split())))
+        else:
+            pairs.add(("<statement>", re.sub(r"\s+", "", text)))
+    return pairs
+
+
+def _python_bindings(source: str, path: str) -> dict[str, set[str]]:
+    """Module-level import bindings -> fully qualified origins (relative imports resolved)."""
+    try:
+        tree = _parse_python(source)
+    except (SyntaxError, ValueError):
+        return {}
+    parts = list(PurePosixPath(path).with_suffix("").parts)
+    package = parts if parts and parts[-1] == "__init__" else parts[:-1]
+    package = [p for p in package if p != "__init__"]
+    result: dict[str, set[str]] = {}
+    for node in tree.body:
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.asname:
+                    result.setdefault(alias.asname, set()).add(alias.name)
+                else:  # `import a.b` binds the top-level package `a`
+                    top = alias.name.split(".")[0]
+                    result.setdefault(top, set()).add(top)
+        elif isinstance(node, ast.ImportFrom):
+            if node.level:
+                base = package[: len(package) - (node.level - 1)] if node.level > 1 else package
+                module = ".".join([*base, *([node.module] if node.module else [])])
+            else:
+                module = node.module or ""
+            for alias in node.names:
+                if alias.name != "*":
+                    result.setdefault(alias.asname or alias.name, set()).add(f"{module}.{alias.name}")
+    return result
+
+
+def _same_origin(a: str, b: str) -> bool:
+    # `src/pkg/x.py` resolves relative imports to `src.pkg...`, absolute imports say `pkg...`
+    return a == b or a.endswith("." + b) or b.endswith("." + a)
+
+
+def rebound_imports(language: str, old_source: str, new_source: str, path: str = "") -> list[str]:
+    """Local names imported at module level in both versions but from disjoint origins.
+
+    Such a change alters the behaviour of unchanged code that uses the name (e.g. `loads` taken from
+    `pickle` and then from `json`, or Go's `template` from text/template and then html/template),
+    invisibly to a function-level diff. Added, removed or additionally sourced bindings are fine.
+    """
+
+    def bindings(source: str) -> dict[str, set[str]]:
+        if language == "python":
+            return _python_bindings(source, path)
+        result: dict[str, set[str]] = {}
+        for module, item in module_imports(language, source):
+            if module in {"<line>", "<statement>"}:
+                continue
+            if language == "go":
+                name, origin = item or module.rsplit("/", 1)[-1], module
+            else:
+                imported, _, alias = item.partition(" as ")
+                name, origin = (alias or imported).strip(), f"{module}:{imported.strip()}"
+            result.setdefault(name, set()).add(origin)
+        return result
+
+    before, after = bindings(old_source), bindings(new_source)
+    rebound = []
+    for name in before.keys() & after.keys():
+        if not any(_same_origin(x, y) for x in before[name] for y in after[name]):
+            rebound.append(name)
+    return sorted(rebound)
+
+
 def import_lines(language: str, source: str, limit: int = 15) -> list[str]:
     """Complete, single-line top-level import statements, in file order (used as context)."""
     imports = import_statement_lines(language, source)
@@ -691,7 +821,8 @@ def strip_comments(language: str, source: str) -> str:
     return "".join(result)
 
 
-_TOKEN = re.compile(r"[A-Za-z_$][\w$]*|\d+|\S")
+# identifiers, numbers, operator runs (so `a + ++b` and `a++ + b` differ), any other single character
+_TOKEN = re.compile(r"[A-Za-z_$][\w$]*|\d[\w.]*|[-+*/%=<>!&|^~?:.]+|\S")
 
 
 def _python_tokens(source: str) -> list[str] | None:
