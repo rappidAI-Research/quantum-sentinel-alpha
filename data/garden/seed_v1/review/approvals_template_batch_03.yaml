@@ -293,23 +293,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@mozilla/readability': ['Apache-2.0']}
-  - repository_key: mozilla/readability
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE.md
-    license_file_sha256: a5b1e8181751ce05b85b7bfaa832b785e87086250a5148e679d17ca9bdcfa958
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mozilla/readability
-      - https://github.com/mozilla/readability/blob/1c4d63be3e7344c3dfdf76ebb05fd0d32de93eb3/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:npm-registry-fetch': ['ISC']}
   - repository_key: npm/npm-registry-fetch
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/pdfminer/pdfminer.six
       - https://github.com/pdfminer/pdfminer.six/blob/b808ee05dd7f0c8ea8ec34bdf394d40e63501086/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'validation/caller_abstention': 1, 'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/pingcap/tidb': ['Apache-2.0']}
+  - repository_key: pingcap/tidb
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 2da5bcc8cff0ae5ba36d9923145e34eed3340a458a269f663c3582430f8c358f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pingcap/tidb
+      - https://github.com/pingcap/tidb/blob/3d68bd21240c610c6307713e2bd54a5e71c32608/LICENSE
     notes: ""

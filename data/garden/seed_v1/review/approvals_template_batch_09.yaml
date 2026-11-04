@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:agentscope': ['Apache-2.0']}
-  - repository_key: modelscope/agentscope
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 4186bcadf358c60080060309769db6b2a352720d7353d827bb574c600fee9913
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/modelscope/agentscope
-      - https://github.com/modelscope/agentscope/blob/7d285e862f86fa1d96ed04c4cd40a5f1b8f9189a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:modoboa': ['ISC']}
   - repository_key: modoboa/modoboa
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -34,6 +17,23 @@ repositories:
     evidence_urls:
       - https://github.com/modoboa/modoboa
       - https://github.com/modoboa/modoboa/blob/38d778cc71e370216e067d054ce0169ad83078c8/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@mozilla/readability': ['Apache-2.0']}
+  - repository_key: mozilla/readability
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.md
+    license_file_sha256: a5b1e8181751ce05b85b7bfaa832b785e87086250a5148e679d17ca9bdcfa958
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mozilla/readability
+      - https://github.com/mozilla/readability/blob/1c4d63be3e7344c3dfdf76ebb05fd0d32de93eb3/LICENSE.md
     notes: ""
 
   # tier A: no open questions found by tooling

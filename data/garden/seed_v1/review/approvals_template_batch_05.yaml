@@ -3,23 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/zeromicro/go-zero': ['MIT']}
-  - repository_key: zeromicro/go-zero
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: a31424b15cfcbb5f0269b4e9ba4ee6f24fdb4c0a991a9c7891fb184078c4eb98
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/zeromicro/go-zero
-      - https://github.com/zeromicro/go-zero/blob/d9d79e930dff6218a873f4f02115df61c38b15db/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:websockets': ['BSD-3-Clause']}
   - repository_key: aaugustin/websockets
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/cloudevents/sdk-go
       - https://github.com/cloudevents/sdk-go/blob/de2f28370b0d2a0f64f92c0c6139fa4b8a7c3851/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:aiosmtplib': ['MIT']}
+  - repository_key: cole/aiosmtplib
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 4096585cf0343b0713e8e7d6df73e90bb97797428b160f305e4c326f93c9b802
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cole/aiosmtplib
+      - https://github.com/cole/aiosmtplib/blob/9fab7ba1361dbf7622ede1315a24be805cff09c9/LICENSE.txt
     notes: ""

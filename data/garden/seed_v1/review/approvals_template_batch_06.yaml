@@ -3,23 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:aiosmtplib': ['MIT']}
-  - repository_key: cole/aiosmtplib
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.txt
-    license_file_sha256: 4096585cf0343b0713e8e7d6df73e90bb97797428b160f305e4c326f93c9b802
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cole/aiosmtplib
-      - https://github.com/cole/aiosmtplib/blob/9fab7ba1361dbf7622ede1315a24be805cff09c9/LICENSE.txt
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'npm:safer-eval': ['MIT']}
   - repository_key: commenthol/safer-eval
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/go-vela/compiler
       - https://github.com/go-vela/compiler/blob/f1ace5f8a05c95c4d02264556e38a959ee2d9bda/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/patrickhener/goshs': ['MIT'], 'Go:github.com/patrickhener/goshs/v2': ['MIT'], 'Go:goshs.de/goshs': ['MIT'], 'Go:goshs.de/goshs/v2': ['MIT']}
+  - repository_key: goshs-labs/goshs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 791aa7d1cac7e097ad6e792e974688f433018e11bbe387e62330319dda68c94a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/goshs-labs/goshs
+      - https://github.com/goshs-labs/goshs/blob/7cf911a26ace737e1a55b7dc073e307a25f7fd1d/LICENSE
     notes: ""

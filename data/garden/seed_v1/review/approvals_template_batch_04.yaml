@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 3 {'validation/caller_abstention': 1, 'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/pingcap/tidb': ['Apache-2.0']}
-  - repository_key: pingcap/tidb
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 2da5bcc8cff0ae5ba36d9923145e34eed3340a458a269f663c3582430f8c358f
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pingcap/tidb
-      - https://github.com/pingcap/tidb/blob/3d68bd21240c610c6307713e2bd54a5e71c32608/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'validation/caller_abstention': 1, 'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:fastmcp': ['Apache-2.0']}
   - repository_key: prefecthq/fastmcp
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/yeoman/environment
       - https://github.com/yeoman/environment/blob/78d2af7e60294784b8a8b3b3b5099c6874b6a1fa/license
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/zeromicro/go-zero': ['MIT']}
+  - repository_key: zeromicro/go-zero
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a31424b15cfcbb5f0269b4e9ba4ee6f24fdb4c0a991a9c7891fb184078c4eb98
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/zeromicro/go-zero
+      - https://github.com/zeromicro/go-zero/blob/d9d79e930dff6218a873f4f02115df61c38b15db/LICENSE
     notes: ""

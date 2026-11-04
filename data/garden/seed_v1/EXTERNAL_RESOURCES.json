@@ -109,7 +109,7 @@
         "a8f01d7d52cf9e8410ff737fc8e5f4ea2125ff24",
         "f016f0680e4ace6742b03a70cb0382ce86abe371"
       ],
-      "records": 7,
+      "records": 6,
       "repository_key": "aio-libs/aiohttp",
       "url": "https://github.com/aio-libs/aiohttp.git"
     },
@@ -3142,7 +3142,7 @@
         "04abc79d55d6aef2515753b36465ef7ed1f2ad04",
         "1c4d63be3e7344c3dfdf76ebb05fd0d32de93eb3"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "mozilla/readability",
       "url": "https://github.com/mozilla/readability.git"
     },
@@ -4951,7 +4951,7 @@
         "7268f6e38ebbb3d61700f16c638c6eba0c88bb0c",
         "82daf9f5756e1868be0aa751afaec4726beca12a"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "vllm-project/vllm",
       "url": "https://github.com/vllm-project/vllm.git"
     },

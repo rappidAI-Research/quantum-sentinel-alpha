@@ -1,29 +1,29 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 194,
+      "abstain": 191,
       "finding": 607,
       "no_finding": 545
     },
     "by_kind": {
-      "caller_abstention": 194,
+      "caller_abstention": 191,
       "post_fix": 545,
       "vulnerable": 607
     },
     "by_language": {
       "go": 474,
-      "javascript": 293,
-      "python": 374,
+      "javascript": 292,
+      "python": 372,
       "typescript": 205
     },
     "by_language_and_decision": {
       "go/abstain": 78,
       "go/finding": 206,
       "go/no_finding": 190,
-      "javascript/abstain": 35,
+      "javascript/abstain": 34,
       "javascript/finding": 136,
       "javascript/no_finding": 122,
-      "python/abstain": 51,
+      "python/abstain": 49,
       "python/finding": 174,
       "python/no_finding": 149,
       "typescript/abstain": 30,
@@ -31,19 +31,19 @@
       "typescript/no_finding": 84
     },
     "by_split": {
-      "holdout_reserved": 160,
-      "temporal_quarantine": 115,
-      "train": 947,
+      "holdout_reserved": 159,
+      "temporal_quarantine": 114,
+      "train": 946,
       "validation": 124
     },
     "by_split_and_decision": {
-      "holdout_reserved/abstain": 22,
+      "holdout_reserved/abstain": 21,
       "holdout_reserved/finding": 72,
       "holdout_reserved/no_finding": 66,
-      "temporal_quarantine/abstain": 19,
+      "temporal_quarantine/abstain": 18,
       "temporal_quarantine/finding": 52,
       "temporal_quarantine/no_finding": 44,
-      "train/abstain": 134,
+      "train/abstain": 133,
       "train/finding": 427,
       "train/no_finding": 386,
       "validation/abstain": 19,
@@ -201,12 +201,12 @@
       "2018": 47,
       "2019": 45,
       "2020": 66,
-      "2021": 109,
+      "2021": 108,
       "2022": 123,
       "2023": 111,
       "2024": 147,
-      "2025": 173,
-      "2026": 450
+      "2025": 172,
+      "2026": 449
     },
     "flags": {
       "coarse_cwe": 96,
@@ -216,7 +216,7 @@
     },
     "license_category": {
       "none": 54,
-      "permissive": 1092,
+      "permissive": 1089,
       "strong_copyleft": 135,
       "unknown": 44,
       "weak_copyleft": 21
@@ -224,7 +224,7 @@
     "license_detected": {
       "0BSD": 2,
       "AGPL-3.0": 127,
-      "Apache-2.0": 375,
+      "Apache-2.0": 372,
       "BSD-2-Clause": 49,
       "BSD-3-Clause": 89,
       "GPL-2.0": 6,
@@ -331,23 +331,23 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 1346,
-      "source_not_approved:ghsa-osv-fix-commits": 1346,
-      "source_not_approved:github-advisory-db": 1346,
-      "source_not_approved:osv": 1346,
-      "split:holdout_reserved": 160,
-      "split:temporal_quarantine": 115
+      "repository_not_reviewed": 1343,
+      "source_not_approved:ghsa-osv-fix-commits": 1343,
+      "source_not_approved:github-advisory-db": 1343,
+      "source_not_approved:osv": 1343,
+      "split:holdout_reserved": 159,
+      "split:temporal_quarantine": 114
     },
     "by_approval_status": {
-      "excluded": 419,
-      "pending_review": 1071
+      "excluded": 417,
+      "pending_review": 1070
     },
     "training_approved": 0
   },
-  "manifest_sha256": "8669f972449fa33ecb9485098d0681f00af6a63d6a31445b8b3a6cdffe4e937a",
+  "manifest_sha256": "39754682cef12df4de8161f0fae94a2eb58f8db7d960a017ed237a4ae1163f22",
   "pipeline_version": "1",
   "records": {
-    "accepted": 1346,
+    "accepted": 1343,
     "failed_checks": {
       "audit:abstention_constant_arguments": 1,
       "audit:later_fix_changes_same_function": 100,
@@ -363,7 +363,7 @@
       "syntax_well_formed": 2
     },
     "rejected": 144,
-    "total": 1490
+    "total": 1487
   },
   "split_policy": {
     "policy_id": "sentinel-garden-split-v1",

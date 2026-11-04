@@ -12,10 +12,10 @@ registry sources it depends on are approved. Accepted records are a non-approved
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
 | go | 206 | 190 | 78 | 474 |
-| javascript | 136 | 122 | 35 | 293 |
-| python | 174 | 149 | 51 | 374 |
+| javascript | 136 | 122 | 34 | 292 |
+| python | 174 | 149 | 49 | 372 |
 | typescript | 91 | 84 | 30 | 205 |
-| **Total** | 607 | 545 | 194 | 1346 |
+| **Total** | 607 | 545 | 191 | 1343 |
 
 Complete vulnerable/fixed pairs: 542.
 
@@ -23,10 +23,10 @@ Complete vulnerable/fixed pairs: 542.
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 427 | 386 | 134 | 386 |
+| train | 427 | 386 | 133 | 386 |
 | validation | 56 | 49 | 19 | 48 |
-| holdout_reserved | 72 | 66 | 22 | 59 |
-| temporal_quarantine | 52 | 44 | 19 | 44 |
+| holdout_reserved | 72 | 66 | 21 | 59 |
+| temporal_quarantine | 52 | 44 | 18 | 44 |
 
 ## CWE distribution of accepted findings
 
@@ -242,7 +242,7 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 1490 built, 1346 accepted, 144 rejected.
+Records: 1487 built, 1343 accepted, 144 rejected.
 
 | Failed check | Records |
 | --- | ---: |
@@ -274,7 +274,7 @@ Flags on accepted records (not rejections):
 | --- | ---: |
 | 0BSD | 2 |
 | AGPL-3.0 | 127 |
-| Apache-2.0 | 375 |
+| Apache-2.0 | 372 |
 | BSD-2-Clause | 49 |
 | BSD-3-Clause | 89 |
 | GPL-2.0 | 6 |
@@ -299,19 +299,19 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 419 |
-| pending_review | 1071 |
+| excluded | 417 |
+| pending_review | 1070 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 1346 |
-| source_not_approved:ghsa-osv-fix-commits | 1346 |
-| source_not_approved:github-advisory-db | 1346 |
-| source_not_approved:osv | 1346 |
-| split:holdout_reserved | 160 |
-| split:temporal_quarantine | 115 |
+| repository_not_reviewed | 1343 |
+| source_not_approved:ghsa-osv-fix-commits | 1343 |
+| source_not_approved:github-advisory-db | 1343 |
+| source_not_approved:osv | 1343 |
+| split:holdout_reserved | 159 |
+| split:temporal_quarantine | 114 |
 
 ## Fix commit year (accepted records)
 
@@ -327,9 +327,9 @@ Blockers on accepted records:
 | 2018 | 47 |
 | 2019 | 45 |
 | 2020 | 66 |
-| 2021 | 109 |
+| 2021 | 108 |
 | 2022 | 123 |
 | 2023 | 111 |
 | 2024 | 147 |
-| 2025 | 173 |
-| 2026 | 450 |
+| 2025 | 172 |
+| 2026 | 449 |

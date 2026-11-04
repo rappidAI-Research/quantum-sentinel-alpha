@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:js-cookie': ['MIT']}
-  - repository_key: js-cookie/js-cookie
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: eff040f4184445a6d1f7f76d918101d631402436ff12256b924fb68e4df28a94
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/js-cookie/js-cookie
-      - https://github.com/js-cookie/js-cookie/blob/eb3c40e89731e99b8970faaf35ddad249c6c0020/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/junegunn/fzf': ['MIT']}
   - repository_key: junegunn/fzf
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/mmaitre314/picklescan
       - https://github.com/mmaitre314/picklescan/blob/baf03faf88fece56a89534d12ce048e5ee36e50e/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:agentscope': ['Apache-2.0']}
+  - repository_key: modelscope/agentscope
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 4186bcadf358c60080060309769db6b2a352720d7353d827bb574c600fee9913
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/modelscope/agentscope
+      - https://github.com/modelscope/agentscope/blob/7d285e862f86fa1d96ed04c4cd40a5f1b8f9189a/LICENSE
     notes: ""
