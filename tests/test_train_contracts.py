@@ -233,3 +233,42 @@ def test_baseline_artifact_still_validates_without_adapter(tmp_path: Path) -> No
     out = tmp_path / "baseline.json"
     assert run_model_main(["--backend", "baseline", "--cases", "eval/sentinelbench/public_seed.jsonl", "--output", str(out)]) == 0
     assert "adapter" not in load_artifact(out)["model"]
+
+
+def test_label_must_match_the_manifest(garden: GardenWorkdir) -> None:
+    garden.write()
+    path = garden.workdir / "train.jsonl"
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    vulnerable = next(r for r in rows if r["target"]["decision"] == "finding")
+    vulnerable["target"].update(decision="no_finding", cwe=None, alternate_cwes=[], start_line=None, end_line=None)
+    path.write_text("".join(json.dumps(r) + "\n" for r in rows))
+    # a consistently re-rendered chat file must not launder the changed label
+    from sentinel.garden import render
+
+    (garden.workdir / "train.chat.jsonl").write_text("".join(json.dumps(render.to_chat_example(r)) + "\n" for r in rows))
+    with pytest.raises(GovernanceError, match="does not match the manifest"):
+        load_training_data(garden.config_path, approvals=garden.approvals)
+
+
+def test_incomplete_checkpoints_are_never_resumed(tmp_path: Path) -> None:
+    from sentinel.train.trainer import _checkpoints
+
+    root = tmp_path / "checkpoints"
+    for name, complete in (("step-000010", True), ("step-000020", True), ("step-000030.tmp", True), ("step-000040", False)):
+        (root / name).mkdir(parents=True)
+        if complete:
+            (root / name / "state.json").write_text("{}")
+    assert [p.name for p in _checkpoints(tmp_path)] == ["step-000010", "step-000020"]
+
+
+def test_resume_requires_the_same_data_and_config(tmp_path: Path) -> None:
+    from sentinel.train.trainer import check_resume_provenance
+
+    expected = {"base_model": "m", "base_revision": "r", "config_sha256": "c", "data_sha256": "d", "record_ids_sha256": "i"}
+    with pytest.raises(RuntimeError, match="no provenance.json"):
+        check_resume_provenance(tmp_path, expected)
+    (tmp_path / "provenance.json").write_text(json.dumps({**expected, "data_sha256": "other"}))
+    with pytest.raises(RuntimeError, match="different data_sha256"):
+        check_resume_provenance(tmp_path, expected)
+    (tmp_path / "provenance.json").write_text(json.dumps(expected))
+    check_resume_provenance(tmp_path, expected)

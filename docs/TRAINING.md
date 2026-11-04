@@ -40,6 +40,8 @@ python -m sentinel.train                        # train; refuses a dirty Git tre
 python -m sentinel.train --resume               # continue from the latest checkpoint
 ```
 
+Resume only continues the same run: every checkpoint stores `provenance.json` (base model and revision, config sha256, training-data sha256 and the record-id list hash), and `--resume` refuses a checkpoint whose provenance differs from the current inputs - for example after a revoked approval removed records. Interrupted saves (`step-NNNNNN.tmp`) are never resumed from. The loader also compares every exported record's label (decision, CWE, lines, evidence source) with the committed manifest, so an edited export cannot turn an approved `finding` into a `no_finding` example.
+
 Exit codes: 0 completed, 1 failed, 2 governance/data refusal, 3 CUDA out of memory, 4 interrupted.
 
 Outputs in `runs/train/<run_name>/` (Git-ignored):

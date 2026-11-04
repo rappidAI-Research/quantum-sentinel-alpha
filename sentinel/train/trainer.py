@@ -13,6 +13,7 @@ import math
 import os
 import platform
 import random
+import re
 import shutil
 import subprocess
 import time
@@ -150,11 +151,43 @@ def save_adapter(model: Any, directory: Path) -> list[str]:
     return sorted(state)
 
 
+_CHECKPOINT_NAME = re.compile(r"^step-\d{6}$")
+
+
 def _checkpoints(output_dir: Path) -> list[Path]:
-    return sorted((output_dir / "checkpoints").glob("step-*"))
+    """Completed checkpoints only: an interrupted save leaves a `step-NNNNNN.tmp` directory, which is
+    never resumed from or counted for retention."""
+    root = output_dir / "checkpoints"
+    if not root.is_dir():
+        return []
+    return sorted(p for p in root.iterdir() if p.is_dir() and _CHECKPOINT_NAME.match(p.name) and (p / "state.json").is_file())
 
 
-def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState, output_dir: Path, keep: int) -> Path:
+def checkpoint_provenance(config: TrainConfig, data: TrainingData) -> dict[str, Any]:
+    """What a checkpoint was trained on. Resuming is only allowed with exactly the same inputs."""
+    return {
+        "base_model": config.model_id,
+        "base_revision": config.revision,
+        "config_sha256": config.sha256,
+        "data_sha256": data.sha256,
+        "record_ids_sha256": hashlib.sha256("\n".join(data.record_ids).encode("utf-8")).hexdigest(),
+    }
+
+
+def check_resume_provenance(path: Path, expected: dict[str, Any]) -> None:
+    file = path / "provenance.json"
+    if not file.is_file():
+        raise RuntimeError(f"{path} has no provenance.json; refusing to resume (start a new run)")
+    found = json.loads(file.read_text(encoding="utf-8"))
+    changed = sorted(k for k in expected if found.get(k) != expected[k])
+    if changed:
+        raise RuntimeError(
+            f"cannot resume from {path}: it was trained with different {', '.join(changed)} "
+            "(the training data or configuration changed; start a new run in a new output directory)"
+        )
+
+
+def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState, output_dir: Path, keep: int, provenance: dict[str, Any]) -> Path:
     import torch
 
     path = output_dir / "checkpoints" / f"step-{state.step:06d}"
@@ -172,6 +205,7 @@ def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState,
         },
         tmp / "trainer_state.pt",
     )
+    (tmp / "provenance.json").write_text(json.dumps(provenance, indent=2, sort_keys=True), encoding="utf-8")
     (tmp / "state.json").write_text(json.dumps(vars(state), indent=2), encoding="utf-8")
     if path.exists():
         shutil.rmtree(path)
@@ -326,10 +360,12 @@ def train(
         )
         scheduler = get_cosine_schedule_with_warmup(optimizer, int(total_steps * config.training.warmup_ratio), total_steps)
 
+        provenance = checkpoint_provenance(config, data)
         if resume:
             checkpoints = _checkpoints(output_dir)
             if not checkpoints:
                 raise RuntimeError(f"--resume given but no checkpoint in {output_dir / 'checkpoints'}")
+            check_resume_provenance(checkpoints[-1], provenance)
             state = load_checkpoint(model, optimizer, scheduler, checkpoints[-1])
             run["resumed_from"] = str(checkpoints[-1])
             log(f"resumed from {checkpoints[-1]} at step {state.step}")
@@ -377,7 +413,7 @@ def train(
                 if state.step % config.training.eval_every_steps == 0:
                     state.evaluations.append({"step": state.step, "validation_loss": evaluate_loss(model, validation_examples, config.training.micro_batch_size, pad_id)})
                 if state.step % config.training.save_every_steps == 0:
-                    save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints)
+                    save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance)
                 if state.step >= total_steps:
                     break
             if state.batch_in_epoch >= len(epoch_batches):
@@ -385,7 +421,7 @@ def train(
                 state.batch_in_epoch = 0
 
         state.evaluations.append({"step": state.step, "validation_loss": evaluate_loss(model, validation_examples, config.training.micro_batch_size, pad_id)})
-        save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints)
+        save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance)
         adapter_keys = save_adapter(model, output_dir / "adapter")
         (output_dir / "adapter" / "training_run.json").write_text(
             json.dumps({"run_name": config.run_name, "base_model": config.model_id, "base_revision": config.revision, "data_sha256": data.sha256}, indent=2) + "\n",
@@ -396,7 +432,7 @@ def train(
     except KeyboardInterrupt:
         run["status"] = "interrupted"
         if model is not None and optimizer is not None and state.step > 0:
-            run["interrupt_checkpoint"] = str(save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints))
+            run["interrupt_checkpoint"] = str(save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance))
         raise
     except torch.cuda.OutOfMemoryError as exc:
         run.update(

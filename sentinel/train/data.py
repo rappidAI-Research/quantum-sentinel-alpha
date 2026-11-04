@@ -85,6 +85,13 @@ def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | Non
             raise GovernanceError(f"{rid} is in split {record['split']}, expected {split}")
         if row["provenance"]["repository_key"] in held_out_repos:
             raise GovernanceError(f"{rid} comes from a holdout/quarantine repository")
+        label = row["label"]
+        target = record["target"]
+        for key in ("decision", "cwe", "alternate_cwes", "start_line", "end_line", "evidence_source"):
+            if target.get(key) != label.get(key):
+                raise GovernanceError(f"{rid} target {key}={target.get(key)!r} does not match the manifest ({label.get(key)!r})")
+        if record["input"]["language"] != label.get("language"):
+            raise GovernanceError(f"{rid} language does not match the manifest")
         code_hash = hashlib.sha256(record["input"]["code"].encode("utf-8")).hexdigest()
         if code_hash != row["provenance"]["content_sha256"] or code_hash != record["provenance"]["content_sha256"]:
             raise GovernanceError(f"{rid} code does not match the manifest content hash")
