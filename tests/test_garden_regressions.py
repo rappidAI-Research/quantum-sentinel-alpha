@@ -855,3 +855,30 @@ def test_nested_callee_is_still_reached_from_a_sibling_in_the_same_scope() -> No
     abstentions = [r for r in records if r["kind"] == "caller_abstention"]
     assert [r["provenance"]["excerpt_function"] for r in abstentions] == ["parseIndex"]
     assert code.enclosing_scope("javascript", old, next(f for f in code.find_functions("javascript", old) if f.name == "parseHeader")) == (1, 13)
+
+
+# --- Thirteenth review round --------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("a", "b", "same"),
+    [
+        ("<pre>a + b</pre>", "<pre>a+b</pre>", False),
+        ("<p><b>x</b> <i>y</i></p>", "<p><b>x</b><i>y</i></p>", False),
+        ("<div>\n  <span />\n</div>", "<div><span /></div>", True),
+        ("<p>\n    hello world\n  </p>", "<p>\n        hello world\n</p>", True),
+        ("<p>\n    hello\n    world\n  </p>", "<p>hello world</p>", True),
+    ],
+)
+def test_jsx_text_is_compared_as_rendered(a: str, b: str, same: bool) -> None:
+    def wrap(jsx: str) -> str:
+        return f"function View() {{\n  return {jsx};\n}}\n"
+
+    assert (code.normalized_sha256("javascript", wrap(a)) == code.normalized_sha256("javascript", wrap(b))) is same
+
+
+def test_jsx_text_change_is_not_cosmetic() -> None:
+    old = "function Help() {\n  const label = 'sum';\n  return <pre>{label}: a + b</pre>;\n}\n"
+    new = old.replace("a + b", "a+b")
+    records = build({"a.jsx": old}, {"a.jsx": new}, candidate("npm", ["CWE-79"]))
+    assert any(r["kind"] == "vulnerable" for r in records)

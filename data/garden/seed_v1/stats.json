@@ -306,7 +306,7 @@
     },
     "training_approved": 0
   },
-  "manifest_sha256": "f4d9e176d7ae015bff60038efb3b60ffb8f04a5ab7d0eebf02ff0f76cea7bade",
+  "manifest_sha256": "6a696830a59f79701f5dddfd98f143b768f0cf13435e67f8e7962b3498e93a11",
   "pipeline_version": "2",
   "records": {
     "accepted": 815,

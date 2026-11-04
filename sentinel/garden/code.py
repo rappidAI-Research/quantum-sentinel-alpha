@@ -734,11 +734,13 @@ def normalized_tokens(language: str, source: str) -> list[str]:
         return out
     result: list[str] = []
     last_line = None
-    for text, first, last in syntax.tokens(syntax.parse(language, source), _TOKEN.findall):
-        if last_line is not None and first > last_line:
+    last_markup = False
+    for text, first, last, markup in syntax.tokens(syntax.parse(language, source), _TOKEN.findall):
+        # line breaks inside JSX markup are layout (JSX text whitespace is part of the text token)
+        if last_line is not None and first > last_line and not (markup and last_markup):
             result.append("<NL>")
         result.append(text)
-        last_line = last
+        last_line, last_markup = last, markup
     return result
 
 

@@ -186,53 +186,87 @@ def comments(src: Source) -> Iterator[tree_sitter.Node]:
             yield node
 
 
-def tokens(src: Source, split_text) -> list[tuple[str, int, int]]:
-    """Significant tokens as (text, first line, last line): comments dropped, every string and regex
-    literal one exact token, template-literal text pieces exact with their `${...}` code tokenized,
-    operators as the grammar's own tokens (`===!` is `===` `!`)."""
-    out: list[tuple[str, int, int]] = []
+def jsx_text_value(text: str) -> str:
+    """The string a JSX text child renders as (Babel's `cleanJSXElementLiteralChild`): lines are
+    trimmed except at the outer edges, whitespace-only lines dropped, the rest joined by one space;
+    spaces inside a line are kept, so `<pre>a + b</pre>` and `<pre>a+b</pre>` differ."""
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    last_non_empty = max((i for i, line in enumerate(lines) if line.strip(" \t")), default=-1)
+    result = ""
+    for i, line in enumerate(lines):
+        trimmed = line.replace("\t", " ")
+        if i > 0:
+            trimmed = trimmed.lstrip(" ")
+        if i < len(lines) - 1:
+            trimmed = trimmed.rstrip(" ")
+        if trimmed:
+            if i != last_non_empty:
+                trimmed += " "
+            result += trimmed
+    return result
 
-    def visit(node: tree_sitter.Node) -> None:
-        stack: list = [node]
-        while stack:
-            item = stack.pop()
-            if isinstance(item, tuple):
-                out.append(item)
-                continue
-            current = item
-            if current.type in COMMENTS or current.is_missing:
-                continue
-            if current.type in STRING_LITERALS or current.type == REGEX:
-                out.append((src.node_text(current), src.first_line(current), src.last_line(current)))
-                continue
-            if current.type == TEMPLATE:
-                parts: list = []
-                cursor = current.start_byte
-                cursor_line = current.start_point[0] + 1
-                for child in current.children:
-                    if child.type == "template_substitution":
-                        text = src.data[cursor:child.start_byte].decode("utf-8", "replace")
-                        parts.append((text, cursor_line, child.start_point[0] + 1))
-                        parts.append(child)
-                        cursor = child.end_byte
-                        cursor_line = child.end_point[0] + 1
-                text = src.data[cursor:current.end_byte].decode("utf-8", "replace")
-                parts.append((text, cursor_line, src.last_line(current)))
-                stack.extend(reversed(parts))
-                continue
-            if current.child_count == 0:
-                text = src.node_text(current)
-                if not text.strip():
-                    continue  # automatic semicolon / newline tokens carry no text of their own
-                first, last = src.first_line(current), src.last_line(current)
-                if any(c.isspace() for c in text) or current.type == "jsx_text":
-                    out.extend((part, first, last) for part in split_text(text))
-                else:
-                    out.append((text, first, last))
-                continue
-            stack.extend(reversed(current.children))
 
-    visit(src.root)
+def _jsx_context(node: tree_sitter.Node, inherited: bool) -> bool:
+    """Whether `node` is JSX markup (tags, attributes, text) rather than JavaScript code."""
+    if node.type == "jsx_expression":
+        return False  # `{ ... }` inside JSX is code again
+    if node.type.startswith("jsx_"):
+        return True
+    return inherited
+
+
+def tokens(src: Source, split_text) -> list[tuple[str, int, int, bool]]:
+    """Significant tokens as (text, first line, last line, is JSX markup).
+
+    Comments are dropped; every string and regex literal is one exact token; template-literal text
+    pieces are exact while their `${...}` code is tokenized; operators are the grammar's own tokens
+    (`===!` is `===` `!`); JSX text is one token with the exact string React renders.
+    """
+    out: list[tuple[str, int, int, bool]] = []
+    stack: list = [(src.root, False)]
+    while stack:
+        item, markup = stack.pop()
+        if isinstance(item, tuple):  # a template-literal text piece
+            out.append((*item, markup))
+            continue
+        current = item
+        markup = _jsx_context(current, markup)
+        if current.type in COMMENTS or current.is_missing:
+            continue
+        if current.type in STRING_LITERALS or current.type == REGEX:
+            out.append((src.node_text(current), src.first_line(current), src.last_line(current), markup))
+            continue
+        if current.type == TEMPLATE:
+            parts: list = []
+            cursor = current.start_byte
+            cursor_line = current.start_point[0] + 1
+            for child in current.children:
+                if child.type == "template_substitution":
+                    text = src.data[cursor:child.start_byte].decode("utf-8", "replace")
+                    parts.append(((text, cursor_line, child.start_point[0] + 1), markup))
+                    parts.append((child, markup))
+                    cursor = child.end_byte
+                    cursor_line = child.end_point[0] + 1
+            text = src.data[cursor:current.end_byte].decode("utf-8", "replace")
+            parts.append(((text, cursor_line, src.last_line(current)), markup))
+            stack.extend(reversed(parts))
+            continue
+        if current.type == "jsx_text":
+            rendered = jsx_text_value(src.node_text(current))
+            if rendered:  # JSX text is output: kept exactly as React/Babel render it
+                out.append(("jsx:" + rendered, src.first_line(current), current.end_point[0] + 1, True))
+            continue
+        if current.child_count == 0:
+            text = src.node_text(current)
+            if not text.strip():
+                continue  # automatic semicolon / newline tokens carry no text of their own
+            first, last = src.first_line(current), src.last_line(current)
+            if any(c.isspace() for c in text):  # e.g. an ERROR token spanning code
+                out.extend((part, first, last, markup) for part in split_text(text))
+            else:
+                out.append((text, first, last, markup))
+            continue
+        stack.extend((child, markup) for child in reversed(current.children))
     return out
 
 
