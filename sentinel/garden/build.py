@@ -283,6 +283,9 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
         return None
     functions = code.find_functions(change.language, change.old_source)
     receiver = code.method_receiver(change.language, change.old_source, callee)
+    # A nested function is only reachable by name inside the function it is defined in; a bare call
+    # of the same name elsewhere reaches a different function.
+    scope = code.enclosing_scope(change.language, change.old_source, callee) if receiver is None else None
     for number in code.call_lines(change.language, change.old_source, callee.name):
         if callee.start <= number <= callee.end:
             continue
@@ -292,6 +295,8 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
         if caller.start <= callee.start <= caller.end or callee.start <= caller.start <= callee.end:
             continue  # nested in / around the vulnerable function
         if not settings.min_function_lines <= caller.length <= settings.max_function_lines:
+            continue
+        if scope is not None and not (scope[0] <= caller.start and caller.end <= scope[1]):
             continue
         if not code.calls_outer_function(change.language, _excerpt(change.old_source, caller), callee.name, receiver):
             continue  # shadowed inside the caller, or called on another object

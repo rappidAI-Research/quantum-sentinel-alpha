@@ -63,6 +63,7 @@ heuristic hints, not review results.
 | hybridgroup/gobot | 3 | Apache-2.0 | [LICENSE.txt](https://github.com/hybridgroup/gobot/blob/c1aa4f867846da4669ecf3bc3318bd96b7ee6f3f/LICENSE.txt) | `152fd231ba49325fad84274291d14b1c226f9bc66ab36ff435a5427c38524570` | `c1aa4f867846` |
 | ipld/go-codec-dagpb | 3 | multiple:Apache-2.0|MIT | [LICENSE-APACHE](https://github.com/ipld/go-codec-dagpb/blob/a17ace35cc760a2698645c09868f9050fa219f57/LICENSE-APACHE) | `b41dcb3b39cb28279a67949b10d522356ca5c58260eb1983f7aad8b61e928b42` | `a17ace35cc76` |
 | jfhbrook/node-ecstatic | 3 | MIT | [LICENSE.txt](https://github.com/jfhbrook/node-ecstatic/blob/0d0a2779ac5e5843d3745920212dfac9b69440e2/LICENSE.txt) | `ca9705f360cda9dc86a83ef2e4b88cb7950f1175e9098b1cb38a7a241e7683a6` | `0d0a2779ac5e` |
+| josdejong/typed-function | 3 | MIT | [LICENSE](https://github.com/josdejong/typed-function/blob/6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe/LICENSE) | `0fcdc188ddc373097b977fe6dde2df7c29619471ed9965616aa76e7a4f9fd8ad` | `6478ef4f2c3f` |
 | kepano/defuddle | 3 | MIT | [LICENSE](https://github.com/kepano/defuddle/blob/f154cb740ee603431b69638273af737a27156df9/LICENSE) | `c63e6774d9c9da3de01428e0809080c4758de3636c8e9e6fe51525c9ab4cd092` | `f154cb740ee6` |
 | knowledgecode/date-and-time | 3 | MIT | [LICENSE](https://github.com/knowledgecode/date-and-time/blob/9e4b501eacddccc8b1f559fb414f48472ee17c2a/LICENSE) | `2963f4598d0abd35a31562ebc532286e9ffd410eaa288d88af74d44657293a87` | `9e4b501eacdd` |
 | kyverno/kyverno | 3 | Apache-2.0 | [LICENSE](https://github.com/kyverno/kyverno/blob/8777672fb17bdf252bd2e7d8de3441e240404a60/LICENSE) | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` | `8777672fb17b` |
@@ -82,6 +83,7 @@ heuristic hints, not review results.
 | projectcapsule/capsule-proxy | 3 | Apache-2.0 | [LICENSE](https://github.com/projectcapsule/capsule-proxy/blob/472404f7006a4152e4eec76dee07324dd1e6e823/LICENSE) | `df1e7a91959c90664fdaabd70bfc3e80b3cba6b1189bbe09f44e0eb5d4c55fa9` | `472404f7006a` |
 | pylons/waitress | 3 | BSD-2-Clause | [LICENSE.txt](https://github.com/Pylons/waitress/blob/e4359018537af376cf24bd13616d861e2fb76f65/LICENSE.txt) | `3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c` | `e4359018537a` |
 | pylons/webob | 3 | none | (none) | `-` | `f689bcf4f0a1` |
+| raynos/min-document | 3 | MIT | [LICENCE](https://github.com/Raynos/min-document/blob/fe32e8da464cef622528725f647029a8fd7d95a6/LICENCE) | `950429b35f82e225a613a0638e7933855a4ce05172bd36dc060093ba58793bbe` | `fe32e8da464c` |
 | sajari/docconv | 3 | MIT | [LICENSE](https://github.com/sajari/docconv/blob/b19021ade3d0b71c89d35cb00eb9e589a121faa5/LICENSE) | `18801b36928d776c2ec8fe17e29f26ef3af38c18fa9be35ce11a83fd61cb990d` | `b19021ade3d0` |
 | sasstools/scss-tokenizer | 3 | MIT | [LICENSE](https://github.com/sasstools/scss-tokenizer/blob/a53b6f233e648cc01acbdd89c58786cf8ba56e35/LICENSE) | `7bbbf1df0a6d88da086c3f881be430d2cef0ec1430444d675a91678d2512c552` | `a53b6f233e64` |
 | seaweedfs/seaweedfs | 3 | Apache-2.0 | [LICENSE](https://github.com/seaweedfs/seaweedfs/blob/05ed5c9ae8a2a45101b52b61d02f170d20d587ff/LICENSE) | `d789d433cc11da163273d1e39be2e8fa67642f9a58ef220d3f258fa9c14ef613` | `05ed5c9ae8a2` |
@@ -161,7 +163,6 @@ heuristic hints, not review results.
 | jaraco/jaraco.context | 2 | none | (none) | `-` | `7b26a42b5257` |
 | jaredhanson/passport-oauth2 | 2 | MIT | [LICENSE](https://github.com/jaredhanson/passport-oauth2/blob/8e3bcdff145a2219033bd782fc517229fe3e05ea/LICENSE) | `0ecb0023687d34e9763695952d813c2201ab74070b99c4649de4302d27b41779` | `8e3bcdff145a` |
 | jonschlinkert/remarkable | 2 | MIT | [LICENSE](https://github.com/jonschlinkert/remarkable/blob/49e87b7ae2dc323d83606792a749fb207595249e/LICENSE) | `1cabe5f706e86a0767d2d894bcd3a8e836760fbad8d29e850f4d65e160186949` | `49e87b7ae2dc` |
-| josdejong/typed-function | 2 | MIT | [LICENSE](https://github.com/josdejong/typed-function/blob/6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe/LICENSE) | `0fcdc188ddc373097b977fe6dde2df7c29619471ed9965616aa76e7a4f9fd8ad` | `6478ef4f2c3f` |
 | js-cookie/js-cookie | 2 | MIT | [LICENSE](https://github.com/js-cookie/js-cookie/blob/eb3c40e89731e99b8970faaf35ddad249c6c0020/LICENSE) | `eff040f4184445a6d1f7f76d918101d631402436ff12256b924fb68e4df28a94` | `eb3c40e89731` |
 | juju/juju | 2 | AGPL-3.0 | [LICENCE](https://github.com/juju/juju/blob/0417178a3c2869537860e8b3b5e787ce1732231f/LICENCE) | `41506aa7ca1f60e6c424c2761d936b0b0a44723c128ac0e55be217f4471d080d` | `0417178a3c28` |
 | junegunn/fzf | 2 | MIT | [LICENSE](https://github.com/junegunn/fzf/blob/7963a2c6586c0b9eaa89b8995de8f0e08cf8a4ce/LICENSE) | `a296f423c0d30ce3581435e78e7e36c5fe73984a882d8720c72e713b4593588b` | `7963a2c6586c` |
@@ -194,6 +195,7 @@ heuristic hints, not review results.
 | modelscope/agentscope | 2 | Apache-2.0 | [LICENSE](https://github.com/modelscope/agentscope/blob/7d285e862f86fa1d96ed04c4cd40a5f1b8f9189a/LICENSE) | `4186bcadf358c60080060309769db6b2a352720d7353d827bb574c600fee9913` | `7d285e862f86` |
 | mrswitch/hello.js | 2 | MIT | [LICENSE](https://github.com/MrSwitch/hello.js/blob/7ab50aeff2d41991f08d4ad6c0481125eea8f6b7/LICENSE) | `bae0e427821c5760a5b3947a933075d556ffebcd78afa057ce09956d3cf37ed2` | `7ab50aeff2d4` |
 | myshenin/aws-lambda-multipart-parser | 2 | MIT | [LICENSE](https://github.com/myshenin/aws-lambda-multipart-parser/blob/56ccb03af4dddebc2b2defb348b6558783d5757e/LICENSE) | `921cbd9b449ad3e85a997e853b96c43b02bed4ea524b144ebcd353c8cce31aff` | `56ccb03af4dd` |
+| nestjs/nest | 2 | MIT | [LICENSE](https://github.com/nestjs/nest/blob/cbdf737cd6e7cefa52d05ecea2ae4af95c464614/LICENSE) | `56967de93525b12a30717e4446ccef3bbe32fafdbe2350f143c1cc6971b19ed3` | `cbdf737cd6e7` |
 | neuvector/neuvector | 2 | Apache-2.0 | [LICENSE](https://github.com/neuvector/neuvector/blob/955904b5762f296d209bf395a5fcc7a40a53c424/LICENSE) | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` | `955904b5762f` |
 | nicolargo/glances | 2 | AGPL-3.0 | [COPYING](https://github.com/nicolargo/glances/blob/6f4ec53d967478e69917078e6f73f448001bf107/COPYING) | `996af0513df21f7496288951c41428a03c174e9e4a9d63665c57d670f845ccb1` | `6f4ec53d9674` |
 | nicotine-plus/nicotine-plus | 2 | AGPL-3.0 | [COPYING](https://github.com/nicotine-plus/nicotine-plus/blob/0e3e2fac27a518f0a84330f1ddf1193424522045/COPYING) | `8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903` | `0e3e2fac27a5` |
@@ -215,7 +217,6 @@ heuristic hints, not review results.
 | py-pdf/pypdf | 2 | BSD-2-Clause | [LICENSE](https://github.com/py-pdf/pypdf/blob/7a4c8246ed48d9d328fb596942271da47b6d109c/LICENSE) | `a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524` | `7a4c8246ed48` |
 | pypa/virtualenv | 2 | none | (none) | `-` | `68075ad9eded` |
 | rancher/fleet | 2 | Apache-2.0 | [LICENSE](https://github.com/rancher/fleet/blob/088bcbea7edb844d7e6fc3649d9954f763cf68a9/LICENSE) | `809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0` | `088bcbea7edb` |
-| raynos/min-document | 2 | MIT | [LICENCE](https://github.com/Raynos/min-document/blob/fe32e8da464cef622528725f647029a8fd7d95a6/LICENCE) | `950429b35f82e225a613a0638e7933855a4ce05172bd36dc060093ba58793bbe` | `fe32e8da464c` |
 | remy/undefsafe | 2 | MIT | [LICENSE](https://github.com/remy/undefsafe/blob/f272681b3a50e2c4cbb6a8533795e1453382c822/LICENSE) | `e31c43e9b4ea2b75186014423249f1dc4610e9130b248602b27af5a678a6e6af` | `f272681b3a50` |
 | request/request | 2 | Apache-2.0 | [LICENSE](https://github.com/request/request/blob/29d81814bc16bc79cb112b4face8be6fc00061dd/LICENSE) | `d446a8c73d7bbe4872d6524b15ae206f9a2d7eb53f8c9cb6e6c893a43acc5276` | `29d81814bc16` |
 | revel/revel | 2 | MIT | [LICENSE](https://github.com/revel/revel/blob/d160ecb72207824005b19778594cbdc272e8a605/LICENSE) | `c1a8ccb47bf351ab2f9acee5a73dd7410c9014abfdfc202e668f4facb7d0779d` | `d160ecb72207` |

@@ -1,39 +1,39 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 111,
-      "finding": 350,
-      "no_finding": 350
+      "abstain": 113,
+      "finding": 351,
+      "no_finding": 351
     },
     "by_kind": {
-      "caller_abstention": 111,
-      "post_fix": 350,
-      "vulnerable": 350
+      "caller_abstention": 113,
+      "post_fix": 351,
+      "vulnerable": 351
     },
     "by_language": {
       "go": 296,
-      "javascript": 179,
+      "javascript": 181,
       "python": 212,
-      "typescript": 124
+      "typescript": 126
     },
     "by_language_and_decision": {
       "go/abstain": 50,
       "go/finding": 123,
       "go/no_finding": 123,
-      "javascript/abstain": 21,
+      "javascript/abstain": 23,
       "javascript/finding": 79,
       "javascript/no_finding": 79,
       "python/abstain": 22,
       "python/finding": 95,
       "python/no_finding": 95,
       "typescript/abstain": 18,
-      "typescript/finding": 53,
-      "typescript/no_finding": 53
+      "typescript/finding": 54,
+      "typescript/no_finding": 54
     },
     "by_split": {
       "holdout_reserved": 97,
       "temporal_quarantine": 78,
-      "train": 563,
+      "train": 567,
       "validation": 73
     },
     "by_split_and_decision": {
@@ -43,14 +43,14 @@
       "temporal_quarantine/abstain": 12,
       "temporal_quarantine/finding": 33,
       "temporal_quarantine/no_finding": 33,
-      "train/abstain": 77,
-      "train/finding": 243,
-      "train/no_finding": 243,
+      "train/abstain": 79,
+      "train/finding": 244,
+      "train/no_finding": 244,
       "validation/abstain": 10,
       "validation/finding": 32,
       "validation/no_finding": 31
     },
-    "complete_pairs": 348,
+    "complete_pairs": 349,
     "finding_cwes": {
       "CWE-116": 2,
       "CWE-1188": 1,
@@ -121,6 +121,7 @@
       "CWE-61": 1,
       "CWE-639": 2,
       "CWE-646": 1,
+      "CWE-670": 1,
       "CWE-674": 3,
       "CWE-683": 1,
       "CWE-704": 1,
@@ -152,7 +153,7 @@
       "CWE-96": 1
     },
     "finding_span_kind": {
-      "changed_lines": 203,
+      "changed_lines": 204,
       "insertion_point": 100,
       "mixed": 47
     },
@@ -162,7 +163,7 @@
       "2014": 14,
       "2015": 8,
       "2016": 6,
-      "2017": 9,
+      "2017": 10,
       "2018": 30,
       "2019": 29,
       "2020": 36,
@@ -170,8 +171,8 @@
       "2022": 63,
       "2023": 54,
       "2024": 78,
-      "2025": 108,
-      "2026": 307
+      "2025": 109,
+      "2026": 309
     },
     "flags": {
       "coarse_cwe": 56,
@@ -181,7 +182,7 @@
     },
     "license_category": {
       "none": 26,
-      "permissive": 650,
+      "permissive": 654,
       "strong_copyleft": 90,
       "unknown": 31,
       "weak_copyleft": 14
@@ -196,7 +197,7 @@
       "ISC": 3,
       "LGPL-2.1": 9,
       "LGPL-3.0": 2,
-      "MIT": 342,
+      "MIT": 346,
       "MPL-2.0": 3,
       "Unlicense": 4,
       "multiple:AGPL-3.0|LGPL-3.0": 2,
@@ -209,7 +210,7 @@
     "repositories_by_split": {
       "holdout_reserved": 34,
       "temporal_quarantine": 28,
-      "train": 221,
+      "train": 222,
       "validation": 27
     }
   },
@@ -217,12 +218,12 @@
     "candidates": 1413,
     "outcomes": {
       "built": 372,
-      "change_outside_function": 287,
-      "fix_too_large": 11,
+      "change_outside_function": 283,
+      "fix_too_large": 12,
       "function_mismatch": 35,
       "function_size_out_of_bounds": 36,
-      "module_import_rebound": 2,
-      "multiple_functions_changed": 231,
+      "module_import_rebound": 3,
+      "multiple_functions_changed": 233,
       "no_logic_change": 1,
       "no_source_change_in_language": 131,
       "root_commit": 1,
@@ -292,32 +293,37 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 811,
-      "source_not_approved:ghsa-osv-fix-commits": 811,
-      "source_not_approved:github-advisory-db": 811,
-      "source_not_approved:osv": 811,
+      "repository_not_reviewed": 815,
+      "source_not_approved:ghsa-osv-fix-commits": 815,
+      "source_not_approved:github-advisory-db": 815,
+      "source_not_approved:osv": 815,
       "split:holdout_reserved": 97,
       "split:temporal_quarantine": 78
     },
     "by_approval_status": {
-      "excluded": 228,
-      "pending_review": 636
+      "excluded": 225,
+      "pending_review": 640
     },
     "training_approved": 0
   },
-  "manifest_sha256": "c72b73529bb88b807cd1289e65e1e519d99954113b84241858485c9b19190a96",
-  "pipeline_version": "1",
+  "manifest_sha256": "f4d9e176d7ae015bff60038efb3b60ffb8f04a5ab7d0eebf02ff0f76cea7bade",
+  "pipeline_version": "2",
   "records": {
-    "accepted": 811,
+    "accepted": 815,
     "failed_checks": {
       "label_conflict_exact": 4,
       "label_conflict_near": 3,
       "localization_valid:diff_consistent": 4,
       "localization_valid:trivial_span": 14,
-      "sibling_rejected": 26,
-      "syntax_well_formed": 2
+      "sibling_rejected": 25
     },
-    "rejected": 53,
-    "total": 864
+    "rejected": 50,
+    "total": 865
+  },
+  "syntax_versions": {
+    "tree-sitter": "0.26.0",
+    "tree-sitter-go": "0.25.0",
+    "tree-sitter-javascript": "0.25.0",
+    "tree-sitter-typescript": "0.23.2"
   }
 }

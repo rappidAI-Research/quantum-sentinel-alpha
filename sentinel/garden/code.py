@@ -3,10 +3,10 @@
 Function boundaries:
 - Python: the `ast` module (decorators included); an indentation scan is the fallback for files
   that do not parse under the running interpreter (for example Python 2 code).
-- Go: gofmt layout - a top-level `func` starts at column 0 and ends at the next line that is `}`.
-- JavaScript/TypeScript: strings, comments, template literals and regex literals are masked, then
-  named functions, methods, block-bodied arrow functions and anonymous callbacks are matched to
-  their closing brace.
+- Go, JavaScript and TypeScript: the tree-sitter parse tree (`syntax.py`): function and method
+  declarations, block-bodied function expressions and arrows (named after the variable, property or
+  member they are assigned to), anonymous callbacks; strings, template and regex literals, comments,
+  tokens, calls, imports and local names are read from the same tree.
 """
 
 from __future__ import annotations
@@ -19,6 +19,8 @@ import tokenize
 import warnings
 from dataclasses import dataclass
 from pathlib import PurePosixPath
+
+from sentinel.garden import syntax
 
 LANGUAGE_EXTENSIONS = {
     ".py": "python",
@@ -82,163 +84,36 @@ def path_role(path: str) -> str:
 # Masking of strings and comments (C-like languages)
 # --------------------------------------------------------------------------------------------
 
-_REGEX_PRECEDERS = set("(,=:[!&|?{};+-*%<>~^")
-_REGEX_KEYWORDS = ("return", "typeof", "case", "in", "of", "delete", "void", "throw", "new", "else", "do")
 # a `)` closing the head of one of these statements ends an expression context: `if (x) /re/.test(y)`
-_CONTROL_HEAD_KEYWORDS = ("if", "while", "for", "with")
 
 
 def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]] | None = None) -> str:
     """Replace the contents of strings, comments, template literals and regex literals by spaces.
 
-    Newlines are kept so line numbers stay valid; quote and delimiter characters are kept. When
-    `literal_spans` is given, the (start, end) offsets of every blanked string/template/regex body are
-    appended to it (comments are not literals).
+    Read from the tree-sitter parse tree. Newlines are kept so line numbers stay valid; quote and
+    comment delimiters are kept. When `literal_spans` is given, the (start, end) offsets of every
+    blanked string/template/regex body are appended to it in source order (comments are not literals).
     """
+    src = syntax.parse(language, source)
     out = list(source)
-    n = len(source)
-    i = 0
-    is_js = language in {"javascript", "typescript"}
-    template_stack: list[int] = []  # brace depth at which each `${` interpolation started
-    brace_depth = 0
-    paren_stack: list[bool] = []  # per open `(`: does it start a control-statement head?
-    control_head_closers: set[int] = set()  # offsets of `)` that close such a head
 
     def blank(start: int, end: int) -> None:
-        for k in range(start, min(end, n)):
+        for k in range(start, min(end, len(out))):
             if out[k] != "\n":
                 out[k] = " "
 
-    def last_code_char(pos: int) -> tuple[str, str]:
-        k = pos - 1
-        while k >= 0 and out[k] in " \t\r\n":
-            k -= 1
-        if k < 0:
-            return "", ""
-        end = k + 1
-        while k >= 0 and (out[k].isalnum() or out[k] in "_$"):
-            k -= 1
-        return out[end - 1], "".join(out[k + 1 : end])
-
-    while i < n:
-        ch = source[i]
-        nxt = source[i + 1] if i + 1 < n else ""
-        if ch == "/" and nxt == "/":  # keep the delimiter so comments stay identifiable
-            end = source.find("\n", i)
-            end = n if end < 0 else end
-            blank(i + 2, end)
-            i = end
-            continue
-        if ch == "/" and nxt == "*":
-            end = source.find("*/", i + 2)
-            end = n if end < 0 else end + 2
-            blank(i + 2, end - 2)
-            i = end
-            continue
-        if ch in "\"'" or (ch == "`" and not is_js):
-            j = i + 1
-            while j < n and source[j] != ch:
-                if source[j] == "\\" and ch != "`":
-                    j += 1
-                elif source[j] == "\n" and ch != "`":
-                    break
-                j += 1
-            blank(i + 1, j)
-            if literal_spans is not None:
-                literal_spans.append((i + 1, j))
-            i = j + 1
-            continue
-        if ch == "`" and is_js:
-            j = i + 1
-            while j < n:
-                if source[j] == "\\":
-                    j += 2
-                    continue
-                if source[j] == "`":
-                    break
-                if source[j] == "$" and j + 1 < n and source[j + 1] == "{":
-                    break
-                j += 1
-            blank(i + 1, j)
-            if literal_spans is not None:
-                literal_spans.append((i + 1, j))
-            if j < n and source[j] == "$":
-                template_stack.append(brace_depth)
-                brace_depth += 1
-                i = j + 2
-            else:
-                i = j + 1
-            continue
-        if is_js and ch == "/":
-            prev, word = last_code_char(i)
-            prev_pos = i - 1
-            while prev_pos >= 0 and out[prev_pos] in " \t\r\n":
-                prev_pos -= 1
-            postfix = prev in "+-" and prev_pos > 0 and out[prev_pos - 1] == prev  # `a++ / 2`
-            if prev == "" or (prev in _REGEX_PRECEDERS and not postfix) or word in _REGEX_KEYWORDS or prev_pos in control_head_closers:
-                j = i + 1
-                in_class = False
-                while j < n and source[j] != "\n":
-                    c = source[j]
-                    if c == "\\":
-                        j += 2
-                        continue
-                    if c == "[":
-                        in_class = True
-                    elif c == "]":
-                        in_class = False
-                    elif c == "/" and not in_class:
-                        break
-                    j += 1
-                if j < n and source[j] == "/":
-                    blank(i + 1, j)
-                    if literal_spans is not None:
-                        literal_spans.append((i + 1, j))
-                    i = j + 1
-                    continue
-        if is_js and ch == "(":
-            word = last_code_char(i)[1]
-            head = word in _CONTROL_HEAD_KEYWORDS
-            if head:  # `x.for(a)` is a method call, not a statement head
-                k = i - 1
-                while k >= 0 and out[k] in " \t\r\n":
-                    k -= 1
-                k -= len(word)
-                while k >= 0 and out[k] in " \t\r\n":
-                    k -= 1
-                head = not (k >= 0 and out[k] == "." and (k == 0 or out[k - 1] != "."))
-            paren_stack.append(head)
-        elif is_js and ch == ")" and paren_stack:
-            if paren_stack.pop():
-                control_head_closers.add(i)
-        if ch == "{":
-            brace_depth += 1
-        elif ch == "}":
-            brace_depth -= 1
-            if template_stack and brace_depth == template_stack[-1]:
-                # end of a `${...}` interpolation: continue inside the template literal
-                template_stack.pop()
-                j = i + 1
-                while j < n:
-                    if source[j] == "\\":
-                        j += 2
-                        continue
-                    if source[j] == "`":
-                        break
-                    if source[j] == "$" and j + 1 < n and source[j + 1] == "{":
-                        break
-                    j += 1
-                blank(i + 1, j)
-                if literal_spans is not None:
-                    literal_spans.append((i + 1, j))
-                if j < n and source[j] == "$":
-                    template_stack.append(brace_depth)
-                    brace_depth += 1
-                    i = j + 2
-                else:
-                    i = j + 1
-                continue
-        i += 1
+    spans: list[tuple[int, int]] = []
+    for node in syntax.literals(src):
+        spans.extend(syntax.literal_bodies(src, node))
+    for start, end in spans:
+        blank(start, end)
+    for node in syntax.comments(src):
+        start, end = src.span(node)
+        text = source[start:end]
+        closing = 2 if text.startswith("/*") and text.endswith("*/") and len(text) >= 4 else 0
+        blank(start + 2, end - closing)
+    if literal_spans is not None:
+        literal_spans.extend(sorted(spans))
     return "".join(out)
 
 
@@ -261,10 +136,8 @@ class Function:
 def find_functions(language: str, source: str) -> list[Function]:
     if language == "python":
         return _python_functions(source)
-    if language == "go":
-        return _go_functions(source)
-    if language in {"javascript", "typescript"}:
-        return _js_functions(source, language)
+    if language in {"go", "javascript", "typescript"}:
+        return [Function(f.name, f.start, f.end) for f in syntax.functions(syntax.parse(language, source))]
     raise ValueError(f"unsupported language: {language}")
 
 
@@ -335,182 +208,12 @@ def _python_functions_by_indent(source: str) -> list[Function]:
     return functions
 
 
-_GO_FUNC = re.compile(r"^func\s*(?:\([^)]*\)\s*)?([A-Za-z_]\w*)\s*[\[(]")
 
 
-def _go_functions(source: str) -> list[Function]:
-    # Scan the string/comment mask (same line coordinates): function-shaped text inside a raw string
-    # or block comment is not a function, and a `}` inside a raw string does not end one.
-    lines = mask_c_like(source, "go").splitlines()
-    functions = []
-    for index, line in enumerate(lines):
-        match = _GO_FUNC.match(line)
-        if not match:
-            continue
-        if line.rstrip().endswith("}") and line.count("{") == line.count("}"):
-            functions.append(Function(match.group(1), index + 1, index + 1))  # one-line function
-            continue
-        for k in range(index + 1, len(lines)):
-            if lines[k].rstrip() == "}":
-                functions.append(Function(match.group(1), index + 1, k + 1))
-                break
-            if _GO_FUNC.match(lines[k]):
-                break  # not gofmt layout; skip rather than guess
-    return functions
 
 
-_JS_IDENT = r"[A-Za-z_$][\w$]*"
-_JS_NOT_FUNCTIONS = {
-    "if", "for", "while", "switch", "catch", "function", "return", "with", "else", "do", "typeof",
-    "new", "await", "super", "import", "export", "throw", "case", "delete", "void", "yield",
-}
-_JS_PATTERNS = [
-    # function declarations / expressions with a name
-    re.compile(rf"^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s*\*?\s*({_JS_IDENT})\s*(?:<[^>]*>)?\s*\("),
-    # const name = function(...) / const name = async (...) => / name = function
-    re.compile(rf"^\s*(?:export\s+)?(?:const|let|var)\s+({_JS_IDENT})\s*(?::[^=]+)?=\s*(?:async\s+)?(?:function\b[^(]*)?\("),
-    re.compile(rf"^\s*(?:export\s+)?(?:const|let|var)\s+({_JS_IDENT})\s*(?::[^=]+)?=\s*(?:async\s+)?({_JS_IDENT})\s*=>"),
-    re.compile(rf"^\s*((?:{_JS_IDENT}\.)*{_JS_IDENT})\s*=\s*(?:async\s+)?(?:function\b[^(]*)?\("),
-    # object property `name: function(` / `name: (...) =>`
-    re.compile(rf"^\s*['\"]?({_JS_IDENT})['\"]?\s*:\s*(?:async\s+)?(?:function\b[^(]*)?\("),
-    # class / object method shorthand
-    re.compile(
-        rf"^\s*(?:(?:public|private|protected|static|async|readonly|override|get|set)\s+)*\*?\s*(#?{_JS_IDENT})\s*(?:<[^>]*>)?\s*\("
-    ),
-]
-_JS_ARROW_OR_FUNCTION = re.compile(r"=>\s*\{|\bfunction\b\s*\*?\s*[A-Za-z_$]*\s*\(")
-_JS_ROUTE = re.compile(r"\.(get|post|put|delete|patch|use|all|options|head)\s*\(")
 
 
-def _js_functions(source: str, language: str) -> list[Function]:
-    masked = mask_c_like(source, language)
-    line_offsets = [0]
-    for line in masked.splitlines(keepends=True):
-        line_offsets.append(line_offsets[-1] + len(line))
-    masked_lines = masked.splitlines()
-
-    def line_of(offset: int) -> int:
-        lo, hi = 0, len(line_offsets) - 1
-        while lo < hi:
-            mid = (lo + hi + 1) // 2
-            if line_offsets[mid] <= offset:
-                lo = mid
-            else:
-                hi = mid - 1
-        return lo + 1
-
-    def matching_brace(open_at: int) -> int | None:
-        depth = 0
-        for k in range(open_at, len(masked)):
-            c = masked[k]
-            if c == "{":
-                depth += 1
-            elif c == "}":
-                depth -= 1
-                if depth == 0:
-                    return k
-        return None
-
-    def body_after_params(paren_at: int) -> int | None:
-        """Offset of the `{` that opens the body after a parameter list starting at `paren_at`."""
-        depth = 0
-        k = paren_at
-        while k < len(masked):
-            c = masked[k]
-            if c == "(":
-                depth += 1
-            elif c == ")":
-                depth -= 1
-                if depth == 0:
-                    break
-            k += 1
-        else:
-            return None
-        k += 1
-        limit = min(len(masked), k + 400)
-        between: list[str] = []  # characters outside any return-type nesting
-        depth = 0  # nesting inside a TypeScript return-type annotation: (), [], <>, {}
-        in_type = False
-        last = ""  # last significant character at depth 0
-        while k < limit:
-            c = masked[k]
-            if depth > 0:
-                if c in "([{<":
-                    depth += 1
-                elif c in ")]}" or (c == ">" and masked[k - 1] != "="):
-                    depth -= 1
-                    if depth == 0:
-                        last = c
-                k += 1
-                continue
-            if c == ":" and not "".join(between).strip():
-                in_type = True
-            elif in_type and (c in "([<" or (c == "{" and last in {":", "|", "&", ",", "("})):
-                depth = 1  # generic arguments, tuple/function types or an object-literal type
-                k += 1
-                continue
-            elif c == "{":
-                text = "".join(between).strip()
-                # Only a signature continuation may separate `)` and the body: nothing, `=>`, or a
-                # return-type annotation (`: T` / `: T =>`). Anything else - e.g. `return` in
-                # semicolon-free code after a call - means the parentheses were a call.
-                if text and text != "=>" and not in_type:
-                    return None
-                if ";" in text or re.search(r"(?<![=!<>])=(?!>)", text):
-                    return None
-                return k
-            elif c in ";,)}":  # statement ended (also in semicolon-free code) before any body
-                return None
-            between.append(c)
-            if not c.isspace():
-                last = c
-            k += 1
-        return None
-
-    functions: dict[tuple[int, int], Function] = {}
-    for index, line in enumerate(masked_lines):
-        for pattern in _JS_PATTERNS:
-            match = pattern.match(line)
-            if not match:
-                continue
-            name = match.group(1)
-            if name in _JS_NOT_FUNCTIONS:
-                continue
-            base = line_offsets[index]
-            if match.re.pattern.endswith("=>"):
-                arrow = masked.find("=>", base + match.end() - 2)
-                brace = masked.find("{", arrow)
-                if brace < 0 or masked[arrow + 2 : brace].strip():
-                    continue
-            else:
-                brace = body_after_params(base + match.end() - 1)
-            if brace is None:
-                continue
-            close = matching_brace(brace)
-            if close is None:
-                continue
-            start, end = index + 1, line_of(close)
-            functions.setdefault((start, end), Function(name.split(".")[-1], start, end))
-            break
-    # anonymous callbacks: `(...) => {` or `function (...) {` not already covered
-    for match in _JS_ARROW_OR_FUNCTION.finditer(masked):
-        if match.group(0).startswith("=>"):
-            brace = match.end() - 1
-        else:
-            brace = body_after_params(match.end() - 1)
-            if brace is None:
-                continue
-        close = matching_brace(brace)
-        if close is None:
-            continue
-        start = line_of(match.start())
-        end = line_of(close)
-        if any(f.end == end and f.start <= start for f in functions.values()):
-            continue
-        route = _JS_ROUTE.search(masked_lines[start - 1])
-        name = f"<anonymous:{route.group(1)}-handler>" if route else "<anonymous>"
-        functions.setdefault((start, end), Function(name, start, end))
-    return sorted(functions.values(), key=lambda f: (f.start, f.end))
 
 
 # --------------------------------------------------------------------------------------------
@@ -519,8 +222,6 @@ def _js_functions(source: str, language: str) -> list[Function]:
 
 _BRACKETS_ONLY = re.compile(r"^[\s(){}\[\];,]*$")
 # Top-level only (column 0): a `require` inside a function decides which implementation it calls.
-_JS_IMPORT_START = re.compile(r"^(?:import(?=[\s{*'\"])(?!\s*\()|export\s*(?:type\s+)?(?:\*|\{[^}]*\}?)\s*(?:as\s+\w+\s*)?from\b)")
-_JS_REQUIRE = re.compile(r"^(?:export\s+)?(?:const|let|var)\s+[^=]+=\s*require\(\s*['\"][^'\"]*['\"]\s*\)\s*[;,]?\s*$")
 
 
 def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
@@ -553,35 +254,11 @@ def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
 
 
 def import_statement_lines(language: str, source: str) -> set[int]:
-    """Line numbers that belong to import statements (structural, never inside strings or comments)."""
+    """Line numbers that belong to module-level import statements (structural, from the parse tree)."""
     if language == "python":
         classes = _python_line_classes(source)
         return classes[1] if classes else set()
-    masked_lines = mask_c_like(source, language).splitlines()
-    lines: set[int] = set()
-    if language == "go":
-        in_block = False
-        for number, line in enumerate(masked_lines, start=1):
-            stripped = line.strip()
-            if in_block:
-                lines.add(number)
-                if stripped.startswith(")"):
-                    in_block = False
-            elif re.match(r"^import\s*\(", line):
-                lines.add(number)
-                in_block = not stripped.endswith(")")
-            elif re.match(r"^import\s+(?:[\w.]+\s+)?\"", line):
-                lines.add(number)
-        return lines
-    open_braces = 0  # > 0 while inside a multi-line `import { a, b } from 'x'` list
-    for number, line in enumerate(masked_lines, start=1):
-        if open_braces > 0:
-            lines.add(number)
-            open_braces += line.count("{") - line.count("}")
-        elif _JS_IMPORT_START.match(line) or _JS_REQUIRE.match(line):
-            lines.add(number)
-            open_braces = max(0, line.count("{") - line.count("}"))
-    return lines
+    return syntax.import_lines(syntax.parse(language, source))
 
 
 def _line_classes(language: str, source: str) -> tuple[set[int], set[int]]:
@@ -601,26 +278,13 @@ def _line_classes(language: str, source: str) -> tuple[set[int], set[int]]:
             elif _BRACKETS_ONLY.match(line):
                 brackets.add(number)
         return noise | imports | python_docstring_lines(source), brackets
-    # Comments removed, string contents kept. Every line that touches a string, template, regex or
-    # raw-string literal is code (even if it is whitespace-only inside the literal); a block-comment
-    # continuation line is not.
-    text = strip_comments(language, source)
-    spans: list[tuple[int, int]] = []
-    mask_c_like(text, language, spans)
-    in_literal: set[int] = set()
-    for start, end in spans:
-        first = text.count("\n", 0, start) + 1
-        in_literal.update(range(first, first + text.count("\n", start, end) + 1))
-    for number, line in enumerate(text.split("\n"), start=1):
-        if number > len(lines):
-            break
-        if number in in_literal:
-            continue
-        if not line.strip():
-            noise.add(number)
-        elif _BRACKETS_ONLY.match(line):
-            brackets.add(number)
-    return noise | import_statement_lines(language, source), brackets
+    # From the parse tree: every line touching a string, template or regex literal is code (even a
+    # whitespace-only line inside it); blank and comment-only lines are noise; a line whose code is
+    # only brackets/separators is bracket-only.
+    src = syntax.parse(language, source)
+    code_lines, bracket_lines = syntax.code_lines(src)
+    noise = {n for n in range(1, len(lines) + 1) if n not in code_lines}
+    return noise | syntax.import_lines(src), bracket_lines
 
 
 def noise_lines(language: str, source: str) -> set[int]:
@@ -639,10 +303,6 @@ def trivial_lines(language: str, source: str) -> set[int]:
     return noise | brackets
 
 
-_JS_IMPORT_FROM = re.compile(r"^(?:import|export)\s+(?:type\s+)?(.*?)\s*from\s*(['\"])(.+?)\2", re.S)
-_JS_SIDE_EFFECT = re.compile(r"^import\s*(['\"])(.+?)\1")
-_JS_REQUIRE_PARTS = re.compile(r"^(?:export\s+)?(?:const|let|var)\s+(.+?)\s*=\s*require\(\s*(['\"])(.+?)\2")
-_GO_IMPORT_SPEC = re.compile(r'^\s*(?:import\s*\(?\s*)?([\w.]+\s+)?"([^"]+)"')
 
 
 def module_imports(language: str, source: str) -> set[tuple[str, str]]:
@@ -661,47 +321,7 @@ def module_imports(language: str, source: str) -> set[tuple[str, str]]:
                 module = "." * node.level + (node.module or "")
                 pairs.update((module, f"{alias.name} as {alias.asname or alias.name}") for alias in node.names)
         return pairs
-    lines = source.splitlines()
-    numbers = sorted(import_statement_lines(language, source))
-    if language == "go":
-        for n in numbers:
-            match = _GO_IMPORT_SPEC.match(lines[n - 1])
-            if match:
-                pairs.add((match.group(2), (match.group(1) or "").strip()))
-        return pairs
-    statements: list[str] = []
-    previous = -2
-    for n in numbers:
-        if n == previous + 1 and lines[n - 1][:1].isspace() or (statements and n == previous + 1 and lines[n - 1].lstrip().startswith("}")):
-            statements[-1] += "\n" + lines[n - 1]
-        else:
-            statements.append(lines[n - 1])
-        previous = n
-    for statement in statements:
-        text = statement.strip()
-        if match := _JS_IMPORT_FROM.match(text):
-            clause, module = match.group(1), match.group(3)
-            for part in re.split(r"[{},]", clause):
-                part = " ".join(part.split())
-                if part:
-                    pairs.add((module, part))
-        elif match := _JS_SIDE_EFFECT.match(text):
-            pairs.add((match.group(2), "<side-effect>"))
-        elif match := _JS_REQUIRE_PARTS.match(text):
-            binding, module = " ".join(match.group(1).split()), match.group(3)
-            if binding.startswith("{") and binding.endswith("}"):
-                # `const { exec, spawn: run } = require(m)` binds `exec` and `run` individually
-                for part in binding[1:-1].split(","):
-                    part = part.split("=")[0].strip()
-                    if not part or part.startswith("..."):
-                        continue
-                    imported, _, local = (x.strip() for x in part.partition(":"))
-                    pairs.add((module, f"{imported} as {local}" if local else imported))
-            else:
-                pairs.add((module, binding))
-        else:
-            pairs.add(("<statement>", re.sub(r"\s+", "", text)))
-    return pairs
+    return syntax.imported_bindings(syntax.parse(language, source))
 
 
 _SCOPES = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)
@@ -836,13 +456,7 @@ def call_lines(language: str, source: str, name: str) -> list[int]:
                 if previous not in {"def", "class"}:
                     found.append(token.start[0])
         return sorted(set(found))
-    call = re.compile(rf"(?<![\w$]){re.escape(name)}\s*\(")
-    definition = re.compile(rf"(?:\bfunction\s*\*?\s*|\bfunc\s*(?:\([^)]*\)\s*)?){re.escape(name)}\s*[\[(<]")
-    found = []
-    for number, line in enumerate(mask_c_like(source, language).splitlines(), start=1):
-        if call.search(line) and not definition.search(line):
-            found.append(number)
-    return found
+    return sorted({call.line for call in syntax.calls(syntax.parse(language, source)) if call.name == name})
 
 
 def _python_local_bindings(function_source: str) -> set[str] | None:
@@ -884,10 +498,9 @@ def _python_local_bindings(function_source: str) -> set[str] | None:
 
 def method_receiver(language: str, source: str, fn: Function) -> str | None:
     """None when `fn` is a plain function; otherwise how a method is called on its own object:
-    "method" (Python `self.`/`cls.`, JS/TS `this.`, including `X.prototype.f = function`),
-    "obj:<path>" for a JS function assigned to an object (`internals.f = ...` is called as
-    `internals.f(...)`) or, for Go, "go:<receiver type>"."""
-    lines = source.splitlines()
+    "method" (Python `self.`/`cls.`, JS/TS `this.`, including `X.prototype.f = function` and
+    object-literal / class-field functions), "obj:<path>" for a JS function assigned to an object
+    (`internals.f = ...` is called as `internals.f(...)`) or, for Go, "go:<receiver type>"."""
     if language == "python":
         try:
             with warnings.catch_warnings():
@@ -901,18 +514,18 @@ def method_receiver(language: str, source: str, fn: Function) -> str | None:
                     if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) and item.name == fn.name and fn.start <= item.lineno <= fn.end:
                         return "method"
         return None
-    masked = mask_c_like("\n".join(lines[fn.start - 1 : fn.end]), language)
-    if language == "go":
-        receiver = _go_receiver(masked)
-        return f"go:{receiver[1]}" if receiver else None
-    header = masked.split("{", 1)[0]
-    assigned = re.match(rf"\s*(?:(?:const|let|var)\s+)?([A-Za-z_$][\w$]*(?:\s*\.\s*[A-Za-z_$][\w$]*)*)\s*\.\s*{re.escape(fn.name)}\s*=(?!=)", header)
-    if assigned:  # `X.prototype.f = function` is a method; `internals.f = function` is reached as `internals.f(`
-        owner = re.sub(r"\s+", "", assigned.group(1))
-        return "method" if owner.endswith(".prototype") or owner == "prototype" else f"obj:{owner}"
-    if re.search(r"\bfunction\b", header) or re.search(rf"\b(?:const|let|var)\s+{re.escape(fn.name)}\b", header):
+    found = syntax.function_at(syntax.parse(language, source), fn.start, fn.end)
+    if found is None:
         return None
-    return "method"
+    if found.kind == "go_method":
+        return f"go:{found.owner}"
+    if found.kind in {"method", "object"}:
+        return "method"
+    if found.kind == "assigned" and found.owner is not None:
+        if found.owner == "prototype" or found.owner.endswith(".prototype"):
+            return "method"
+        return f"obj:{found.owner}"
+    return None
 
 
 def owner_class(language: str, source: str, fn: Function) -> str | None:
@@ -933,47 +546,67 @@ def owner_class(language: str, source: str, fn: Function) -> str | None:
         return None
     if language not in {"javascript", "typescript"}:
         return None
-    masked = mask_c_like(source, language)
-    lines = masked.splitlines()
-    header = "\n".join(lines[fn.start - 1 : fn.end]).split("{", 1)[0]
-    if match := re.match(r"\s*([A-Za-z_$][\w$]*)\s*\.\s*prototype\s*\.", header):
-        return match.group(1)  # identified by name: prototype methods are attached by name
-    offsets = [0]
-    for line in masked.splitlines(keepends=True):
-        offsets.append(offsets[-1] + len(line))
-    start = offsets[fn.start - 1]
-    best: tuple[int, str] | None = None
-    for match in re.finditer(r"\bclass\s+([A-Za-z_$][\w$]*)[^{;]*\{", masked):
-        depth, i = 1, match.end()
-        while i < len(masked) and depth:
-            depth += {"{": 1, "}": -1}.get(masked[i], 0)
-            i += 1
-        if match.end() <= start < i and (best is None or match.start() > best[0]):
-            best = (match.start(), match.group(1))
-    if best is None:
+    src = syntax.parse(language, source)
+    found = syntax.function_at(src, fn.start, fn.end)
+    if found is None:
         return None
-    return f"{best[1]}@{masked.count(chr(10), 0, best[0]) + 1}"
+    if found.kind == "assigned" and found.owner is not None and (found.owner == "prototype" or found.owner.endswith(".prototype")):
+        return found.owner[: -len(".prototype")] if found.owner.endswith(".prototype") else found.owner
+    if found.kind in {"method", "object"}:
+        return syntax.enclosing_class(src, found.node)
+    return None
 
 
-def _go_receiver(masked_function: str) -> tuple[str, str] | None:
-    """(receiver variable, receiver type without pointer/type parameters) of a Go method."""
-    match = re.match(r"\s*func\s*\(\s*(?:([A-Za-z_]\w*)\s+)?\*?\s*([A-Za-z_][\w.]*)", masked_function)
-    return (match.group(1) or "", match.group(2)) if match else None
+def enclosing_scope(language: str, source: str, fn: Function) -> tuple[int, int] | None:
+    """Line range of the function `fn` is defined in, or None for a module-level function. A nested
+    function is only visible inside that range, so only callers inside it can reach it by name."""
+    if language == "python":
+        try:
+            tree = _parse_python(source)
+        except (SyntaxError, ValueError):
+            return None
+        defs = (ast.FunctionDef, ast.AsyncFunctionDef)
+
+        def visit(node: ast.AST, scope: ast.AST | None) -> tuple[int, int] | None:
+            for child in ast.iter_child_nodes(node):
+                if isinstance(child, defs) and child.name == fn.name and fn.start <= child.lineno <= fn.end:
+                    if scope is None:
+                        return None
+                    first = min([scope.lineno, *(d.lineno for d in getattr(scope, "decorator_list", []))])
+                    return (first, scope.end_lineno or scope.lineno)
+                found = visit(child, child if isinstance(child, (*defs, ast.Lambda)) else scope)
+                if found is not None:
+                    return found
+            return None
+
+        return visit(tree, None)
+    src = syntax.parse(language, source)
+    found = syntax.function_at(src, fn.start, fn.end)
+    if found is None:
+        return None
+    outer = syntax.enclosing_function(src, found.node)
+    if outer is None:
+        return None
+    return (src.first_line(outer), src.last_line(outer))
+
+
+def is_nested_function(language: str, source: str, fn: Function) -> bool:
+    return enclosing_scope(language, source, fn) is not None
 
 
 def calls_outer_function(language: str, function_source: str, name: str, receiver: str | None = None) -> bool:
     """True when the function excerpt really calls the outer function `name`.
 
     `receiver` says how the callee is reached (see `method_receiver`): a plain function only through a
-    bare call `name(...)`; a method only through its own object (`self.`/`cls.`, `this.`, or the
-    caller's Go receiver of the same type; "go:*" and "obj:*" accept any owner). Calls on other objects (`repo.name(...)`) may reach a
-    different function and do not count.
+    bare call `name(...)`; a method only through its own object (`self.`/`cls.`, `this.`, the same
+    object path, or the caller's Go receiver of the same type; "go:*" and "obj:*" accept any owner).
+    Calls on other objects (`repo.name(...)`) may reach a different function and do not count.
 
     A bare call does not count when the name is bound inside the excerpt (a local variable,
     parameter, nested definition or import shadows the outer function). Python bindings come from the
-    AST. For Go/JS/TS every bare occurrence of the name must be a call; any other occurrence
-    (declaration, parameter, destructuring, assignment, object key) may bind it, so the excerpt is
-    conservatively not treated as a caller.
+    AST. For Go/JS/TS (parse tree) every occurrence of the name as a variable must be the callee of a
+    call; any other occurrence (declaration, parameter, destructuring, assignment) may bind it, so the
+    excerpt is conservatively not treated as a caller.
     """
     if language == "python":
         try:
@@ -997,31 +630,26 @@ def calls_outer_function(language: str, function_source: str, name: str, receive
             return member
         bindings = _python_local_bindings(function_source)
         return bare and bindings is not None and name not in bindings
-    masked = mask_c_like(function_source, language)
+    src = syntax.parse(language, function_source)
+    found = [call for call in syntax.calls(src) if call.name == name]
     if receiver is not None:
         if receiver.startswith("go:"):
-            caller = _go_receiver(masked)
-            if not caller or not caller[0] or receiver[3:] not in {caller[1], "*"}:
+            fn = next(iter(syntax.functions(src)), None)
+            if fn is None or fn.kind != "go_method":
                 return False
-            owner = re.escape(caller[0])
-        elif receiver == "obj:*":
-            owner = r"[A-Za-z_$][\w$]*(?:\s*\.\s*[A-Za-z_$][\w$]*)*"
-        elif receiver.startswith("obj:"):
-            owner = r"\s*\.\s*".join(re.escape(part) for part in receiver[4:].split("."))
-        else:
-            owner = "this"
-        return re.search(rf"(?<![\w$.]){owner}\s*\??\.\s*{re.escape(name)}\s*\(", masked) is not None
-    definition = re.compile(r"(?:\bfunction\s*\*?\s*|\bfunc\s*(?:\([^)]*\)\s*)?)$")
-    called = False
-    for match in re.finditer(rf"(?<![\w$]){re.escape(name)}(?![\w$])", masked):
-        before = masked[: match.start()].rstrip()
-        if before.endswith(".") and not before.endswith(".."):
-            continue  # member access: obj.name / obj?.name
-        if re.match(r"\s*\(", masked[match.end() :]) and not definition.search(masked[: match.start()]):
-            called = True
-            continue  # a call
+            owner = syntax._go_receiver_type(src, fn.node)
+            if owner is None or not owner[0] or receiver[3:] not in {owner[1], "*"}:
+                return False
+            return any(call.receiver == owner[0] for call in found)
+        if receiver == "obj:*":
+            return any(call.receiver is not None for call in found)
+        if receiver.startswith("obj:"):
+            return any(call.receiver == receiver[4:] for call in found)
+        return any(call.receiver == "this" for call in found)
+    bare_callees = {call.callee.id for call in found if call.receiver is None}
+    if not bare_callees:
         return False
-    return called
+    return all(node.id in bare_callees for node in syntax.identifiers(src, name))
 
 
 def strip_comments(language: str, source: str) -> str:
@@ -1037,34 +665,17 @@ def strip_comments(language: str, source: str) -> str:
             line = lines[row - 1]
             lines[row - 1] = line[:col] + ("\n" if line.endswith("\n") else "")
         return "".join(lines)
-    masked = mask_c_like(source, language)
-    # The mask blanks string contents but keeps comment delimiters, so a `//` or `/*` that is
-    # still visible in the mask starts a real comment. String contents are kept in the result.
+    # a removed comment becomes one space (it still separates tokens: `a+/**/++b` is not `a+++b`)
+    # and keeps its line breaks, so line numbers stay valid
+    src = syntax.parse(language, source)
     result = []
-    in_comment = False
-    i = 0
-    while i < len(source):
-        if not in_comment and masked.startswith("//", i):
-            end = source.find("\n", i)
-            i = len(source) if end < 0 else end
-            continue
-        if not in_comment and masked.startswith("/*", i):
-            # a removed block comment still separates tokens: `a+/**/++b` must not become `a+++b`
-            result.append(" ")
-            in_comment = True
-            i += 2
-            continue
-        if in_comment:
-            if source.startswith("*/", i):
-                in_comment = False
-                i += 2
-            else:
-                if source[i] == "\n":  # keep line structure inside block comments
-                    result.append("\n")
-                i += 1
-            continue
-        result.append(source[i])
-        i += 1
+    position = 0
+    for node in syntax.comments(src):
+        start, end = src.span(node)
+        result.append(source[position:start])
+        result.append(" " + "\n" * source.count("\n", start, end))
+        position = end
+    result.append(source[position:])
     return "".join(result)
 
 
@@ -1103,7 +714,13 @@ def _python_tokens(source: str) -> list[str] | None:
 
 
 def normalized_tokens(language: str, source: str) -> list[str]:
-    """Comment- and layout-insensitive tokens; Python keeps its significant block structure."""
+    """Comment- and layout-insensitive tokens; Python keeps its significant block structure.
+
+    Go/JS/TS tokens come from the parse tree: operators are the grammar's own tokens, every string,
+    regex literal and template-literal text piece is one exact token, and a line break between two
+    tokens is kept as `<NL>` (runs collapse): with automatic semicolon insertion `return\n  !x` and
+    `return !x` behave differently, so a line break is never treated as cosmetic.
+    """
     if language == "python":
         tokens = _python_tokens(source)
         if tokens is not None:
@@ -1115,37 +732,16 @@ def normalized_tokens(language: str, source: str) -> list[str]:
                 out.append(f"<I{len(line) - len(line.lstrip())}>")
                 out.extend(_TOKEN.findall(line))
         return out
-    return _c_like_tokens(language, strip_comments(language, source))
+    result: list[str] = []
+    last_line = None
+    for text, first, last in syntax.tokens(syntax.parse(language, source), _TOKEN.findall):
+        if last_line is not None and first > last_line:
+            result.append("<NL>")
+        result.append(text)
+        last_line = last
+    return result
 
 
-def _c_like_tokens(language: str, text: str) -> list[str]:
-    """Tokens of comment-free code; string, template and regex literal bodies stay one exact token.
-
-    Line breaks outside literals are kept as a `<NL>` token (runs collapse, so blank lines do not
-    matter): with automatic semicolon insertion `return\n  !x` and `return !x` behave differently,
-    so a line break is never treated as cosmetic.
-    """
-    spans: list[tuple[int, int]] = []
-    mask_c_like(text, language, spans)
-    out: list[str] = []
-
-    def code(segment: str) -> None:
-        for index, part in enumerate(segment.split("\n")):
-            if index and out and out[-1] != "<NL>":
-                out.append("<NL>")
-            out.extend(_TOKEN.findall(part))
-
-    position = 0
-    for start, end in sorted(spans):
-        if start < position:
-            continue
-        code(text[position:start])
-        out.append("\x00" + text[start:end])
-        position = end
-    code(text[position:])
-    while out and out[-1] == "<NL>":
-        out.pop()
-    return out
 
 
 def normalized_sha256(language: str, source: str) -> str:

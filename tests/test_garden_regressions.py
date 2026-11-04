@@ -436,7 +436,7 @@ def test_signature_continuations_are_still_accepted(signature: str) -> None:
 
 @pytest.mark.parametrize(
     ("a", "b"),
-    [("a + ++b", "a++ + b"), ("a - -b", "a-- b"), ("x = !== y", "x = != = y"), ("a & &b", "a && b"), ("1.5", "1 . 5")],
+    [("a + ++b", "a++ + b"), ("a - -b", "a-- b"), ("x !== y", "x != y"), ("a & &b", "a && b"), ("1.5", "1 . 5")],
 )
 def test_operator_boundaries_are_significant(a: str, b: str) -> None:
     def wrap(expression: str) -> str:
@@ -803,3 +803,55 @@ def test_destructured_require_rebinding_is_refused() -> None:
     assert code.rebound_imports("javascript", old, same_module, "a.js") == []
     aliased = "const { spawn: exec } = require('child_process');\n"
     assert code.rebound_imports("javascript", old, aliased, "a.js") == ["exec"]
+
+
+# --- Twelfth review round (tree-sitter tokens and scopes) -----------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("a", "b"),
+    [("user.admin === !true", "user.admin ===!true"), ("a+ +b", "a + +b"), ("x=>-y", "x => - y"), ("a?.b ?? c", "a ?. b??c")],
+)
+def test_spacing_between_adjacent_operators_is_cosmetic(a: str, b: str) -> None:
+    def wrap(expression: str) -> str:
+        return f"function f(user, a, b, c, x, y) {{\n  return {expression};\n}}\n"
+
+    assert code.normalized_sha256("javascript", wrap(a)) == code.normalized_sha256("javascript", wrap(b))
+
+
+def test_operator_spacing_only_change_is_cosmetic() -> None:
+    old = "function isAdmin(user) {\n  const flag = user.admin === !true;\n  return flag;\n}\n"
+    new = old.replace("=== !true", "===!true")
+    with pytest.raises(Rejected, match="cosmetic_fix|no_logic_change"):
+        build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-285"]))
+
+
+def test_nested_callee_has_no_callers_outside_its_scope() -> None:
+    old = (
+        "def outer_one(conn, status):\n    def list_orders(conn, status):\n        query = 'SELECT %s' % status\n"
+        "        return conn.execute(query)\n    return list_orders(conn, status)\n\n\n"
+        "def list_orders(conn, status):\n    rows = []\n    return rows\n\n\n"
+        "def orders_view(conn):\n    status = 'open'\n    return list_orders(conn, status)\n"
+    )
+    new = old.replace("query = 'SELECT %s' % status", "query = ('SELECT ?', status)")
+    records = build({"a.py": old}, {"a.py": new})
+    assert any(r["kind"] == "vulnerable" for r in records)
+    assert not [r for r in records if r["kind"] == "caller_abstention"]
+    nested = {(f.name, f.start): code.is_nested_function("python", old, f) for f in code.find_functions("python", old)}
+    assert nested == {("outer_one", 1): False, ("list_orders", 2): True, ("list_orders", 8): False, ("orders_view", 13): False}
+    js = "function outer() {\n  function inner(x) {\n    return x;\n  }\n  return inner(1);\n}\n"
+    flags = {f.name: code.is_nested_function("javascript", js, f) for f in code.find_functions("javascript", js)}
+    assert flags == {"outer": False, "inner": True}
+
+
+def test_nested_callee_is_still_reached_from_a_sibling_in_the_same_scope() -> None:
+    old = (
+        "function parsePatch(text) {\n  function parseIndex(index) {\n    const header = text.slice(index);\n"
+        "    return parseHeader(header);\n  }\n\n  function parseHeader(header) {\n    const name = header.split(' ')[0];\n"
+        "    return { name: name };\n  }\n\n  return parseIndex(0);\n}\n"
+    )
+    new = old.replace("const name = header.split(' ')[0];", "const name = sanitize(header.split(' ')[0]);")
+    records = build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-22"]))
+    abstentions = [r for r in records if r["kind"] == "caller_abstention"]
+    assert [r["provenance"]["excerpt_function"] for r in abstentions] == ["parseIndex"]
+    assert code.enclosing_scope("javascript", old, next(f for f in code.find_functions("javascript", old) if f.name == "parseHeader")) == (1, 13)
