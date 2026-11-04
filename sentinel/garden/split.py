@@ -13,7 +13,13 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 from typing import Any
+
+import yaml
+
+
+POLICY_KEYS = {"policy_id", "status", "frozen_at", "salt", "validation_per_mille", "holdout_reserved_per_mille", "temporal_cutoff"}
 
 
 @dataclass(frozen=True)
@@ -22,7 +28,28 @@ class SplitSettings:
     validation_per_mille: int
     holdout_reserved_per_mille: int
     temporal_cutoff: str
-    temporal_cutoff_status: str
+    policy_id: str = "unversioned"
+    status: str = "provisional"
+
+
+def load_split_policy(path: Path) -> SplitSettings:
+    """Load the shared split policy; dataset builds require it to be frozen."""
+    document = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(document, dict) or set(document) != POLICY_KEYS:
+        raise ValueError(f"split policy must define exactly {sorted(POLICY_KEYS)}")
+    if document["status"] != "frozen":
+        raise ValueError("split policy must be frozen before it is used to build a dataset")
+    if not 0 < document["validation_per_mille"] + document["holdout_reserved_per_mille"] < 1000:
+        raise ValueError("split buckets must leave room for train")
+    parse_time(document["temporal_cutoff"])
+    return SplitSettings(
+        salt=document["salt"],
+        validation_per_mille=document["validation_per_mille"],
+        holdout_reserved_per_mille=document["holdout_reserved_per_mille"],
+        temporal_cutoff=document["temporal_cutoff"],
+        policy_id=document["policy_id"],
+        status=document["status"],
+    )
 
 
 def parse_time(value: str) -> datetime:

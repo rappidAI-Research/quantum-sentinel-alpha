@@ -138,4 +138,6 @@ def test_license_detection_is_evidence_only() -> None:
     assert detect({}).spdx == "none"
     assert detect({"LICENSE": MIT_TEXT, "NOTICE.txt": "random"}).category == "permissive"
     dual = detect({"LICENSE-MIT": MIT_TEXT, "LICENSE-APACHE": "Apache License Version 2.0"})
-    assert dual.spdx.startswith("multiple:") and dual.category == "unknown"
+    assert dual.spdx == "multiple:Apache-2.0|MIT" and dual.category == "permissive"
+    mixed = detect({"LICENSE": MIT_TEXT, "COPYING": "GNU GENERAL PUBLIC LICENSE Version 3"})
+    assert mixed.spdx.startswith("multiple:") and mixed.category == "unknown"

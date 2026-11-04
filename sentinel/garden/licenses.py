@@ -81,5 +81,7 @@ def detect(files: dict[str, str]) -> DetectedLicense:
     if len(found) == 1:
         spdx = found.pop()
         return DetectedLicense(spdx, category_of(spdx))
-    # several different licenses (dual licensing or per-directory terms): a reviewer must decide
-    return DetectedLicense("multiple:" + "|".join(sorted(found)), "unknown")
+    # several different licenses (dual licensing or per-directory terms): a reviewer must decide which
+    # applies; only an all-permissive combination keeps the permissive category
+    categories = {category_of(spdx) for spdx in found}
+    return DetectedLicense("multiple:" + "|".join(sorted(found)), "permissive" if categories == {"permissive"} else "unknown")
