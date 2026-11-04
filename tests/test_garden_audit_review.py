@@ -379,7 +379,8 @@ def test_incomplete_recheck_keeps_earlier_later_fix_exclusions(monkeypatch: pyte
         (config.committed_dir / "audit").mkdir(parents=True)
         (config.committed_dir / "candidates.jsonl").write_text("")
         earlier = {"record_id": "p1", "reason": "later_fix_changes_same_function:GHSA-6666-7777-8888"}
-        (config.committed_dir / "audit" / "exclusions.yaml").write_text(yaml.safe_dump({"audit_version": "2", "automated": [earlier], "manual": []}))
+        unverified = {"record_id": "p1", "reason": f"later_fix_unverifiable:{'d' * 40}"}
+        (config.committed_dir / "audit" / "exclusions.yaml").write_text(yaml.safe_dump({"audit_version": "2", "automated": [earlier, unverified], "manual": []}))
         result = {
             "audit_version": "2",
             "groups": [{"group_id": "g1", "records": {"vulnerable": "v1", "post_fix": "p1"}, "later_fix_check": "incomplete", "later_fixes": []}],
@@ -391,6 +392,6 @@ def test_incomplete_recheck_keeps_earlier_later_fix_exclusions(monkeypatch: pyte
         monkeypatch.setattr(pipeline, "audit_report_markdown", lambda summary, result, manual: "")
         pipeline.audit(config, log=lambda _: None)
         written = yaml.safe_load((config.committed_dir / "audit" / "exclusions.yaml").read_text())
-        assert written["automated"] == [earlier]
+        assert written["automated"] == [earlier, unverified]
     finally:
         shutil.rmtree(root, ignore_errors=True)

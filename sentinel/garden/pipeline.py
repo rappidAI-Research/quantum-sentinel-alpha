@@ -624,7 +624,7 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
         carried = [
             e for e in previous.get("automated") or []
             if e["record_id"] in incomplete
-            and e["reason"].split(":")[0] in {"later_fix_changes_same_function", "reported_incomplete_fix"}
+            and e["reason"].split(":")[0] in {"later_fix_changes_same_function", "reported_incomplete_fix", "later_fix_unverifiable"}
             and (e["record_id"], e["reason"]) not in present
         ]
         if carried:
