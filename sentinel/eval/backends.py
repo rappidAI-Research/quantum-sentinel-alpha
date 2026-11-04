@@ -11,6 +11,7 @@ import importlib.util
 import json
 import re
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from typing import Any, Protocol
 
 from sentinel.eval.baseline import detect
@@ -120,16 +121,49 @@ class BaselineBackend:
         return None
 
 
+def describe_adapter(path: "Path", model_id: str, revision: str | None) -> dict[str, Any]:
+    """Identity of a LoRA adapter; refuses an adapter trained for another base model or revision."""
+    import hashlib
+
+    config_path = path / "adapter_config.json"
+    weights = path / "adapter_model.safetensors"
+    if not config_path.is_file() or not weights.is_file():
+        raise ValueError(f"{path} is not a PEFT adapter directory (adapter_config.json + adapter_model.safetensors)")
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if config.get("base_model_name_or_path") != model_id:
+        raise ValueError(f"adapter was trained for {config.get('base_model_name_or_path')!r}, not {model_id!r}")
+    if config.get("revision") != revision:
+        raise ValueError(f"adapter was trained on revision {config.get('revision')!r}, not {revision!r}")
+    run_file = path / "training_run.json"
+    return {
+        "path": str(path),
+        "weights_sha256": hashlib.sha256(weights.read_bytes()).hexdigest(),
+        "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
+        "base_revision": config.get("revision"),
+        "training_run": json.loads(run_file.read_text(encoding="utf-8")) if run_file.is_file() else None,
+    }
+
+
 class HFBackend:
     """Hugging Face transformers backend for Qwen3.5 text generation (and compatible causal LMs)."""
 
     name = "hf"
 
-    def __init__(self, model_id: str, revision: str | None, runtime: RuntimeSettings, generation: GenerationSettings):
+    def __init__(
+        self,
+        model_id: str,
+        revision: str | None,
+        runtime: RuntimeSettings,
+        generation: GenerationSettings,
+        adapter: "Path | None" = None,
+    ):
         self.model_id = model_id
         self.revision = revision
         self.runtime = runtime
         self.generation = generation
+        self.adapter = adapter
+        # Set before loading so a mismatched adapter is refused without downloading the base model.
+        self.adapter_info: dict[str, Any] | None = describe_adapter(adapter, model_id, revision) if adapter else None
         self._model: Any = None
         self._tokenizer: Any = None
         self._generation_config: Any = None
@@ -169,6 +203,10 @@ class HFBackend:
         missing = list(info.get("missing_keys") or [])
         if missing:
             raise RuntimeError(f"checkpoint is missing weights ({len(missing)}), e.g. {missing[:5]}")
+        if self.adapter is not None:
+            from peft import PeftModel
+
+            model = PeftModel.from_pretrained(model, str(self.adapter), is_trainable=False)
         model.eval()
         self._model = model
         # Record what was actually loaded; the runner blocks reporting when it differs from the request.

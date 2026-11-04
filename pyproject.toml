@@ -34,6 +34,15 @@ model = [
 quant = [
   "bitsandbytes>=0.45",
 ]
+# QLoRA training (python -m sentinel.train) and adapter evaluation (run_model --adapter).
+train = [
+  "torch>=2.5",
+  "transformers>=5.12,<6",
+  "accelerate>=1.1",
+  "peft>=0.17",
+  "safetensors>=0.4",
+  "bitsandbytes>=0.45",
+]
 
 [tool.setuptools.packages.find]
 include = ["sentinel*"]

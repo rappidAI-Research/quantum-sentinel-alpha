@@ -4,6 +4,7 @@ Direct:   python -m sentinel.eval.run_model --model Qwen/Qwen3.5-4B --revision <
               --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/qwen35-4b.json
 Bake-off: python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml \\
               --candidate qwen35-4b --revision <sha> --output runs/qwen35-4b.json
+Adapter:  add --adapter runs/train/<run>/adapter to evaluate a QLoRA adapter on the same base revision.
 No GPU:   add --backend baseline to exercise the full path with the regex baseline.
 """
 
@@ -46,6 +47,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-new-tokens", type=int)
     parser.add_argument("--limit", type=int, help="smoke test on the first N cases; never reportable")
     parser.add_argument("--allow-unpinned", action="store_true", help="permit a non-reportable run without a pinned revision")
+    parser.add_argument("--adapter", type=Path, help="evaluate a LoRA adapter (trained for exactly this model and revision)")
     parser.add_argument(
         "--coding-suite",
         choices=sorted(SUITES),
@@ -94,6 +96,8 @@ def main(argv: list[str] | None = None) -> int:
             **{key: value for key in ("device", "dtype", "quantization") if (value := getattr(args, key)) is not None}
         )
 
+    if args.adapter and args.backend != "hf":
+        parser.error("--adapter needs the hf backend")
     if args.backend == "baseline":
         model_id, revision = "baseline/regex", None
     elif not is_immutable_revision(revision) and not args.allow_unpinned:
@@ -110,7 +114,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.backend == "baseline":
         backend = BaselineBackend()
     else:
-        backend = HFBackend(model_id, revision, runtime, generation)
+        try:
+            backend = HFBackend(model_id, revision, runtime, generation, adapter=args.adapter)
+        except ValueError as exc:
+            parser.error(str(exc))
 
     try:
         display_path = str(cases_path.resolve().relative_to(PROJECT_ROOT))
