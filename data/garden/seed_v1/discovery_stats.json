@@ -2,53 +2,53 @@
   "ecosystems": {
     "Go": {
       "advisories_in_export": 5067,
-      "inspected": 3000,
+      "inspected": 5067,
       "outcomes": {
-        "candidate": 897,
-        "cwe_not_localizable": 96,
-        "duplicate_fix_commit": 46,
-        "multiple_fix_commits": 305,
-        "no_cwe": 88,
-        "no_fix_commit": 1029,
-        "published_after_snapshot": 1,
-        "repository_cap": 340,
-        "short_commit_reference": 3,
-        "too_many_cwes": 106,
-        "withdrawn": 89
+        "candidate": 1335,
+        "cwe_not_localizable": 163,
+        "duplicate_fix_commit": 89,
+        "multiple_fix_commits": 523,
+        "no_cwe": 152,
+        "no_fix_commit": 1775,
+        "published_after_snapshot": 3,
+        "repository_cap": 705,
+        "short_commit_reference": 4,
+        "too_many_cwes": 173,
+        "withdrawn": 145
       }
     },
     "PyPI": {
       "advisories_in_export": 6813,
-      "inspected": 3000,
+      "inspected": 6813,
       "outcomes": {
-        "candidate": 836,
-        "cwe_not_localizable": 50,
-        "duplicate_fix_commit": 47,
-        "multiple_fix_commits": 339,
-        "no_cwe": 97,
-        "no_fix_commit": 954,
+        "candidate": 1524,
+        "cwe_not_localizable": 106,
+        "duplicate_fix_commit": 174,
+        "multiple_fix_commits": 766,
+        "no_cwe": 216,
+        "no_fix_commit": 2081,
         "published_after_snapshot": 1,
-        "repository_cap": 474,
-        "short_commit_reference": 11,
-        "too_many_cwes": 79,
-        "withdrawn": 112
+        "repository_cap": 1478,
+        "short_commit_reference": 24,
+        "too_many_cwes": 193,
+        "withdrawn": 250
       }
     },
     "npm": {
       "advisories_in_export": 8079,
-      "inspected": 3000,
+      "inspected": 8079,
       "outcomes": {
-        "candidate": 892,
-        "cwe_not_localizable": 36,
-        "duplicate_fix_commit": 35,
-        "multiple_fix_commits": 271,
-        "no_cwe": 82,
-        "no_fix_commit": 1144,
-        "published_after_snapshot": 1,
-        "repository_cap": 277,
-        "short_commit_reference": 5,
-        "too_many_cwes": 96,
-        "withdrawn": 161
+        "candidate": 1971,
+        "cwe_not_localizable": 97,
+        "duplicate_fix_commit": 147,
+        "multiple_fix_commits": 787,
+        "no_cwe": 181,
+        "no_fix_commit": 3178,
+        "published_after_snapshot": 5,
+        "repository_cap": 1053,
+        "short_commit_reference": 12,
+        "too_many_cwes": 235,
+        "withdrawn": 413
       }
     }
   }
