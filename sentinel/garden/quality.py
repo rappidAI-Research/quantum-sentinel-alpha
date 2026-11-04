@@ -187,7 +187,10 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
             failed.append("revision_consistent")
     if record["kind"] == "caller_abstention":
         callee = loc.get("withheld_callee", "")
-        if not callee or not code.call_lines(language, _parseable(language, excerpt), callee):
+        shown = _parseable(language, excerpt)
+        # the callee's kind is not recorded with the record, so any form the build accepts is allowed
+        receivers = [None, "go:*"] if language == "go" else [None, "method", "obj:*"]
+        if not callee or not any(code.calls_outer_function(language, shown, callee, receiver) for receiver in receivers):
             failed.append("abstention_calls_withheld_callee")
         if any(f.name == callee for f in code.find_functions(language, _parseable(language, excerpt))):
             failed.append("abstention_callee_not_shown")

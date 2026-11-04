@@ -84,6 +84,8 @@ def path_role(path: str) -> str:
 
 _REGEX_PRECEDERS = set("(,=:[!&|?{};+-*%<>~^")
 _REGEX_KEYWORDS = ("return", "typeof", "case", "in", "of", "delete", "void", "throw", "new", "else", "do")
+# a `)` closing the head of one of these statements ends an expression context: `if (x) /re/.test(y)`
+_CONTROL_HEAD_KEYWORDS = ("if", "while", "for", "with")
 
 
 def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]] | None = None) -> str:
@@ -99,6 +101,8 @@ def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]]
     is_js = language in {"javascript", "typescript"}
     template_stack: list[int] = []  # brace depth at which each `${` interpolation started
     brace_depth = 0
+    paren_stack: list[bool] = []  # per open `(`: does it start a control-statement head?
+    control_head_closers: set[int] = set()  # offsets of `)` that close such a head
 
     def blank(start: int, end: int) -> None:
         for k in range(start, min(end, n)):
@@ -167,7 +171,11 @@ def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]]
             continue
         if is_js and ch == "/":
             prev, word = last_code_char(i)
-            if prev == "" or prev in _REGEX_PRECEDERS or word in _REGEX_KEYWORDS:
+            prev_pos = i - 1
+            while prev_pos >= 0 and out[prev_pos] in " \t\r\n":
+                prev_pos -= 1
+            postfix = prev in "+-" and prev_pos > 0 and out[prev_pos - 1] == prev  # `a++ / 2`
+            if prev == "" or (prev in _REGEX_PRECEDERS and not postfix) or word in _REGEX_KEYWORDS or prev_pos in control_head_closers:
                 j = i + 1
                 in_class = False
                 while j < n and source[j] != "\n":
@@ -188,6 +196,21 @@ def mask_c_like(source: str, language: str, literal_spans: list[tuple[int, int]]
                         literal_spans.append((i + 1, j))
                     i = j + 1
                     continue
+        if is_js and ch == "(":
+            word = last_code_char(i)[1]
+            head = word in _CONTROL_HEAD_KEYWORDS
+            if head:  # `x.for(a)` is a method call, not a statement head
+                k = i - 1
+                while k >= 0 and out[k] in " \t\r\n":
+                    k -= 1
+                k -= len(word)
+                while k >= 0 and out[k] in " \t\r\n":
+                    k -= 1
+                head = not (k >= 0 and out[k] == "." and (k == 0 or out[k - 1] != "."))
+            paren_stack.append(head)
+        elif is_js and ch == ")" and paren_stack:
+            if paren_stack.pop():
+                control_head_closers.add(i)
         if ch == "{":
             brace_depth += 1
         elif ch == "}":
@@ -810,6 +833,145 @@ def call_lines(language: str, source: str, name: str) -> list[int]:
         if call.search(line) and not definition.search(line):
             found.append(number)
     return found
+
+
+def _python_local_bindings(function_source: str) -> set[str] | None:
+    """Every name bound anywhere inside a Python function excerpt (parameters, assignments, loop and
+    `with` targets, imports, nested definitions, `except ... as`, match captures, `global`/`nonlocal`).
+    None when the excerpt does not parse."""
+    import textwrap
+
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            tree = ast.parse(textwrap.dedent(function_source))
+    except (SyntaxError, ValueError):
+        return None
+    roots: list[ast.AST] = list(tree.body)
+    if len(tree.body) == 1 and isinstance(tree.body[0], (ast.FunctionDef, ast.AsyncFunctionDef)):
+        # the function's own name and decorators belong to the enclosing scope
+        roots = [tree.body[0].args, *tree.body[0].body]
+    names: set[str] = set()
+    for node in (n for root in roots for n in ast.walk(root)):
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            names.add(node.id)
+        elif isinstance(node, ast.arg):
+            names.add(node.arg)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            names.add(node.name)
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            names.update((alias.asname or alias.name).split(".")[0] for alias in node.names)
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            names.add(node.name)
+        elif isinstance(node, (ast.Global, ast.Nonlocal)):
+            names.update(node.names)
+        elif isinstance(node, (ast.MatchAs, ast.MatchStar)) and node.name:
+            names.add(node.name)
+        elif isinstance(node, ast.MatchMapping) and node.rest:
+            names.add(node.rest)
+    return names
+
+
+def method_receiver(language: str, source: str, fn: Function) -> str | None:
+    """None when `fn` is a plain function; otherwise how a method is called on its own object:
+    "method" (Python `self.`/`cls.`, JS/TS `this.`, including `X.prototype.f = function`),
+    "obj:<path>" for a JS function assigned to an object (`internals.f = ...` is called as
+    `internals.f(...)`) or, for Go, "go:<receiver type>"."""
+    lines = source.splitlines()
+    if language == "python":
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                tree = ast.parse(source)
+        except (SyntaxError, ValueError):
+            return None
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef):
+                for item in node.body:
+                    if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) and item.name == fn.name and fn.start <= item.lineno <= fn.end:
+                        return "method"
+        return None
+    masked = mask_c_like("\n".join(lines[fn.start - 1 : fn.end]), language)
+    if language == "go":
+        receiver = _go_receiver(masked)
+        return f"go:{receiver[1]}" if receiver else None
+    header = masked.split("{", 1)[0]
+    assigned = re.match(rf"\s*(?:(?:const|let|var)\s+)?([A-Za-z_$][\w$]*(?:\s*\.\s*[A-Za-z_$][\w$]*)*)\s*\.\s*{re.escape(fn.name)}\s*=(?!=)", header)
+    if assigned:  # `X.prototype.f = function` is a method; `internals.f = function` is reached as `internals.f(`
+        owner = re.sub(r"\s+", "", assigned.group(1))
+        return "method" if owner.endswith(".prototype") or owner == "prototype" else f"obj:{owner}"
+    if re.search(r"\bfunction\b", header) or re.search(rf"\b(?:const|let|var)\s+{re.escape(fn.name)}\b", header):
+        return None
+    return "method"
+
+
+def _go_receiver(masked_function: str) -> tuple[str, str] | None:
+    """(receiver variable, receiver type without pointer/type parameters) of a Go method."""
+    match = re.match(r"\s*func\s*\(\s*(?:([A-Za-z_]\w*)\s+)?\*?\s*([A-Za-z_][\w.]*)", masked_function)
+    return (match.group(1) or "", match.group(2)) if match else None
+
+
+def calls_outer_function(language: str, function_source: str, name: str, receiver: str | None = None) -> bool:
+    """True when the function excerpt really calls the outer function `name`.
+
+    `receiver` says how the callee is reached (see `method_receiver`): a plain function only through a
+    bare call `name(...)`; a method only through its own object (`self.`/`cls.`, `this.`, or the
+    caller's Go receiver of the same type; "go:*" and "obj:*" accept any owner). Calls on other objects (`repo.name(...)`) may reach a
+    different function and do not count.
+
+    A bare call does not count when the name is bound inside the excerpt (a local variable,
+    parameter, nested definition or import shadows the outer function). Python bindings come from the
+    AST. For Go/JS/TS every bare occurrence of the name must be a call; any other occurrence
+    (declaration, parameter, destructuring, assignment, object key) may bind it, so the excerpt is
+    conservatively not treated as a caller.
+    """
+    if language == "python":
+        try:
+            tokens = [
+                t
+                for t in tokenize.generate_tokens(io.StringIO(function_source).readline)
+                if t.type not in (tokenize.COMMENT, tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT)
+            ]
+        except (tokenize.TokenError, IndentationError, SyntaxError):
+            return False
+        bare = member = False
+        for i, token in enumerate(tokens[:-1]):
+            if token.type != tokenize.NAME or token.string != name or tokens[i + 1].string != "(":
+                continue
+            before = tokens[i - 1].string if i else ""
+            if before == ".":
+                member = member or (i >= 2 and tokens[i - 2].string in {"self", "cls"} and (i < 3 or tokens[i - 3].string != "."))
+            elif before not in {"def", "class"}:
+                bare = True
+        if receiver is not None:
+            return member
+        bindings = _python_local_bindings(function_source)
+        return bare and bindings is not None and name not in bindings
+    masked = mask_c_like(function_source, language)
+    if receiver is not None:
+        if receiver.startswith("go:"):
+            caller = _go_receiver(masked)
+            if not caller or not caller[0] or receiver[3:] not in {caller[1], "*"}:
+                return False
+            owner = re.escape(caller[0])
+        elif receiver == "obj:*":
+            owner = r"[A-Za-z_$][\w$]*(?:\s*\.\s*[A-Za-z_$][\w$]*)*"
+        elif receiver.startswith("obj:"):
+            owner = r"\s*\.\s*".join(re.escape(part) for part in receiver[4:].split("."))
+        else:
+            owner = "this"
+        return re.search(rf"(?<![\w$.]){owner}\s*\??\.\s*{re.escape(name)}\s*\(", masked) is not None
+    definition = re.compile(r"(?:\bfunction\s*\*?\s*|\bfunc\s*(?:\([^)]*\)\s*)?)$")
+    called = False
+    for match in re.finditer(rf"(?<![\w$]){re.escape(name)}(?![\w$])", masked):
+        before = masked[: match.start()].rstrip()
+        if before.endswith(".") and not before.endswith(".."):
+            continue  # member access: obj.name / obj?.name
+        if re.match(r"\s*\(", masked[match.end() :]) and not definition.search(masked[: match.start()]):
+            called = True
+            continue  # a call
+        return False
+    return called
 
 
 def strip_comments(language: str, source: str) -> str:

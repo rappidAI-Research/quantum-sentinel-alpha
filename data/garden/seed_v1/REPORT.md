@@ -11,11 +11,11 @@ registry sources it depends on are approved. Accepted records are a non-approved
 
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| go | 123 | 123 | 58 | 304 |
-| javascript | 79 | 79 | 24 | 182 |
-| python | 95 | 95 | 27 | 217 |
+| go | 123 | 123 | 50 | 296 |
+| javascript | 79 | 79 | 21 | 179 |
+| python | 95 | 95 | 24 | 214 |
 | typescript | 53 | 53 | 18 | 124 |
-| **Total** | 350 | 350 | 127 | 827 |
+| **Total** | 350 | 350 | 113 | 813 |
 
 Complete vulnerable/fixed pairs: 348.
 
@@ -23,10 +23,10 @@ Complete vulnerable/fixed pairs: 348.
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 243 | 243 | 85 | 221 |
-| validation | 32 | 31 | 12 | 27 |
-| holdout_reserved | 42 | 43 | 15 | 34 |
-| temporal_quarantine | 33 | 33 | 15 | 28 |
+| train | 243 | 243 | 77 | 221 |
+| validation | 32 | 31 | 10 | 27 |
+| holdout_reserved | 42 | 43 | 13 | 34 |
+| temporal_quarantine | 33 | 33 | 13 | 28 |
 
 ## CWE distribution of accepted findings
 
@@ -208,7 +208,7 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 881 built, 827 accepted, 54 rejected.
+Records: 866 built, 813 accepted, 53 rejected.
 
 | Failed check | Records |
 | --- | ---: |
@@ -216,7 +216,7 @@ Records: 881 built, 827 accepted, 54 rejected.
 | label_conflict_near | 3 |
 | localization_valid:diff_consistent | 4 |
 | localization_valid:trivial_span | 14 |
-| sibling_rejected | 27 |
+| sibling_rejected | 26 |
 | syntax_well_formed | 2 |
 
 Flags on accepted records (not rejections):
@@ -232,16 +232,16 @@ Flags on accepted records (not rejections):
 
 | Detected license | Records |
 | --- | ---: |
-| AGPL-3.0 | 87 |
-| Apache-2.0 | 221 |
+| AGPL-3.0 | 86 |
+| Apache-2.0 | 217 |
 | BSD-2-Clause | 35 |
-| BSD-3-Clause | 53 |
+| BSD-3-Clause | 51 |
 | GPL-2.0 | 2 |
 | GPL-3.0 | 2 |
 | ISC | 3 |
-| LGPL-2.1 | 10 |
+| LGPL-2.1 | 9 |
 | LGPL-3.0 | 2 |
-| MIT | 348 |
+| MIT | 342 |
 | MPL-2.0 | 3 |
 | Unlicense | 4 |
 | multiple:AGPL-3.0|LGPL-3.0 | 2 |
@@ -255,19 +255,19 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 235 |
-| pending_review | 646 |
+| excluded | 230 |
+| pending_review | 636 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 827 |
-| source_not_approved:ghsa-osv-fix-commits | 827 |
-| source_not_approved:github-advisory-db | 827 |
-| source_not_approved:osv | 827 |
-| split:holdout_reserved | 100 |
-| split:temporal_quarantine | 81 |
+| repository_not_reviewed | 813 |
+| source_not_approved:ghsa-osv-fix-commits | 813 |
+| source_not_approved:github-advisory-db | 813 |
+| source_not_approved:osv | 813 |
+| split:holdout_reserved | 98 |
+| split:temporal_quarantine | 79 |
 
 ## Fix commit year (accepted records)
 
@@ -280,11 +280,11 @@ Blockers on accepted records:
 | 2016 | 6 |
 | 2017 | 9 |
 | 2018 | 30 |
-| 2019 | 30 |
+| 2019 | 29 |
 | 2020 | 36 |
 | 2021 | 60 |
-| 2022 | 64 |
+| 2022 | 63 |
 | 2023 | 54 |
-| 2024 | 81 |
-| 2025 | 111 |
-| 2026 | 314 |
+| 2024 | 78 |
+| 2025 | 108 |
+| 2026 | 308 |

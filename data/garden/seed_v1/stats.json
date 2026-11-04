@@ -1,29 +1,29 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 127,
+      "abstain": 113,
       "finding": 350,
       "no_finding": 350
     },
     "by_kind": {
-      "caller_abstention": 127,
+      "caller_abstention": 113,
       "post_fix": 350,
       "vulnerable": 350
     },
     "by_language": {
-      "go": 304,
-      "javascript": 182,
-      "python": 217,
+      "go": 296,
+      "javascript": 179,
+      "python": 214,
       "typescript": 124
     },
     "by_language_and_decision": {
-      "go/abstain": 58,
+      "go/abstain": 50,
       "go/finding": 123,
       "go/no_finding": 123,
-      "javascript/abstain": 24,
+      "javascript/abstain": 21,
       "javascript/finding": 79,
       "javascript/no_finding": 79,
-      "python/abstain": 27,
+      "python/abstain": 24,
       "python/finding": 95,
       "python/no_finding": 95,
       "typescript/abstain": 18,
@@ -31,22 +31,22 @@
       "typescript/no_finding": 53
     },
     "by_split": {
-      "holdout_reserved": 100,
-      "temporal_quarantine": 81,
-      "train": 571,
-      "validation": 75
+      "holdout_reserved": 98,
+      "temporal_quarantine": 79,
+      "train": 563,
+      "validation": 73
     },
     "by_split_and_decision": {
-      "holdout_reserved/abstain": 15,
+      "holdout_reserved/abstain": 13,
       "holdout_reserved/finding": 42,
       "holdout_reserved/no_finding": 43,
-      "temporal_quarantine/abstain": 15,
+      "temporal_quarantine/abstain": 13,
       "temporal_quarantine/finding": 33,
       "temporal_quarantine/no_finding": 33,
-      "train/abstain": 85,
+      "train/abstain": 77,
       "train/finding": 243,
       "train/no_finding": 243,
-      "validation/abstain": 12,
+      "validation/abstain": 10,
       "validation/finding": 32,
       "validation/no_finding": 31
     },
@@ -164,14 +164,14 @@
       "2016": 6,
       "2017": 9,
       "2018": 30,
-      "2019": 30,
+      "2019": 29,
       "2020": 36,
       "2021": 60,
-      "2022": 64,
+      "2022": 63,
       "2023": 54,
-      "2024": 81,
-      "2025": 111,
-      "2026": 314
+      "2024": 78,
+      "2025": 108,
+      "2026": 308
     },
     "flags": {
       "coarse_cwe": 56,
@@ -181,22 +181,22 @@
     },
     "license_category": {
       "none": 26,
-      "permissive": 664,
-      "strong_copyleft": 91,
+      "permissive": 652,
+      "strong_copyleft": 90,
       "unknown": 31,
-      "weak_copyleft": 15
+      "weak_copyleft": 14
     },
     "license_detected": {
-      "AGPL-3.0": 87,
-      "Apache-2.0": 221,
+      "AGPL-3.0": 86,
+      "Apache-2.0": 217,
       "BSD-2-Clause": 35,
-      "BSD-3-Clause": 53,
+      "BSD-3-Clause": 51,
       "GPL-2.0": 2,
       "GPL-3.0": 2,
       "ISC": 3,
-      "LGPL-2.1": 10,
+      "LGPL-2.1": 9,
       "LGPL-3.0": 2,
-      "MIT": 348,
+      "MIT": 342,
       "MPL-2.0": 3,
       "Unlicense": 4,
       "multiple:AGPL-3.0|LGPL-3.0": 2,
@@ -292,32 +292,32 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 827,
-      "source_not_approved:ghsa-osv-fix-commits": 827,
-      "source_not_approved:github-advisory-db": 827,
-      "source_not_approved:osv": 827,
-      "split:holdout_reserved": 100,
-      "split:temporal_quarantine": 81
+      "repository_not_reviewed": 813,
+      "source_not_approved:ghsa-osv-fix-commits": 813,
+      "source_not_approved:github-advisory-db": 813,
+      "source_not_approved:osv": 813,
+      "split:holdout_reserved": 98,
+      "split:temporal_quarantine": 79
     },
     "by_approval_status": {
-      "excluded": 235,
-      "pending_review": 646
+      "excluded": 230,
+      "pending_review": 636
     },
     "training_approved": 0
   },
-  "manifest_sha256": "35516fd07e961ba01ec561ed2f61fea6fc575f1277efde7824d1efb74c4c9af9",
+  "manifest_sha256": "9acd3635b10a4d213d857071e29d9c45fe883490e99abf6559a433e2e8a4ddb9",
   "pipeline_version": "1",
   "records": {
-    "accepted": 827,
+    "accepted": 813,
     "failed_checks": {
       "label_conflict_exact": 4,
       "label_conflict_near": 3,
       "localization_valid:diff_consistent": 4,
       "localization_valid:trivial_span": 14,
-      "sibling_rejected": 27,
+      "sibling_rejected": 26,
       "syntax_well_formed": 2
     },
-    "rejected": 54,
-    "total": 881
+    "rejected": 53,
+    "total": 866
   }
 }

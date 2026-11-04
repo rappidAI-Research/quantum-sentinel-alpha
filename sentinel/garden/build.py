@@ -282,6 +282,7 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
     if callee.name.startswith("<") or len(callee.name) < settings.abstention_min_callee_name_length:
         return None
     functions = code.find_functions(change.language, change.old_source)
+    receiver = code.method_receiver(change.language, change.old_source, callee)
     for number in code.call_lines(change.language, change.old_source, callee.name):
         if callee.start <= number <= callee.end:
             continue
@@ -292,6 +293,8 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
             continue  # nested in / around the vulnerable function
         if not settings.min_function_lines <= caller.length <= settings.max_function_lines:
             continue
+        if not code.calls_outer_function(change.language, _excerpt(change.old_source, caller), callee.name, receiver):
+            continue  # shadowed inside the caller, or called on another object
         return caller, number
     return None
 

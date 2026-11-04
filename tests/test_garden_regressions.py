@@ -630,3 +630,141 @@ def test_method_excerpt_normalizes_like_the_top_level_function() -> None:
     method = "    " + top.replace("\n    ", "\n        ").rstrip() + "\n"
     assert code.normalized_tokens("python", method) == code.normalized_tokens("python", top)
     assert code.normalized_tokens("python", method)[-1] != "<INDENT>"
+
+
+# --- Tenth review round -------------------------------------------------------------------------
+
+SHADOWED_VIEWS = [
+    VIEW.replace('    status = request', '    list_orders = lambda conn, status: []\n    status = request'),
+    VIEW.replace("def orders_view(conn):", "def orders_view(conn, list_orders=None):"),
+    VIEW.replace('    status = request', '    from fakes import list_orders\n    status = request'),
+    VIEW.replace('    status = request', '    for list_orders in handlers:\n        pass\n    status = request'),
+    VIEW.replace('    status = request', '    def list_orders(conn, status):\n        return []\n    status = request'),
+]
+
+
+@pytest.mark.parametrize("view", SHADOWED_VIEWS)
+def test_caller_that_shadows_the_callee_name_is_not_a_caller(view: str) -> None:
+    old, new = PY_OLD.replace(VIEW, view), PY_NEW.replace(VIEW, view)
+    records = build({"a.py": old}, {"a.py": new})
+    assert any(r["kind"] == "vulnerable" for r in records)
+    assert not [r for r in records if r["kind"] == "caller_abstention"]
+
+
+def test_quality_check_rejects_abstention_whose_callee_is_shadowed() -> None:
+    abstention = next(r for r in build({"a.py": PY_OLD}, {"a.py": PY_NEW}) if r["kind"] == "caller_abstention")
+    forged = copy.deepcopy(abstention)
+    forged["input"]["code"] = SHADOWED_VIEWS[0]
+    forged["provenance"]["content_sha256"] = __import__("hashlib").sha256(SHADOWED_VIEWS[0].encode()).hexdigest()
+    forged["provenance"]["normalized_sha256"] = code.normalized_sha256("python", SHADOWED_VIEWS[0])
+    failed, _ = check_record(forged, Draft202012Validator(load_record_schema()), set(), set(), 1000, 3)
+    assert "abstention_calls_withheld_callee" in failed
+
+
+@pytest.mark.parametrize(
+    ("language", "source", "expected"),
+    [
+        ("python", VIEW, True),
+        ("python", "def view(self, conn):\n    return self.list_orders(conn) + list_orders(conn)\n", True),
+        ("python", "@list_orders\ndef view(conn):\n    return list_orders(conn)\n", True),
+        ("python", "def list_orders_view(conn):\n    list_orders = make()\n    return list_orders(conn)\n", False),
+        ("javascript", "function view(req) {\n  return listOrders(req.db, req.query.status);\n}\n", True),
+        ("javascript", "function view(req) {\n  const listOrders = () => [];\n  return listOrders(req.db);\n}\n", False),
+        ("javascript", "function view(req, listOrders) {\n  return listOrders(req.db);\n}\n", False),
+        ("javascript", "function view(req) {\n  const { listOrders } = req.fakes;\n  return listOrders(req.db);\n}\n", False),
+        ("javascript", "function view(req) {\n  return api.listOrders(req) + listOrders(req.db);\n}\n", True),
+        ("typescript", "function view(req: Req): Order[] {\n  let listOrders: Fn;\n  return listOrders(req.db);\n}\n", False),
+        ("go", "func view(db *DB) []Order {\n\treturn listOrders(db, \"open\")\n}\n", True),
+        ("go", "func view(db *DB) []Order {\n\tlistOrders := fake\n\treturn listOrders(db, \"open\")\n}\n", False),
+        ("go", "func view(db *DB, listOrders func(*DB, string) []Order) []Order {\n\treturn listOrders(db, \"open\")\n}\n", False),
+    ],
+)
+def test_calls_outer_function_respects_local_bindings(language: str, source: str, expected: bool) -> None:
+    name = "list_orders" if language == "python" else "listOrders"
+    assert code.calls_outer_function(language, source, name) is expected
+
+
+REGEX_AFTER_CONTROL_HEAD = [
+    "function check(input) {\n  let valid = true;\n  if (enabled) /^[a-z ]+$/.test(input) || (valid = false);\n  return valid;\n}\n",
+    "function check(input) {\n  let valid = true;\n  while (more()) /^[a-z ]+$/.test(input) || (valid = false);\n  return valid;\n}\n",
+    "function check(input) {\n  let valid = true;\n  for (const x of input) /^[a-z ]+$/.test(x) || (valid = false);\n  return valid;\n}\n",
+]
+
+
+@pytest.mark.parametrize("old", REGEX_AFTER_CONTROL_HEAD)
+def test_regex_after_control_statement_head_is_a_literal(old: str) -> None:
+    new = old.replace("[a-z ]", "[a-z]")
+    assert code.normalized_sha256("javascript", old) != code.normalized_sha256("javascript", new)
+    records = build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-20"]))
+    assert any(r["kind"] == "vulnerable" for r in records)
+
+
+@pytest.mark.parametrize(
+    "source",
+    ["const r = (a) / 2 / (b);\n", "f(a) / g(b) / 3;\n", "x.for(a) / 2 / (b);\n", "if (x) y = (a) / 2 / (b);\n"],
+)
+def test_division_after_parentheses_is_not_a_regex(source: str) -> None:
+    spans: list = []
+    code.mask_c_like(source, "javascript", spans)
+    assert spans == []
+
+
+# --- Proactive: callers on other objects, postfix division ---------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("language", "source", "receiver", "expected"),
+    [
+        ("python", "def get(self, conn):\n    return self.repo.list_orders(conn)\n", None, False),
+        ("python", "def get(self, conn):\n    return self.repo.list_orders(conn)\n", "method", False),
+        ("python", "def get(self, conn):\n    return self.list_orders(conn)\n", "method", True),
+        ("python", "def get(self, conn):\n    return list_orders(conn)\n", "method", False),
+        ("javascript", "function view(req) {\n  return api.listOrders(req);\n}\n", None, False),
+        ("javascript", "  view(req) {\n    return this.listOrders(req);\n  }\n", "method", True),
+        ("javascript", "  view(req) {\n    return this.repo.listOrders(req);\n  }\n", "method", False),
+        ("go", "func (s *Server) view(db *DB) []Order {\n\treturn s.listOrders(db)\n}\n", "go:Server", True),
+        ("go", "func (s *Server) view(db *DB) []Order {\n\treturn s.listOrders(db)\n}\n", "go:Store", False),
+        ("go", "func (s *Server) view(db *DB) []Order {\n\treturn s.store.listOrders(db)\n}\n", "go:Server", False),
+        ("go", "func view(db *DB) []Order {\n\treturn other.listOrders(db)\n}\n", None, False),
+    ],
+)
+def test_callers_must_reach_the_callee_itself(language: str, source: str, receiver: str | None, expected: bool) -> None:
+    name = "list_orders" if language == "python" else "listOrders"
+    assert code.calls_outer_function(language, source, name, receiver) is expected
+
+
+def test_method_receiver_kinds() -> None:
+    py = "class Repo:\n    def list_orders(self):\n        return []\n\n\ndef list_orders(conn):\n    return []\n"
+    assert [code.method_receiver("python", py, f) for f in code.find_functions("python", py)] == ["method", None]
+    go = "package a\n\nfunc (s *Server) listOrders() {\n}\n\nfunc listAll() {\n}\n"
+    assert [code.method_receiver("go", go, f) for f in code.find_functions("go", go)] == ["go:Server", None]
+    js = "class Repo {\n  listOrders(db) {\n    return db;\n  }\n}\nfunction listAll(db) {\n  return db;\n}\nconst listSome = (db) => {\n  return db;\n};\n"
+    kinds = {f.name: code.method_receiver("javascript", js, f) for f in code.find_functions("javascript", js)}
+    assert kinds == {"listOrders": "method", "listAll": None, "listSome": None}
+
+
+def test_member_call_of_a_same_named_method_is_not_a_caller_of_the_function() -> None:
+    other = 'class View:\n    def get(self, conn):\n        status = "open"\n        return self.repo.list_orders(conn, status)\n'
+    old, new = PY_OLD.replace(VIEW, other), PY_NEW.replace(VIEW, other)
+    records = build({"a.py": old}, {"a.py": new})
+    assert any(r["kind"] == "vulnerable" for r in records)
+    assert not [r for r in records if r["kind"] == "caller_abstention"]
+
+
+@pytest.mark.parametrize("source", ["x = a++ / 2 / b;\n", "x = a-- / 2 / b;\n"])
+def test_division_after_postfix_operator_is_not_a_regex(source: str) -> None:
+    spans: list = []
+    code.mask_c_like(source, "javascript", spans)
+    assert spans == []
+
+
+def test_javascript_object_and_prototype_methods() -> None:
+    js = (
+        "FormData.prototype._generateBoundary = function() {\n  this._boundary = 'x';\n};\n"
+        "internals.isFileHidden = function (path) {\n  return /^\\./.test(path);\n};\n"
+    )
+    kinds = {f.name: code.method_receiver("javascript", js, f) for f in code.find_functions("javascript", js)}
+    assert kinds == {"_generateBoundary": "method", "isFileHidden": "obj:internals"}
+    assert code.calls_outer_function("javascript", "function h(p) {\n  return internals.isFileHidden(p);\n}\n", "isFileHidden", "obj:internals")
+    assert not code.calls_outer_function("javascript", "function h(p) {\n  return other.isFileHidden(p);\n}\n", "isFileHidden", "obj:internals")
+    assert code.calls_outer_function("javascript", "function g() {\n  this._generateBoundary();\n}\n", "_generateBoundary", "method")
