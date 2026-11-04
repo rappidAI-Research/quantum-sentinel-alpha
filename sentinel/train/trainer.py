@@ -163,6 +163,17 @@ def _checkpoints(output_dir: Path) -> list[Path]:
     return sorted(p for p in root.iterdir() if p.is_dir() and _CHECKPOINT_NAME.match(p.name) and (p / "state.json").is_file())
 
 
+def accumulation_window(index: int, micro_batches: int, accumulation_steps: int) -> int:
+    """Number of micro-batches in the optimizer step that micro-batch `index` belongs to.
+
+    Steps are aligned to the start of each epoch, so the last step of an epoch can be a partial
+    window; dividing its losses by the full accumulation count would under-weight that step (and
+    change clipping and AdamW moments), so each loss is divided by its own window's size.
+    """
+    start = (index // accumulation_steps) * accumulation_steps
+    return min(accumulation_steps, micro_batches - start)
+
+
 def checkpoint_provenance(config: TrainConfig, data: TrainingData) -> dict[str, Any]:
     """What a checkpoint was trained on. Resuming is only allowed with exactly the same inputs."""
     return {
@@ -379,7 +390,8 @@ def train(
             epoch_batches = batches(train_examples, config.training.micro_batch_size, state.epoch, config.training.seed)
             for index in range(state.batch_in_epoch, len(epoch_batches)):
                 inputs = _to_tensors(epoch_batches[index], pad_id, device)
-                loss = model(**inputs).loss / config.training.gradient_accumulation_steps
+                window = accumulation_window(index, len(epoch_batches), config.training.gradient_accumulation_steps)
+                loss = model(**inputs).loss / window
                 if not math.isfinite(float(loss.detach())):
                     raise RuntimeError(f"non-finite loss at step {state.step + 1} (micro-batch {index} of epoch {state.epoch})")
                 loss.backward()
@@ -401,7 +413,7 @@ def train(
                     entry = {
                         "step": state.step,
                         "epoch": state.epoch,
-                        "loss": round(float(loss.detach()) * config.training.gradient_accumulation_steps, 5),
+                        "loss": round(float(loss.detach()) * window, 5),
                         "learning_rate": scheduler.get_last_lr()[0],
                         "grad_norm": round(grad_norm, 5),
                         "tokens_per_second": round(window_tokens / elapsed, 2) if elapsed > 0 else None,

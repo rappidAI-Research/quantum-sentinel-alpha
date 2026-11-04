@@ -272,3 +272,17 @@ def test_resume_requires_the_same_data_and_config(tmp_path: Path) -> None:
         check_resume_provenance(tmp_path, expected)
     (tmp_path / "provenance.json").write_text(json.dumps(expected))
     check_resume_provenance(tmp_path, expected)
+
+
+def test_partial_accumulation_window_is_averaged_over_its_own_size() -> None:
+    from sentinel.train.trainer import accumulation_window
+
+    sizes = [accumulation_window(i, 17, 16) for i in range(17)]
+    assert sizes == [16] * 16 + [1]
+    assert [accumulation_window(i, 10, 4) for i in range(10)] == [4] * 8 + [2, 2]
+    # every optimizer step averages its micro-batch losses with weights summing to one
+    for n, ga in ((17, 16), (10, 4), (8, 4), (3, 8)):
+        steps: dict[int, float] = {}
+        for i in range(n):
+            steps[i // ga] = steps.get(i // ga, 0.0) + 1 / accumulation_window(i, n, ga)
+        assert all(abs(total - 1.0) < 1e-12 for total in steps.values())
