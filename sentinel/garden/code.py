@@ -862,13 +862,19 @@ _TOKEN = re.compile(r"[A-Za-z_$][\w$]*|\d[\w.]*|[-+*/%=<>!&|^~?:.]+|\S")
 
 def _python_tokens(source: str) -> list[str] | None:
     """Tokens with block structure: Python indentation is significant, so INDENT/DEDENT and
-    statement ends are kept as tokens (moving a statement into or out of a block is not cosmetic)."""
-    import textwrap
+    statement ends are kept as tokens (moving a statement into or out of a block is not cosmetic).
 
+    The source is tokenized as is: a method excerpt's outer indentation shows up as one leading INDENT
+    and one final DEDENT, which are dropped, so a method normalizes like the same top-level function.
+    (Dedenting the text first would also rewrite whitespace inside multi-line string literals.)"""
     try:
-        stream = list(tokenize.generate_tokens(io.StringIO(textwrap.dedent(source)).readline))
+        stream = list(tokenize.generate_tokens(io.StringIO(source).readline))
     except (tokenize.TokenError, IndentationError, SyntaxError):
         return None
+    significant = [t for t in stream if t.type not in (tokenize.COMMENT, tokenize.NL, tokenize.ENDMARKER)]
+    if significant and significant[0].type == tokenize.INDENT:
+        closing = max(i for i, t in enumerate(significant) if t.type == tokenize.DEDENT)
+        stream = significant[1:closing] + significant[closing + 1 :]
     out: list[str] = []
     for token in stream:
         if token.type in (tokenize.COMMENT, tokenize.NL, tokenize.ENDMARKER):

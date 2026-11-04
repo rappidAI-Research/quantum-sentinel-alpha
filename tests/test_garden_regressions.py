@@ -364,6 +364,7 @@ def test_whitespace_only_lines_inside_literals_are_code(path: str, ecosystem: st
 
 LITERAL_SAMPLES = {
     "python": 'def f(x):\n    a = "p q  r"\n    b = f"{x} y"\n    c = """m\n n\n"""\n    return a + b + c\n',
+    "python_method": '    def f(self, x):\n        c = """header\n \n\n  body\n        """\n        return c + x\n',
     "javascript": "function f(x) {\n  const a = 'p q  r';\n  const b = `${x} y\n z`;\n  const c = /^[a-z ]+$/;\n  return a + b + c;\n}\n",
     "typescript": "function f(x: string): string {\n  const a = \"p q  r\";\n  return a + `${x} y`;\n}\n",
     "go": 'package a\n\nfunc f(x string) string {\n\ta := "p q  r"\n\tb := `m\n n`\n\treturn a + b + x\n}\n',
@@ -373,6 +374,7 @@ LITERAL_SAMPLES = {
 @pytest.mark.parametrize("language", sorted(LITERAL_SAMPLES))
 def test_every_whitespace_edit_inside_a_literal_changes_the_normalized_hash(language: str) -> None:
     source = LITERAL_SAMPLES[language]
+    language = language.split("_")[0]
     base = code.normalized_sha256(language, source)
     spans: list = []
     if language == "python":
@@ -394,6 +396,9 @@ def test_every_whitespace_edit_inside_a_literal_changes_the_normalized_hash(lang
     for i in positions:
         for variant in (source[:i] + source[i + 1 :], source[:i] + " " + source[i:]):
             assert code.normalized_sha256(language, variant) != base, (language, i)
+    # inserting whitespace at the start of any line inside a literal (including empty lines)
+    for i in (i for start, end in spans for i in range(start + 1, end) if source[i - 1] == "\n"):
+        assert code.normalized_sha256(language, source[:i] + " " + source[i:]) != base, (language, i)
 
 
 @pytest.mark.parametrize("language", ["javascript", "typescript", "go"])
@@ -607,3 +612,21 @@ def test_similar_pairs_equals_brute_force() -> None:
             if code.jaccard(fingerprints[a], fingerprints[b]) >= threshold
         )
         assert _similar_pairs(fingerprints, threshold) == expected
+
+
+# --- Ninth review round -------------------------------------------------------------------------
+
+
+def test_whitespace_only_lines_in_python_multiline_strings_are_significant() -> None:
+    old = 'def banner():\n    return """header\n \nfooter"""\n'
+    new = 'def banner():\n    return """header\n\nfooter"""\n'
+    assert code.normalized_sha256("python", old) != code.normalized_sha256("python", new)
+    records = build({"a.py": old}, {"a.py": new}, candidate("PyPI", ["CWE-116"]))
+    assert any(r["kind"] == "vulnerable" for r in records)
+
+
+def test_method_excerpt_normalizes_like_the_top_level_function() -> None:
+    top = 'def f(x):\n    if x:\n        return 1\n    return 2\n'
+    method = "    " + top.replace("\n    ", "\n        ").rstrip() + "\n"
+    assert code.normalized_tokens("python", method) == code.normalized_tokens("python", top)
+    assert code.normalized_tokens("python", method)[-1] != "<INDENT>"
