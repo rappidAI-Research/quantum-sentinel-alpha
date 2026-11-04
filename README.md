@@ -68,3 +68,11 @@ python -m sentinel.garden check      # offline consistency check of the committe
 ```
 
 Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v1/` holds only metadata, statistics and the review queue. See `docs/SENTINEL_GARDEN.md` and `docs/DATA_GOVERNANCE.md`.
+
+## QLoRA training (implemented, not run)
+
+`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. It refuses to start while no record is training-approved (exit code 2). Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
+
+```bash
+python -m sentinel.train --dry-run   # governance + data checks, no model, no GPU
+```

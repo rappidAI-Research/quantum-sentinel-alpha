@@ -162,7 +162,8 @@ def render(report: dict[str, Any]) -> str:
         model = report[label]["model"]
         out.append(
             f"{label.upper()}: {model['id']} @ {model['revision'] or 'UNPINNED'} "
-            f"[{model['backend']}] reportable={report[label]['reportable']}"
+            + (f"+ adapter {model['adapter']['weights_sha256'][:12]} " if model.get("adapter") else "")
+            + f"[{model['backend']}] reportable={report[label]['reportable']}"
         )
     if report["problems"]:
         out.append("\nNOT COMPARABLE - the evaluation contract differs:")

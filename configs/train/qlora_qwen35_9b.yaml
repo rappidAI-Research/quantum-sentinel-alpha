@@ -1,0 +1,48 @@
+# QLoRA fine-tuning of the selected foundation on governance-approved Sentinel Garden data.
+# Run:      python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml
+# Check:    python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run
+# Docs:     docs/TRAINING.md
+#
+# The model ID and revision are NOT set here: they come from configs/model/foundation.yaml so the
+# trained adapter can only ever target the selected, pinned foundation.
+schema_version: "1.0"
+run_name: qsa-qlora-qwen35-9b-v0
+foundation: configs/model/foundation.yaml
+
+data:
+  garden_config: configs/garden/seed_v1.yaml     # train.chat.jsonl / validation.jsonl in its workdir
+  max_seq_len: 4096          # examples longer than this are dropped and counted, never truncated
+  end_of_turn: "<|im_end|>"  # appended to each assistant reply; must be a single token of the tokenizer
+
+quantization:
+  mode: nf4                  # nf4 (QLoRA, bitsandbytes 4-bit) | none (bf16 LoRA)
+  double_quant: true
+  compute_dtype: bfloat16
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  # Derived from the real module layout (configs/train/qwen35_9b_linear_modules.txt): all attention,
+  # Gated DeltaNet and MLP projections of the 32 text layers. Excluded: in_proj_a / in_proj_b
+  # (4096 -> 32 gating projections, too small for rank-16 updates), lm_head and every non-text module.
+  target_modules: '^model\.layers\.\d+\.(self_attn\.(q_proj|k_proj|v_proj|o_proj)|linear_attn\.(in_proj_qkv|in_proj_z|out_proj)|mlp\.(gate_proj|up_proj|down_proj))$'
+  expected_target_count: 200 # 8 full-attention x 4 + 24 linear-attention x 3 + 32 MLP x 3
+
+training:
+  seed: 1234
+  learning_rate: 1.0e-4
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  num_epochs: 2
+  max_steps: null            # optional hard cap on optimizer steps
+  micro_batch_size: 1
+  gradient_accumulation_steps: 16
+  max_grad_norm: 1.0
+  gradient_checkpointing: true
+  eval_every_steps: 50
+  save_every_steps: 50
+  keep_last_checkpoints: 3
+  logging_every_steps: 1
+
+output_dir: runs/train/qsa-qlora-qwen35-9b-v0   # Git-ignored; adapter-only outputs

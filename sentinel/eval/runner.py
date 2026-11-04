@@ -154,7 +154,12 @@ def run_quickeval(
         "reportable": False,
         "reportable_blockers": [],
         "git": git_state(),
-        "model": {"id": model_id, "revision": revision, "backend": backend.name},
+        "model": {
+            "id": model_id,
+            "revision": revision,
+            "backend": backend.name,
+            **({"adapter": backend.adapter_info} if getattr(backend, "adapter_info", None) else {}),
+        },
         "runtime": {**runtime.as_dict(), **backend.describe()},
         "generation": generation.as_dict(),
         "contract": {
