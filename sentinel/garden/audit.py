@@ -280,8 +280,12 @@ def later_fixes(
     group: dict[str, dict[str, Any]],
     package_vulns: list[dict[str, Any]],
     repo: UpstreamRepo,
+    unreadable: list[str] | None = None,
 ) -> list[LaterFix]:
-    """Other advisories that show the post-fix function is still (or again) vulnerable."""
+    """Other advisories that show the post-fix function is still (or again) vulnerable.
+
+    A referenced later fix commit that cannot be read is appended to `unreadable` (the check is then
+    incomplete, not clean)."""
     vulnerable = group["vulnerable"]
     provenance = vulnerable["provenance"]
     own_ids = {provenance["advisory_id"], *provenance["aliases"]}
@@ -331,6 +335,8 @@ def later_fixes(
                         found.append(LaterFix(vuln["id"], "later_fix_changes_same_function", sha))
                         break
             except GitError:
+                if unreadable is not None:
+                    unreadable.append(sha)
                 continue
             if found and found[-1].advisory_id == vuln["id"]:
                 break
@@ -419,6 +425,11 @@ def audit_exclusions(results: list[dict[str, Any]], leakage: dict[str, str]) -> 
         records_by_kind = result["records"]
         for fix in result.get("later_fixes", []):
             exclusions.append({"record_id": records_by_kind["post_fix"], "reason": f"{fix['reason']}:{fix['advisory_id']}"})
+        if result.get("later_fix_unreadable_commits") and "post_fix" in records_by_kind:
+            # Another advisory of the package names a fix commit in this repository that cannot be
+            # read (not in the upstream repository, or unavailable): the hard negative is unverified.
+            for sha in result["later_fix_unreadable_commits"]:
+                exclusions.append({"record_id": records_by_kind["post_fix"], "reason": f"later_fix_unverifiable:{sha}"})
         for problem in result.get("abstention", {}).get("problems", []):
             exclusions.append({"record_id": records_by_kind["caller_abstention"], "reason": f"abstention_{problem}"})
         if result.get("span", {}).get("broad") and "vulnerable" in records_by_kind:
@@ -485,8 +496,11 @@ def run_audit(
                         unavailable = True
                     else:
                         vulns.extend(found)
-                result["later_fixes"] = [vars(f) for f in later_fixes(group, vulns, repo)]
-                result["later_fix_check"] = "incomplete" if unavailable else "done"
+                unreadable: list[str] = []
+                result["later_fixes"] = [vars(f) for f in later_fixes(group, vulns, repo, unreadable)]
+                result["later_fix_check"] = "incomplete" if unavailable or unreadable else "done"
+                if unreadable:
+                    result["later_fix_unreadable_commits"] = sorted(set(unreadable))
         if "caller_abstention" in group:
             result["abstention"] = abstention_validity(group["caller_abstention"], group.get("vulnerable"))
         return result
@@ -591,16 +605,22 @@ def summarize(audit: dict[str, Any], manual: dict[str, Any]) -> dict[str, Any]:
         rates[key] = {"judged": len(judged), "errors": errors, "uncertain_or_partial": uncertain, "error_rate": round(errors / len(judged), 3) if judged else None, "wilson95": [round(low, 3), round(high, 3)]}
     # The same rates over the sampled items that survive the automated exclusions: the error estimate
     # for the records that remain (manual findings still count - they are evidence, not removals).
+    # Survival is decided per question on the record the question judges (hard-negative safety on the
+    # post-fix record, abstention validity on the abstention, everything else on the vulnerable
+    # record), including the propagation of a vulnerable record's exclusion to its siblings.
     auto_excluded = {e["record_id"] for e in audit.get("exclusions") or []}
     group_records = {g["group_id"]: g.get("records", {}) for g in groups}
-    kept = [
-        i for i in items
-        if group_records.get(i["group_id"], {}).get("vulnerable" if i.get("item", "pair") == "pair" else "caller_abstention") not in auto_excluded
-    ]
+    judged_kind = {"hard_negative_safe": "post_fix", "abstention_valid": "caller_abstention"}
+
+    def survives(item: dict[str, Any], key: str) -> bool:
+        records = group_records.get(item["group_id"], {})
+        record_id = records.get(judged_kind.get(key, "vulnerable"))
+        return record_id is not None and record_id not in auto_excluded and records.get("vulnerable") not in auto_excluded
+
     kept_rates = {}
     for key, rate in rates.items():
         bad = {"advisory_matches_code": {"no"}, "fix_addresses_weakness": {"no"}, "localization": {"imprecise", "wrong"}, "cwe": {"wrong"}, "hard_negative_safe": {"no"}, "abstention_valid": {"no"}}[key]
-        judged = [i for i in kept if key in i]
+        judged = [i for i in items if key in i and survives(i, key)]
         errors = sum(1 for i in judged if i[key] in bad)
         low, high = wilson_interval(errors, len(judged))
         kept_rates[key] = {"judged": len(judged), "errors": errors, "error_rate": round(errors / len(judged), 3) if judged else None, "wilson95": [round(low, 3), round(high, 3)]}

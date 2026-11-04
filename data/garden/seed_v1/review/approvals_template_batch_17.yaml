@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:send': ['MIT']}
-  - repository_key: pillarjs/send
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pillarjs/send
-      - https://github.com/pillarjs/send/blob/ae4f2989491b392ae2ef3b0015a019770ae65d35/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/pinchtab/pinchtab': ['MIT'], 'Go:github.com/pinchtab/pinchtab/cmd/pinchtab': None}
-  - repository_key: pinchtab/pinchtab
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 8e526b04f1f02203eebfd55aead0657a7ae87e0591cf8a44fbee19441aa0f116
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pinchtab/pinchtab
-      - https://github.com/pinchtab/pinchtab/blob/c824574c3a05073dec2f5e9c219e22ffff8de445/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:pipecat-ai': ['BSD-2-Clause']}
   - repository_key: pipecat-ai/pipecat
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/richardgirges/express-fileupload
       - https://github.com/richardgirges/express-fileupload/blob/db495357d7557ceb5c034de91a7a574bd12f9b9f/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:sequelize-typescript': ['MIT']}
+  - repository_key: robinbuschmann/sequelize-typescript
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 29f8ca6e3898a615922b7f4c2e4c6dde00fc05a21befb987d8577e4971cc7c7d
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/robinbuschmann/sequelize-typescript
+      - https://github.com/robinbuschmann/sequelize-typescript/blob/5ce8afdd1671b08c774ce106b000605ba8fccf78/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:flattenizer': ['MIT']}
+  - repository_key: sahellebusch/flattenizer
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: c1b6111cd2004b0a62f9abef408083953031b468e1c68ce31212548714b886fc
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sahellebusch/flattenizer
+      - https://github.com/sahellebusch/flattenizer/blob/3c6a6353df7c8879e931973b81a49a47f6c2b399/LICENSE
     notes: ""

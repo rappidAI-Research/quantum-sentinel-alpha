@@ -11,32 +11,32 @@ registry sources it depends on are approved. Accepted records are a non-approved
 
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| go | 288 | 270 | 110 | 668 |
-| javascript | 303 | 275 | 63 | 641 |
-| python | 303 | 274 | 89 | 666 |
+| go | 288 | 266 | 110 | 664 |
+| javascript | 302 | 273 | 63 | 638 |
+| python | 302 | 271 | 89 | 662 |
 | typescript | 161 | 150 | 47 | 358 |
-| **Total** | 1055 | 969 | 309 | 2333 |
+| **Total** | 1053 | 960 | 309 | 2322 |
 
-Complete vulnerable/fixed pairs: 957.
+Complete vulnerable/fixed pairs: 947.
 
 ## Splits (repository-level, temporal cutoff applied)
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 784 | 729 | 228 | 685 |
-| validation | 91 | 77 | 27 | 81 |
-| holdout_reserved | 106 | 98 | 32 | 89 |
-| temporal_quarantine | 74 | 65 | 22 | 66 |
+| train | 783 | 726 | 228 | 685 |
+| validation | 91 | 73 | 27 | 81 |
+| holdout_reserved | 106 | 97 | 32 | 89 |
+| temporal_quarantine | 73 | 64 | 22 | 65 |
 
 ## CWE distribution of accepted findings
 
-162 distinct primary CWEs. Records per CWE, most frequent first:
+161 distinct primary CWEs. Records per CWE, most frequent first:
 
 | CWE | Records |
 | --- | ---: |
 | CWE-79 | 98 |
 | CWE-22 | 95 |
-| CWE-1321 | 79 |
+| CWE-1321 | 78 |
 | CWE-400 | 49 |
 | CWE-20 | 43 |
 | CWE-200 | 42 |
@@ -170,7 +170,6 @@ Complete vulnerable/fixed pairs: 957.
 | CWE-573 | 1 |
 | CWE-606 | 1 |
 | CWE-610 | 1 |
-| CWE-613 | 1 |
 | CWE-627 | 1 |
 | CWE-636 | 1 |
 | CWE-643 | 1 |
@@ -203,7 +202,7 @@ Complete vulnerable/fixed pairs: 957.
 | --- | ---: |
 | changed_lines | 661 |
 | insertion_point | 296 |
-| mixed | 98 |
+| mixed | 96 |
 
 ## Discovery (OSV export, GitHub-reviewed advisories)
 
@@ -272,26 +271,25 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 2773 built, 2333 accepted, 440 rejected.
+Records: 2773 built, 2322 accepted, 451 rejected.
 
 | Failed check | Records |
 | --- | ---: |
 | audit:abstention_constant_arguments | 1 |
 | audit:broad_localization_span | 89 |
-| audit:later_fix_changes_same_function | 129 |
+| audit:later_fix_changes_same_function | 126 |
+| audit:later_fix_unverifiable | 10 |
 | audit:manual_hard_negative_bypass_reported | 1 |
 | audit:manual_imprecise_span | 6 |
 | audit:manual_imprecise_span_documentation_advisory | 3 |
-| audit:reported_incomplete_fix | 50 |
-| audit:sibling_excluded | 105 |
-| audit:split_leakage_near_duplicate_of_temporal_quarantine | 2 |
-| audit:split_leakage_near_duplicate_of_validation | 1 |
-| exact_duplicate | 6 |
-| label_conflict_exact | 12 |
-| label_conflict_near | 17 |
+| audit:reported_incomplete_fix | 47 |
+| audit:sibling_excluded | 104 |
+| exact_duplicate | 7 |
+| label_conflict_exact | 16 |
+| label_conflict_near | 20 |
 | localization_valid:diff_consistent | 14 |
 | localization_valid:trivial_span | 29 |
-| near_duplicate | 5 |
+| near_duplicate | 7 |
 | sibling_rejected | 56 |
 | syntax_well_formed | 4 |
 
@@ -309,16 +307,16 @@ Flags on accepted records (not rejections):
 | Detected license | Records |
 | --- | ---: |
 | 0BSD | 2 |
-| AGPL-3.0 | 180 |
-| Apache-2.0 | 605 |
+| AGPL-3.0 | 177 |
+| Apache-2.0 | 603 |
 | BSD-2-Clause | 77 |
-| BSD-3-Clause | 153 |
+| BSD-3-Clause | 152 |
 | GPL-2.0 | 9 |
 | GPL-3.0 | 2 |
 | ISC | 21 |
 | LGPL-2.1 | 21 |
 | LGPL-3.0 | 11 |
-| MIT | 1047 |
+| MIT | 1042 |
 | MPL-2.0 | 3 |
 | Unlicense | 6 |
 | Zlib | 4 |
@@ -339,19 +337,19 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 837 |
-| pending_review | 1936 |
+| excluded | 845 |
+| pending_review | 1928 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 2333 |
-| source_not_approved:ghsa-osv-fix-commits | 2333 |
-| source_not_approved:github-advisory-db | 2333 |
-| source_not_approved:osv | 2333 |
-| split:holdout_reserved | 236 |
-| split:temporal_quarantine | 161 |
+| repository_not_reviewed | 2322 |
+| source_not_approved:ghsa-osv-fix-commits | 2322 |
+| source_not_approved:github-advisory-db | 2322 |
+| source_not_approved:osv | 2322 |
+| split:holdout_reserved | 235 |
+| split:temporal_quarantine | 159 |
 
 ## Fix commit year (accepted records)
 
@@ -365,12 +363,12 @@ Blockers on accepted records:
 | 2015 | 16 |
 | 2016 | 25 |
 | 2017 | 34 |
-| 2018 | 91 |
+| 2018 | 90 |
 | 2019 | 91 |
-| 2020 | 173 |
-| 2021 | 215 |
-| 2022 | 217 |
-| 2023 | 191 |
+| 2020 | 171 |
+| 2021 | 214 |
+| 2022 | 216 |
+| 2023 | 190 |
 | 2024 | 232 |
-| 2025 | 316 |
-| 2026 | 688 |
+| 2025 | 314 |
+| 2026 | 685 |

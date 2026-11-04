@@ -57,45 +57,46 @@ Produced by the pipeline from real advisories and upstream fix commits (OSV expo
 | Candidates (single fix commit, localizable CWE, max. 4 per repository) | 4,830 (Go 1,335, PyPI 1,524, npm 1,971) |
 | Fix commits turned into records (one-function rule) | 1,206 |
 | Records built | 2,773 |
-| Records accepted | **2,333** |
-| Records rejected (a record can fail several checks): audit exclusions - later fix of the same function 129, reported incomplete fix 50, broad localization span 89, manual 10, split leakage 3, invalid abstention 1, siblings of excluded records 105; pipeline checks - siblings 56, trivial span 29, label conflicts 29, diff inconsistency 14, duplicates 11, syntax 4 | 440 |
+| Records accepted | **2,322** |
+| Records rejected (a record can fail several checks): audit exclusions - later fix of the same function 126, reported incomplete fix 47, unverifiable later fix 10, broad localization span 89, manual 10, invalid abstention 1, siblings of excluded records 104; pipeline checks - siblings 56, trivial span 29, label conflicts 36, diff inconsistency 14, duplicates 14, syntax 4 | 451 |
 | **Training-approved records** | **0** |
 
 Accepted records by language and label:
 
 | Language | finding | no_finding (post-fix hard negative) | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| Python | 303 | 274 | 89 | 666 |
-| JavaScript | 303 | 275 | 63 | 641 |
+| Python | 302 | 271 | 89 | 662 |
+| JavaScript | 302 | 273 | 63 | 638 |
 | TypeScript | 161 | 150 | 47 | 358 |
-| Go | 288 | 270 | 110 | 668 |
-| **Total** | **1,055** | **969** | **309** | **2,333** |
+| Go | 288 | 266 | 110 | 664 |
+| **Total** | **1,053** | **960** | **309** | **2,322** |
 
-- 957 complete vulnerable/fixed pairs; 911 repositories; 162 distinct primary CWEs. Most frequent: CWE-79 (98), CWE-22 (95), CWE-1321 (79), CWE-400 (49), CWE-20 (43), CWE-200 (42), CWE-1333 (39), CWE-601 (33), CWE-78 (32). 165 findings carry a coarse CWE (flagged).
-- Localization (diff-derived): 661 changed-line spans, 296 insertion points (missing checks), 98 mixed.
-- Splits (repository-level, frozen policy): train 1,741 records / 685 repos, validation 195 / 81, holdout_reserved 236 / 89, temporal_quarantine 161 / 66. No repository is in two splits; no train/validation record is after the cutoff.
+- 947 complete vulnerable/fixed pairs; 911 repositories; 161 distinct primary CWEs. Most frequent: CWE-79 (98), CWE-22 (95), CWE-1321 (78), CWE-400 (49), CWE-20 (43), CWE-200 (42), CWE-1333 (39), CWE-601 (33), CWE-78 (32). 165 findings carry a coarse CWE (flagged).
+- Localization (diff-derived): 661 changed-line spans, 296 insertion points (missing checks), 96 mixed.
+- Splits (repository-level, frozen policy): train 1,737 records / 685 repos, validation 191 / 81, holdout_reserved 235 / 89, temporal_quarantine 159 / 65. No repository is in two splits; no train/validation record is after the cutoff.
 - Evaluation contamination: 0 hits against QuickEval v1, the public seed, `coding-v1` (and `private/`, which is empty here).
 - Determinism: `curate` is byte-identical across runs; `verify` rebuilds every record from the frozen candidates with 0 hash mismatches. Go/JS/TS structure comes from tree-sitter with pinned grammars (recorded in `stats.json`, enforced by `check`).
 
 **Quality audit** (`python -m sentinel.garden audit`, `data/garden/seed_v1/AUDIT_REPORT.md`, reproducible from the manifest and the Git cache; it checks consistency, it does **not** verify exploits):
 
-- Automated, 1,158 fix groups: advisory↔code correspondence strong 663 / moderate 305 / weak 178; fix pattern consistent with the CWE family 698/1,032.
+- Automated, 1,157 fix groups: advisory↔code correspondence strong 661 / moderate 305 / weak 177; fix pattern consistent with the CWE family 696/1,030. Audit and curate form a fixed point: deduplication ignores audit exclusions, so a second audit run reproduces the exclusions, the audit results and the manifest byte for byte.
 - Exclusions (all written to `audit/exclusions.yaml` and applied by `curate`; records are only ever excluded, never relabelled):
-  - later fixes (OSV query of the same package, same function changed again with ≥ 0.5 token similarity to the post-fix code): 94 groups, 129 post-fix records whose hard negative is not safe;
-  - advisories that report an incomplete fix: 50 records;
+  - later fixes (OSV query of the same package, same function changed again with ≥ 0.5 token similarity to the post-fix code): 126 exclusions of post-fix records whose hard negative is not safe;
+  - advisories that report an incomplete fix: 47;
+  - a later fix commit of the same repository that cannot be read (not in the upstream repository): 10 exclusions in 8 groups, because the hard negative is then unverified; an incomplete recheck keeps the exclusions of the previous run;
   - **broad localization spans** (> 12 lines and > 40 % of the function): 89 groups, because every broad span in the manual sample was imprecise (it covered renames or docstrings committed with the fix);
-  - near duplicates across splits: 3 records; abstentions whose caller passes only literals: 1.
+  - abstentions whose caller passes only literals: 1 (near duplicates across splits are now rejected earlier, by deduplication).
 - Stratified manual sample (44 items: 32 pairs + 12 abstentions, salted, per language × CWE family), reviewed by the implementing AI engineer (**not** an authorized reviewer; `audit/manual_review.yaml`; 21 items from the first review, 23 added by the larger population and reviewed in a second batch). Rates count only items of the current sample:
   - whole sample: wrong labels 0/32; localization errors 4/32 (12.5 %, Wilson 95 % 5.0–28.1 %); hard negative not safe 1/32 (0.6–15.7 %); CWE questionable 11/32 (kept, flagged); invalid abstentions 0/12 (0–24.3 %);
-  - **items that survive the automated exclusions** (the estimate for the exported data): localization errors 1/29 (3.4 %, 0.6–17.2 %), hard negative not safe 1/29 (0.6–17.2 %), invalid abstentions 0/11 (0–25.9 %).
+  - **items that survive the automated exclusions** (the estimate for the exported data): localization errors 1/29 (3.4 %, 0.6–17.2 %), hard negative not safe 1/28 (0.6–17.7 %), invalid abstentions 0/11 (0–25.9 %). Survival is decided per question on the record it judges (post-fix for hard-negative safety, abstention for abstention validity).
   - Manual exclusions (10 records): two groups with imprecise spans from the first review (golang-jwt/jwt, auth0/node-jsonwebtoken), two from the second (pyod, orval), and the gotenberg post-fix record, whose advisory reports a bypass of exactly that fix.
 - The sample is small: the upper bounds, not the point estimates, are what to plan with.
 
-**Rights review** (`python -m sentinel.garden review`, workflow `docs/RIGHTS_REVIEW.md`, queue `data/garden/seed_v1/REVIEW_QUEUE.md`): 766 repositories with train/validation records, each with the license file URL at the used revision, its sha256 and the deps.dev registry license. Tier A (permissive, consistent evidence) 514 repos / 1,267 records; tier B (permissive, open question) 110 / 328; tier C (weak copyleft) 15 / 33; tier D (strong copyleft, unknown, none) 127 / 308. deps.dev agrees for 559, disagrees for 140, unavailable 28, unrecognised 39; the license file changed between the used revisions in 22 repositories. Approval templates (25 batches, tiers A and B) are not loadable until a reviewer fills them. Source dossiers for `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (terms, hashes, open questions) are in `docs/RIGHTS_REVIEW.md`. **Nothing is approved.** Non-permissive repositories need a written `non_permissive_justification` in addition to approval.
+**Rights review** (`python -m sentinel.garden review`, workflow `docs/RIGHTS_REVIEW.md`, queue `data/garden/seed_v1/REVIEW_QUEUE.md`): 766 repositories with train/validation records, each with the license file URL at the used revision, its sha256 and the deps.dev registry license. Tier A (permissive, consistent evidence) 513 repos / 1,260 records; tier B (permissive, open question) 111 / 330; tier C (weak copyleft) 15 / 33; tier D (strong copyleft, unknown, none) 127 / 305. deps.dev agrees for 559, disagrees for 140, unavailable 28, unrecognised 39; the license file changed between the used revisions in 23 repositories; a failed license lookup is recorded as missing evidence and never yields tier A. Approval templates (25 batches, tiers A and B) are not loadable until a reviewer fills them. Source dossiers for `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (terms, hashes, open questions) are in `docs/RIGHTS_REVIEW.md`. **Nothing is approved.** Non-permissive repositories need a written `non_permissive_justification` in addition to approval.
 
 **Reconstruction and external resources:** `python -m sentinel.garden reconstruct` rebuilds the Git-ignored records from upstream for an approved subset and checks every record hash (no substitution when an upstream is gone). `data/garden/seed_v1/EXTERNAL_RESOURCES.json` lists every upstream repository and commit the dataset depends on; exports carry `SHA256SUMS`. No upstream code is committed or uploaded anywhere.
 
-**Approval status:** all 2,333 accepted records are a **non-approved staging dataset**. 1,936 train/validation records are `pending_review`; 837 records (holdout, quarantine, rejected) are `excluded`. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed, accepted records): 1,932 permissive, 191 strong copyleft (mostly AGPL-3.0), 35 weak copyleft, 68 unknown, 107 without a root license file.
+**Approval status:** all 2,322 accepted records are a **non-approved staging dataset**. 1,928 train/validation records are `pending_review`; 845 records (holdout, quarantine, rejected) are `excluded`. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed, accepted records): 1,924 permissive, 188 strong copyleft (mostly AGPL-3.0), 35 weak copyleft, 68 unknown, 107 without a root license file.
 
 Upstream code is **not committed** (redistribution unreviewed, repository license undeclared). The Git-ignored `artifacts/garden/seed_v1/` holds the full records; `data/garden/seed_v1/` holds candidates, manifest (metadata only), statistics, reports, audit results and the review queue.
 
@@ -113,7 +114,7 @@ Upstream code is **not committed** (redistribution unreviewed, repository licens
 | **Total** | 30 | 30 (18 JS / 12 TS) | 26 | **86** |
 
 - Public / synthetic: QuickEval v1 (86) and the 12-case harness seed, both registered `eval_only`, **not** a holdout.
-- Private holdout: not started. Sentinel Garden's `holdout_reserved` records (236) are exported in eval-case format, but their identities are public, so they are a temporal/generalization reservation, not a private holdout.
+- Private holdout: not started. Sentinel Garden's `holdout_reserved` records (235) are exported in eval-case format, but their identities are public, so they are a temporal/generalization reservation, not a private holdout.
 - Public benchmarks (VulnBench, SeCodeBench, SeCodePLT, PrimeVul): registered evaluation-only. No cases imported.
 
 ## Benchmark state
@@ -140,6 +141,6 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 
 ## Next action (toward the first QLoRA run)
 
-1. Rights review: approve the three registry sources and review the tier A repositories in `REVIEW_QUEUE.md` (license file links and sha256 listed; fill `review/approvals_template_batch_*.yaml` and merge into `data/garden/approvals.yaml`). Tier A alone covers 514 repositories and up to 1,267 train/validation records. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl` and `train.chat.jsonl` deterministically - no rebuild needed.
+1. Rights review: approve the three registry sources and review the tier A repositories in `REVIEW_QUEUE.md` (license file links and sha256 listed; fill `review/approvals_template_batch_*.yaml` and merge into `data/garden/approvals.yaml`). Tier A alone covers 513 repositories and up to 1,260 train/validation records. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl` and `train.chat.jsonl` deterministically - no rebuild needed.
 2. With approved GPU time, run the foundation baseline: `python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`.
 3. `python -m sentinel.train --dry-run` (passes once approvals exist), a short L40S calibration (`max_steps: 20`), then the first QLoRA run, evaluated with `run_model --adapter` on QuickEval v1, `coding-v1` and the Garden validation split against the baseline (`docs/TRAINING.md`).

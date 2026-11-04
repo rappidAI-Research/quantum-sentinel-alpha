@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:markdownify': ['MIT']}
-  - repository_key: matthewwithanm/python-markdownify
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: fae8b42db142dabf03b0c5c495831a5d11b9649ead0cf0bd4ab4f52294b263be
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/matthewwithanm/python-markdownify
-      - https://github.com/matthewwithanm/python-markdownify/blob/959561879693bf4a576f99c6733b50b01186aa08/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@mattkrick/sanitize-svg': ['MIT']}
-  - repository_key: mattkrick/sanitize-svg
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 46e9bbdb1af48c20729d46921a98764a000bcabe5a5d682f613b9de1587927ea
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mattkrick/sanitize-svg
-      - https://github.com/mattkrick/sanitize-svg/blob/b107e453ede7b58adcccae74a3e474c012eec85d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/layer5io/meshery': ['Apache-2.0']}
-  - repository_key: meshery/meshery
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: f49140df22a1b509e0db0fdd596ff8879489fd4f27bfb0ff5d12d4e97dafbe34
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/meshery/meshery
-      - https://github.com/meshery/meshery/blob/8e995ce21af02d32ef61689c1e1748a745917f13/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:metacalc': ['MIT']}
   - repository_key: metarhia/metacalc
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -293,6 +242,23 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:mout': ['MIT']}
+  - repository_key: mout/mout
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: e93ae4caa0d32a1d9dfc063b72369dc8289c10805e966e1fadd68f04170a0188
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mout/mout
+      - https://github.com/mout/mout/blob/17ffdc2a96417a63a0147156dc045e90d0d14c64/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:@mozilla/readability': ['Apache-2.0']}
   - repository_key: mozilla/readability
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/netlify/netlify-ipx
       - https://github.com/netlify/netlify-ipx/blob/dfa7505a8d47a76fd527570dc40737a61500759b/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@next-auth/upstash-redis-adapter': ['ISC'], 'npm:next-auth': ['ISC']}
+  - repository_key: nextauthjs/next-auth
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected ISC>"
+    license_file: LICENSE
+    license_file_sha256: 523848dd40e2bd005c46d80ea3c4c2477dbd8b93239814bb204b9de9693c8155
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/nextauthjs/next-auth
+      - https://github.com/nextauthjs/next-auth/blob/6e15bdcb2d93c1ad5ee3889f702607637e79db50/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:modern-async': ['MIT']}
+  - repository_key: nicolas-van/modern-async
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: fdd3dfe42e2f968273b935f17b0a917102f29e7900a8a6584389d2e86006d833
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/nicolas-van/modern-async
+      - https://github.com/nicolas-van/modern-async/blob/0010d28de1b15d51db3976080e26357fa7144436/LICENSE.md
     notes: ""

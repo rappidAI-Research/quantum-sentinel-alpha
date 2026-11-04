@@ -3,57 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/komari-monitor/komari': ['MIT']}
-  - repository_key: komari-monitor/komari
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 3f14ba28b2e275d15a274fb7c936e4fa9f6fe851d1ea96e7f7b9cd9badc4b016
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/komari-monitor/komari
-      - https://github.com/komari-monitor/komari/blob/cc3d54bff4c6495beaa1c7483379cd04542c557f/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/kopia/kopia': ['Apache-2.0']}
-  - repository_key: kopia/kopia
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cd83acc95b12c0ee2a9271950b7f23be45294483b9e12869ef0d31fc9e8248f8
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/kopia/kopia
-      - https://github.com/kopia/kopia/blob/1d6f852cd6534f4bea978cbdc85c583803d79f77/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:sigs.k8s.io/aws-iam-authenticator': ['Apache-2.0']}
-  - repository_key: kubernetes-sigs/aws-iam-authenticator
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/kubernetes-sigs/aws-iam-authenticator
-      - https://github.com/kubernetes-sigs/aws-iam-authenticator/blob/029d1dcf2ec8d662d9b1c21260bb197404bc8218/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:k8s.io/apiextensions-apiserver': ['Apache-2.0']}
   - repository_key: kubernetes/apiextensions-apiserver
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/matrix-org/sydent
       - https://github.com/matrix-org/sydent/blob/1cd748307c6b168b66154e6c4db715d4b9551261/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:markdownify': ['MIT']}
+  - repository_key: matthewwithanm/python-markdownify
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: fae8b42db142dabf03b0c5c495831a5d11b9649ead0cf0bd4ab4f52294b263be
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/matthewwithanm/python-markdownify
+      - https://github.com/matthewwithanm/python-markdownify/blob/959561879693bf4a576f99c6733b50b01186aa08/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@mattkrick/sanitize-svg': ['MIT']}
+  - repository_key: mattkrick/sanitize-svg
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 46e9bbdb1af48c20729d46921a98764a000bcabe5a5d682f613b9de1587927ea
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mattkrick/sanitize-svg
+      - https://github.com/mattkrick/sanitize-svg/blob/b107e453ede7b58adcccae74a3e474c012eec85d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/layer5io/meshery': ['Apache-2.0']}
+  - repository_key: meshery/meshery
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: f49140df22a1b509e0db0fdd596ff8879489fd4f27bfb0ff5d12d4e97dafbe34
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/meshery/meshery
+      - https://github.com/meshery/meshery/blob/8e995ce21af02d32ef61689c1e1748a745917f13/LICENSE
     notes: ""

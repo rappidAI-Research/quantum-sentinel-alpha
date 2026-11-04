@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:express-rate-limit': ['MIT']}
-  - repository_key: express-rate-limit/express-rate-limit
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: license.md
-    license_file_sha256: 90021adfb24b0a7af5754cebc6085e2560555f74d29a6d44a7f9a32125f8b348
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/express-rate-limit/express-rate-limit
-      - https://github.com/express-rate-limit/express-rate-limit/blob/14e53888cdfd1b9798faf5b634c4206409e27fc4/license.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:basic-auth-connect': ['MIT']}
-  - repository_key: expressjs/basic-auth-connect
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 04cca811780163bb5e810014ae344e0a7b3fcb6e4ec98f73a649045bc040a387
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/expressjs/basic-auth-connect
-      - https://github.com/expressjs/basic-auth-connect/blob/bac1e6a8530e1efd0028800b9b588a37adb0d203/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:express': ['MIT']}
-  - repository_key: expressjs/express
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 95a5762890e5c1c9808921cef095661fc482c5e1f0bba31446ac85595df6237c
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/expressjs/express
-      - https://github.com/expressjs/express/blob/54271f69b511fea198471e6ff3400ab805d6b553/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:@fabiocaccamo/utils.js': ['MIT']}
   - repository_key: fabiocaccamo/utils.js
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/go-chi/chi
       - https://github.com/go-chi/chi/blob/6eb35881c0e438ffb663ddbad3a61babaa5e5d8a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/go-vela/compiler': ['Apache-2.0']}
+  - repository_key: go-vela/compiler
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5b0782b87db51dd1338da4e0698aa8638dfed580ca3a941ded09c0fd17bd5f8c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/go-vela/compiler
+      - https://github.com/go-vela/compiler/blob/f1ace5f8a05c95c4d02264556e38a959ee2d9bda/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/google/exposure-notifications-verification-server': ['Apache-2.0']}
+  - repository_key: google/exposure-notifications-verification-server
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/google/exposure-notifications-verification-server
+      - https://github.com/google/exposure-notifications-verification-server/blob/eb8cf40b12dbe79304f1133c06fb73419383cd95/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:mesop': ['Apache-2.0']}
+  - repository_key: google/mesop
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/google/mesop
+      - https://github.com/google/mesop/blob/17fb769d6a91f0a8cbccfab18f64977b158a6a31/LICENSE
     notes: ""

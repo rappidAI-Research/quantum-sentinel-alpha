@@ -68,7 +68,7 @@ The split policy is **frozen** in `configs/garden/split_policy.yaml` (`sentinel-
 | --- | --- | --- |
 | Advisory ↔ code correspondence | full OSV advisory text and the upstream commit message: function, file or changed identifier named; commit cites the advisory | strength strong / moderate / weak, reported |
 | Fix pattern vs CWE family | remediation indicators in the changed lines (e.g. parameterised queries for CWE-89, path normalisation for CWE-22) | heuristic flag for manual review, never an exclusion |
-| Hard-negative validity | every other OSV advisory of the same package: a later upstream fix that changes the same function, or an advisory that calls this fix incomplete | `post_fix` record excluded |
+| Hard-negative validity | every other OSV advisory of the same package: a later upstream fix that changes the same function, an advisory that calls this fix incomplete, or a later fix commit in the same repository that cannot be read (unverified) | `post_fix` record excluded; an incomplete recheck keeps the exclusions of the previous run |
 | Abstention validity | the call passes non-constant data; the caller does not duplicate the vulnerable code | abstention excluded |
 | Split leakage | the same advisory/CVE or fix commit in two splits, or near-identical code (Jaccard ≥ 0.7) across splits | train-side record excluded; holdout/validation records are never moved |
 | Localization precision | span length and share of the function | a broad span (> 12 lines and > 40 % of the function) excludes the vulnerable record (and with it the group): in the manual sample every broad span was imprecise |

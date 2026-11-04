@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:scss-tokenizer': ['MIT']}
-  - repository_key: sasstools/scss-tokenizer
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 7bbbf1df0a6d88da086c3f881be430d2cef0ec1430444d675a91678d2512c552
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/sasstools/scss-tokenizer
-      - https://github.com/sasstools/scss-tokenizer/blob/a53b6f233e648cc01acbdd89c58786cf8ba56e35/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/schollz/rwtxt': ['MIT']}
-  - repository_key: schollz/rwtxt
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 212186b36a3918811ed69d8df18254c8e468f11dd68c690e231f55ff9bd98dc1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/schollz/rwtxt
-      - https://github.com/schollz/rwtxt/blob/c09fb17375c4c47b49524c688288af1fe20e730a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/seaweedfs/seaweedfs': ['Apache-2.0']}
-  - repository_key: seaweedfs/seaweedfs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: d789d433cc11da163273d1e39be2e8fa67642f9a58ef220d3f258fa9c14ef613
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/seaweedfs/seaweedfs
-      - https://github.com/seaweedfs/seaweedfs/blob/05ed5c9ae8a2a45101b52b61d02f170d20d587ff/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:whatsapp-api-js': ['MIT']}
   - repository_key: secreto31126/whatsapp-api-js
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -119,23 +68,6 @@ repositories:
     evidence_urls:
       - https://github.com/smallstep/certificates
       - https://github.com/smallstep/certificates/blob/ffd31ac0a87e03b0224cb8363094bfe602242888/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:mako': ['MIT']}
-  - repository_key: sqlalchemy/mako
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 760f22b3e9ea4a50eb99201bd8dd118869f28108cfb64ccce6d1b305cf9ae9fa
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/sqlalchemy/mako
-      - https://github.com/sqlalchemy/mako/blob/925760291d6efec64fda6e9dd1fd9cfbd5be068c/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -394,6 +326,23 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
+  # records: 2 {'train/caller_abstention': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:copyparty': ['MIT']}
+  - repository_key: 9001/copyparty
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: cb2ce3d6277bf2f5a82ecf336cc44963bc6490bcf496ffbd75fc9e21abaa75f3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/9001/copyparty
+      - https://github.com/9001/copyparty/blob/043e3c7dd683113e2b1c15cacb9c8e68f76513ff/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:websockets': ['BSD-3-Clause']}
   - repository_key: aaugustin/websockets
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/abetlen/llama-cpp-python
       - https://github.com/abetlen/llama-cpp-python/blob/b454f40a9a1787b2b5659cd2cb00819d983185df/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@actions/artifact': ['MIT'], 'npm:@actions/core': ['MIT']}
+  - repository_key: actions/toolkit
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/actions/toolkit
+      - https://github.com/actions/toolkit/blob/4beda9cbc00ba6eefe387a937c21087ccb8ee9df/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:django-unicorn': ['MIT']}
+  - repository_key: adamghill/django-unicorn
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 32e2cce07562c2a84d8763fd32b810b9cc2026cbc75453c96401740ba821ed30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/adamghill/django-unicorn
+      - https://github.com/adamghill/django-unicorn/blob/17614200f27174f789d4af54cc3a1f2b0df7870c/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:aim': ['Apache-2.0']}
+  - repository_key: aimhubio/aim
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/aimhubio/aim
+      - https://github.com/aimhubio/aim/blob/b9e53df5e32d14bbd3a2c738e2db7187fb531e93/LICENSE
     notes: ""

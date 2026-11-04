@@ -4,23 +4,6 @@
 repositories:
   # tier B: registry_disagrees
   # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'Go:gogs.io/gogs': ['Apache-2.0', 'CC0-1.0', 'MIT']}
-  - repository_key: gogs/gogs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 4b5bc6bfd453444bdeaa95f9c7c8b280113cc3a72020818ad2578a8800b18a66
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/gogs/gogs
-      - https://github.com/gogs/gogs/blob/c5da9631dc75f692f313373ae229c4d47ba6517f/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'npm:scratch-svg-renderer': ['AGPL-3.0-only']}
   - repository_key: llk/scratch-svg-renderer
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -240,6 +223,23 @@ repositories:
       - https://github.com/owncast/owncast/blob/1b14800c7d7f54be14ed4d130bfe7f480645076e/LICENSE
     notes: ""
 
+  # tier B: license_file_changed_between_revisions
+  # records: 4 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:mako': ['MIT']}
+  - repository_key: sqlalchemy/mako
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 68d7064e53e3ffa8e9f420a9e604bd2e2059d9c330492fa6ebd4eb3d48111689
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sqlalchemy/mako
+      - https://github.com/sqlalchemy/mako/blob/e05ac61989a7fb9dd7dcde6cfd72dc48328719a3/LICENSE
+    notes: ""
+
   # tier B: registry_disagrees
   # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'Go:github.com/stefanprodan/podinfo': ['MIT']}
@@ -289,23 +289,6 @@ repositories:
     evidence_urls:
       - https://github.com/anthropics/anthropic-sdk-python
       - https://github.com/anthropics/anthropic-sdk-python/blob/6599043eee6e86dce16953fcd1fd828052052be6/LICENSE
-    notes: ""
-
-  # tier B: license_file_changed_between_revisions
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:apache-airflow': ['Apache-2.0']}
-  - repository_key: apache/airflow
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 2e3e104e5ffbbc9fc544155f3e6d74854b10bd41a78d9299b62e1b214f306d92
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/apache/airflow
-      - https://github.com/apache/airflow/blob/4e32546faf227a6497ce8b282fff7450cae6f665/LICENSE
     notes: ""
 
   # tier B: registry_disagrees
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/github/github-mcp-server
       - https://github.com/github/github-mcp-server/blob/c88d2ecdd3bb07f7bdd75296e3ee676febf14f58/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/google/go-attestation': ['Apache-2.0', 'BSD-3-Clause']}
+  - repository_key: google/go-attestation
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/google/go-attestation
+      - https://github.com/google/go-attestation/blob/b6e905e7ae52937f02b5ca494dd1c6a3ac7a1003/LICENSE
     notes: ""

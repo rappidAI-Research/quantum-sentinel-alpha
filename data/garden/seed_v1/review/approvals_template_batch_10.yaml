@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:node-windows': ['MIT']}
-  - repository_key: coreybutler/node-windows
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: ec84cd5f859cbba66c8d3050c144d30aa3f11715de95b35b7cc5fb71e43c8175
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/coreybutler/node-windows
-      - https://github.com/coreybutler/node-windows/blob/a379d31366edbd7a672a981e6c09e185ab448dd3/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/cri-o/cri-o': ['Apache-2.0']}
-  - repository_key: cri-o/cri-o
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cri-o/cri-o
-      - https://github.com/cri-o/cri-o/blob/75effcb1a25851a736e82dba1f7d8cee93ee159e/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:dcnnt': ['MIT']}
   - repository_key: cyanomiko/dcnnt-py
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -119,23 +85,6 @@ repositories:
     evidence_urls:
       - https://github.com/diegohaz/bodymen
       - https://github.com/diegohaz/bodymen/blob/5d52e8cf360410ee697afd90937e6042c3a8653b/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/caller_abstention': 1, 'validation/post_fix': 1}
-  # registry (deps.dev): {'npm:querymen': ['MIT']}
-  - repository_key: diegohaz/querymen
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: a71ec5b58c33fe7d3674e62c3f9eec910b92023d4942f263147d2f182631b407
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/diegohaz/querymen
-      - https://github.com/diegohaz/querymen/blob/1987fefcb3b7508253a29502a008d5063a873cef/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/evanphx/json-patch
       - https://github.com/evanphx/json-patch/blob/4c9aadca8f89e349c999f04e28199e96e81aba03/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:express-rate-limit': ['MIT']}
+  - repository_key: express-rate-limit/express-rate-limit
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: license.md
+    license_file_sha256: 90021adfb24b0a7af5754cebc6085e2560555f74d29a6d44a7f9a32125f8b348
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/express-rate-limit/express-rate-limit
+      - https://github.com/express-rate-limit/express-rate-limit/blob/14e53888cdfd1b9798faf5b634c4206409e27fc4/license.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:basic-auth-connect': ['MIT']}
+  - repository_key: expressjs/basic-auth-connect
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 04cca811780163bb5e810014ae344e0a7b3fcb6e4ec98f73a649045bc040a387
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/expressjs/basic-auth-connect
+      - https://github.com/expressjs/basic-auth-connect/blob/bac1e6a8530e1efd0028800b9b588a37adb0d203/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:express': ['MIT']}
+  - repository_key: expressjs/express
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 95a5762890e5c1c9808921cef095661fc482c5e1f0bba31446ac85595df6237c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/expressjs/express
+      - https://github.com/expressjs/express/blob/54271f69b511fea198471e6ff3400ab805d6b553/LICENSE
     notes: ""

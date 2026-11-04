@@ -276,7 +276,9 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
             # audit-only exclusions stay recognisable so a re-run of the audit sees the same population
             failed[record["record_id"]].append("audit:sibling_excluded" if broken_groups[record["group_id"]] else "sibling_rejected")
 
-    clean = [r for r in records if not failed[r["record_id"]]]
+    # Deduplication ignores audit exclusions: otherwise excluding the kept copy of a duplicate would
+    # promote its twin, and the next audit would see a different population (no fixed point).
+    clean = [r for r in records if all(c.startswith("audit:") for c in failed[r["record_id"]])]
     duplicates = deduplicate(clean, config.quality)
     references = load_eval_references(
         [PROJECT_ROOT / p for p in config.raw["contamination"]["eval_case_dirs"]],
@@ -613,6 +615,21 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     _write_jsonl(audit_dir / "sample.jsonl", result["sample"])
     exclusions_path = audit_dir / "exclusions.yaml"
     manual = load_manual_review(audit_dir / "manual_review.yaml")
+    # An incomplete later-fix check (OSV or an upstream commit unavailable) must not clear the
+    # hard-negative exclusions an earlier, complete run established for the same record.
+    if exclusions_path.is_file():
+        previous = yaml.safe_load(exclusions_path.read_text(encoding="utf-8")) or {}
+        incomplete = {g["records"]["post_fix"] for g in result["groups"] if g.get("later_fix_check") == "incomplete" and "post_fix" in g["records"]}
+        present = {(e["record_id"], e["reason"]) for e in result["exclusions"]}
+        carried = [
+            e for e in previous.get("automated") or []
+            if e["record_id"] in incomplete
+            and e["reason"].split(":")[0] in {"later_fix_changes_same_function", "reported_incomplete_fix"}
+            and (e["record_id"], e["reason"]) not in present
+        ]
+        if carried:
+            log(f"audit: {len(carried)} later-fix exclusions kept from the previous run (incomplete recheck)")
+            result["exclusions"] = sorted(result["exclusions"] + carried, key=lambda e: (e["record_id"], e["reason"]))
     document = {
         "audit_version": result["audit_version"],
         "automated": result["exclusions"],

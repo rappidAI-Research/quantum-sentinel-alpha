@@ -3,40 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 3 {'train/post_fix': 1, 'train/vulnerable': 2}
-  # registry (deps.dev): {'npm:tarteaucitronjs': ['MIT']}
-  - repository_key: amauric/tarteaucitron.js
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 2dc7ae1b360f3080f57787c499c47c870b2d3303ef378e2b1a45518487e9ec17
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/AmauriC/tarteaucitron.js
-      - https://github.com/AmauriC/tarteaucitron.js/blob/74c354c413ee3f82dff97a15a0a43942887c2b5b/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/answerdev/answer': ['Apache-2.0']}
-  - repository_key: answerdev/answer
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cd03c7b50584a018ce76826f2ba466087603dedc5d505943f373171575ff8088
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/answerdev/answer
-      - https://github.com/answerdev/answer/blob/ac3f2f047ee00b4edaea7530e570ab67ff87cd6a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 3 {'validation/caller_abstention': 1, 'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'npm:@asymmetric-effort/nogginlessdom': ['MIT']}
   - repository_key: asymmetric-effort/nogginlessdom
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/facebook/create-react-app
       - https://github.com/facebook/create-react-app/blob/f5e415f3a5b66f07dcc60aba1b445fa7cda97268/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@faker-js/faker': ['MIT']}
+  - repository_key: faker-js/faker
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 8c0814c525426e67c04ca562f28364be477003697903d257160c081d14b271bf
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/faker-js/faker
+      - https://github.com/faker-js/faker/blob/54586208f904012f57c50b46cc1ad32bcbe4bfb7/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:form-data': ['MIT']}
+  - repository_key: form-data/form-data
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: License
+    license_file_sha256: e5b780d4f38d1d3328e3e53186c4e62d3fa149ea6f2bacd5de5ad0c30ac85343
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/form-data/form-data
+      - https://github.com/form-data/form-data/blob/3d1723080e6577a66f17f163ecd345a21d8d0fd0/License
     notes: ""

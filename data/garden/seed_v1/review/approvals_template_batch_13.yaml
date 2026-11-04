@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:bn.js': ['MIT']}
-  - repository_key: indutny/bn.js
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 445739f5b5eb63e5aeff5aeb0f35a45080a421615dce0d97f9939aeea498acdd
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/indutny/bn.js
-      - https://github.com/indutny/bn.js/blob/33df26b5771e824f303a79ec6407409376baa64b/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:invenio-app-rdm': ['MIT'], 'PyPI:invenio-drafts-resources': ['MIT'], 'PyPI:invenio-rdm-records': ['MIT']}
-  - repository_key: inveniosoftware/invenio-drafts-resources
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 6b2388f171d54c983c644657bd3557d3a8169fddb4c21299cf92efca38af6865
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/inveniosoftware/invenio-drafts-resources
-      - https://github.com/inveniosoftware/invenio-drafts-resources/blob/039b0cff1ad4b952000f4d8c3a93f347108b6626/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:iobroker.js-controller': ['MIT']}
-  - repository_key: iobroker/iobroker.js-controller
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 9fdde8014f232b73a0d08f015c525308d39f5de8c21f2b9d9e2ae89533b47695
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/ioBroker/ioBroker.js-controller
-      - https://github.com/ioBroker/ioBroker.js-controller/blob/f6e292c6750a491a5000d0f851b2fede4f9e2fda/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:set-or-get': ['MIT']}
   - repository_key: ionicabizau/set-or-get.js
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/kobezzza/Collection
       - https://github.com/kobezzza/Collection/blob/d3d937645f62f37d3115d6aa90bb510fd856e6a2/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/komari-monitor/komari': ['MIT']}
+  - repository_key: komari-monitor/komari
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 3f14ba28b2e275d15a274fb7c936e4fa9f6fe851d1ea96e7f7b9cd9badc4b016
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/komari-monitor/komari
+      - https://github.com/komari-monitor/komari/blob/cc3d54bff4c6495beaa1c7483379cd04542c557f/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/kopia/kopia': ['Apache-2.0']}
+  - repository_key: kopia/kopia
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cd83acc95b12c0ee2a9271950b7f23be45294483b9e12869ef0d31fc9e8248f8
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/kopia/kopia
+      - https://github.com/kopia/kopia/blob/1d6f852cd6534f4bea978cbdc85c583803d79f77/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:sigs.k8s.io/aws-iam-authenticator': ['Apache-2.0']}
+  - repository_key: kubernetes-sigs/aws-iam-authenticator
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/kubernetes-sigs/aws-iam-authenticator
+      - https://github.com/kubernetes-sigs/aws-iam-authenticator/blob/029d1dcf2ec8d662d9b1c21260bb197404bc8218/LICENSE
     notes: ""

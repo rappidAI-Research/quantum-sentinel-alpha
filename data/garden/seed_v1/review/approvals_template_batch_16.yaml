@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@next-auth/upstash-redis-adapter': ['ISC'], 'npm:next-auth': ['ISC']}
-  - repository_key: nextauthjs/next-auth
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected ISC>"
-    license_file: LICENSE
-    license_file_sha256: 523848dd40e2bd005c46d80ea3c4c2477dbd8b93239814bb204b9de9693c8155
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nextauthjs/next-auth
-      - https://github.com/nextauthjs/next-auth/blob/6e15bdcb2d93c1ad5ee3889f702607637e79db50/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:modern-async': ['MIT']}
-  - repository_key: nicolas-van/modern-async
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.md
-    license_file_sha256: fdd3dfe42e2f968273b935f17b0a917102f29e7900a8a6584389d2e86006d833
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nicolas-van/modern-async
-      - https://github.com/nicolas-van/modern-async/blob/0010d28de1b15d51db3976080e26357fa7144436/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:heroku-addonpool': ['MIT']}
   - repository_key: nodef/heroku-addonpool
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/pillarjs/resolve-path
       - https://github.com/pillarjs/resolve-path/blob/fe5b8052cafd35fcdafe9210e100e9050b37d2a0/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:send': ['MIT']}
+  - repository_key: pillarjs/send
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pillarjs/send
+      - https://github.com/pillarjs/send/blob/ae4f2989491b392ae2ef3b0015a019770ae65d35/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/pinchtab/pinchtab': ['MIT'], 'Go:github.com/pinchtab/pinchtab/cmd/pinchtab': None}
+  - repository_key: pinchtab/pinchtab
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 8e526b04f1f02203eebfd55aead0657a7ae87e0591cf8a44fbee19441aa0f116
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pinchtab/pinchtab
+      - https://github.com/pinchtab/pinchtab/blob/c824574c3a05073dec2f5e9c219e22ffff8de445/LICENSE
     notes: ""

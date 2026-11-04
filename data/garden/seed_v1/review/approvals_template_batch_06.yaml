@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:npm-registry-fetch': ['ISC']}
-  - repository_key: npm/npm-registry-fetch
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected ISC>"
-    license_file: LICENSE.md
-    license_file_sha256: 720836c9bdad386485a492ab41fe08007ecf85ca278ddd8f9333494dcac4949d
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/npm/npm-registry-fetch
-      - https://github.com/npm/npm-registry-fetch/blob/18bf9b97fb1deecdba01ffb05580370846255c88/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/post_fix': 1, 'train/vulnerable': 2}
-  # registry (deps.dev): {'npm:@nyariv/sandboxjs': ['MIT']}
-  - repository_key: nyariv/sandboxjs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 6cc322fdbcf3ffdf094e507104d69d6393f06d9ffb34fad345079123f25bf205
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nyariv/SandboxJS
-      - https://github.com/nyariv/SandboxJS/blob/826865251232611ec94078bab5a18ec875dad4a5/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/oauth2-proxy/oauth2-proxy': ['MIT']}
-  - repository_key: oauth2-proxy/oauth2_proxy
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/oauth2-proxy/oauth2_proxy
-      - https://github.com/oauth2-proxy/oauth2_proxy/blob/a316f8a06f3c0ca2b5fc5fa18a91781b313607b2/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:open-cluster-management.io/ocm': ['Apache-2.0']}
   - repository_key: open-cluster-management-io/ocm
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/robbert229/jwt
       - https://github.com/robbert229/jwt/blob/ca1404ee6e83fcbafb66b09ed0d543850a15b654/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:scss-tokenizer': ['MIT']}
+  - repository_key: sasstools/scss-tokenizer
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 7bbbf1df0a6d88da086c3f881be430d2cef0ec1430444d675a91678d2512c552
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sasstools/scss-tokenizer
+      - https://github.com/sasstools/scss-tokenizer/blob/a53b6f233e648cc01acbdd89c58786cf8ba56e35/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/schollz/rwtxt': ['MIT']}
+  - repository_key: schollz/rwtxt
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 212186b36a3918811ed69d8df18254c8e468f11dd68c690e231f55ff9bd98dc1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/schollz/rwtxt
+      - https://github.com/schollz/rwtxt/blob/c09fb17375c4c47b49524c688288af1fe20e730a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/seaweedfs/seaweedfs': ['Apache-2.0']}
+  - repository_key: seaweedfs/seaweedfs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: d789d433cc11da163273d1e39be2e8fa67642f9a58ef220d3f258fa9c14ef613
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/seaweedfs/seaweedfs
+      - https://github.com/seaweedfs/seaweedfs/blob/05ed5c9ae8a2a45101b52b61d02f170d20d587ff/LICENSE
     notes: ""

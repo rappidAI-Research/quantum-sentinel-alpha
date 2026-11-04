@@ -4,53 +4,19 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@actions/artifact': ['MIT'], 'npm:@actions/core': ['MIT']}
-  - repository_key: actions/toolkit
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.md
-    license_file_sha256: e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/actions/toolkit
-      - https://github.com/actions/toolkit/blob/4beda9cbc00ba6eefe387a937c21087ccb8ee9df/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:django-unicorn': ['MIT']}
-  - repository_key: adamghill/django-unicorn
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 32e2cce07562c2a84d8763fd32b810b9cc2026cbc75453c96401740ba821ed30
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/adamghill/django-unicorn
-      - https://github.com/adamghill/django-unicorn/blob/17614200f27174f789d4af54cc3a1f2b0df7870c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:aim': ['Apache-2.0']}
-  - repository_key: aimhubio/aim
+  # registry (deps.dev): {'PyPI:aiohttp-session': ['Apache-2.0']}
+  - repository_key: aio-libs/aiohttp-session
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
     license_file: LICENSE
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    license_file_sha256: 2a86817fedf0c52baaa47d7dd975073639dfaaebd37312bd279de54d7f841791
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/aimhubio/aim
-      - https://github.com/aimhubio/aim/blob/b9e53df5e32d14bbd3a2c738e2db7187fb531e93/LICENSE
+      - https://github.com/aio-libs/aiohttp-session
+      - https://github.com/aio-libs/aiohttp-session/blob/1b356f01bbab57d041c9a75bacd72fbbf8524728/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/authzed/spicedb
       - https://github.com/authzed/spicedb/blob/fa1d7f48107e0c6c35e6a7862aa983366e70208f/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@seal-security/mongoose-fixed': ['MIT'], 'npm:mongoose': ['MIT']}
+  - repository_key: automattic/mongoose
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: b15cc7d4a0c19e709470e3057b90763b775acd82051047abe224a4ecfa90e4b3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Automattic/mongoose
+      - https://github.com/Automattic/mongoose/blob/f1efabf350522257364aa5c2cb36e441cf08f1a2/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:taipy': ['Apache-2.0']}
+  - repository_key: avaiga/taipy
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Avaiga/taipy
+      - https://github.com/Avaiga/taipy/blob/129fd407ffca49ee4ab853772c88d0c873e038dd/LICENSE
     notes: ""

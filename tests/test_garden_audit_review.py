@@ -275,6 +275,8 @@ def test_broad_localization_span_excludes_the_vulnerable_record() -> None:
         {"group_id": "g2", "records": {"vulnerable": "v2", "post_fix": "p2"}, "span": {"broad": False}},
     ]
     assert audit.audit_exclusions(results, {}) == [{"record_id": "v1", "reason": "broad_localization_span"}]
+    unverified = [{"group_id": "g3", "records": {"vulnerable": "v3", "post_fix": "p3"}, "later_fix_unreadable_commits": ["d" * 40]}]
+    assert audit.audit_exclusions(unverified, {}) == [{"record_id": "p3", "reason": f"later_fix_unverifiable:{'d' * 40}"}]
 
 
 def test_rates_after_automated_exclusions_count_only_surviving_items() -> None:
@@ -323,3 +325,72 @@ def test_failed_license_lookup_is_missing_evidence_not_consistency(tmp_path: Pat
     assert evidence["license_lookup_failed_revisions"] == ["a" * 40, "b" * 40]
     assert not evidence["license_files_identical_across_revisions"]
     assert evidence["tier"] == "B" and "license_lookup_failed" in evidence["tier_reasons"]
+
+
+def test_survival_is_judged_on_the_record_each_question_is_about() -> None:
+    manual = {"reviewer": "t", "items": [
+        {"group_id": "g1", "item": "pair", "localization": "precise", "hard_negative_safe": "no"},
+        {"group_id": "g2", "item": "abstention", "abstention_valid": "no"},
+    ]}
+    result = {
+        "groups": [
+            {"group_id": "g1", "records": {"vulnerable": "v1", "post_fix": "p1"}},
+            {"group_id": "g2", "records": {"vulnerable": "v2", "post_fix": "p2", "caller_abstention": "a2"}},
+        ],
+        # g1: only the hard negative is excluded; g2: the vulnerable record is, which takes its siblings along
+        "exclusions": [{"record_id": "p1", "reason": "later_fix_changes_same_function:X"}, {"record_id": "v2", "reason": "broad_localization_span"}],
+        "sample": [{"group_id": "g1", "item": "pair"}, {"group_id": "g2", "item": "abstention"}],
+    }
+    kept = audit.summarize(result, manual)["manual"]["rates_after_automated_exclusions"]
+    assert kept["localization"]["judged"] == 1
+    assert kept["hard_negative_safe"]["judged"] == 0
+    assert kept["abstention_valid"]["judged"] == 0
+
+
+def test_unreadable_later_fix_commit_makes_the_check_incomplete() -> None:
+    group = built()
+    later = {
+        "id": "GHSA-6666-7777-8888",
+        "summary": "Second SQL injection in webapp",
+        "references": [{"type": "FIX", "url": f"https://github.com/example/webapp/commit/{'d' * 40}"}],  # LaterFixRepo cannot read it
+    }
+    unreadable: list[str] = []
+    assert audit.later_fixes(group, [later], LaterFixRepo(), unreadable) == []
+    assert unreadable == ["d" * 40]
+
+
+def test_incomplete_recheck_keeps_earlier_later_fix_exclusions(monkeypatch: pytest.MonkeyPatch) -> None:
+    import shutil
+    import uuid
+
+    import sentinel.garden.pipeline as pipeline
+
+    name = f"test-audit-carry-{uuid.uuid4().hex[:8]}"
+    root = pipeline.PROJECT_ROOT / "artifacts" / "garden" / name
+    root.mkdir(parents=True)
+    try:
+        raw = yaml.safe_load(pipeline.DEFAULT_CONFIG_PATH.read_text())
+        raw["workdir"] = f"artifacts/garden/{name}/work"
+        raw["committed_dir"] = f"artifacts/garden/{name}/committed"
+        (root / "garden.yaml").write_text(yaml.safe_dump(raw))
+        config = pipeline.load_config(root / "garden.yaml")
+        config.workdir.mkdir(parents=True)
+        (config.workdir / "records.jsonl").write_text("")
+        (config.committed_dir / "audit").mkdir(parents=True)
+        (config.committed_dir / "candidates.jsonl").write_text("")
+        earlier = {"record_id": "p1", "reason": "later_fix_changes_same_function:GHSA-6666-7777-8888"}
+        (config.committed_dir / "audit" / "exclusions.yaml").write_text(yaml.safe_dump({"audit_version": "2", "automated": [earlier], "manual": []}))
+        result = {
+            "audit_version": "2",
+            "groups": [{"group_id": "g1", "records": {"vulnerable": "v1", "post_fix": "p1"}, "later_fix_check": "incomplete", "later_fixes": []}],
+            "exclusions": [],
+            "sample": [],
+        }
+        monkeypatch.setattr(pipeline, "run_audit", lambda *args, **kwargs: copy.deepcopy(result))
+        monkeypatch.setattr(pipeline, "summarize", lambda result, manual: {"groups": 1})
+        monkeypatch.setattr(pipeline, "audit_report_markdown", lambda summary, result, manual: "")
+        pipeline.audit(config, log=lambda _: None)
+        written = yaml.safe_load((config.committed_dir / "audit" / "exclusions.yaml").read_text())
+        assert written["automated"] == [earlier]
+    finally:
+        shutil.rmtree(root, ignore_errors=True)

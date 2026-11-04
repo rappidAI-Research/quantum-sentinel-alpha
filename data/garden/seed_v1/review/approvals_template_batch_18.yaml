@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:sequelize-typescript': ['MIT']}
-  - repository_key: robinbuschmann/sequelize-typescript
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 29f8ca6e3898a615922b7f4c2e4c6dde00fc05a21befb987d8577e4971cc7c7d
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/robinbuschmann/sequelize-typescript
-      - https://github.com/robinbuschmann/sequelize-typescript/blob/5ce8afdd1671b08c774ce106b000605ba8fccf78/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:flattenizer': ['MIT']}
-  - repository_key: sahellebusch/flattenizer
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: c1b6111cd2004b0a62f9abef408083953031b468e1c68ce31212548714b886fc
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/sahellebusch/flattenizer
-      - https://github.com/sahellebusch/flattenizer/blob/3c6a6353df7c8879e931973b81a49a47f6c2b399/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:saleor': ['BSD-3-Clause']}
   - repository_key: saleor/saleor
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/Styria-Digital/django-rest-framework-jwt
       - https://github.com/Styria-Digital/django-rest-framework-jwt/blob/868b5c22ddad59772b447080183e7c7101bb18e0/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:syntax-error': ['MIT']}
+  - repository_key: substack/node-syntax-error
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/substack/node-syntax-error
+      - https://github.com/substack/node-syntax-error/blob/9aa4e66eb90ec595d2dba55e6f9c2dd9a668b309/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:djoser': ['MIT']}
+  - repository_key: sunscrapers/djoser
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: bc8764999ea43619765dbbbb55fe081f4d1dc38c2c7fbb55ae7dc2c05587581d
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sunscrapers/djoser
+      - https://github.com/sunscrapers/djoser/blob/d33c3993c0c735f23cbedc60fa59fce69354f19d/LICENSE
     notes: ""

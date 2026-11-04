@@ -3,23 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 1 {'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@fastify/middie': ['MIT']}
-  - repository_key: fastify/middie
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: fe26044de416cf0cdb2cfd12ed299e5756d05b5d2ee6c59d3fd25ed304635d58
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/fastify/middie
-      - https://github.com/fastify/middie/blob/d44cd56eb724490babf7b452fdbbdd37ea2effba/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 1 {'validation/vulnerable': 1}
   # registry (deps.dev): {'npm:glance': ['MIT']}
   - repository_key: jarofghosts/glance
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/go-gitea/gitea
       - https://github.com/go-gitea/gitea/blob/1d43b736b5a16c5f80cfdcd9a9448a9c983ddaa0/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:gogs.io/gogs': ['Apache-2.0', 'CC0-1.0', 'MIT']}
+  - repository_key: gogs/gogs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 4b5bc6bfd453444bdeaa95f9c7c8b280113cc3a72020818ad2578a8800b18a66
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/gogs/gogs
+      - https://github.com/gogs/gogs/blob/c5da9631dc75f692f313373ae229c4d47ba6517f/LICENSE
     notes: ""

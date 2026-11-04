@@ -69,7 +69,7 @@ python -m sentinel.garden review     # network: deps.dev; rights review queue an
 python -m sentinel.garden check      # offline consistency check of the committed manifest
 ```
 
-Current seed (`sentinel-garden-seed-v1`, frozen split policy `sentinel-garden-split-v1`): 2,773 records, 2,333 accepted (1,055 findings, 969 post-fix hard negatives, 309 abstentions; Go, Python, JavaScript, TypeScript), **0 training-approved**. Quality audit: `data/garden/seed_v1/AUDIT_REPORT.md`. Rights review queue (766 repositories, nothing approved): `data/garden/seed_v1/REVIEW_QUEUE.md`, workflow in `docs/RIGHTS_REVIEW.md`.
+Current seed (`sentinel-garden-seed-v1`, frozen split policy `sentinel-garden-split-v1`): 2,773 records, 2,322 accepted (1,053 findings, 960 post-fix hard negatives, 309 abstentions; Go, Python, JavaScript, TypeScript), **0 training-approved**. Quality audit: `data/garden/seed_v1/AUDIT_REPORT.md`. Rights review queue (766 repositories, nothing approved): `data/garden/seed_v1/REVIEW_QUEUE.md`, workflow in `docs/RIGHTS_REVIEW.md`.
 
 Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v1/` holds only metadata, statistics and the review queue. See `docs/SENTINEL_GARDEN.md` and `docs/DATA_GOVERNANCE.md`.
 

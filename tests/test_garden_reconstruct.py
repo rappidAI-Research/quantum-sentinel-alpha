@@ -90,3 +90,35 @@ def test_split_drift_fails_even_when_upstream_records_are_missing(garden, monkey
     pipeline._write_jsonl(config.committed_dir / "manifest.jsonl", rows)
     report = pipeline.reconstruct(config, log=lambda _: None)
     assert report["missing_records"] and not report["ok"] and report["split_drift"] == [target["record_id"]]
+
+
+def test_audit_population_is_a_fixed_point_of_curate(tmp_path, monkeypatch) -> None:
+    from sentinel.garden import audit
+
+    name = f"test-fixedpoint-{uuid.uuid4().hex[:8]}"
+    root = pipeline.PROJECT_ROOT / "artifacts" / "garden" / name
+    root.mkdir(parents=True)
+    try:
+        raw_config = yaml.safe_load(pipeline.DEFAULT_CONFIG_PATH.read_text())
+        raw_config["workdir"] = f"artifacts/garden/{name}/work"
+        raw_config["committed_dir"] = f"artifacts/garden/{name}/committed"
+        (root / "garden.yaml").write_text(yaml.safe_dump(raw_config))
+        config = pipeline.load_config(root / "garden.yaml")
+        raw = []
+        for repo, advisory in (("example/one", "GHSA-2222-3333-4444"), ("example/two", "GHSA-5555-6666-7777")):
+            raw += build_records(candidate(repo=repo, advisory=advisory), FakeRepo({"shop/x.py": PY_OLD}, {"shop/x.py": PY_NEW}),
+                                 SETTINGS, config.dataset_id, "ghsa-osv-fix-commits", ["osv", "github-advisory-db"])
+        (config.committed_dir / "audit").mkdir(parents=True)
+        first = pipeline.curate_records(config, copy.deepcopy(raw))
+        kept = next(r for r in first if r["kind"] == "vulnerable" and r["quality"]["status"] == "accepted")
+        twin = next(r for r in first if r["kind"] == "vulnerable" and r["record_id"] != kept["record_id"])
+        assert any(c.endswith("duplicate") for c in twin["quality"]["failed_checks"])
+        # the audit excludes the kept copy: the twin must stay a duplicate, not move into the population
+        (config.committed_dir / "audit" / "exclusions.yaml").write_text(
+            yaml.safe_dump({"audit_version": "2", "automated": [{"record_id": kept["record_id"], "reason": "broad_localization_span"}], "manual": []})
+        )
+        second = pipeline.curate_records(config, copy.deepcopy(raw))
+        ids = lambda rows: sorted(r["record_id"] for r in audit.audit_population(rows))
+        assert ids(second) == ids(first)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)

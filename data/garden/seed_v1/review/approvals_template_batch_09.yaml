@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@seal-security/mongoose-fixed': ['MIT'], 'npm:mongoose': ['MIT']}
-  - repository_key: automattic/mongoose
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.md
-    license_file_sha256: b15cc7d4a0c19e709470e3057b90763b775acd82051047abe224a4ecfa90e4b3
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/Automattic/mongoose
-      - https://github.com/Automattic/mongoose/blob/f1efabf350522257364aa5c2cb36e441cf08f1a2/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:taipy': ['Apache-2.0']}
-  - repository_key: avaiga/taipy
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/Avaiga/taipy
-      - https://github.com/Avaiga/taipy/blob/129fd407ffca49ee4ab853772c88d0c873e038dd/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:aws-cdk-aws-codebuild': ['Apache-2.0'], 'PyPI:aws-cdk-lib': ['Apache-2.0'], 'npm:aws-cdk': ['Apache-2.0'], 'npm:aws-cdk-lib': ['Apache-2.0']}
   - repository_key: aws/aws-cdk
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/corazawaf/coraza
       - https://github.com/corazawaf/coraza/blob/4722c9ad0d502abd56b8d6733c6b47eb4111742d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:node-windows': ['MIT']}
+  - repository_key: coreybutler/node-windows
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: ec84cd5f859cbba66c8d3050c144d30aa3f11715de95b35b7cc5fb71e43c8175
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/coreybutler/node-windows
+      - https://github.com/coreybutler/node-windows/blob/a379d31366edbd7a672a981e6c09e185ab448dd3/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/cri-o/cri-o': ['Apache-2.0']}
+  - repository_key: cri-o/cri-o
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cri-o/cri-o
+      - https://github.com/cri-o/cri-o/blob/75effcb1a25851a736e82dba1f7d8cee93ee159e/LICENSE
     notes: ""

@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/versity/versitygw': ['Apache-2.0']}
-  - repository_key: versity/versitygw
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/versity/versitygw
-      - https://github.com/versity/versitygw/blob/0972af078325ab5c6acd37abffe6bea345ac7db0/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:koa-remove-trailing-slashes': ['MIT']}
-  - repository_key: vgno/koa-remove-trailing-slashes
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: cf8bcd44b619967802dfaf162bdb1af4f6f7b6f70cbe97a4f251f9477669c347
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/vgno/koa-remove-trailing-slashes
-      - https://github.com/vgno/koa-remove-trailing-slashes/blob/e7ce4000e9fe4d957332df1056640a22ebea28ee/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:@viking04/merge': ['MIT']}
   - repository_key: viking04/merge
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -411,6 +377,23 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
+  # records: 1 {'validation/caller_abstention': 1}
+  # registry (deps.dev): {'npm:querymen': ['MIT']}
+  - repository_key: diegohaz/querymen
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a71ec5b58c33fe7d3674e62c3f9eec910b92023d4942f263147d2f182631b407
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/diegohaz/querymen
+      - https://github.com/diegohaz/querymen/blob/1987fefcb3b7508253a29502a008d5063a873cef/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
   # records: 1 {'train/vulnerable': 1}
   # registry (deps.dev): {'npm:mailgen': ['Apache-2.0']}
   - repository_key: eladnava/mailgen
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/eladnava/mailgen
       - https://github.com/eladnava/mailgen/blob/741a0190ddae0f408b22ae3b5f0f4c3f5cf4f11d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@fastify/middie': ['MIT']}
+  - repository_key: fastify/middie
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: fe26044de416cf0cdb2cfd12ed299e5756d05b5d2ee6c59d3fd25ed304635d58
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/fastify/middie
+      - https://github.com/fastify/middie/blob/d44cd56eb724490babf7b452fdbbdd37ea2effba/LICENSE
     notes: ""
