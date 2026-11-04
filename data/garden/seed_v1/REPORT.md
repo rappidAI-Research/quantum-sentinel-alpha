@@ -11,11 +11,11 @@ registry sources it depends on are approved. Accepted records are a non-approved
 
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| go | 123 | 124 | 58 | 305 |
+| go | 123 | 123 | 58 | 304 |
 | javascript | 79 | 79 | 24 | 182 |
 | python | 95 | 95 | 27 | 217 |
 | typescript | 52 | 52 | 17 | 121 |
-| **Total** | 349 | 350 | 126 | 825 |
+| **Total** | 349 | 349 | 126 | 824 |
 
 Complete vulnerable/fixed pairs: 347.
 
@@ -23,7 +23,7 @@ Complete vulnerable/fixed pairs: 347.
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 242 | 243 | 84 | 220 |
+| train | 242 | 242 | 84 | 220 |
 | validation | 32 | 31 | 12 | 27 |
 | holdout_reserved | 42 | 43 | 15 | 34 |
 | temporal_quarantine | 33 | 33 | 15 | 28 |
@@ -207,12 +207,12 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 880 built, 825 accepted, 55 rejected.
+Records: 880 built, 824 accepted, 56 rejected.
 
 | Failed check | Records |
 | --- | ---: |
 | label_conflict_exact | 4 |
-| label_conflict_near | 2 |
+| label_conflict_near | 3 |
 | localization_valid:diff_consistent | 4 |
 | localization_valid:trivial_span | 15 |
 | sibling_rejected | 28 |
@@ -240,7 +240,7 @@ Flags on accepted records (not rejections):
 | ISC | 3 |
 | LGPL-2.1 | 10 |
 | LGPL-3.0 | 2 |
-| MIT | 346 |
+| MIT | 345 |
 | MPL-2.0 | 3 |
 | Unlicense | 4 |
 | multiple:AGPL-3.0|LGPL-3.0 | 2 |
@@ -254,17 +254,17 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 236 |
-| pending_review | 644 |
+| excluded | 237 |
+| pending_review | 643 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 825 |
-| source_not_approved:ghsa-osv-fix-commits | 825 |
-| source_not_approved:github-advisory-db | 825 |
-| source_not_approved:osv | 825 |
+| repository_not_reviewed | 824 |
+| source_not_approved:ghsa-osv-fix-commits | 824 |
+| source_not_approved:github-advisory-db | 824 |
+| source_not_approved:osv | 824 |
 | split:holdout_reserved | 100 |
 | split:temporal_quarantine | 81 |
 
@@ -286,4 +286,4 @@ Blockers on accepted records:
 | 2023 | 54 |
 | 2024 | 81 |
 | 2025 | 108 |
-| 2026 | 315 |
+| 2026 | 314 |

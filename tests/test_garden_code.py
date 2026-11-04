@@ -95,7 +95,7 @@ def test_normalized_hash_ignores_comments_and_layout() -> None:
     b = "def f(x):\n    return x+1  # other\n"
     assert code.normalized_sha256("python", a) == code.normalized_sha256("python", b)
     js_a = "function f(x) { // c\n  return '//' + x; }\n"
-    js_b = "function f(x) {\n  /* c */ return '//' + x;\n}\n"
+    js_b = "function f(x) { /* c */\n    return '//'+x; }\n"  # same line structure (line breaks are significant)
     assert code.normalized_sha256("javascript", js_a) == code.normalized_sha256("javascript", js_b)
 
 

@@ -566,11 +566,21 @@ def _line_classes(language: str, source: str) -> tuple[set[int], set[int]]:
             elif _BRACKETS_ONLY.match(line):
                 brackets.add(number)
         return noise | imports | python_docstring_lines(source), brackets
-    # Comments removed, string contents kept: a line inside a multi-line template literal or Go raw
-    # string is code, a block-comment continuation line is not.
-    for number, line in enumerate(strip_comments(language, source).split("\n"), start=1):
+    # Comments removed, string contents kept. Every line that touches a string, template, regex or
+    # raw-string literal is code (even if it is whitespace-only inside the literal); a block-comment
+    # continuation line is not.
+    text = strip_comments(language, source)
+    spans: list[tuple[int, int]] = []
+    mask_c_like(text, language, spans)
+    in_literal: set[int] = set()
+    for start, end in spans:
+        first = text.count("\n", 0, start) + 1
+        in_literal.update(range(first, first + text.count("\n", start, end) + 1))
+    for number, line in enumerate(text.split("\n"), start=1):
         if number > len(lines):
             break
+        if number in in_literal:
+            continue
         if not line.strip():
             noise.add(number)
         elif _BRACKETS_ONLY.match(line):
@@ -725,18 +735,32 @@ def normalized_tokens(language: str, source: str) -> list[str]:
 
 
 def _c_like_tokens(language: str, text: str) -> list[str]:
-    """Tokens of comment-free code; string, template and regex literal bodies stay one exact token."""
+    """Tokens of comment-free code; string, template and regex literal bodies stay one exact token.
+
+    Line breaks outside literals are kept as a `<NL>` token (runs collapse, so blank lines do not
+    matter): with automatic semicolon insertion `return\n  !x` and `return !x` behave differently,
+    so a line break is never treated as cosmetic.
+    """
     spans: list[tuple[int, int]] = []
     mask_c_like(text, language, spans)
     out: list[str] = []
+
+    def code(segment: str) -> None:
+        for index, part in enumerate(segment.split("\n")):
+            if index and out and out[-1] != "<NL>":
+                out.append("<NL>")
+            out.extend(_TOKEN.findall(part))
+
     position = 0
     for start, end in sorted(spans):
         if start < position:
             continue
-        out.extend(_TOKEN.findall(text[position:start]))
+        code(text[position:start])
         out.append("\x00" + text[start:end])
         position = end
-    out.extend(_TOKEN.findall(text[position:]))
+    code(text[position:])
+    while out and out[-1] == "<NL>":
+        out.pop()
     return out
 
 

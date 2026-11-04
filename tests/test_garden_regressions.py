@@ -329,3 +329,79 @@ def test_fix_commit_that_is_another_fix_parent_keeps_its_parent(tmp_path) -> Non
         assert repo.ensure_commit(c).parents == (b,)
         assert repo.ensure_commit(b).parents == (a,)  # b was the shallow boundary of c's fetch
         assert repo.ensure_commit(c).parents == (b,)
+
+
+# --- Fourth review round ------------------------------------------------------------------------
+
+
+def test_line_break_after_return_is_not_cosmetic_in_javascript() -> None:
+    old = "function deny(user) {\n  log(user);\n  return\n    !user.isAdmin;\n}\n"
+    new = "function deny(user) {\n  log(user);\n  return !user.isAdmin;\n}\n"
+    assert code.normalized_sha256("javascript", old) != code.normalized_sha256("javascript", new)
+    records = build({"a.js": old}, {"a.js": new}, candidate("npm", ["CWE-863"]))
+    assert any(r["kind"] == "vulnerable" for r in records)
+
+
+def test_blank_lines_and_indentation_stay_cosmetic_in_c_like_code() -> None:
+    a = "function f(x) {\n  g(x);\n\n\n  return x;\n}\n"
+    b = "function f(x) {\n    g( x );\n    return x;  // done\n}\n"
+    assert code.normalized_sha256("javascript", a) == code.normalized_sha256("javascript", b)
+
+
+@pytest.mark.parametrize(
+    ("path", "ecosystem", "old", "new"),
+    [
+        ("a.go", "Go", "package a\n\nfunc tpl() string {\n\ts := `a\n \nb`\n\treturn s\n}\n", "package a\n\nfunc tpl() string {\n\ts := `a\n\nb`\n\treturn s\n}\n"),
+        ("a.js", "npm", "function tpl() {\n  const s = `a\n \nb`;\n  return s;\n}\n", "function tpl() {\n  const s = `a\n\nb`;\n  return s;\n}\n"),
+    ],
+)
+def test_whitespace_only_lines_inside_literals_are_code(path: str, ecosystem: str, old: str, new: str) -> None:
+    whitespace_line = old.splitlines().index(" ") + 1
+    assert whitespace_line not in code.noise_lines(code.language_of(path), old)
+    records = build({path: old}, {path: new}, candidate(ecosystem, ["CWE-79"]))
+    assert any(r["kind"] == "vulnerable" for r in records)
+
+
+LITERAL_SAMPLES = {
+    "python": 'def f(x):\n    a = "p q  r"\n    b = f"{x} y"\n    c = """m\n n\n"""\n    return a + b + c\n',
+    "javascript": "function f(x) {\n  const a = 'p q  r';\n  const b = `${x} y\n z`;\n  const c = /^[a-z ]+$/;\n  return a + b + c;\n}\n",
+    "typescript": "function f(x: string): string {\n  const a = \"p q  r\";\n  return a + `${x} y`;\n}\n",
+    "go": 'package a\n\nfunc f(x string) string {\n\ta := "p q  r"\n\tb := `m\n n`\n\treturn a + b + x\n}\n',
+}
+
+
+@pytest.mark.parametrize("language", sorted(LITERAL_SAMPLES))
+def test_every_whitespace_edit_inside_a_literal_changes_the_normalized_hash(language: str) -> None:
+    source = LITERAL_SAMPLES[language]
+    base = code.normalized_sha256(language, source)
+    spans: list = []
+    if language == "python":
+        import io
+        import tokenize
+
+        offsets = [0]
+        for line in source.splitlines(keepends=True):
+            offsets.append(offsets[-1] + len(line))
+        for token in tokenize.generate_tokens(io.StringIO(source).readline):
+            if token.type == tokenize.STRING or token.type == getattr(tokenize, "FSTRING_MIDDLE", -1):
+                start = offsets[token.start[0] - 1] + token.start[1]
+                end = offsets[token.end[0] - 1] + token.end[1]
+                spans.append((start + 1, end - 1))
+    else:
+        code.mask_c_like(source, language, spans)
+    positions = [i for start, end in spans for i in range(start, end) if source[i] in " \n"]
+    assert positions, "sample must contain whitespace inside literals"
+    for i in positions:
+        for variant in (source[:i] + source[i + 1 :], source[:i] + " " + source[i:]):
+            assert code.normalized_sha256(language, variant) != base, (language, i)
+
+
+@pytest.mark.parametrize("language", ["javascript", "typescript", "go"])
+def test_joining_or_splitting_code_lines_is_significant_where_semicolons_are_inserted(language: str) -> None:
+    source = LITERAL_SAMPLES[language]
+    lines = source.splitlines()
+    for k in range(1, len(lines) - 1):
+        if not lines[k].strip() or not lines[k + 1].strip():
+            continue  # removing a blank line is cosmetic
+        joined = "\n".join(lines[:k] + [lines[k] + " " + lines[k + 1].strip()] + lines[k + 2 :]) + "\n"
+        assert code.normalized_sha256(language, joined) != code.normalized_sha256(language, source), (language, k)
