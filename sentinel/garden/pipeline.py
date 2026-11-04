@@ -336,7 +336,11 @@ def statistics(config: GardenConfig, records: list[dict[str, Any]], build_log: l
     failed_checks: Counter[str] = Counter()
     for record in records:
         for check in record["quality"]["failed_checks"]:
-            failed_checks[check.split(":")[0] if check.startswith("eval_") else check] += 1
+            if check.startswith("eval_"):
+                check = check.split(":")[0]
+            elif check.startswith("audit:"):
+                check = ":".join(check.split(":")[:2])
+            failed_checks[check] += 1
     blockers: Counter[str] = Counter(b for r in accepted for b in r["governance"]["blockers"])
     accepted_findings = [r for r in accepted if r["target"]["decision"] == "finding"]
     repos_by_split: dict[str, set[str]] = defaultdict(set)

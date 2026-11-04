@@ -1,0 +1,123 @@
+{
+  "abstentions_checked": 219,
+  "abstentions_invalid": 1,
+  "broad_spans": 61,
+  "correspondence": {
+    "moderate": 156,
+    "strong": 357,
+    "weak": 96
+  },
+  "correspondence_by_language": {
+    "go": {
+      "moderate": 45,
+      "strong": 127,
+      "weak": 35
+    },
+    "javascript": {
+      "moderate": 43,
+      "strong": 70,
+      "weak": 24
+    },
+    "python": {
+      "moderate": 48,
+      "strong": 107,
+      "weak": 19
+    },
+    "typescript": {
+      "moderate": 20,
+      "strong": 53,
+      "weak": 18
+    }
+  },
+  "exclusions_by_reason": {
+    "abstention_constant_arguments": 1,
+    "later_fix_changes_same_function": 100,
+    "reported_incomplete_fix": 35
+  },
+  "fix_pattern_by_family": {
+    "authn_authz": "56/80",
+    "code_injection": "8/14",
+    "command_injection": "11/29",
+    "crypto_tls_integrity": "21/31",
+    "deserialization_input_validation": "28/46",
+    "information_exposure": "32/51",
+    "path_traversal": "40/62",
+    "prototype_pollution": "23/28",
+    "redirect_ssrf": "34/37",
+    "resource_limits_redos": "104/114",
+    "sql_injection": "2/8",
+    "xss_output_encoding": "24/56"
+  },
+  "fix_pattern_consistent": "383/556",
+  "groups": 612,
+  "later_fix_checked": 605,
+  "later_fix_incomplete_lookups": 0,
+  "manual": {
+    "items": 44,
+    "rates": {
+      "abstention_valid": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 12,
+        "uncertain_or_partial": 1,
+        "wilson95": [
+          0.0,
+          0.243
+        ]
+      },
+      "advisory_matches_code": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 32,
+        "uncertain_or_partial": 2,
+        "wilson95": [
+          0.0,
+          0.107
+        ]
+      },
+      "cwe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 32,
+        "uncertain_or_partial": 7,
+        "wilson95": [
+          0.0,
+          0.107
+        ]
+      },
+      "fix_addresses_weakness": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 32,
+        "uncertain_or_partial": 1,
+        "wilson95": [
+          0.0,
+          0.107
+        ]
+      },
+      "hard_negative_safe": {
+        "error_rate": 0.031,
+        "errors": 1,
+        "judged": 32,
+        "uncertain_or_partial": 2,
+        "wilson95": [
+          0.006,
+          0.157
+        ]
+      },
+      "localization": {
+        "error_rate": 0.062,
+        "errors": 2,
+        "judged": 32,
+        "uncertain_or_partial": 8,
+        "wilson95": [
+          0.017,
+          0.201
+        ]
+      }
+    },
+    "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer"
+  },
+  "post_fix_invalidated": 61,
+  "span_lines_median": 2
+}
