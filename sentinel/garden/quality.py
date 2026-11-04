@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import textwrap
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -108,6 +109,11 @@ def apply_unified_patch(original: str, patch: str) -> str | None:
 # --------------------------------------------------------------------------------------------
 
 
+def _parseable(language: str, excerpt: str) -> str:
+    """Function excerpts of methods are indented; dedent Python so the tokenizer accepts them."""
+    return textwrap.dedent(excerpt) if language == "python" else excerpt
+
+
 def check_record(record: dict[str, Any], validator: Draft202012Validator, rejected_cwes: set[str], coarse_cwes: set[str], max_context_chars: int, min_lines: int) -> tuple[list[str], list[str]]:
     failed: list[str] = []
     flags: list[str] = []
@@ -160,7 +166,7 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
         start, end = target["start_line"], target["end_line"]
         if start is None or end is None or not 1 <= start <= end <= len(lines):
             failed.append("localization_valid:span")
-        elif all(code.is_import_or_trivial(language, line) for line in lines[start - 1 : end]):
+        elif set(range(start, end + 1)) <= code.trivial_lines(language, _parseable(language, excerpt)):
             failed.append("localization_valid:trivial_span")
         if loc.get("method") != "upstream_fix_diff" or not loc.get("diff_consistent"):
             failed.append("localization_valid:diff_consistent")
@@ -180,10 +186,9 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
             failed.append("revision_consistent")
     if record["kind"] == "caller_abstention":
         callee = loc.get("withheld_callee", "")
-        masked = excerpt if language == "python" else code.mask_c_like(excerpt, language)
-        if not callee or not re.search(rf"(?<![\w$]){re.escape(callee)}\s*\(", masked):
+        if not callee or not code.call_lines(language, _parseable(language, excerpt), callee):
             failed.append("abstention_calls_withheld_callee")
-        if re.search(rf"(?:def|function|func)\s+(?:\([^)]*\)\s*)?{re.escape(callee)}\s*\(", excerpt):
+        if any(f.name == callee for f in code.find_functions(language, _parseable(language, excerpt))):
             failed.append("abstention_callee_not_shown")
     return failed, flags
 
@@ -314,11 +319,18 @@ def load_eval_references(case_dirs: Iterable[Path], coding_suites: Iterable[Path
     return references
 
 
-def _repo_key(url: str | None) -> str | None:
+def repository_key(url: str | None) -> str | None:
+    """`owner/repo` in lower case, as discovery stores it. Dots are part of the name; only a trailing
+    `.git` is removed (e.g. `https://github.com/example/webapp.js.git` -> `example/webapp.js`)."""
     if not url:
         return None
-    match = re.search(r"github\.com[/:]([^/]+)/([^/.]+)", url)
-    return f"{match.group(1)}/{match.group(2)}".lower() if match else url.lower()
+    match = re.search(r"github\.com[/:]([^/\s]+)/([^/\s#?]+)", url)
+    if not match:
+        return url.strip().lower()
+    repo = match.group(2)
+    if repo.lower().endswith(".git"):
+        repo = repo[:-4]
+    return f"{match.group(1)}/{repo}".lower()
 
 
 def contamination(records: list[dict[str, Any]], references: list[EvalReference], settings: QualitySettings) -> dict[str, str]:
@@ -326,7 +338,7 @@ def contamination(records: list[dict[str, Any]], references: list[EvalReference]
     hits: dict[str, str] = {}
     ref_hashes = {code.normalized_sha256(r.language, r.text): r.reference_id for r in references}
     ref_prints = {r.reference_id: code.shingles(code.normalized_tokens(r.language, r.text), settings.shingle_size) for r in references}
-    ref_repos = {_repo_key(r.repository): r.reference_id for r in references if r.repository}
+    ref_repos = {repository_key(r.repository): r.reference_id for r in references if r.repository}
     for record in records:
         rid = record["record_id"]
         if record["provenance"]["normalized_sha256"] in ref_hashes:

@@ -402,7 +402,7 @@ def _js_functions(source: str, language: str) -> list[Function]:
                 if ";" in text or re.search(r"(?<![=!<>])=(?!>)", text):
                     return None
                 return k
-            if c in ";,)":
+            if c in ";,)}":  # statement ended (also in semicolon-free code) before any body
                 return None
             between.append(c)
             k += 1
@@ -458,50 +458,135 @@ def _js_functions(source: str, language: str) -> list[Function]:
 # Imports, comments and normalization
 # --------------------------------------------------------------------------------------------
 
-_IMPORT_LINE = {
-    "python": re.compile(r"^\s*(?:import\s+\S|from\s+\S+\s+import\s)"),
-    "javascript": re.compile(r"^\s*(?:import\s.+from\s|import\s+['\"]|(?:const|let|var)\s+.+=\s*require\()"),
-    "typescript": re.compile(r"^\s*(?:import\s.+from\s|import\s+['\"]|(?:const|let|var)\s+.+=\s*require\()"),
-    "go": re.compile(r"^\s*(?:import\s+(?:\w+\s+)?\"[^\"]+\"|(?:\w+\s+)?\"[^\"]+\"\s*$)"),
-}
+_BRACKETS_ONLY = re.compile(r"^[\s(){}\[\];,]*$")
+_JS_IMPORT_START = re.compile(r"^\s*(?:import(?=[\s{*'\"])(?!\s*\()|export\s*(?:type\s+)?(?:\*|\{[^}]*\}?)\s*(?:as\s+\w+\s*)?from\b)")
+_JS_REQUIRE = re.compile(r"^\s*(?:export\s+)?(?:const|let|var)\s+[^=]+=\s*require\(\s*['\"][^'\"]*['\"]\s*\)\s*[;,]?\s*$")
+
+
+def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
+    """(code lines, import-statement lines) from the tokenizer; None if the file does not tokenize."""
+    try:
+        tokens = list(tokenize.generate_tokens(io.StringIO(source).readline))
+    except (tokenize.TokenError, IndentationError, SyntaxError):
+        return None
+    ignored = {tokenize.COMMENT, tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER}
+    code_lines: set[int] = set()
+    imports: set[int] = set()
+    statement: list[tokenize.TokenInfo] = []
+    for token in tokens:
+        if token.type not in ignored:
+            code_lines.update(range(token.start[0], token.end[0] + 1))
+            statement.append(token)
+        elif token.type in (tokenize.NEWLINE, tokenize.ENDMARKER) and statement:
+            first = statement[0]
+            if first.type == tokenize.NAME and first.string in {"import", "from"} and any(
+                t.type == tokenize.NAME and t.string == "import" for t in statement
+            ):
+                imports.update(range(first.start[0], statement[-1].end[0] + 1))
+            statement = []
+    return code_lines, imports
+
+
+def import_statement_lines(language: str, source: str) -> set[int]:
+    """Line numbers that belong to import statements (structural, never inside strings or comments)."""
+    if language == "python":
+        classes = _python_line_classes(source)
+        return classes[1] if classes else set()
+    masked_lines = mask_c_like(source, language).splitlines()
+    lines: set[int] = set()
+    if language == "go":
+        in_block = False
+        for number, line in enumerate(masked_lines, start=1):
+            stripped = line.strip()
+            if in_block:
+                lines.add(number)
+                if stripped.startswith(")"):
+                    in_block = False
+            elif re.match(r"^import\s*\(", line):
+                lines.add(number)
+                in_block = not stripped.endswith(")")
+            elif re.match(r"^import\s+(?:[\w.]+\s+)?\"", line):
+                lines.add(number)
+        return lines
+    open_braces = 0  # > 0 while inside a multi-line `import { a, b } from 'x'` list
+    for number, line in enumerate(masked_lines, start=1):
+        if open_braces > 0:
+            lines.add(number)
+            open_braces += line.count("{") - line.count("}")
+        elif _JS_IMPORT_START.match(line) or _JS_REQUIRE.match(line):
+            lines.add(number)
+            open_braces = max(0, line.count("{") - line.count("}"))
+    return lines
+
+
+def trivial_lines(language: str, source: str) -> set[int]:
+    """Lines that carry no logic: blank, comment-only, docstring, import statement or brackets only.
+
+    Classification uses the whole source, so a `*` dereference in Go, a `#` inside a Python SQL
+    string or a string literal line are code, while block-comment continuation lines are not.
+    """
+    lines = source.splitlines()
+    trivial: set[int] = set()
+    if language == "python":
+        classes = _python_line_classes(source)
+        if classes is None:  # untokenizable: conservative textual fallback (blank / '#' lines only)
+            return {n for n, line in enumerate(lines, start=1) if not line.strip() or line.strip().startswith("#")}
+        code_lines, imports = classes
+        for number, line in enumerate(lines, start=1):
+            if number not in code_lines or _BRACKETS_ONLY.match(line):
+                trivial.add(number)
+        return trivial | imports | python_docstring_lines(source)
+    # Comments removed, string contents kept: a line inside a multi-line template literal or Go raw
+    # string is code, a block-comment continuation line is not.
+    for number, line in enumerate(strip_comments(language, source).split("\n"), start=1):
+        if _BRACKETS_ONLY.match(line):
+            trivial.add(number)
+    return {n for n in trivial if n <= len(lines)} | import_statement_lines(language, source)
 
 
 def import_lines(language: str, source: str, limit: int = 15) -> list[str]:
-    pattern = _IMPORT_LINE[language]
+    """Complete, single-line top-level import statements, in file order (used as context)."""
+    imports = import_statement_lines(language, source)
     found: list[str] = []
-    in_go_block = False
-    for line in source.splitlines():
+    for number, line in enumerate(source.splitlines(), start=1):
         stripped = line.strip()
-        if language == "go":
-            if stripped.startswith("import ("):
-                in_go_block = True
-                continue
-            if in_go_block and stripped == ")":
-                in_go_block = False
-                continue
-            if not in_go_block and not stripped.startswith("import "):
-                continue
-        if pattern.match(line) and not stripped.endswith(("(", "{", ",")):  # skip incomplete multi-line imports
-            found.append(stripped)
-            if len(found) >= limit:
-                break
+        if number not in imports or not stripped or stripped in {"(", ")", "import ("}:
+            continue
+        if stripped.endswith(("(", "{", ",")) or stripped.startswith(("}", ")")):
+            continue  # part of a multi-line import
+        if language == "go" and stripped.startswith("//"):
+            continue
+        found.append(stripped)
+        if len(found) >= limit:
+            break
     return found
 
 
-def is_import_or_trivial(language: str, line: str) -> bool:
-    """A changed line that carries no logic: blank, comment, import or a lone bracket."""
-    stripped = line.strip()
-    if not stripped or stripped in {"(", ")", "{", "}", "};", "});", "]"}:
-        return True
-    if is_comment_line(language, stripped):
-        return True
-    return bool(_IMPORT_LINE[language].match(line)) or (language == "go" and stripped.startswith("import"))
-
-
-def is_comment_line(language: str, stripped: str) -> bool:
+def call_lines(language: str, source: str, name: str) -> list[int]:
+    """Lines where `name(...)` is called. Strings, comments, docstrings and definitions do not count."""
     if language == "python":
-        return stripped.startswith("#")
-    return stripped.startswith(("//", "/*", "*", "*/"))
+        try:
+            tokens = [
+                t
+                for t in tokenize.generate_tokens(io.StringIO(source).readline)
+                if t.type not in (tokenize.COMMENT, tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT)
+            ]
+        except (tokenize.TokenError, IndentationError, SyntaxError):
+            return []
+        found = []
+        for i, token in enumerate(tokens[:-1]):
+            if token.type == tokenize.NAME and token.string == name and tokens[i + 1].string == "(":
+                previous = tokens[i - 1].string if i else ""
+                if previous not in {"def", "class"}:
+                    found.append(token.start[0])
+        return sorted(set(found))
+    call = re.compile(rf"(?<![\w$]){re.escape(name)}\s*\(")
+    definition = re.compile(rf"(?:\bfunction\s*\*?\s*|\bfunc\s*(?:\([^)]*\)\s*)?){re.escape(name)}\s*[\[(<]")
+    found = []
+    for number, line in enumerate(mask_c_like(source, language).splitlines(), start=1):
+        if call.search(line) and not definition.search(line):
+            found.append(number)
+    return found
 
 
 def strip_comments(language: str, source: str) -> str:
@@ -537,6 +622,8 @@ def strip_comments(language: str, source: str) -> str:
                 in_comment = False
                 i += 2
             else:
+                if source[i] == "\n":  # keep line structure inside block comments
+                    result.append("\n")
                 i += 1
             continue
         result.append(source[i])

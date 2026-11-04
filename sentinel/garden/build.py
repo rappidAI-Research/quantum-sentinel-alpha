@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import difflib
 import hashlib
-import re
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
@@ -65,8 +64,8 @@ class _Change:
     hunks: list[Hunk]
     additions: list[tuple[int, int]]  # new-file line ranges of top-level code added by the fix
     trivial_hunks: list[Hunk] = field(default_factory=list)  # comment/blank-only hunks inside the function
-    old_docstring_lines: set[int] = field(default_factory=set)
-    new_docstring_lines: set[int] = field(default_factory=set)
+    old_trivial_lines: set[int] = field(default_factory=set)  # blank/comment/docstring/import lines (old file)
+    new_trivial_lines: set[int] = field(default_factory=set)
 
 
 def stable_id(*parts: str, length: int = 16) -> str:
@@ -94,19 +93,17 @@ def _containing(
     return min(matches, key=lambda f: (f.length, -f.start))
 
 
-def _is_trivial(hunk: Hunk, language: str, old_docs: set[int], new_docs: set[int]) -> bool:
-    """Only blank, comment, import or docstring lines change."""
-    return all(n in old_docs or code.is_import_or_trivial(language, t) for n, t in hunk.removed) and all(
-        n in new_docs or code.is_import_or_trivial(language, t) for n, t in hunk.added
-    )
+def _is_trivial(hunk: Hunk, old_trivial: set[int], new_trivial: set[int]) -> bool:
+    """Only blank, comment, docstring, import or bracket-only lines change (classified on whole files)."""
+    return all(n in old_trivial for n, _ in hunk.removed) and all(n in new_trivial for n, _ in hunk.added)
 
 
-def _is_top_level_addition(hunk: Hunk, language: str) -> bool:
+def _is_top_level_addition(hunk: Hunk, language: str, new_trivial: set[int]) -> bool:
     """A pure insertion of complete top-level code (e.g. a new helper function or constant)."""
     if not hunk.is_insertion:
         return False
     lines = [t for _, t in hunk.added]
-    meaningful = [t for t in lines if t.strip() and not code.is_comment_line(language, t.strip())]
+    meaningful = [t for n, t in hunk.added if n not in new_trivial]
     if not meaningful or meaningful[0][:1].isspace():
         return False
     return code.excerpt_is_well_formed(language, "\n".join(lines) + "\n")
@@ -129,10 +126,10 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
         old_lines, new_lines = old_source.splitlines(), new_source.splitlines()
         old_functions = code.find_functions(language, old_source)
         new_functions = code.find_functions(language, new_source)
-        old_docs = code.python_docstring_lines(old_source) if language == "python" else set()
-        new_docs = code.python_docstring_lines(new_source) if language == "python" else set()
+        old_trivial = code.trivial_lines(language, old_source)
+        new_trivial = code.trivial_lines(language, new_source)
         for hunk in hunks:
-            if _is_trivial(hunk, language, old_docs, new_docs):
+            if _is_trivial(hunk, old_trivial, new_trivial):
                 trivial.append((path, hunk))
                 continue
             old_fn = _containing(
@@ -144,7 +141,7 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
                 old_lines,
                 [t for _, t in hunk.added],
             )
-            if old_fn is None and _is_top_level_addition(hunk, language):
+            if old_fn is None and _is_top_level_addition(hunk, language, new_trivial):
                 additions.setdefault(path, []).append((hunk.new_start, hunk.new_start + hunk.new_count - 1))
                 continue
             new_fn = _containing(
@@ -163,7 +160,7 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
             key = (path, old_fn.start, old_fn.end)
             change = changes.get(key)
             if change is None:
-                changes[key] = _Change(path, language, old_source, new_source, old_fn, new_fn, [hunk], [], [], old_docs, new_docs)
+                changes[key] = _Change(path, language, old_source, new_source, old_fn, new_fn, [hunk], [], [], old_trivial, new_trivial)
             else:
                 if change.new_function != new_fn:
                     raise Rejected("function_mismatch", f"{old_fn.name} maps to two functions")
@@ -211,12 +208,8 @@ def _span(change: _Change) -> tuple[int, int, str]:
     kinds = set()
     fn = change.old_function
     for hunk in change.hunks:
-        removed = [
-            n for n, t in hunk.removed if n not in change.old_docstring_lines and not code.is_import_or_trivial(change.language, t)
-        ]
-        added = [
-            n for n, t in hunk.added if n not in change.new_docstring_lines and not code.is_import_or_trivial(change.language, t)
-        ]
+        removed = [n for n, _ in hunk.removed if n not in change.old_trivial_lines]
+        added = [n for n, _ in hunk.added if n not in change.new_trivial_lines]
         if removed:
             lines.extend(removed)
             kinds.add("changed_lines")
@@ -269,23 +262,14 @@ def _diff_consistent(change: _Change, patch: str) -> bool:
     return removed == patch_removed and sorted(added) == patch_added
 
 
-_CALL_TEMPLATE = r"(?<![\w$]){name}\s*\("
-_DEFINITION = re.compile(r"^\s*(?:async\s+)?(?:def|function|func)\b|^\s*func\s*\(")
-
-
 def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Function, int] | None:
+    """First unchanged function in the vulnerable file that really calls the vulnerable function."""
     callee = change.old_function
     if callee.name.startswith("<") or len(callee.name) < settings.abstention_min_callee_name_length:
         return None
-    language = change.language
-    if language == "python":
-        searchable_lines = [line.split("#", 1)[0] for line in change.old_source.splitlines()]
-    else:  # comments and string contents masked, line numbers preserved
-        searchable_lines = code.mask_c_like(change.old_source, language).splitlines()
-    call = re.compile(_CALL_TEMPLATE.format(name=re.escape(callee.name)))
-    functions = code.find_functions(language, change.old_source)
-    for number, line in enumerate(searchable_lines, start=1):
-        if callee.start <= number <= callee.end or not call.search(line) or _DEFINITION.match(line):
+    functions = code.find_functions(change.language, change.old_source)
+    for number in code.call_lines(change.language, change.old_source, callee.name):
+        if callee.start <= number <= callee.end:
             continue
         caller = code.innermost(functions, number, number)
         if caller is None or caller.name.startswith("<") or caller.name == callee.name:

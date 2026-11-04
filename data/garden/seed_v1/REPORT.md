@@ -11,21 +11,21 @@ registry sources it depends on are approved. Accepted records are a non-approved
 
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| go | 124 | 125 | 59 | 308 |
+| go | 123 | 124 | 58 | 305 |
 | javascript | 79 | 79 | 24 | 182 |
-| python | 92 | 92 | 27 | 211 |
-| typescript | 49 | 49 | 16 | 114 |
-| **Total** | 344 | 345 | 126 | 815 |
+| python | 95 | 95 | 27 | 217 |
+| typescript | 50 | 50 | 16 | 116 |
+| **Total** | 347 | 348 | 125 | 820 |
 
-Complete vulnerable/fixed pairs: 342.
+Complete vulnerable/fixed pairs: 345.
 
 ## Splits (repository-level, temporal cutoff applied)
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 239 | 240 | 84 | 217 |
+| train | 240 | 241 | 83 | 218 |
 | validation | 32 | 31 | 12 | 27 |
-| holdout_reserved | 40 | 41 | 15 | 33 |
+| holdout_reserved | 42 | 43 | 15 | 34 |
 | temporal_quarantine | 33 | 33 | 15 | 28 |
 
 ## CWE distribution of accepted findings
@@ -34,7 +34,7 @@ Complete vulnerable/fixed pairs: 342.
 
 | CWE | Records |
 | --- | ---: |
-| CWE-79 | 31 |
+| CWE-79 | 32 |
 | CWE-400 | 25 |
 | CWE-22 | 22 |
 | CWE-601 | 15 |
@@ -48,10 +48,10 @@ Complete vulnerable/fixed pairs: 342.
 | CWE-918 | 7 |
 | CWE-94 | 6 |
 | CWE-532 | 6 |
-| CWE-770 | 6 |
 | CWE-1333 | 6 |
 | CWE-248 | 5 |
 | CWE-295 | 5 |
+| CWE-770 | 5 |
 | CWE-862 | 5 |
 | CWE-74 | 4 |
 | CWE-269 | 4 |
@@ -65,6 +65,7 @@ Complete vulnerable/fixed pairs: 342.
 | CWE-407 | 3 |
 | CWE-674 | 3 |
 | CWE-835 | 3 |
+| CWE-1284 | 3 |
 | CWE-59 | 2 |
 | CWE-73 | 2 |
 | CWE-88 | 2 |
@@ -82,10 +83,11 @@ Complete vulnerable/fixed pairs: 342.
 | CWE-312 | 2 |
 | CWE-348 | 2 |
 | CWE-352 | 2 |
+| CWE-444 | 2 |
 | CWE-639 | 2 |
 | CWE-732 | 2 |
-| CWE-1284 | 2 |
 | CWE-1287 | 2 |
+| CWE-1289 | 2 |
 | CWE-1336 | 2 |
 | CWE-23 | 1 |
 | CWE-36 | 1 |
@@ -113,7 +115,6 @@ Complete vulnerable/fixed pairs: 342.
 | CWE-401 | 1 |
 | CWE-434 | 1 |
 | CWE-441 | 1 |
-| CWE-444 | 1 |
 | CWE-489 | 1 |
 | CWE-524 | 1 |
 | CWE-646 | 1 |
@@ -130,13 +131,12 @@ Complete vulnerable/fixed pairs: 342.
 | CWE-842 | 1 |
 | CWE-913 | 1 |
 | CWE-1188 | 1 |
-| CWE-1289 | 1 |
 
 ## Localization of accepted findings
 
 | Span kind | Records |
 | --- | ---: |
-| changed_lines | 198 |
+| changed_lines | 201 |
 | insertion_point | 100 |
 | mixed | 46 |
 
@@ -190,31 +190,31 @@ Discovery outcomes:
 
 | Outcome | Candidates |
 | --- | ---: |
-| built | 367 |
-| change_outside_function | 301 |
+| built | 371 |
+| change_outside_function | 289 |
 | fix_too_large | 11 |
-| function_mismatch | 35 |
+| function_mismatch | 36 |
 | function_size_out_of_bounds | 36 |
-| multiple_functions_changed | 229 |
+| multiple_functions_changed | 232 |
 | no_logic_change | 1 |
 | no_source_change_in_language | 131 |
 | root_commit | 1 |
 | source_file_added_or_deleted | 121 |
 | too_many_source_files | 95 |
-| top_level_addition_without_changed_function | 74 |
+| top_level_addition_without_changed_function | 78 |
 | unresolvable_commit | 11 |
 
 ## Quality
 
-Records: 869 built, 815 accepted, 54 rejected.
+Records: 877 built, 820 accepted, 57 rejected.
 
 | Failed check | Records |
 | --- | ---: |
 | label_conflict_exact | 4 |
 | label_conflict_near | 2 |
 | localization_valid:diff_consistent | 5 |
-| localization_valid:trivial_span | 14 |
-| sibling_rejected | 27 |
+| localization_valid:trivial_span | 15 |
+| sibling_rejected | 29 |
 | syntax_well_formed | 2 |
 
 Flags on accepted records (not rejections):
@@ -222,18 +222,18 @@ Flags on accepted records (not rejections):
 | Flag | Records |
 | --- | ---: |
 | coarse_cwe | 56 |
-| license_none | 24 |
+| license_none | 26 |
 | license_unknown | 29 |
-| no_root_license_file | 24 |
+| no_root_license_file | 26 |
 
 ## Licenses detected (unreviewed - detection is not approval)
 
 | Detected license | Records |
 | --- | ---: |
-| AGPL-3.0 | 85 |
-| Apache-2.0 | 222 |
+| AGPL-3.0 | 87 |
+| Apache-2.0 | 221 |
 | BSD-2-Clause | 35 |
-| BSD-3-Clause | 51 |
+| BSD-3-Clause | 53 |
 | GPL-2.0 | 2 |
 | GPL-3.0 | 2 |
 | ISC | 3 |
@@ -246,25 +246,25 @@ Flags on accepted records (not rejections):
 | multiple:Apache-2.0|MIT | 5 |
 | multiple:BSD-3-Clause|MIT | 2 |
 | multiple:BSD-3-Clause|MPL-2.0 | 3 |
-| none | 24 |
+| none | 26 |
 | unknown | 17 |
 
 ## Governance
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 231 |
-| pending_review | 638 |
+| excluded | 238 |
+| pending_review | 639 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 815 |
-| source_not_approved:ghsa-osv-fix-commits | 815 |
-| source_not_approved:github-advisory-db | 815 |
-| source_not_approved:osv | 815 |
-| split:holdout_reserved | 96 |
+| repository_not_reviewed | 820 |
+| source_not_approved:ghsa-osv-fix-commits | 820 |
+| source_not_approved:github-advisory-db | 820 |
+| source_not_approved:osv | 820 |
+| split:holdout_reserved | 100 |
 | split:temporal_quarantine | 81 |
 
 ## Fix commit year (accepted records)
@@ -280,9 +280,9 @@ Blockers on accepted records:
 | 2018 | 30 |
 | 2019 | 30 |
 | 2020 | 36 |
-| 2021 | 57 |
-| 2022 | 60 |
+| 2021 | 60 |
+| 2022 | 64 |
 | 2023 | 54 |
 | 2024 | 81 |
-| 2025 | 111 |
-| 2026 | 309 |
+| 2025 | 108 |
+| 2026 | 310 |

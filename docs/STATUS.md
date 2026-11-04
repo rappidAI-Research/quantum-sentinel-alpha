@@ -35,6 +35,16 @@ Working end-to-end pipeline in `sentinel/garden/` (docs: `docs/SENTINEL_GARDEN.m
 5. **Quality checks and deduplication** (`quality.py`): 20+ record checks, strict patch application (patch must turn the vulnerable excerpt into the fixed one), sibling rejection, exact/near duplicates, label-conflict detection, evaluation-contamination checks against every QuickEval/seed/private case and `coding-v1` task (exact, Jaccard, containment, repository overlap).
 6. **Normalization and export** (`split.py`, `governance.py`, `pipeline.py`, `render.py`): repository-level split + temporal cutoff, default-deny training gate, deterministic JSONL, chat rendering with the QuickEval prompt (every target round-trips through the strict eval parser), holdout export in `eval_case` format, statistics, report and review queue. `verify` rebuilds every record and compares content hashes; `check` validates the committed manifest offline and runs in `sentinel.foundation`/CI.
 
+### PR #4 review hardening
+
+Codex review findings fixed with regression tests (`tests/test_garden_regressions.py`):
+
+- Repository keys keep dots (`example/webapp.js`); only a trailing `.git` is removed, so repository-level contamination checks match discovery keys.
+- Python callers are found with the tokenizer: names inside strings, comments or docstrings are not calls. This removed one real false abstention record (aiohttp: `write_eof` was only mentioned in an error message). The quality check uses the same logic.
+- Line classification is structural on the whole file instead of per line: a Go `*out = in` dereference, a `#` or `from x import y` line inside a Python string, a Go string-literal line outside the import block and lines inside multi-line template literals / raw strings are code; block-comment continuations, docstrings, import statements and bracket-only lines are not.
+
+Adjacent defects found and fixed while doing this: TypeScript `import x = require('y')` without a semicolon, identifiers starting with `import`, and semicolon-free JS calls misread as method definitions (which created a phantom `mergeKeys` function inside an abstention excerpt). The dataset was rebuilt; totals below are the regenerated ones.
+
 ### Milestone 3 - First dataset seed: `sentinel-garden-seed-v1`
 
 Produced by the pipeline from real advisories and upstream fix commits (OSV export read 2026-11-04, snapshot bound 2026-11-01). Full numbers: `data/garden/seed_v1/REPORT.md` / `stats.json`.
@@ -43,30 +53,30 @@ Produced by the pipeline from real advisories and upstream fix commits (OSV expo
 | --- | ---: |
 | GHSA advisories inspected (1,400 per ecosystem) | 4,200 |
 | Candidates (single fix commit, localizable CWE, caps applied) | 1,413 |
-| Fix commits turned into records (one-function rule) | 367 |
-| Records built | 869 |
-| Records accepted by quality checks | **815** |
-| Records rejected (label conflicts 6, trivial span 14, diff inconsistency 5, syntax 2, sibling 27) | 54 |
+| Fix commits turned into records (one-function rule) | 371 |
+| Records built | 877 |
+| Records accepted by quality checks | **820** |
+| Records rejected (label conflicts 6, trivial span 15, diff inconsistency 5, syntax 2, sibling 29) | 57 |
 | **Training-approved records** | **0** |
 
 Accepted records by language and label:
 
 | Language | finding | no_finding (post-fix hard negative) | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| Python | 92 | 92 | 27 | 211 |
+| Python | 95 | 95 | 27 | 217 |
 | JavaScript | 79 | 79 | 24 | 182 |
-| TypeScript | 49 | 49 | 16 | 114 |
-| Go | 124 | 125 | 59 | 308 |
-| **Total** | **344** | **345** | **126** | **815** |
+| TypeScript | 50 | 50 | 16 | 116 |
+| Go | 123 | 124 | 58 | 305 |
+| **Total** | **347** | **348** | **125** | **820** |
 
-- 342 complete vulnerable/fixed pairs from 301 repositories; 97 distinct primary CWEs. Most frequent: CWE-79 (31), CWE-400 (25), CWE-22 (22), CWE-601 (15), CWE-1321 (14), CWE-200 (13), CWE-78 (13), CWE-863 (12), CWE-20 (11). 56 findings carry a coarse CWE (flagged).
-- Localization (diff-derived): 198 changed-line spans, 100 insertion points (missing checks), 46 mixed.
-- Splits (repository-level, temporal cutoff 2026-07-01, provisional): train 563 records / 217 repos, validation 75 / 27, holdout_reserved 96 / 33, temporal_quarantine 81 / 28. No repository is in two splits; no train/validation record is after the cutoff.
+- 345 complete vulnerable/fixed pairs from 303 repositories; 97 distinct primary CWEs. Most frequent: CWE-79 (32), CWE-400 (25), CWE-22 (22), CWE-601 (15), CWE-1321 (14), CWE-200 (13), CWE-78 (13), CWE-863 (12), CWE-20 (11). 56 findings carry a coarse CWE (flagged).
+- Localization (diff-derived): 201 changed-line spans, 100 insertion points (missing checks), 46 mixed.
+- Splits (repository-level, temporal cutoff 2026-07-01, provisional): train 564 records / 218 repos, validation 75 / 27, holdout_reserved 100 / 34, temporal_quarantine 81 / 28. No repository is in two splits; no train/validation record is after the cutoff.
 - Evaluation contamination: 0 hits against QuickEval v1, the public seed, `coding-v1` (and `private/`, which is empty here).
-- Determinism: `curate` is byte-identical across runs; `verify` rebuilt all 869 records from the frozen candidates with 0 hash mismatches.
+- Determinism: `curate` is byte-identical across runs; `verify` rebuilt all 877 records from the frozen candidates with 0 hash mismatches.
 - Manual spot check by the implementing engineer (not a review or approval): 22 sampled findings across all four languages; labels and localizations matched the upstream fixes, 2 spans were wider than necessary but correct. One systematic issue (Python docstring edits widening spans) was found and fixed before the final run.
 
-**Approval status:** all 815 accepted records are a **non-approved staging dataset**. 638 train/validation records are `pending_review`; holdout and quarantined records are `excluded` from training. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed): 658 records permissive, 89 strong copyleft (mostly AGPL-3.0), 15 weak copyleft, 53 unknown or no root license file.
+**Approval status:** all 820 accepted records are a **non-approved staging dataset**. 639 train/validation records are `pending_review`; holdout and quarantined records are `excluded` from training. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed): 659 records permissive, 91 strong copyleft (mostly AGPL-3.0), 15 weak copyleft, 55 unknown or no root license file.
 
 Upstream code is **not committed** (redistribution unreviewed, repository license undeclared). The Git-ignored `artifacts/garden/seed_v1/` holds the full records; `data/garden/seed_v1/` holds candidates, manifest (metadata only), statistics, report and the review queue.
 
@@ -107,6 +117,6 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 
 ## Next action (toward the first QLoRA run)
 
-1. Rights review: approve the three registry sources and review the permissive-licensed repositories in `REVIEW_QUEUE.md` (exact license file links and sha256 are listed). Reviewing those 196 repositories would make up to 509 train/validation records eligible. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl` and `train.chat.jsonl` deterministically - no rebuild needed.
+1. Rights review: approve the three registry sources and review the permissive-licensed repositories in `REVIEW_QUEUE.md` (exact license file links and sha256 are listed). Reviewing those 196 repositories would make up to 508 train/validation records eligible. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl` and `train.chat.jsonl` deterministically - no rebuild needed.
 2. With approved GPU time, run the foundation baseline: `python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`.
 3. Implement the QLoRA training config/script consuming `train.chat.jsonl` (4-bit base `Qwen/Qwen3.5-9B@c202236…`, prompt `quickeval-review-v1`), run a short L40S calibration, then the first QLoRA run, evaluated on QuickEval v1, `coding-v1` and the Garden validation split against the baseline.

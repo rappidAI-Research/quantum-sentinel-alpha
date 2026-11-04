@@ -85,9 +85,9 @@ def test_masking_keeps_line_numbers_and_hides_strings() -> None:
 def test_import_lines_and_trivial_changes() -> None:
     assert code.import_lines("python", "import os\nfrom a import b\nfrom typing import (\n    X,\n)\nx = 1\n") == ["import os", "from a import b"]
     assert code.import_lines("go", 'package a\n\nimport (\n\t"os"\n\tlog "log/slog"\n)\n') == ['"os"', 'log "log/slog"']
-    assert code.is_import_or_trivial("python", "# comment")
-    assert code.is_import_or_trivial("javascript", "const fs = require('fs');")
-    assert not code.is_import_or_trivial("go", "\treturn nil")
+    assert code.trivial_lines("python", "# comment\nx = 1\n") == {1}
+    assert code.trivial_lines("javascript", "const fs = require('fs');\nrun(fs);\n") == {1}
+    assert code.trivial_lines("go", "func f() error {\n\treturn nil\n}\n") == {3}
 
 
 def test_normalized_hash_ignores_comments_and_layout() -> None:
