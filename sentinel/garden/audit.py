@@ -306,8 +306,9 @@ def later_fixes(
                 new_source = repo.text(sha, path)
                 language = vulnerable["input"]["language"]
                 functions = code.find_functions(language, old_source)
-                old_trivial = code.trivial_lines(language, old_source)
-                new_trivial = code.trivial_lines(language, new_source)
+                # noise only: a later fix that just moves a brace still changes the function's logic
+                old_trivial = code.noise_lines(language, old_source)
+                new_trivial = code.noise_lines(language, new_source)
                 for hunk in parse_unified_diff(repo.file_diff(info.parents[0], sha, path)):
                     if all(n in old_trivial for n, _ in hunk.removed) and all(n in new_trivial for n, _ in hunk.added):
                         continue
