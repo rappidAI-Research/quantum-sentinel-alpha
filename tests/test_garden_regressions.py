@@ -507,3 +507,34 @@ def test_module_level_imports_in_try_blocks_are_noise_but_function_imports_are_c
     source = "try:\n    from html import escape\nexcept ImportError:\n    from cgi import escape\n\n\ndef f(x):\n    import json\n    return json.dumps(escape(x))\n"
     noise = code.noise_lines("python", source)
     assert {2, 4} <= noise and 8 not in noise
+
+
+# --- Sixth review round -------------------------------------------------------------------------
+
+
+def test_conditional_module_level_import_rebinding_is_refused() -> None:
+    old = "try:\n    from pickle import loads\nexcept ImportError:\n    from pickle import loads\n\n\ndef parse_data(raw):\n    value = loads(raw)\n    return value\n"
+    new = "try:\n    from json import loads\nexcept ImportError:\n    from json import loads\n\n\ndef parse_data(raw):\n    value = loads(raw)\n    return value or {}\n"
+    with pytest.raises(Rejected) as excinfo:
+        build({"a.py": old}, {"a.py": new}, candidate(cwes=["CWE-502"]))
+    assert excinfo.value.reason == "module_import_rebound"
+
+
+def test_fallback_imports_of_the_same_name_are_not_rebinding() -> None:
+    old = "try:\n    from html import escape\nexcept ImportError:\n    from cgi import escape\n"
+    new = "from html import escape\n"
+    assert code.rebound_imports("python", old, new, "a.py") == []
+
+
+def test_class_body_imports_are_code_not_context() -> None:
+    source = "import os\n\n\nclass Loader:\n    from pickle import loads\n\n    def run(self, raw):\n        return self.loads(raw)\n"
+    noise = code.noise_lines("python", source)
+    assert 1 in noise and 5 not in noise
+
+
+def test_removed_block_comment_still_separates_tokens() -> None:
+    a = "function f(a, b) {\n  return a+/**/++b;\n}\n"
+    b = "function f(a, b) {\n  return a+++b;\n}\n"
+    assert code.normalized_sha256("javascript", a) != code.normalized_sha256("javascript", b)
+    records = build({"a.js": a}, {"a.js": b}, candidate("npm", ["CWE-682"]))
+    assert any(r["kind"] == "vulnerable" for r in records)

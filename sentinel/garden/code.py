@@ -519,10 +519,11 @@ def _python_line_classes(source: str) -> tuple[set[int], set[int]] | None:
             ):
                 imports.update(range(first.start[0], statement[-1].end[0] + 1))
             statement = []
-    # Only imports outside functions are noise (module level, also inside `try:`/`if` blocks): a
-    # function-local import decides which implementation the function calls (pickle vs json).
-    functions = _python_functions(source)
-    imports = {n for n in imports if not any(f.start < n <= f.end for f in functions)}
+    # Only module-scope imports are noise (also inside module-level `try:`/`if` blocks; the same
+    # scope `_module_scope_imports` checks for re-binding). Imports in a function or class body are
+    # code: they decide which implementation that code calls (pickle vs json).
+    scopes = _python_scope_ranges(source)
+    imports = {n for n in imports if not any(start < n <= end for start, end in scopes)}
     return code_lines, imports
 
 
@@ -628,7 +629,7 @@ def module_imports(language: str, source: str) -> set[tuple[str, str]]:
         except (SyntaxError, ValueError):
             lines = source.splitlines()
             return {("<line>", re.sub(r"\s+", "", lines[n - 1])) for n in import_statement_lines(language, source)}
-        for node in tree.body:
+        for node in _module_scope_imports(tree):
             if isinstance(node, ast.Import):
                 pairs.update((alias.name, alias.asname or alias.name) for alias in node.names)
             elif isinstance(node, ast.ImportFrom):
@@ -668,6 +669,36 @@ def module_imports(language: str, source: str) -> set[tuple[str, str]]:
     return pairs
 
 
+_SCOPES = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)
+
+
+def _module_scope_imports(tree: ast.Module) -> list[ast.Import | ast.ImportFrom]:
+    """Imports executed in module scope, including inside module-level try/if/with/for blocks,
+    but not inside function or class bodies."""
+    found: list[ast.Import | ast.ImportFrom] = []
+    stack: list[ast.AST] = list(tree.body)
+    while stack:
+        node = stack.pop()
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            found.append(node)
+        elif not isinstance(node, _SCOPES):
+            stack.extend(ast.iter_child_nodes(node))
+    return sorted(found, key=lambda n: (n.lineno, n.col_offset))
+
+
+def _python_scope_ranges(source: str) -> list[tuple[int, int]]:
+    """Line ranges of function and class bodies (imports there are not module-level context)."""
+    try:
+        tree = _parse_python(source)
+    except (SyntaxError, ValueError):
+        return [(f.start, f.end) for f in _python_functions_by_indent(source)]
+    return [
+        (min([node.lineno] + [d.lineno for d in getattr(node, "decorator_list", [])]), node.end_lineno or node.lineno)
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+    ]
+
+
 def _python_bindings(source: str, path: str) -> dict[str, set[str]]:
     """Module-level import bindings -> fully qualified origins (relative imports resolved)."""
     try:
@@ -678,7 +709,7 @@ def _python_bindings(source: str, path: str) -> dict[str, set[str]]:
     package = parts if parts and parts[-1] == "__init__" else parts[:-1]
     package = [p for p in package if p != "__init__"]
     result: dict[str, set[str]] = {}
-    for node in tree.body:
+    for node in _module_scope_imports(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
                 if alias.asname:
@@ -804,6 +835,8 @@ def strip_comments(language: str, source: str) -> str:
             i = len(source) if end < 0 else end
             continue
         if not in_comment and masked.startswith("/*", i):
+            # a removed block comment still separates tokens: `a+/**/++b` must not become `a+++b`
+            result.append(" ")
             in_comment = True
             i += 2
             continue
