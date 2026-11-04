@@ -3,74 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:@sentry/nextjs': ['MIT']}
-  - repository_key: getsentry/sentry-javascript
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: a7e7ce843788817af39fc18c22962ad6e23b2dd8f99b8c63fb7ad4e59f1094c4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/getsentry/sentry-javascript
-      - https://github.com/getsentry/sentry-javascript/blob/ddbda3c02c35aba8c5235e0cf07fc5bf656f81be/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/gin-contrib/cors': ['MIT'], 'Go:github.com/gin-gonic/gin': ['MIT']}
-  - repository_key: gin-contrib/cors
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: bafe84dafda45b69105faab4dcd00c4c66736441f0dbe8deb836c48434f1cadc
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/gin-contrib/cors
-      - https://github.com/gin-contrib/cors/blob/27b723a473efd80d5a498fa9f5933c80204c850d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/go-chi/chi/v5': ['MIT']}
-  - repository_key: go-chi/chi
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: a2d51b7515acfaff2f7a88688650f2fc4fd99561383e72bba2305e3db59a1647
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/go-chi/chi
-      - https://github.com/go-chi/chi/blob/6eb35881c0e438ffb663ddbad3a61babaa5e5d8a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/go-vela/compiler': ['Apache-2.0']}
-  - repository_key: go-vela/compiler
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 5b0782b87db51dd1338da4e0698aa8638dfed580ca3a941ded09c0fd17bd5f8c
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/go-vela/compiler
-      - https://github.com/go-vela/compiler/blob/f1ace5f8a05c95c4d02264556e38a959ee2d9bda/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/patrickhener/goshs': ['MIT'], 'Go:github.com/patrickhener/goshs/v2': ['MIT'], 'Go:goshs.de/goshs': ['MIT'], 'Go:goshs.de/goshs/v2': ['MIT']}
   - repository_key: goshs-labs/goshs
@@ -425,4 +357,72 @@ repositories:
     evidence_urls:
       - https://github.com/jonschlinkert/defaults-deep
       - https://github.com/jonschlinkert/defaults-deep/blob/c873f341327ad885ff4d0f23b3d3bca31b0343e5/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:remarkable': ['MIT']}
+  - repository_key: jonschlinkert/remarkable
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 1cabe5f706e86a0767d2d894bcd3a8e836760fbad8d29e850f4d65e160186949
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/jonschlinkert/remarkable
+      - https://github.com/jonschlinkert/remarkable/blob/49e87b7ae2dc323d83606792a749fb207595249e/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:mathjs': ['Apache-2.0']}
+  - repository_key: josdejong/mathjs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/josdejong/mathjs
+      - https://github.com/josdejong/mathjs/blob/a60f3c8d9dd714244aed7a5569c3dccaa3a4e761/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:typed-function': ['MIT']}
+  - repository_key: josdejong/typed-function
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 0fcdc188ddc373097b977fe6dde2df7c29619471ed9965616aa76e7a4f9fd8ad
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/josdejong/typed-function
+      - https://github.com/josdejong/typed-function/blob/6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:jquery-ui': ['MIT']}
+  - repository_key: jquery/jquery-ui
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: de33fb695880d0b07615d4b86f78cd43796906959ade5fdfef70968827a0db78
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/jquery/jquery-ui
+      - https://github.com/jquery/jquery-ui/blob/6809ce843e5ac4128108ea4c15cbc100653c2b63/LICENSE.txt
     notes: ""

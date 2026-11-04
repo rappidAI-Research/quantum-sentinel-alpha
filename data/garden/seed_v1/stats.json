@@ -1,29 +1,29 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 217,
+      "abstain": 194,
       "finding": 607,
       "no_finding": 545
     },
     "by_kind": {
-      "caller_abstention": 217,
+      "caller_abstention": 194,
       "post_fix": 545,
       "vulnerable": 607
     },
     "by_language": {
-      "go": 486,
-      "javascript": 299,
-      "python": 379,
+      "go": 474,
+      "javascript": 293,
+      "python": 374,
       "typescript": 205
     },
     "by_language_and_decision": {
-      "go/abstain": 90,
+      "go/abstain": 78,
       "go/finding": 206,
       "go/no_finding": 190,
-      "javascript/abstain": 41,
+      "javascript/abstain": 35,
       "javascript/finding": 136,
       "javascript/no_finding": 122,
-      "python/abstain": 56,
+      "python/abstain": 51,
       "python/finding": 174,
       "python/no_finding": 149,
       "typescript/abstain": 30,
@@ -31,22 +31,22 @@
       "typescript/no_finding": 84
     },
     "by_split": {
-      "holdout_reserved": 163,
-      "temporal_quarantine": 117,
-      "train": 963,
-      "validation": 126
+      "holdout_reserved": 160,
+      "temporal_quarantine": 115,
+      "train": 947,
+      "validation": 124
     },
     "by_split_and_decision": {
-      "holdout_reserved/abstain": 25,
+      "holdout_reserved/abstain": 22,
       "holdout_reserved/finding": 72,
       "holdout_reserved/no_finding": 66,
-      "temporal_quarantine/abstain": 21,
+      "temporal_quarantine/abstain": 19,
       "temporal_quarantine/finding": 52,
       "temporal_quarantine/no_finding": 44,
-      "train/abstain": 150,
+      "train/abstain": 134,
       "train/finding": 427,
       "train/no_finding": 386,
-      "validation/abstain": 21,
+      "validation/abstain": 19,
       "validation/finding": 56,
       "validation/no_finding": 49
     },
@@ -192,21 +192,21 @@
     },
     "fix_year": {
       "2010": 4,
-      "2011": 3,
+      "2011": 2,
       "2013": 11,
       "2014": 17,
       "2015": 13,
       "2016": 11,
       "2017": 17,
-      "2018": 48,
-      "2019": 46,
+      "2018": 47,
+      "2019": 45,
       "2020": 66,
-      "2021": 112,
-      "2022": 124,
+      "2021": 109,
+      "2022": 123,
       "2023": 111,
-      "2024": 152,
-      "2025": 176,
-      "2026": 458
+      "2024": 147,
+      "2025": 173,
+      "2026": 450
     },
     "flags": {
       "coarse_cwe": 96,
@@ -216,23 +216,23 @@
     },
     "license_category": {
       "none": 54,
-      "permissive": 1112,
-      "strong_copyleft": 137,
+      "permissive": 1092,
+      "strong_copyleft": 135,
       "unknown": 44,
-      "weak_copyleft": 22
+      "weak_copyleft": 21
     },
     "license_detected": {
       "0BSD": 2,
-      "AGPL-3.0": 128,
-      "Apache-2.0": 380,
+      "AGPL-3.0": 127,
+      "Apache-2.0": 375,
       "BSD-2-Clause": 49,
-      "BSD-3-Clause": 93,
-      "GPL-2.0": 7,
+      "BSD-3-Clause": 89,
+      "GPL-2.0": 6,
       "GPL-3.0": 2,
       "ISC": 10,
-      "LGPL-2.1": 12,
+      "LGPL-2.1": 11,
       "LGPL-3.0": 7,
-      "MIT": 562,
+      "MIT": 551,
       "MPL-2.0": 3,
       "Unlicense": 4,
       "multiple:AGPL-3.0|BSD-3-Clause": 2,
@@ -331,23 +331,23 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 1369,
-      "source_not_approved:ghsa-osv-fix-commits": 1369,
-      "source_not_approved:github-advisory-db": 1369,
-      "source_not_approved:osv": 1369,
-      "split:holdout_reserved": 163,
-      "split:temporal_quarantine": 117
+      "repository_not_reviewed": 1346,
+      "source_not_approved:ghsa-osv-fix-commits": 1346,
+      "source_not_approved:github-advisory-db": 1346,
+      "source_not_approved:osv": 1346,
+      "split:holdout_reserved": 160,
+      "split:temporal_quarantine": 115
     },
     "by_approval_status": {
-      "excluded": 425,
-      "pending_review": 1089
+      "excluded": 419,
+      "pending_review": 1071
     },
     "training_approved": 0
   },
-  "manifest_sha256": "adf18564f155482e67de0168727e5738a6b4a3c62e0da55a3dfc495b0a6a4fd3",
+  "manifest_sha256": "8669f972449fa33ecb9485098d0681f00af6a63d6a31445b8b3a6cdffe4e937a",
   "pipeline_version": "1",
   "records": {
-    "accepted": 1369,
+    "accepted": 1346,
     "failed_checks": {
       "audit:abstention_constant_arguments": 1,
       "audit:later_fix_changes_same_function": 100,
@@ -359,11 +359,11 @@
       "localization_valid:diff_consistent": 9,
       "localization_valid:trivial_span": 18,
       "near_duplicate": 2,
-      "sibling_rejected": 38,
+      "sibling_rejected": 37,
       "syntax_well_formed": 2
     },
-    "rejected": 145,
-    "total": 1514
+    "rejected": 144,
+    "total": 1490
   },
   "split_policy": {
     "policy_id": "sentinel-garden-split-v1",

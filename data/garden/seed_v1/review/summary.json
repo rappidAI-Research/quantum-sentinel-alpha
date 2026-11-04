@@ -7,12 +7,12 @@
     "D": 77
   },
   "license_changed_between_revisions": 8,
-  "manifest_sha256": "adf18564f155482e67de0168727e5738a6b4a3c62e0da55a3dfc495b0a6a4fd3",
+  "manifest_sha256": "8669f972449fa33ecb9485098d0681f00af6a63d6a31445b8b3a6cdffe4e937a",
   "records_by_tier": {
-    "A": 708,
-    "B": 161,
-    "C": 20,
-    "D": 200
+    "A": 695,
+    "B": 158,
+    "C": 19,
+    "D": 199
   },
   "registry_agreement": {
     "agrees": 306,

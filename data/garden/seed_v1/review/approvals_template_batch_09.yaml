@@ -3,23 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 2 {'train/caller_abstention': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:picklescan': ['MIT']}
-  - repository_key: mmaitre314/picklescan
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 1418146b5f7b837d0a7c24906a272f2f6adb68ebb258e97560ec91ae663ff38a
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mmaitre314/picklescan
-      - https://github.com/mmaitre314/picklescan/blob/baf03faf88fece56a89534d12ce048e5ee36e50e/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:agentscope': ['Apache-2.0']}
   - repository_key: modelscope/agentscope
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/python-poetry/poetry
       - https://github.com/python-poetry/poetry/blob/ed59537ac3709cfbdbf95d957de801c13872991a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:qiskit-ibm-runtime': ['Apache-2.0']}
+  - repository_key: qiskit/qiskit-ibm-runtime
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.txt
+    license_file_sha256: 7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Qiskit/qiskit-ibm-runtime
+      - https://github.com/Qiskit/qiskit-ibm-runtime/blob/b78fca114133051805d00043a404b25a33835f4d/LICENSE.txt
     notes: ""

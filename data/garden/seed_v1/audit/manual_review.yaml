@@ -89,10 +89,11 @@ items:
   item: abstention
   language: go
   abstention_valid: 'yes'
-- group_id: sgg-c1163aef2b37efea
+- group_id: sgg-04d53284ff0a8c2a
   item: abstention
   language: go
   abstention_valid: 'yes'
+  notes: ValidatePod's verdict depends only on the withheld validateProfile (the vulnerable comparison).
 - group_id: sgg-f54f240d90794bbd
   item: pair
   language: javascript

@@ -4,19 +4,19 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:qiskit-ibm-runtime': ['Apache-2.0']}
-  - repository_key: qiskit/qiskit-ibm-runtime
+  # registry (deps.dev): {'Go:github.com/rancher/fleet': ['Apache-2.0']}
+  - repository_key: rancher/fleet
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE.txt
-    license_file_sha256: 7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7
+    license_file: LICENSE
+    license_file_sha256: 809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/Qiskit/qiskit-ibm-runtime
-      - https://github.com/Qiskit/qiskit-ibm-runtime/blob/b78fca114133051805d00043a404b25a33835f4d/LICENSE.txt
+      - https://github.com/rancher/fleet
+      - https://github.com/rancher/fleet/blob/088bcbea7edb844d7e6fc3649d9954f763cf68a9/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling

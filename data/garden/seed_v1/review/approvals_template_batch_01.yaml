@@ -3,40 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
-  # registry (deps.dev): {'PyPI:paddlepaddle': ['Apache-2.0']}
-  - repository_key: paddlepaddle/paddle
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: ff6311c56c1b22c9209c96cc8afc16da91c24ee55a15e14ebc46fe1960dbd856
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/PaddlePaddle/Paddle
-      - https://github.com/PaddlePaddle/Paddle/blob/5c50d1a8b97b310cbc36560ec36d8377d6f29d7c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 6 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'Go:github.com/cloudflare/cfrpki': ['BSD-3-Clause']}
-  - repository_key: cloudflare/cfrpki
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 8b903ee4cf0f026725d71045ecdd2860c9bd437480b3c931bec07037cd2eca92
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cloudflare/cfrpki
-      - https://github.com/cloudflare/cfrpki/blob/5f64bcd13477b29cd7ddff6fff3c65dfac3423ca/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 6 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'npm:h3': ['MIT']}
   - repository_key: h3js/h3
@@ -85,6 +51,23 @@ repositories:
     evidence_urls:
       - https://github.com/matrix-org/matrix-appservice-irc
       - https://github.com/matrix-org/matrix-appservice-irc/blob/74f02c8e11f16ed1b355700092c1aa9c036a11bd/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 6 {'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:paddlepaddle': ['Apache-2.0']}
+  - repository_key: paddlepaddle/paddle
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: ff6311c56c1b22c9209c96cc8afc16da91c24ee55a15e14ebc46fe1960dbd856
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/PaddlePaddle/Paddle
+      - https://github.com/PaddlePaddle/Paddle/blob/5c50d1a8b97b310cbc36560ec36d8377d6f29d7c/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -191,6 +174,23 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/cloudflare/cfrpki': ['BSD-3-Clause']}
+  - repository_key: cloudflare/cfrpki
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 8b903ee4cf0f026725d71045ecdd2860c9bd437480b3c931bec07037cd2eca92
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cloudflare/cfrpki
+      - https://github.com/cloudflare/cfrpki/blob/5f64bcd13477b29cd7ddff6fff3c65dfac3423ca/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'Go:github.com/external-secrets/external-secrets': ['Apache-2.0'], 'Go:github.com/external-secrets/external-secrets/apis': ['Apache-2.0']}
   - repository_key: external-secrets/external-secrets
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -255,23 +255,6 @@ repositories:
     evidence_urls:
       - https://github.com/gomarkdown/markdown
       - https://github.com/gomarkdown/markdown/blob/759bbc3e32073c3bc4e25969c132fc520eda2778/LICENSE.txt
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 4 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 2}
-  # registry (deps.dev): {'Go:github.com/jackc/pgx': ['MIT'], 'Go:github.com/jackc/pgx/v4': ['MIT'], 'Go:github.com/jackc/pgx/v5': ['MIT']}
-  - repository_key: jackc/pgx
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 467f95e074fe23079a5623ed652619682692041b8551da27e3c2ddb9659a1507
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/jackc/pgx
-      - https://github.com/jackc/pgx/blob/f94eb0e2f96782042c96801b5ac448f44f0a81df/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -361,23 +344,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:aiosmtpd': ['Apache-2.0']}
-  - repository_key: aio-libs/aiosmtpd
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 49b69c7b787b35b7df9010aef6ece52fc91a26baba604604ec72d5db3986e6d3
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/aio-libs/aiosmtpd
-      - https://github.com/aio-libs/aiosmtpd/blob/b3a4a2c6ecfd228856a20d637dc383541fcdbfda/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:@angular/core': ['MIT']}
   - repository_key: angular/angular
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/answerdev/answer
       - https://github.com/answerdev/answer/blob/ac3f2f047ee00b4edaea7530e570ab67ff87cd6a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/cilium/ebpf': ['MIT']}
+  - repository_key: cilium/ebpf
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 0fdf0f61940491a322e3f8b8cef27f7063f57a6ecc888589468e54e71ab3d70f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cilium/ebpf
+      - https://github.com/cilium/ebpf/blob/533dfc82fd228bfadf42ea7180c39de7d9af47fa/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:code-server': ['MIT']}
+  - repository_key: coder/code-server
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 872184c17fe5a3379da02acd21949ea2fcf4793bd4a3b920a96ba8b147741745
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/coder/code-server
+      - https://github.com/coder/code-server/blob/47d6d3ada5aadef6d221f3d612401eb3dad9299e/LICENSE
     notes: ""

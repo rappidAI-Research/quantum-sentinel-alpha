@@ -4,57 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:remarkable': ['MIT']}
-  - repository_key: jonschlinkert/remarkable
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 1cabe5f706e86a0767d2d894bcd3a8e836760fbad8d29e850f4d65e160186949
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/jonschlinkert/remarkable
-      - https://github.com/jonschlinkert/remarkable/blob/49e87b7ae2dc323d83606792a749fb207595249e/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:mathjs': ['Apache-2.0']}
-  - repository_key: josdejong/mathjs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/josdejong/mathjs
-      - https://github.com/josdejong/mathjs/blob/a60f3c8d9dd714244aed7a5569c3dccaa3a4e761/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:typed-function': ['MIT']}
-  - repository_key: josdejong/typed-function
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 0fcdc188ddc373097b977fe6dde2df7c29619471ed9965616aa76e7a4f9fd8ad
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/josdejong/typed-function
-      - https://github.com/josdejong/typed-function/blob/6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:js-cookie': ['MIT']}
   - repository_key: js-cookie/js-cookie
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -68,6 +17,23 @@ repositories:
     evidence_urls:
       - https://github.com/js-cookie/js-cookie
       - https://github.com/js-cookie/js-cookie/blob/eb3c40e89731e99b8970faaf35ddad249c6c0020/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/junegunn/fzf': ['MIT']}
+  - repository_key: junegunn/fzf
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a296f423c0d30ce3581435e78e7e36c5fe73984a882d8720c72e713b4593588b
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/junegunn/fzf
+      - https://github.com/junegunn/fzf/blob/7963a2c6586c0b9eaa89b8995de8f0e08cf8a4ce/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -259,6 +225,23 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:llama-stack': ['MIT']}
+  - repository_key: llamastack/llama-stack
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: e368358019fd80761d06de5ee9ed5a15886773e253f6dad4f6a043f38a140256
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/llamastack/llama-stack
+      - https://github.com/llamastack/llama-stack/blob/b709bd77b6c1fad68a30a4888baa6f2337eaef6f/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:uptime-kuma': ['MIT']}
   - repository_key: louislam/uptime-kuma
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/mlc-ai/xgrammar
       - https://github.com/mlc-ai/xgrammar/blob/b943feacb5a1caf4d39de8ec3bf7c7ce066dcee5/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/caller_abstention': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:picklescan': ['MIT']}
+  - repository_key: mmaitre314/picklescan
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 1418146b5f7b837d0a7c24906a272f2f6adb68ebb258e97560ec91ae663ff38a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mmaitre314/picklescan
+      - https://github.com/mmaitre314/picklescan/blob/baf03faf88fece56a89534d12ce048e5ee36e50e/LICENSE
     notes: ""

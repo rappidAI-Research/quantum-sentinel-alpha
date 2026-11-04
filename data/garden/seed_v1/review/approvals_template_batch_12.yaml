@@ -223,23 +223,6 @@ repositories:
       - https://github.com/sqlalchemy/mako/blob/e05ac61989a7fb9dd7dcde6cfd72dc48328719a3/LICENSE
     notes: ""
 
-  # tier B: license_file_changed_between_revisions
-  # records: 6 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'PyPI:twisted': ['MIT']}
-  - repository_key: twisted/twisted
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/twisted/twisted
-      - https://github.com/twisted/twisted/blob/046a164f89a0f08d3239ecebd750360f8914df33/LICENSE
-    notes: ""
-
   # tier B: license_file_changed_between_revisions, registry_disagrees
   # records: 5 {'train/caller_abstention': 2, 'train/post_fix': 1, 'train/vulnerable': 2}
   # registry (deps.dev): {'Go:github.com/concourse/concourse': ['Apache-2.0', 'BSD-3-Clause']}
@@ -323,6 +306,23 @@ repositories:
     evidence_urls:
       - https://github.com/traefik/traefik
       - https://github.com/traefik/traefik/blob/14a1aedf5704673d875d210d7bacf103a43c77e4/LICENSE.md
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:twisted': ['MIT']}
+  - repository_key: twisted/twisted
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/twisted/twisted
+      - https://github.com/twisted/twisted/blob/046a164f89a0f08d3239ecebd750360f8914df33/LICENSE
     notes: ""
 
   # tier B: registry_disagrees

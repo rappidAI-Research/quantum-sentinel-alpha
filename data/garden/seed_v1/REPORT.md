@@ -11,11 +11,11 @@ registry sources it depends on are approved. Accepted records are a non-approved
 
 | Language | finding | no_finding | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
-| go | 206 | 190 | 90 | 486 |
-| javascript | 136 | 122 | 41 | 299 |
-| python | 174 | 149 | 56 | 379 |
+| go | 206 | 190 | 78 | 474 |
+| javascript | 136 | 122 | 35 | 293 |
+| python | 174 | 149 | 51 | 374 |
 | typescript | 91 | 84 | 30 | 205 |
-| **Total** | 607 | 545 | 217 | 1369 |
+| **Total** | 607 | 545 | 194 | 1346 |
 
 Complete vulnerable/fixed pairs: 542.
 
@@ -23,10 +23,10 @@ Complete vulnerable/fixed pairs: 542.
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 427 | 386 | 150 | 386 |
-| validation | 56 | 49 | 21 | 48 |
-| holdout_reserved | 72 | 66 | 25 | 59 |
-| temporal_quarantine | 52 | 44 | 21 | 44 |
+| train | 427 | 386 | 134 | 386 |
+| validation | 56 | 49 | 19 | 48 |
+| holdout_reserved | 72 | 66 | 22 | 59 |
+| temporal_quarantine | 52 | 44 | 19 | 44 |
 
 ## CWE distribution of accepted findings
 
@@ -242,7 +242,7 @@ Discovery outcomes:
 
 ## Quality
 
-Records: 1514 built, 1369 accepted, 145 rejected.
+Records: 1490 built, 1346 accepted, 144 rejected.
 
 | Failed check | Records |
 | --- | ---: |
@@ -256,7 +256,7 @@ Records: 1514 built, 1369 accepted, 145 rejected.
 | localization_valid:diff_consistent | 9 |
 | localization_valid:trivial_span | 18 |
 | near_duplicate | 2 |
-| sibling_rejected | 38 |
+| sibling_rejected | 37 |
 | syntax_well_formed | 2 |
 
 Flags on accepted records (not rejections):
@@ -273,16 +273,16 @@ Flags on accepted records (not rejections):
 | Detected license | Records |
 | --- | ---: |
 | 0BSD | 2 |
-| AGPL-3.0 | 128 |
-| Apache-2.0 | 380 |
+| AGPL-3.0 | 127 |
+| Apache-2.0 | 375 |
 | BSD-2-Clause | 49 |
-| BSD-3-Clause | 93 |
-| GPL-2.0 | 7 |
+| BSD-3-Clause | 89 |
+| GPL-2.0 | 6 |
 | GPL-3.0 | 2 |
 | ISC | 10 |
-| LGPL-2.1 | 12 |
+| LGPL-2.1 | 11 |
 | LGPL-3.0 | 7 |
-| MIT | 562 |
+| MIT | 551 |
 | MPL-2.0 | 3 |
 | Unlicense | 4 |
 | multiple:AGPL-3.0|BSD-3-Clause | 2 |
@@ -299,37 +299,37 @@ Flags on accepted records (not rejections):
 
 | Approval status | Records |
 | --- | ---: |
-| excluded | 425 |
-| pending_review | 1089 |
+| excluded | 419 |
+| pending_review | 1071 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 1369 |
-| source_not_approved:ghsa-osv-fix-commits | 1369 |
-| source_not_approved:github-advisory-db | 1369 |
-| source_not_approved:osv | 1369 |
-| split:holdout_reserved | 163 |
-| split:temporal_quarantine | 117 |
+| repository_not_reviewed | 1346 |
+| source_not_approved:ghsa-osv-fix-commits | 1346 |
+| source_not_approved:github-advisory-db | 1346 |
+| source_not_approved:osv | 1346 |
+| split:holdout_reserved | 160 |
+| split:temporal_quarantine | 115 |
 
 ## Fix commit year (accepted records)
 
 | Year | Records |
 | --- | ---: |
 | 2010 | 4 |
-| 2011 | 3 |
+| 2011 | 2 |
 | 2013 | 11 |
 | 2014 | 17 |
 | 2015 | 13 |
 | 2016 | 11 |
 | 2017 | 17 |
-| 2018 | 48 |
-| 2019 | 46 |
+| 2018 | 47 |
+| 2019 | 45 |
 | 2020 | 66 |
-| 2021 | 112 |
-| 2022 | 124 |
+| 2021 | 109 |
+| 2022 | 123 |
 | 2023 | 111 |
-| 2024 | 152 |
-| 2025 | 176 |
-| 2026 | 458 |
+| 2024 | 147 |
+| 2025 | 173 |
+| 2026 | 450 |

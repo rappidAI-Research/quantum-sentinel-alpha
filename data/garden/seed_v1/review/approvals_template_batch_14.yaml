@@ -2,40 +2,6 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/gofiber/fiber/v2': ['BSD-3-Clause', 'MIT'], 'Go:github.com/gofiber/fiber/v3': ['MIT']}
-  - repository_key: gofiber/fiber
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 5c0e1bfb8a314043331e093c78154cc7870e276ffb64ac6ace6ee0087162b1e4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/gofiber/fiber
-      - https://github.com/gofiber/fiber/blob/e115c08b8f059a4a031b492aa9eef0712411853d/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/google/osv-scalibr': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}
-  - repository_key: google/osv-scalibr
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/google/osv-scalibr
-      - https://github.com/google/osv-scalibr/blob/e67c4e198ca099cb7c16957a80f6c5331d90a672/LICENSE
-    notes: ""
-
   # tier B: registry_unavailable
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/harness/gitness': []}
@@ -291,6 +257,23 @@ repositories:
       - https://github.com/oraios/serena/blob/016ccbe1c095a3eed7967737ac1d4df2754f5d96/LICENSE
     notes: ""
 
+  # tier B: registry_unavailable
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:eazy-logger': []}
+  - repository_key: shakyshane/eazy-logger
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 052c0fa57a3548533c0ba995008fb4f304a605444e4b37dd5419df94a131c429
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/shakyShane/eazy-logger
+      - https://github.com/shakyShane/eazy-logger/blob/a8baa6fe441d19ffa9916eba367016b7937a28fd/LICENSE
+    notes: ""
+
   # tier B: registry_unrecognised
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:libre-chat': ['non-standard']}
@@ -306,6 +289,23 @@ repositories:
     evidence_urls:
       - https://github.com/vemonet/libre-chat
       - https://github.com/vemonet/libre-chat/blob/dbb8e3400e5258112179783d74c9cc54310cb72b/LICENSE.txt
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/weaviate/weaviate': []}
+  - repository_key: weaviate/weaviate
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 61fc440e31f16993a0358f2c2325618275d4487913d4ec310d6f32293fd32950
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/weaviate/weaviate
+      - https://github.com/weaviate/weaviate/blob/40f2cc32279f0f8a51016c3c6870a2c0c808e6c0/LICENSE
     notes: ""
 
   # tier B: registry_disagrees

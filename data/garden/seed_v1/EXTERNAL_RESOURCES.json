@@ -127,7 +127,7 @@
         "6e148d7f87428b38f527a0ac238771e2c5a0e09e",
         "b3a4a2c6ecfd228856a20d637dc383541fcdbfda"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "aio-libs/aiosmtpd",
       "url": "https://github.com/aio-libs/aiosmtpd.git"
     },
@@ -226,7 +226,7 @@
         "a8ced8f559cd68fc4aedfc87f21599d1190c0852",
         "afd4762cc342af56345a3fb4002a59281fcab494"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "antchfx/xpath",
       "url": "https://github.com/antchfx/xpath.git"
     },
@@ -472,7 +472,7 @@
         "8e3125d0b98bbadb8d0f82a133ef4796ff275dcc",
         "ee307459972442a17beebc29dc331fffd8aff796"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "bitwiseshiftleft/sjcl",
       "url": "https://github.com/bitwiseshiftleft/sjcl.git"
     },
@@ -586,7 +586,7 @@
         "09b82d635baa11223ba5b28b421069cadcddb5d9",
         "6604826b19e36e9bc6e196592800fad93738f4a1"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "chainguard-dev/apko",
       "url": "https://github.com/chainguard-dev/apko.git"
     },
@@ -660,7 +660,7 @@
         "9abe2d30dc69114443ef39480e11b485dd9e830f",
         "a8db4e009ef217484598ba1fd1c595b54e0f6422"
       ],
-      "records": 6,
+      "records": 4,
       "repository_key": "cloudflare/cfrpki",
       "url": "https://github.com/cloudflare/cfrpki.git"
     },
@@ -761,7 +761,7 @@
         "1c29f6a6e304fb650c05056e217e457a0d2cc3c5",
         "74e5bb845c3cf1cab4f0a5a8dea08685c20970c7"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "commenthol/safer-eval",
       "url": "https://github.com/commenthol/safer-eval.git"
     },
@@ -1362,7 +1362,7 @@
         "139f854f05b76367a0bb5bfcc5a9cf549879f432",
         "da59652c061a798282e18efad0b6d0afefa15465"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "felixlc/cli",
       "url": "https://github.com/FelixLC/cli.git"
     },
@@ -1391,7 +1391,7 @@
         "2499bf1bad239a8316c32932a993642350b3afdb",
         "927fa1b4bbcf5b0f8fe64c03d19f5d4ffb5313d5"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "flynn/noise",
       "url": "https://github.com/flynn/noise.git"
     },
@@ -1409,7 +1409,7 @@
         "8526b4a1b2ab3a2e4044299377df623a661caa76",
         "c4f847f85176991f95ab9c88af63b1294de8649b"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "follow-redirects/follow-redirects",
       "url": "https://github.com/follow-redirects/follow-redirects.git"
     },
@@ -2216,7 +2216,7 @@
         "dfd198003a03dbb96e4607b0d3a0bb9a7398ccb7",
         "f94eb0e2f96782042c96801b5ac448f44f0a81df"
       ],
-      "records": 5,
+      "records": 4,
       "repository_key": "jackc/pgx",
       "url": "https://github.com/jackc/pgx.git"
     },
@@ -2384,7 +2384,7 @@
         "6809ce843e5ac4128108ea4c15cbc100653c2b63",
         "9380d2734e9f3674ca1fcf1ba5981c3c5a858576"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "jquery/jquery-ui",
       "url": "https://github.com/jquery/jquery-ui.git"
     },
@@ -2438,7 +2438,7 @@
         "4b23aa45a89c7524ee49177c04c0ebbf9fdb1f0e",
         "7963a2c6586c0b9eaa89b8995de8f0e08cf8a4ce"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "junegunn/fzf",
       "url": "https://github.com/junegunn/fzf.git"
     },
@@ -2730,7 +2730,7 @@
         "752a6836a02e5c23303ce6781e7698e35b52eae7",
         "b709bd77b6c1fad68a30a4888baa6f2337eaef6f"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "llamastack/llama-stack",
       "url": "https://github.com/llamastack/llama-stack.git"
     },
@@ -2788,7 +2788,7 @@
         "1e26ed3ca12fe83812b90f12a2b3e5fb0b740f7a",
         "5310812cd7dec7c1ac91622a62743a3c1c1d034d"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "man-group/dtale",
       "url": "https://github.com/man-group/dtale.git"
     },
@@ -2797,7 +2797,7 @@
         "30d36c46e9823b56b8f0dcbb66e980ca5df284e4",
         "6e715a9037b8aa0edae09aaf3eba271d2d197fb5"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "mantra-chain/mantrachain",
       "url": "https://github.com/MANTRA-Chain/mantrachain.git"
     },
@@ -3655,7 +3655,7 @@
         "62a1261328c6bc165d2cfaea1338b74b5801104f",
         "db700d10ff685a2f3340fa2b827ed165fc222f70"
       ],
-      "records": 7,
+      "records": 6,
       "repository_key": "paddlepaddle/paddle",
       "url": "https://github.com/PaddlePaddle/Paddle.git"
     },
@@ -4025,7 +4025,7 @@
         "088bcbea7edb844d7e6fc3649d9954f763cf68a9",
         "7b10195481c84e7be1b0a5c57fd62ec318f3a95e"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "rancher/fleet",
       "url": "https://github.com/rancher/fleet.git"
     },
@@ -4045,7 +4045,7 @@
         "7543a7a87884aca957590b20b0714078d51af87b",
         "e122fba1a57641b63a580aa26c026903a84e2e88"
       ],
-      "records": 6,
+      "records": 4,
       "repository_key": "rclone/rclone",
       "url": "https://github.com/rclone/rclone.git"
     },
@@ -4285,7 +4285,7 @@
         "0d0f1063d3572358465bb5e2e3410e1eb3c4609c",
         "a8baa6fe441d19ffa9916eba367016b7937a28fd"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "shakyshane/eazy-logger",
       "url": "https://github.com/shakyShane/eazy-logger.git"
     },
@@ -4386,7 +4386,7 @@
         "cb10a5ac7913eacc031ade7d91596277f31645dc",
         "d9abaae384b198db1095735ad9c1c73d7b890a0d"
       ],
-      "records": 5,
+      "records": 4,
       "repository_key": "skoranga/node-dns-sync",
       "url": "https://github.com/skoranga/node-dns-sync.git"
     },
@@ -4758,7 +4758,7 @@
         "4a930de12fb67e88fefcb8822104152f42b27abc",
         "e11cd82bdd79b3ebbb0e8635cbb9c76df2b5af09"
       ],
-      "records": 6,
+      "records": 5,
       "repository_key": "twisted/twisted",
       "url": "https://github.com/twisted/twisted.git"
     },
@@ -4998,7 +4998,7 @@
         "40f2cc32279f0f8a51016c3c6870a2c0c808e6c0",
         "54a8d2765ec589684e588991b6816657cf848ac2"
       ],
-      "records": 3,
+      "records": 2,
       "repository_key": "weaviate/weaviate",
       "url": "https://github.com/weaviate/weaviate.git"
     },
