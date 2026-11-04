@@ -392,19 +392,39 @@ def _js_functions(source: str, language: str) -> list[Function]:
         else:
             return None
         k += 1
-        limit = min(len(masked), k + 300)
-        between = []
+        limit = min(len(masked), k + 400)
+        between: list[str] = []  # characters outside any return-type nesting
+        depth = 0  # nesting inside a TypeScript return-type annotation: (), [], <>, {}
+        in_type = False
+        last = ""  # last significant character at depth 0
         while k < limit:
             c = masked[k]
-            if c == "{":
+            if depth > 0:
+                if c in "([{<":
+                    depth += 1
+                elif c in ")]}" or (c == ">" and masked[k - 1] != "="):
+                    depth -= 1
+                    if depth == 0:
+                        last = c
+                k += 1
+                continue
+            if c == ":" and not "".join(between).strip():
+                in_type = True
+            elif in_type and (c in "([<" or (c == "{" and last in {":", "|", "&", ",", "("})):
+                depth = 1  # generic arguments, tuple/function types or an object-literal type
+                k += 1
+                continue
+            elif c == "{":
                 text = "".join(between)
                 # allow return-type annotations and `=>`, but not a statement end or assignment
                 if ";" in text or re.search(r"(?<![=!<>])=(?!>)", text):
                     return None
                 return k
-            if c in ";,)}":  # statement ended (also in semicolon-free code) before any body
+            elif c in ";,)}":  # statement ended (also in semicolon-free code) before any body
                 return None
             between.append(c)
+            if not c.isspace():
+                last = c
             k += 1
         return None
 
@@ -634,7 +654,45 @@ def strip_comments(language: str, source: str) -> str:
 _TOKEN = re.compile(r"[A-Za-z_$][\w$]*|\d+|\S")
 
 
+def _python_tokens(source: str) -> list[str] | None:
+    """Tokens with block structure: Python indentation is significant, so INDENT/DEDENT and
+    statement ends are kept as tokens (moving a statement into or out of a block is not cosmetic)."""
+    import textwrap
+
+    try:
+        stream = list(tokenize.generate_tokens(io.StringIO(textwrap.dedent(source)).readline))
+    except (tokenize.TokenError, IndentationError, SyntaxError):
+        return None
+    out: list[str] = []
+    for token in stream:
+        if token.type in (tokenize.COMMENT, tokenize.NL, tokenize.ENDMARKER):
+            continue
+        if token.type == tokenize.INDENT:
+            out.append("<INDENT>")
+        elif token.type == tokenize.DEDENT:
+            out.append("<DEDENT>")
+        elif token.type == tokenize.NEWLINE:
+            out.append("<NEWLINE>")
+        elif token.type == tokenize.STRING:
+            out.extend(_TOKEN.findall(token.string))
+        else:
+            out.append(token.string)
+    return out
+
+
 def normalized_tokens(language: str, source: str) -> list[str]:
+    """Comment- and layout-insensitive tokens; Python keeps its significant block structure."""
+    if language == "python":
+        tokens = _python_tokens(source)
+        if tokens is not None:
+            return tokens
+        # untokenizable (e.g. mixed tabs/spaces): keep each line's indentation width as a token
+        out: list[str] = []
+        for line in strip_comments(language, source).splitlines():
+            if line.strip():
+                out.append(f"<I{len(line) - len(line.lstrip())}>")
+                out.extend(_TOKEN.findall(line))
+        return out
     return _TOKEN.findall(strip_comments(language, source))
 
 

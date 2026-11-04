@@ -30,6 +30,7 @@ heuristic hints, not review results.
 | nyariv/sandboxjs | 4 | MIT | [LICENSE](https://github.com/nyariv/SandboxJS/blob/826865251232611ec94078bab5a18ec875dad4a5/LICENSE) | `6cc322fdbcf3ffdf094e507104d69d6393f06d9ffb34fad345079123f25bf205` | `826865251232` |
 | vyperlang/vyper | 4 | Apache-2.0 | [LICENSE](https://github.com/vyperlang/vyper/blob/019a37ab98ff53f04fecfadf602b6cd5ac748f7f/LICENSE) | `ba0081957be6d4c459e66c07891761bec9e37c95bc618081cc265673604eb07b` | `019a37ab98ff` |
 | yahoo/serialize-javascript | 4 | BSD-3-Clause | [LICENSE](https://github.com/yahoo/serialize-javascript/blob/f147e90269b58bb6e539cfdf3d0e20d6ad14204b/LICENSE) | `d3dfa68a3c80e64eb10e46cef10e4208502da5ffb1387b11db00e42a507ab8f7` | `f147e90269b5` |
+| angular/angular | 3 | MIT | [LICENSE](https://github.com/angular/angular/blob/6bde84fa8e6a5770b54040fbbc9bf10d5d0386fa/LICENSE) | `15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7` | `6bde84fa8e6a` |
 | angular/angular-cli | 3 | MIT | [LICENSE](https://github.com/angular/angular-cli/blob/5271547c80662de10cb3bcb648779a83f6efedfb/LICENSE) | `657b51011163a8ddfd24b7e20404b16202db7b9f56ad8d68f7ea3996e9cf2299` | `5271547c8066` |
 | answerdev/answer | 3 | Apache-2.0 | [LICENSE](https://github.com/answerdev/answer/blob/ac3f2f047ee00b4edaea7530e570ab67ff87cd6a/LICENSE) | `cd03c7b50584a018ce76826f2ba466087603dedc5d505943f373171575ff8088` | `ac3f2f047ee0` |
 | apache/airflow | 3 | Apache-2.0 | [LICENSE](https://github.com/apache/airflow/blob/4e32546faf227a6497ce8b282fff7450cae6f665/LICENSE) | `2e3e104e5ffbbc9fc544155f3e6d74854b10bd41a78d9299b62e1b214f306d92` | `4e32546faf22` |
@@ -160,6 +161,7 @@ heuristic hints, not review results.
 | ikus060/rdiffweb | 2 | AGPL-3.0 | [LICENSE](https://github.com/ikus060/rdiffweb/blob/18a5aabd48fa6d2d2771a25f95610c28a1a097ca/LICENSE) | `c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271` | `18a5aabd48fa` |
 | image-size/image-size | 2 | MIT | [LICENSE](https://github.com/image-size/image-size/blob/8994131c7c3ee8da1699e04700c95e0e683a0c68/LICENSE) | `3109783dad7527b490aabc49c3cb148573c19b41b843e70cf9388a93f3d7fccd` | `8994131c7c3e` |
 | ipfs/js-ipns | 2 | MIT | [LICENSE](https://github.com/ipfs/js-ipns/blob/33684e356f1f2fdcd99b2fb85fcc5d52223769a0/LICENSE) | `7b437fc6f1a8fca3bd1298a0c2740be45108edfb7a509fe83259c3fe07c205d5` | `33684e356f1f` |
+| isaacs/minimatch | 2 | unknown | [LICENSE.md](https://github.com/isaacs/minimatch/blob/2e111f3a79abc00fa73110195de2c0f2351904f5/LICENSE.md) | `2c7c5d22ed5a8ee968c64757710979afcd77438c48b4a265b94e615babd8a901` | `2e111f3a79ab` |
 | jahlives/openssl_encrypt | 2 | unknown | [LICENSE](https://github.com/jahlives/openssl_encrypt/blob/7aa8787f4de2e9a23f58fca067bb16c4c69d28bb/LICENSE) | `d9143197111c7b678ae99ad7e637393491c2b2b8d2f26a8b0a5e792b778ac692` | `7aa8787f4de2` |
 | jaraco/jaraco.context | 2 | none | (none) | `-` | `7b26a42b5257` |
 | jaredhanson/passport-oauth2 | 2 | MIT | [LICENSE](https://github.com/jaredhanson/passport-oauth2/blob/8e3bcdff145a2219033bd782fc517229fe3e05ea/LICENSE) | `0ecb0023687d34e9763695952d813c2201ab74070b99c4649de4302d27b41779` | `8e3bcdff145a` |

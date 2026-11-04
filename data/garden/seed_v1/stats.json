@@ -1,20 +1,20 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 125,
-      "finding": 347,
-      "no_finding": 348
+      "abstain": 126,
+      "finding": 349,
+      "no_finding": 350
     },
     "by_kind": {
-      "caller_abstention": 125,
-      "post_fix": 348,
-      "vulnerable": 347
+      "caller_abstention": 126,
+      "post_fix": 350,
+      "vulnerable": 349
     },
     "by_language": {
       "go": 305,
       "javascript": 182,
       "python": 217,
-      "typescript": 116
+      "typescript": 121
     },
     "by_language_and_decision": {
       "go/abstain": 58,
@@ -26,14 +26,14 @@
       "python/abstain": 27,
       "python/finding": 95,
       "python/no_finding": 95,
-      "typescript/abstain": 16,
-      "typescript/finding": 50,
-      "typescript/no_finding": 50
+      "typescript/abstain": 17,
+      "typescript/finding": 52,
+      "typescript/no_finding": 52
     },
     "by_split": {
       "holdout_reserved": 100,
       "temporal_quarantine": 81,
-      "train": 564,
+      "train": 569,
       "validation": 75
     },
     "by_split_and_decision": {
@@ -43,14 +43,14 @@
       "temporal_quarantine/abstain": 15,
       "temporal_quarantine/finding": 33,
       "temporal_quarantine/no_finding": 33,
-      "train/abstain": 83,
-      "train/finding": 240,
-      "train/no_finding": 241,
+      "train/abstain": 84,
+      "train/finding": 242,
+      "train/no_finding": 243,
       "validation/abstain": 12,
       "validation/finding": 32,
       "validation/no_finding": 31
     },
-    "complete_pairs": 345,
+    "complete_pairs": 347,
     "finding_cwes": {
       "CWE-116": 2,
       "CWE-1188": 1,
@@ -61,7 +61,7 @@
       "CWE-1289": 2,
       "CWE-129": 2,
       "CWE-1321": 14,
-      "CWE-1333": 6,
+      "CWE-1333": 7,
       "CWE-1336": 2,
       "CWE-178": 2,
       "CWE-184": 2,
@@ -111,6 +111,7 @@
       "CWE-434": 1,
       "CWE-441": 1,
       "CWE-444": 2,
+      "CWE-471": 1,
       "CWE-476": 4,
       "CWE-489": 1,
       "CWE-524": 1,
@@ -151,9 +152,9 @@
       "CWE-96": 1
     },
     "finding_span_kind": {
-      "changed_lines": 201,
+      "changed_lines": 202,
       "insertion_point": 100,
-      "mixed": 46
+      "mixed": 47
     },
     "fix_year": {
       "2010": 2,
@@ -170,19 +171,19 @@
       "2023": 54,
       "2024": 81,
       "2025": 108,
-      "2026": 310
+      "2026": 315
     },
     "flags": {
       "coarse_cwe": 56,
       "license_none": 26,
-      "license_unknown": 29,
+      "license_unknown": 31,
       "no_root_license_file": 26
     },
     "license_category": {
       "none": 26,
-      "permissive": 659,
+      "permissive": 662,
       "strong_copyleft": 91,
-      "unknown": 29,
+      "unknown": 31,
       "weak_copyleft": 15
     },
     "license_detected": {
@@ -195,7 +196,7 @@
       "ISC": 3,
       "LGPL-2.1": 10,
       "LGPL-3.0": 2,
-      "MIT": 343,
+      "MIT": 346,
       "MPL-2.0": 3,
       "Unlicense": 4,
       "multiple:AGPL-3.0|LGPL-3.0": 2,
@@ -203,22 +204,22 @@
       "multiple:BSD-3-Clause|MIT": 2,
       "multiple:BSD-3-Clause|MPL-2.0": 3,
       "none": 26,
-      "unknown": 17
+      "unknown": 19
     },
     "repositories_by_split": {
       "holdout_reserved": 34,
       "temporal_quarantine": 28,
-      "train": 218,
+      "train": 220,
       "validation": 27
     }
   },
   "build": {
     "candidates": 1413,
     "outcomes": {
-      "built": 371,
-      "change_outside_function": 289,
+      "built": 373,
+      "change_outside_function": 287,
       "fix_too_large": 11,
-      "function_mismatch": 36,
+      "function_mismatch": 35,
       "function_size_out_of_bounds": 36,
       "multiple_functions_changed": 232,
       "no_logic_change": 1,
@@ -226,7 +227,7 @@
       "root_commit": 1,
       "source_file_added_or_deleted": 121,
       "too_many_source_files": 95,
-      "top_level_addition_without_changed_function": 78,
+      "top_level_addition_without_changed_function": 79,
       "unresolvable_commit": 11
     }
   },
@@ -290,23 +291,23 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 820,
-      "source_not_approved:ghsa-osv-fix-commits": 820,
-      "source_not_approved:github-advisory-db": 820,
-      "source_not_approved:osv": 820,
+      "repository_not_reviewed": 825,
+      "source_not_approved:ghsa-osv-fix-commits": 825,
+      "source_not_approved:github-advisory-db": 825,
+      "source_not_approved:osv": 825,
       "split:holdout_reserved": 100,
       "split:temporal_quarantine": 81
     },
     "by_approval_status": {
       "excluded": 238,
-      "pending_review": 639
+      "pending_review": 644
     },
     "training_approved": 0
   },
-  "manifest_sha256": "ce1364d51d9496bb1f37e2e2410e9ff55f9df67435a0c4644470334a29921fb2",
+  "manifest_sha256": "7ac1eebb3da9379398eb8d5891f9336dc3ba56edbfae5ac29ddadae0aa994f3f",
   "pipeline_version": "1",
   "records": {
-    "accepted": 820,
+    "accepted": 825,
     "failed_checks": {
       "label_conflict_exact": 4,
       "label_conflict_near": 2,
@@ -316,6 +317,6 @@
       "syntax_well_formed": 2
     },
     "rejected": 57,
-    "total": 877
+    "total": 882
   }
 }

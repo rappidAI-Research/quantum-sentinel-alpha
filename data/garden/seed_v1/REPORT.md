@@ -14,23 +14,23 @@ registry sources it depends on are approved. Accepted records are a non-approved
 | go | 123 | 124 | 58 | 305 |
 | javascript | 79 | 79 | 24 | 182 |
 | python | 95 | 95 | 27 | 217 |
-| typescript | 50 | 50 | 16 | 116 |
-| **Total** | 347 | 348 | 125 | 820 |
+| typescript | 52 | 52 | 17 | 121 |
+| **Total** | 349 | 350 | 126 | 825 |
 
-Complete vulnerable/fixed pairs: 345.
+Complete vulnerable/fixed pairs: 347.
 
 ## Splits (repository-level, temporal cutoff applied)
 
 | Split | finding | no_finding | abstain | Repositories |
 | --- | ---: | ---: | ---: | ---: |
-| train | 240 | 241 | 83 | 218 |
+| train | 242 | 243 | 84 | 220 |
 | validation | 32 | 31 | 12 | 27 |
 | holdout_reserved | 42 | 43 | 15 | 34 |
 | temporal_quarantine | 33 | 33 | 15 | 28 |
 
 ## CWE distribution of accepted findings
 
-97 distinct primary CWEs. Records per CWE, most frequent first:
+98 distinct primary CWEs. Records per CWE, most frequent first:
 
 | CWE | Records |
 | --- | ---: |
@@ -46,9 +46,9 @@ Complete vulnerable/fixed pairs: 345.
 | CWE-287 | 7 |
 | CWE-347 | 7 |
 | CWE-918 | 7 |
+| CWE-1333 | 7 |
 | CWE-94 | 6 |
 | CWE-532 | 6 |
-| CWE-1333 | 6 |
 | CWE-248 | 5 |
 | CWE-295 | 5 |
 | CWE-770 | 5 |
@@ -115,6 +115,7 @@ Complete vulnerable/fixed pairs: 345.
 | CWE-401 | 1 |
 | CWE-434 | 1 |
 | CWE-441 | 1 |
+| CWE-471 | 1 |
 | CWE-489 | 1 |
 | CWE-524 | 1 |
 | CWE-646 | 1 |
@@ -136,9 +137,9 @@ Complete vulnerable/fixed pairs: 345.
 
 | Span kind | Records |
 | --- | ---: |
-| changed_lines | 201 |
+| changed_lines | 202 |
 | insertion_point | 100 |
-| mixed | 46 |
+| mixed | 47 |
 
 ## Discovery (OSV export, GitHub-reviewed advisories)
 
@@ -190,10 +191,10 @@ Discovery outcomes:
 
 | Outcome | Candidates |
 | --- | ---: |
-| built | 371 |
-| change_outside_function | 289 |
+| built | 373 |
+| change_outside_function | 287 |
 | fix_too_large | 11 |
-| function_mismatch | 36 |
+| function_mismatch | 35 |
 | function_size_out_of_bounds | 36 |
 | multiple_functions_changed | 232 |
 | no_logic_change | 1 |
@@ -201,12 +202,12 @@ Discovery outcomes:
 | root_commit | 1 |
 | source_file_added_or_deleted | 121 |
 | too_many_source_files | 95 |
-| top_level_addition_without_changed_function | 78 |
+| top_level_addition_without_changed_function | 79 |
 | unresolvable_commit | 11 |
 
 ## Quality
 
-Records: 877 built, 820 accepted, 57 rejected.
+Records: 882 built, 825 accepted, 57 rejected.
 
 | Failed check | Records |
 | --- | ---: |
@@ -223,7 +224,7 @@ Flags on accepted records (not rejections):
 | --- | ---: |
 | coarse_cwe | 56 |
 | license_none | 26 |
-| license_unknown | 29 |
+| license_unknown | 31 |
 | no_root_license_file | 26 |
 
 ## Licenses detected (unreviewed - detection is not approval)
@@ -239,7 +240,7 @@ Flags on accepted records (not rejections):
 | ISC | 3 |
 | LGPL-2.1 | 10 |
 | LGPL-3.0 | 2 |
-| MIT | 343 |
+| MIT | 346 |
 | MPL-2.0 | 3 |
 | Unlicense | 4 |
 | multiple:AGPL-3.0|LGPL-3.0 | 2 |
@@ -247,23 +248,23 @@ Flags on accepted records (not rejections):
 | multiple:BSD-3-Clause|MIT | 2 |
 | multiple:BSD-3-Clause|MPL-2.0 | 3 |
 | none | 26 |
-| unknown | 17 |
+| unknown | 19 |
 
 ## Governance
 
 | Approval status | Records |
 | --- | ---: |
 | excluded | 238 |
-| pending_review | 639 |
+| pending_review | 644 |
 
 Blockers on accepted records:
 
 | Blocker | Records |
 | --- | ---: |
-| repository_not_reviewed | 820 |
-| source_not_approved:ghsa-osv-fix-commits | 820 |
-| source_not_approved:github-advisory-db | 820 |
-| source_not_approved:osv | 820 |
+| repository_not_reviewed | 825 |
+| source_not_approved:ghsa-osv-fix-commits | 825 |
+| source_not_approved:github-advisory-db | 825 |
+| source_not_approved:osv | 825 |
 | split:holdout_reserved | 100 |
 | split:temporal_quarantine | 81 |
 
@@ -285,4 +286,4 @@ Blockers on accepted records:
 | 2023 | 54 |
 | 2024 | 81 |
 | 2025 | 108 |
-| 2026 | 310 |
+| 2026 | 315 |

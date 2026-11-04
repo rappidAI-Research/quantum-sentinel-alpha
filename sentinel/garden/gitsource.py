@@ -1,8 +1,10 @@
 """Stage 2 - resolution: fetch a fix commit and its parent from the upstream repository.
 
-Each upstream repository gets one bare, partial (`--filter=blob:none`), shallow cache under the
-Garden work directory. Only the fix commit and its parent are fetched; blobs are downloaded on
-demand. Everything is addressed by full commit SHA, so a rebuild reads identical bytes.
+Each upstream repository gets one bare, partial (`--filter=tree:0`), shallow cache under the
+Garden work directory. Only the fix commit and its parent are fetched; trees and blobs are
+downloaded on demand, so a diff only pulls the directories along the changed paths (a monorepo
+fix costs megabytes instead of a full tree per commit). Everything is addressed by full commit
+SHA, so a rebuild reads identical bytes.
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ from pathlib import Path
 from sentinel.garden.licenses import LICENSE_FILE
 
 SHA = re.compile(r"^[0-9a-f]{40}$")
+FILTER = "tree:0"  # lazily fetch trees and blobs; see module docstring
 _ENV = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "true", "LC_ALL": "C"}
 
 
@@ -48,7 +51,7 @@ class UpstreamRepo:
             self._git("init", "--bare", "-q")
             self._git("remote", "add", "origin", repository_url)
             self._git("config", "remote.origin.promisor", "true")
-            self._git("config", "remote.origin.partialclonefilter", "blob:none")
+            self._git("config", "remote.origin.partialclonefilter", FILTER)
             self._git("config", "extensions.partialClone", "origin")
 
     def _git(self, *args: str, timeout: int = 120, binary: bool = False) -> str | bytes:
@@ -78,7 +81,7 @@ class UpstreamRepo:
         if not SHA.match(sha):
             raise GitError(f"not a full commit SHA: {sha}")
         if not self.has_commit(sha):
-            self._git("fetch", "-q", "--depth=2", "--filter=blob:none", "origin", sha, timeout=300)
+            self._git("fetch", "-q", "--depth=2", f"--filter={FILTER}", "origin", sha, timeout=300)
         line = str(self._git("show", "-s", "--format=%H %P%n%cI%n%aI", sha)).strip().splitlines()
         hashes = line[0].split()
         if hashes[0] != sha:

@@ -188,3 +188,48 @@ def test_semicolon_free_call_is_not_a_method_definition() -> None:
     )
     names = [f.name for f in code.find_functions("typescript", source)]
     assert names == ["mergeSource"]
+
+
+# --- Second review round ------------------------------------------------------------------------
+
+
+def test_python_reindentation_fix_is_not_cosmetic() -> None:
+    old = "def get_secret(user, resource):\n    if user.is_admin:\n        log(user)\n    return resource.secret\n"
+    new = "def get_secret(user, resource):\n    if user.is_admin:\n        log(user)\n        return resource.secret\n"
+    assert code.normalized_sha256("python", old) != code.normalized_sha256("python", new)
+    records = build({"a.py": old}, {"a.py": new}, candidate(cwes=["CWE-862"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    assert vulnerable["input"]["code"].splitlines()[vulnerable["target"]["start_line"] - 1].strip() == "return resource.secret"
+
+
+def test_python_normalization_still_ignores_comments_and_spacing() -> None:
+    a = "def f(x):\n    # note\n    return x + 1\n"
+    b = "def f(x):\n    return x+1  # other\n"
+    assert code.normalized_sha256("python", a) == code.normalized_sha256("python", b)
+    method = "    def m(self):\n        return 1\n"
+    assert code.normalized_sha256("python", method) == code.normalized_sha256("python", "def m(self):\n    return 1\n")
+
+
+@pytest.mark.parametrize(
+    "signature",
+    [
+        "function render(name: string): { html: string } {",
+        "function render(name: string): Promise<{ html: string }> {",
+        "function render(name: string): { a: string; b: number } | null {",
+        "function render(name: string): Record<string, (x: number) => void> {",
+        "export const render = (name: string): { html: string } => {",
+    ],
+)
+def test_typescript_return_type_braces_are_skipped(signature: str) -> None:
+    source = f"{signature}\n  const html = escape(name);\n  return {{ html }};\n}}\n"
+    functions = [(f.name, f.start, f.end) for f in code.find_functions("typescript", source)]
+    assert ("render", 1, 4) in functions
+
+
+def test_typescript_return_type_fix_is_extracted() -> None:
+    old = "function render(name: string): { html: string } {\n  const html = '<b>' + name + '</b>';\n  return { html };\n}\n"
+    new = "function render(name: string): { html: string } {\n  const html = '<b>' + escapeHtml(name) + '</b>';\n  return { html };\n}\n"
+    records = build({"src/render.ts": old}, {"src/render.ts": new}, candidate("npm", ["CWE-79"]))
+    vulnerable = next(r for r in records if r["kind"] == "vulnerable")
+    assert vulnerable["provenance"]["excerpt_function"] == "render"
+    assert vulnerable["target"]["start_line"] == 2
