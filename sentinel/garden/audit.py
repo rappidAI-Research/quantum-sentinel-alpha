@@ -45,6 +45,7 @@ from sentinel.garden.osv import fix_commit_refs
 from sentinel.garden.split import parse_time
 
 AUDIT_VERSION = "1"
+LATER_FIX_SIMILARITY = 0.5  # Jaccard of 5-token shingles between our post-fix code and the later-fixed function
 OSV_API = "https://api.osv.dev/v1"
 
 # CWE family -> (CWEs, regex of remediation indicators in added or removed lines)
@@ -242,7 +243,7 @@ def _call_arguments(line: str, callee: str) -> str | None:
             depth -= 1
             if depth == 0:
                 return line[start:i]
-    return line[start:]  # call continues on the next line: arguments are not constant-only by construction
+    return None  # the call continues on the next line: its arguments are not known to be constant
 
 
 _LITERAL_ARGS = re.compile(r"^\s*(?:(?:-?\d+(?:\.\d+)?|true|false|True|False|None|null|nil|undefined|\"[^\"]*\"|'[^']*'|`[^`$]*`)\s*,?\s*)*$")
@@ -255,7 +256,9 @@ def abstention_validity(abstention: dict[str, Any], vulnerable: dict[str, Any] |
     line = lines[abstention["localization"]["call_line"] - 1] if abstention["localization"]["call_line"] <= len(lines) else ""
     arguments = _call_arguments(line, callee)
     problems = []
-    if arguments is not None and _LITERAL_ARGS.match(arguments):
+    # Only a call whose arguments are all literals cannot carry attacker data. A call without
+    # arguments is not flagged: a method's receiver or module state may carry the data.
+    if arguments is not None and arguments.strip() and _LITERAL_ARGS.match(arguments):
         problems.append("constant_arguments")
     if vulnerable is not None:
         language = abstention["input"]["language"]
@@ -284,6 +287,7 @@ def later_fixes(
     own_ids = {provenance["advisory_id"], *provenance["aliases"]}
     fixed_at = parse_time(provenance["fix_committed_at"])
     function, path = provenance["excerpt_function"], provenance["file_path"]
+    post_fix_code = group["post_fix"]["input"]["code"]
     found: list[LaterFix] = []
     for vuln in package_vulns:
         ids = {vuln.get("id"), *(vuln.get("aliases") or [])}
@@ -314,7 +318,16 @@ def later_fixes(
                         continue
                     anchor = max(hunk.old_start, 1)
                     fn = code.innermost(functions, anchor, anchor + max(hunk.old_count, 1) - 1)
-                    if fn is not None and fn.name == function:
+                    if fn is None or fn.name != function:
+                        continue
+                    # Same name is not enough (anonymous callbacks, same-named methods of other
+                    # classes): the function the later fix changed must resemble our post-fix code.
+                    changed = "\n".join(old_source.splitlines()[fn.start - 1 : fn.end]) + "\n"
+                    similarity = code.jaccard(
+                        code.shingles(code.normalized_tokens(language, changed)),
+                        code.shingles(code.normalized_tokens(language, post_fix_code)),
+                    )
+                    if similarity >= LATER_FIX_SIMILARITY:
                         found.append(LaterFix(vuln["id"], "later_fix_changes_same_function", sha))
                         break
             except GitError:

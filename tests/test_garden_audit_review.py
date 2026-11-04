@@ -244,3 +244,24 @@ def test_manual_wrong_verdicts_become_exclusions_and_report_renders() -> None:
     assert summary["manual"]["rates"]["cwe"] == {"judged": 2, "errors": 1, "uncertain_or_partial": 0, "error_rate": 0.5, "wilson95": [round(audit.wilson_interval(1, 2)[0], 3), round(audit.wilson_interval(1, 2)[1], 3)]}
     text = audit.report_markdown(summary, result, manual)
     assert "No exploit, test or patch was executed" in text and "manual review | 2" in text
+
+
+def test_multiline_and_argument_free_calls_are_not_constant_abstentions() -> None:
+    group = built()
+    for line in ('    return {"orders": list_orders(', '    return {"orders": list_orders()}'):
+        abstention = copy.deepcopy(group["caller_abstention"])
+        abstention["input"]["code"] = "def orders_view(conn):\n    x = 1\n" + line + "\n"
+        abstention["localization"]["call_line"] = 3
+        assert audit.abstention_validity(abstention, group["vulnerable"])["problems"] == [], line
+
+
+def test_later_fix_of_an_unrelated_same_named_function_is_ignored() -> None:
+    group = built()
+
+    class Other(LaterFixRepo):
+        def __init__(self) -> None:
+            other = "def list_orders(a, b, c):\n    total = sum([a, b, c])\n    log(total)\n    return total\n"
+            self.files = {"p2": other, "c2": other.replace("log(total)", "audit(total)")}
+
+    later = {"id": "GHSA-6666-7777-8888", "references": [{"type": "FIX", "url": f"https://github.com/example/webapp/commit/{'c' * 40}"}]}
+    assert audit.later_fixes(group, [later], Other()) == []
