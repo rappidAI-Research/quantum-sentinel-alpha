@@ -71,9 +71,9 @@ The split policy is **frozen** in `configs/garden/split_policy.yaml` (`sentinel-
 | Hard-negative validity | every other OSV advisory of the same package: a later upstream fix that changes the same function, or an advisory that calls this fix incomplete | `post_fix` record excluded |
 | Abstention validity | the call passes non-constant data; the caller does not duplicate the vulnerable code | abstention excluded |
 | Split leakage | the same advisory/CVE or fix commit in two splits, or near-identical code (Jaccard ≥ 0.7) across splits | train-side record excluded; holdout/validation records are never moved |
-| Localization precision | span length and share of the function | reported |
+| Localization precision | span length and share of the function | a broad span (> 12 lines and > 40 % of the function) excludes the vulnerable record (and with it the group): in the manual sample every broad span was imprecise |
 
-A deterministic stratified sample (per language: pairs round-robin over CWE families, plus abstentions) is reviewed by hand; verdicts are stored with the reviewer's identity in `audit/manual_review.yaml` and reported with Wilson 95 % intervals. Exclusions (`audit/exclusions.yaml`, automated and manual sections) are applied by `curate` as failed checks `audit:<reason>`; records are only ever excluded, never relabelled. No exploit or test is executed.
+A deterministic stratified sample (per language: pairs round-robin over CWE families, plus abstentions) is reviewed by hand; verdicts are stored with the reviewer's identity in `audit/manual_review.yaml` and reported with Wilson 95 % intervals. Rates count only items of the current sample (sampled items without a verdict are reported as pending; a verdict on a group that is no longer sampled keeps its exclusions but is not counted), once for the whole sample and once for the items that survive the automated exclusions - the estimate for the exported data. Exclusions (`audit/exclusions.yaml`, automated and manual sections) are applied by `curate` as failed checks `audit:<reason>`; records are only ever excluded, never relabelled. No exploit or test is executed.
 
 ## Rights review
 
