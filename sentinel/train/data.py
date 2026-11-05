@@ -132,6 +132,10 @@ def load_training_data(
         for key in ("decision", "cwe", "alternate_cwes", "start_line", "end_line", "evidence_source"):
             if target.get(key) != label.get(key):
                 raise GovernanceError(f"{rid} target {key}={target.get(key)!r} does not match the manifest ({label.get(key)!r})")
+        for key in ("kind", "group_id", "pair_id"):
+            # record structure decides which examples are derived (e.g. a patch example needs its pair)
+            if record.get(key) != row.get(key):
+                raise GovernanceError(f"{rid} {key}={record.get(key)!r} does not match the manifest ({row.get(key)!r})")
         if record["input"]["language"] != label.get("language"):
             raise GovernanceError(f"{rid} language does not match the manifest")
         code_hash = hashlib.sha256(record["input"]["code"].encode("utf-8")).hexdigest()
@@ -167,9 +171,21 @@ def load_training_data(
 
     def bound_patch_examples(records: list[dict[str, Any]], label: str) -> list[dict[str, Any]]:
         examples = supervision.patch_examples(records)
+        expected = {
+            rid for rid, row in manifest.items()
+            if row["split"] == label
+            and row["governance"]["approval_status"] == "training_approved"
+            and (row.get("supervision") or {}).get("patch_eligibility") == "eligible"
+        }
+        produced = [e["record_id"] for e in examples]
+        if set(produced) != expected or len(produced) != len(set(produced)):
+            raise GovernanceError(
+                f"{label} patch examples do not match the manifest's approved patch-eligible records "
+                f"(missing {sorted(expected - set(produced))[:3]}, unexpected {sorted(set(produced) - expected)[:3]})"
+            )
         for example in examples:
-            expected = manifest[example["record_id"]]["supervision"]["patch_example_sha256"]
-            if expected is None or supervision.canonical_sha256(example) != expected:
+            digest = manifest[example["record_id"]]["supervision"]["patch_example_sha256"]
+            if digest is None or supervision.canonical_sha256(example) != digest:
                 raise GovernanceError(f"{example['record_id']}: {label} patch example is not the verified pair bound in the manifest")
         return examples
 

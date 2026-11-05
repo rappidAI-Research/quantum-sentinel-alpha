@@ -121,3 +121,29 @@ def test_an_unfinished_entry_is_not_counted(tmp_path: Path) -> None:
     path = tmp_path / "human_review.yaml"
     path.write_text(yaml.safe_dump(_decisions(index, hard_negative_safe=None)))
     assert human_review.load_human_review(path, index)["items"] == []
+
+
+def test_refreshing_the_sample_keeps_earlier_decisions_and_their_exclusions(tmp_path: Path) -> None:
+    # review finding: an exclusion removes the item from the next draw; the decision must survive
+    records = population()
+    audit_dir = tmp_path / "a"
+    index = human_review.write_packages(records, tmp_path / "osv", [], {"items": []}, tmp_path / "p", audit_dir)
+    path = tmp_path / "human_review.yaml"
+    path.write_text(yaml.safe_dump(_decisions(index)))
+    decided = _decisions(index)["items"][0]
+
+    excluded = decided["exclude_records"][0]
+    for record in records:
+        if record["record_id"] == excluded:
+            record["quality"] = {"status": "rejected", "failed_checks": ["audit:human_review:x"], "flags": []}
+    refreshed = human_review.write_packages(records, tmp_path / "osv", [], {"items": []}, tmp_path / "p", audit_dir)
+    retired = [i for i in refreshed if i.get("retired")]
+    assert [i["item_id"] for i in retired] == [decided["item_id"]]
+
+    review = human_review.load_human_review(path, refreshed)  # no "unknown item"
+    assert review["items"] == [] and [e["item_id"] for e in review["retired"]] == [decided["item_id"]]
+    assert human_review.human_exclusions(review)[0]["record_id"] == excluded
+    summary = human_review.summarize_human(review, refreshed)
+    assert summary["retired_decisions"] == [decided["item_id"]] and summary["sample_items"] == len(refreshed) - 1
+    template = yaml.safe_load((audit_dir / "human_review.TEMPLATE.yaml").read_text())
+    assert decided["item_id"] not in {i["item_id"] for i in template["items"]}

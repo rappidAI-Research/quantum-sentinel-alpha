@@ -17,6 +17,10 @@ without the tooling, and keeps their decisions apart from every automated or AI 
 - `load_human_review`: validates `audit/human_review.yaml`, which only a human reviewer writes. A
   decision is bound to the sha256 of the package it was made on; a decision on a changed package is
   stale and is not counted. Nothing in this repository fills that file.
+- Refreshing the packages never invalidates a review: an item that is no longer drawn (for example
+  because the reviewer's own exclusion removed its pair from the population) stays in the index as
+  `retired` with its last package hash. Its decision keeps its exclusions but is not counted in the
+  error rates, which describe the current sample only.
 """
 
 from __future__ import annotations
@@ -267,6 +271,8 @@ def write_packages(
     by_id = {r["record_id"]: r for r in records}
     by_group = {g["group_id"]: g for g in automated}
     sample = draw_sample(records)
+    index_path = committed_audit_dir / "human_review_sample.jsonl"
+    previous = [json.loads(line) for line in index_path.read_text(encoding="utf-8").splitlines() if line.strip()] if index_path.is_file() else []
     package_dir.mkdir(parents=True, exist_ok=True)
     index = []
     for item in sample:
@@ -279,6 +285,8 @@ def write_packages(
         (item_dir / "package.md").write_text(text, encoding="utf-8")
         (item_dir / "signals.json").write_text(json.dumps(automated_signals(item, by_group, manual), indent=2, sort_keys=True) + "\n", encoding="utf-8")
         index.append({**item, "package_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest()})
+    current = {item["item_id"] for item in index}
+    index += [{**old, "retired": True} for old in previous if old["item_id"] not in current]
     committed_audit_dir.mkdir(parents=True, exist_ok=True)
     (committed_audit_dir / "human_review_sample.jsonl").write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in index), encoding="utf-8")
     (committed_audit_dir / "human_review.TEMPLATE.yaml").write_text(template(index), encoding="utf-8")
@@ -301,6 +309,7 @@ def template(index: list[dict[str, Any]]) -> str:
                 "notes": None,
             }
             for item in index
+            if not item.get("retired")
         ],
     }
     return (
@@ -313,7 +322,7 @@ def template(index: list[dict[str, Any]]) -> str:
 def load_human_review(path: Path, index: list[dict[str, Any]]) -> dict[str, Any]:
     """Validate a reviewer's decisions; returns them with stale decisions separated."""
     if not path.is_file():
-        return {"reviewer": None, "items": [], "stale": [], "independent": False}
+        return {"reviewer": None, "items": [], "stale": [], "retired": [], "independent": False}
     document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     if document.get("sample_id") != SAMPLE_ID:
         raise ValueError(f"{path}: sample_id must be {SAMPLE_ID}")
@@ -323,7 +332,7 @@ def load_human_review(path: Path, index: list[dict[str, Any]]) -> dict[str, Any]
     if not isinstance(reviewer["independent_of_implementation"], bool):
         raise ValueError(f"{path}: reviewer.independent_of_implementation must be true or false")
     by_id = {i["item_id"]: i for i in index}
-    items, stale = [], []
+    items, stale, retired = [], [], []
     for entry in document.get("items") or []:
         sample_item = by_id.get(entry.get("item_id"))
         if sample_item is None:
@@ -337,14 +346,25 @@ def load_human_review(path: Path, index: list[dict[str, Any]]) -> dict[str, Any]
         for record_id in entry.get("exclude_records") or []:
             if record_id not in sample_item["record_ids"]:
                 raise ValueError(f"{entry['item_id']}: exclude_records may only name this item's records")
-        (items if entry.get("package_sha256") == sample_item["package_sha256"] else stale).append(entry)
-    return {"reviewer": reviewer, "items": items, "stale": [e["item_id"] for e in stale], "independent": reviewer["independent_of_implementation"]}
+        if entry.get("package_sha256") != sample_item["package_sha256"]:
+            stale.append(entry)
+        elif sample_item.get("retired"):
+            retired.append(entry)  # still applies its exclusions; not part of the current sample's rates
+        else:
+            items.append(entry)
+    return {
+        "reviewer": reviewer,
+        "items": items,
+        "stale": [e["item_id"] for e in stale],
+        "retired": retired,
+        "independent": reviewer["independent_of_implementation"],
+    }
 
 
 def human_exclusions(review: dict[str, Any]) -> list[dict[str, str]]:
     return [
         {"record_id": record_id, "reason": "human_review:" + (entry.get("notes") or "excluded").split("\n")[0][:80]}
-        for entry in review["items"]
+        for entry in review["items"] + review.get("retired", [])
         for record_id in entry.get("exclude_records") or []
     ]
 
@@ -369,7 +389,8 @@ def summarize_human(review: dict[str, Any], index: list[dict[str, Any]]) -> dict
         rates[name] = {"errors": count, "judged": len(judged), "wilson95": [low, high]}
     return {
         "sample_id": SAMPLE_ID,
-        "sample_items": len(index),
+        "sample_items": sum(1 for i in index if not i.get("retired")),
+        "retired_decisions": [e["item_id"] for e in review.get("retired", [])],
         "reviewed_items": len(review["items"]),
         "stale_decisions": review["stale"],
         "reviewer": review["reviewer"],

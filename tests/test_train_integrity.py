@@ -140,3 +140,22 @@ def test_manifest_supervision_block_is_validated() -> None:
     row["supervision"]["patch_example_sha256"] = None
     assert "exactly when" in supervision.manifest_supervision_problem(row)
     assert "no supervision block" in supervision.manifest_supervision_problem({"kind": "vulnerable"})
+
+
+def test_unbinding_a_pair_cannot_silently_drop_its_patch_example(garden: GardenWorkdir) -> None:
+    # review finding: patch eligibility is derived from record structure (pair_id), which the
+    # input/target hashes do not cover
+    validation = copy.deepcopy(garden.validation)
+    for record in validation:
+        record["pair_id"] = None
+    path = garden.workdir / "validation.jsonl"
+    path.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in validation))
+    garden.write_sums()
+    with pytest.raises(GovernanceError, match="pair_id"):
+        _load(garden, ("detection", "patch"))
+
+
+def test_patch_examples_must_cover_every_manifest_eligible_record(garden: GardenWorkdir, monkeypatch) -> None:
+    monkeypatch.setattr(supervision, "patch_examples", lambda records: [])
+    with pytest.raises(GovernanceError, match="patch examples do not match"):
+        _load(garden, ("detection", "patch"))
