@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:saleor': ['BSD-3-Clause']}
-  - repository_key: saleor/saleor
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 38f8aff3d2e04d03808d1a7eb6bd326c8e932fdf0b835bd96fdb80a89fb5258f
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/saleor/saleor
-      - https://github.com/saleor/saleor/blob/521dfd6394f3926a77c60d8633c058e16d0f916d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@saltcorn/server': ['MIT']}
-  - repository_key: saltcorn/saltcorn
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 5f515d5df542a22665127c304dfbc6f9c223a146e27eff946867075fcea48057
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/saltcorn/saltcorn
-      - https://github.com/saltcorn/saltcorn/blob/9e066ae8ba317469053cc27e95dcdf5b6e60e12d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/sassoftware/go-rpmutils': ['Apache-2.0']}
   - repository_key: sassoftware/go-rpmutils
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/sunscrapers/djoser
       - https://github.com/sunscrapers/djoser/blob/d33c3993c0c735f23cbedc60fa59fce69354f19d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:svelte': ['MIT']}
+  - repository_key: sveltejs/svelte
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: 97a941bae1c510c556c5daf017180e4939ea392357d9a7bae2657e3e20c69c42
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sveltejs/svelte
+      - https://github.com/sveltejs/svelte/blob/a31dec5eb30978cff7ff4d77f4bf316841f711bc/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:swagger-ui': ['Apache-2.0']}
+  - repository_key: swagger-api/swagger-ui
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: d7eccc0b2876ef3b1f21f44fa7dd5b0431ecbee97c82a673b29d0b84187a4c5c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/swagger-api/swagger-ui
+      - https://github.com/swagger-api/swagger-ui/blob/1e184e8e218676278c83e60a45846c199ce3d15e/LICENSE
     notes: ""

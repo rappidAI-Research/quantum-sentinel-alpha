@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:heroku-addonpool': ['MIT']}
-  - repository_key: nodef/heroku-addonpool
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: ce8c245227241c3b52e8a8c1ddf2a8f90afa05e01dfb91801f22b3e2f20c19e2
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nodef/heroku-addonpool
-      - https://github.com/nodef/heroku-addonpool/blob/b1a5b316473ac92d783f3d54ee048d54082da38d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:mailparser': ['MIT']}
-  - repository_key: nodemailer/mailparser
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 4f1ac0e65b58ac085331698c7a1c01857ee00af203adce645bb0f47f4ae32b87
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nodemailer/mailparser
-      - https://github.com/nodemailer/mailparser/blob/921a67df4cfb38f0b411037d7b26fbd4d5411b08/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:swiper': ['MIT']}
   - repository_key: nolimits4web/swiper
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/pinchtab/pinchtab
       - https://github.com/pinchtab/pinchtab/blob/c824574c3a05073dec2f5e9c219e22ffff8de445/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:pipecat-ai': ['BSD-2-Clause']}
+  - repository_key: pipecat-ai/pipecat
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE
+    license_file_sha256: e31a733ecb79cbffafd5474e964e5eca15e0a0876a42b1d7253b51b198eb61aa
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pipecat-ai/pipecat
+      - https://github.com/pipecat-ai/pipecat/blob/7519c26ac5508573c35fa3a9c4717b013993d129/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:tree-kill': ['MIT']}
+  - repository_key: pkrumins/node-tree-kill
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 33eba3cb810ee4b03426ec7fecf22e7529e2fe95f8163e7213016459bee7a276
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pkrumins/node-tree-kill
+      - https://github.com/pkrumins/node-tree-kill/blob/deee138a8cbc918463d8af5ce8c2bec33c3fd164/LICENSE
     notes: ""

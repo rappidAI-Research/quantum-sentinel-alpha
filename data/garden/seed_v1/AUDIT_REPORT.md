@@ -26,7 +26,13 @@ Fix-pattern consistency by CWE family: authn_authz 87/122; code_injection 14/29;
 | later_fix_changes_same_function | 126 |
 | later_fix_unverifiable | 10 |
 | reported_incomplete_fix | 47 |
+| split_leakage_shared_package_with_holdout_reserved | 2 |
+| split_leakage_shared_package_with_validation | 11 |
 | manual review | 10 |
+
+Split leakage: train records that share an advisory, a fix commit, near-duplicate code or a published package with another split are excluded (`split_leakage_*`); a shared package catches moved, renamed or forked repositories that the repository-level split keys apart.
+
+Temporal quarantine (never trained on): 159 records, of which 20 come from a repository and 6 from a package that also has train/validation records (by design of the temporal cutoff). An evaluation on the quarantine is therefore not repository-disjoint; report these records separately.
 
 ### Invalidated hard negatives
 
@@ -131,6 +137,10 @@ Findings from the manual review:
 - `sgg-39ededf4f6bfcfb9` (pair): The 24-line span is dominated by a variable rename (imput -> input) committed with the fix; the security change is the three jsStringEscape calls. Code injection fits CWE-94 better than CWE-77. Excluded.
 - `sgg-61d6829955024685` (pair): Missing timestamp validation allows replay of a LogoutRequest; CWE-294/613 fit better than CWE-347.
 - `sgg-42f7b788706518a3` (pair): `Buffer.from(...).buffer` exposed the pooled ArrayBuffer around the JSON.
+
+## Independent human review
+
+**Not performed.** 64 blind evidence packages are prepared (`python -m sentinel.garden review-packages`; index `audit/human_review_sample.jsonl`, template `audit/human_review.TEMPLATE.yaml`). The AI-assisted sample above is not an independent review; no error rate in this report comes from a human reviewer.
 
 ## Uncertainties
 

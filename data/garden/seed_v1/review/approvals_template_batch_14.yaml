@@ -344,23 +344,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/matrix-org/dendrite': ['Apache-2.0']}
-  - repository_key: matrix-org/dendrite
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/matrix-org/dendrite
-      - https://github.com/matrix-org/dendrite/blob/2792d0490f3771488bad346981b8c26479a872c3/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:matrix-sydent': ['Apache-2.0']}
   - repository_key: matrix-org/sydent
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/meshery/meshery
       - https://github.com/meshery/meshery/blob/8e995ce21af02d32ef61689c1e1748a745917f13/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:metacalc': ['MIT']}
+  - repository_key: metarhia/metacalc
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 0d846143ef2e45c4c3fc0ea9cb28915f42a6a1799c3750014ca4e21cf97e1627
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/metarhia/metacalc
+      - https://github.com/metarhia/metacalc/blob/625c23d63eabfa16fc815f5832b147b08d2144bd/LICENSE
     notes: ""

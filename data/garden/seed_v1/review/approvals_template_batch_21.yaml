@@ -3,40 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 1 {'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:glance': ['MIT']}
-  - repository_key: jarofghosts/glance
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: c47883885f5564087f4153a1245192a745d3d84203cf93a9288712d419808c60
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/jarofghosts/glance
-      - https://github.com/jarofghosts/glance/blob/8cfd88e44ebd3f07e3a2eaf376a3e758b6c4ca19/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 1 {'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:mixin-deep': ['MIT']}
-  - repository_key: jonschlinkert/mixin-deep
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 9580cc528a1c38d1560a9d36e34404fe1ea9d8e6f44c596dac2a3104ef63cdab
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/jonschlinkert/mixin-deep
-      - https://github.com/jonschlinkert/mixin-deep/blob/578b0bc5e74e14de9ef4975f504dc698796bdf9c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 1 {'train/vulnerable': 1}
   # registry (deps.dev): {'npm:js-data': ['MIT']}
   - repository_key: js-data/js-data
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/gogs/gogs
       - https://github.com/gogs/gogs/blob/c5da9631dc75f692f313373ae229c4d47ba6517f/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:scratch-svg-renderer': ['AGPL-3.0-only']}
+  - repository_key: llk/scratch-svg-renderer
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 4d7f8fd635fa6e9b318ca895132274d2acf1ef1e7d689f9e7bc96ed53d6de862
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/LLK/scratch-svg-renderer
+      - https://github.com/LLK/scratch-svg-renderer/blob/9ebf57588aa596c4fa3bb64209e10ade395aee90/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:wsgidav': ['MIT']}
+  - repository_key: mar10/wsgidav
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a7989e6c15aa8e9aa23630253376e4284409a6e4d9ec7f018459bf33774177cf
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mar10/wsgidav
+      - https://github.com/mar10/wsgidav/blob/f894ed8656d7bdd7438ab8148c5a02546cb15183/LICENSE
     notes: ""

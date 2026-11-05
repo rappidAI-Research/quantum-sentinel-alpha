@@ -1,28 +1,28 @@
 {
   "accepted": {
     "by_decision": {
-      "abstain": 309,
-      "finding": 1053,
-      "no_finding": 960
+      "abstain": 308,
+      "finding": 1047,
+      "no_finding": 954
     },
     "by_kind": {
-      "caller_abstention": 309,
-      "post_fix": 960,
-      "vulnerable": 1053
+      "caller_abstention": 308,
+      "post_fix": 954,
+      "vulnerable": 1047
     },
     "by_language": {
-      "go": 664,
-      "javascript": 638,
+      "go": 655,
+      "javascript": 634,
       "python": 662,
       "typescript": 358
     },
     "by_language_and_decision": {
-      "go/abstain": 110,
-      "go/finding": 288,
-      "go/no_finding": 266,
+      "go/abstain": 109,
+      "go/finding": 284,
+      "go/no_finding": 262,
       "javascript/abstain": 63,
-      "javascript/finding": 302,
-      "javascript/no_finding": 273,
+      "javascript/finding": 300,
+      "javascript/no_finding": 271,
       "python/abstain": 89,
       "python/finding": 302,
       "python/no_finding": 271,
@@ -33,7 +33,7 @@
     "by_split": {
       "holdout_reserved": 235,
       "temporal_quarantine": 159,
-      "train": 1737,
+      "train": 1724,
       "validation": 191
     },
     "by_split_and_decision": {
@@ -43,14 +43,14 @@
       "temporal_quarantine/abstain": 22,
       "temporal_quarantine/finding": 73,
       "temporal_quarantine/no_finding": 64,
-      "train/abstain": 228,
-      "train/finding": 783,
-      "train/no_finding": 726,
+      "train/abstain": 227,
+      "train/finding": 777,
+      "train/no_finding": 720,
       "validation/abstain": 27,
       "validation/finding": 91,
       "validation/no_finding": 73
     },
-    "complete_pairs": 947,
+    "complete_pairs": 941,
     "finding_cwes": {
       "CWE-1022": 1,
       "CWE-1100": 1,
@@ -90,13 +90,13 @@
       "CWE-192": 1,
       "CWE-193": 2,
       "CWE-20": 43,
-      "CWE-200": 42,
+      "CWE-200": 41,
       "CWE-201": 6,
       "CWE-202": 2,
       "CWE-203": 5,
       "CWE-208": 3,
       "CWE-209": 3,
-      "CWE-22": 95,
+      "CWE-22": 94,
       "CWE-23": 1,
       "CWE-241": 1,
       "CWE-248": 8,
@@ -125,7 +125,7 @@
       "CWE-338": 1,
       "CWE-345": 5,
       "CWE-346": 4,
-      "CWE-347": 17,
+      "CWE-347": 16,
       "CWE-348": 2,
       "CWE-349": 1,
       "CWE-352": 11,
@@ -137,7 +137,7 @@
       "CWE-379": 1,
       "CWE-384": 2,
       "CWE-395": 1,
-      "CWE-400": 49,
+      "CWE-400": 47,
       "CWE-401": 1,
       "CWE-402": 1,
       "CWE-404": 3,
@@ -187,7 +187,7 @@
       "CWE-755": 3,
       "CWE-76": 1,
       "CWE-77": 25,
-      "CWE-770": 12,
+      "CWE-770": 11,
       "CWE-772": 2,
       "CWE-78": 32,
       "CWE-787": 1,
@@ -215,46 +215,46 @@
       "CWE-96": 1
     },
     "finding_span_kind": {
-      "changed_lines": 661,
-      "insertion_point": 296,
-      "mixed": 96
+      "changed_lines": 658,
+      "insertion_point": 294,
+      "mixed": 95
     },
     "fix_year": {
       "2009": 4,
       "2010": 2,
       "2012": 2,
       "2013": 12,
-      "2014": 24,
+      "2014": 22,
       "2015": 16,
       "2016": 25,
       "2017": 34,
       "2018": 90,
       "2019": 91,
       "2020": 171,
-      "2021": 214,
-      "2022": 216,
+      "2021": 212,
+      "2022": 214,
       "2023": 190,
       "2024": 232,
-      "2025": 314,
-      "2026": 685
+      "2025": 312,
+      "2026": 680
     },
     "flags": {
-      "coarse_cwe": 165,
-      "license_none": 107,
-      "license_unknown": 68,
-      "no_root_license_file": 107
+      "coarse_cwe": 162,
+      "license_none": 105,
+      "license_unknown": 65,
+      "no_root_license_file": 105
     },
     "license_category": {
-      "none": 107,
-      "permissive": 1924,
-      "strong_copyleft": 188,
-      "unknown": 68,
+      "none": 105,
+      "permissive": 1918,
+      "strong_copyleft": 186,
+      "unknown": 65,
       "weak_copyleft": 35
     },
     "license_detected": {
       "0BSD": 2,
-      "AGPL-3.0": 177,
-      "Apache-2.0": 603,
+      "AGPL-3.0": 175,
+      "Apache-2.0": 599,
       "BSD-2-Clause": 77,
       "BSD-3-Clause": 152,
       "GPL-2.0": 9,
@@ -262,7 +262,7 @@
       "ISC": 21,
       "LGPL-2.1": 21,
       "LGPL-3.0": 11,
-      "MIT": 1042,
+      "MIT": 1040,
       "MPL-2.0": 3,
       "Unlicense": 6,
       "Zlib": 4,
@@ -276,13 +276,13 @@
       "multiple:BSD-3-Clause|MPL-2.0": 4,
       "multiple:GPL-2.0|LGPL-2.1": 2,
       "multiple:ISC|MIT": 3,
-      "none": 107,
-      "unknown": 50
+      "none": 105,
+      "unknown": 47
     },
     "repositories_by_split": {
       "holdout_reserved": 89,
       "temporal_quarantine": 65,
-      "train": 685,
+      "train": 680,
       "validation": 81
     }
   },
@@ -365,23 +365,23 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 2322,
-      "source_not_approved:ghsa-osv-fix-commits": 2322,
-      "source_not_approved:github-advisory-db": 2322,
-      "source_not_approved:osv": 2322,
+      "repository_not_reviewed": 2309,
+      "source_not_approved:ghsa-osv-fix-commits": 2309,
+      "source_not_approved:github-advisory-db": 2309,
+      "source_not_approved:osv": 2309,
       "split:holdout_reserved": 235,
       "split:temporal_quarantine": 159
     },
     "by_approval_status": {
-      "excluded": 845,
-      "pending_review": 1928
+      "excluded": 858,
+      "pending_review": 1915
     },
     "training_approved": 0
   },
-  "manifest_sha256": "3420131f0f32a32298fd9c4a3825b044a0501587fec6b4472c3426c40da08572",
-  "pipeline_version": "2",
+  "manifest_sha256": "1d26d71ae82e93eac7be61cd8d3cb8ca23e2fad4921d3a46c62b150f35408a96",
+  "pipeline_version": "3",
   "records": {
-    "accepted": 2322,
+    "accepted": 2309,
     "failed_checks": {
       "audit:abstention_constant_arguments": 1,
       "audit:broad_localization_span": 89,
@@ -392,6 +392,8 @@
       "audit:manual_imprecise_span_documentation_advisory": 3,
       "audit:reported_incomplete_fix": 47,
       "audit:sibling_excluded": 104,
+      "audit:split_leakage_shared_package_with_holdout_reserved": 2,
+      "audit:split_leakage_shared_package_with_validation": 11,
       "exact_duplicate": 7,
       "label_conflict_exact": 16,
       "label_conflict_near": 20,
@@ -401,12 +403,35 @@
       "sibling_rejected": 56,
       "syntax_well_formed": 4
     },
-    "rejected": 451,
+    "rejected": 464,
     "total": 2773
   },
   "split_policy": {
     "policy_id": "sentinel-garden-split-v1",
     "sha256": "9aa83ed2d23e447ed3beb7b0785adba7bd57f1a6ae0489443cedde24bb3849d0"
+  },
+  "supervision": {
+    "detection": {
+      "confidence": "not_supervised",
+      "prompt_version": "quickeval-review-v2",
+      "render_version": "detection-v2"
+    },
+    "patch": {
+      "eligible_by_split": {
+        "holdout_reserved": 96,
+        "temporal_quarantine": 64,
+        "train": 709,
+        "validation": 72
+      },
+      "prompt_version": "sentinel-patch-v1",
+      "render_version": "patch-v1",
+      "vulnerable_records_by_eligibility": {
+        "eligible": 941,
+        "fixed_sibling_rejected": 106,
+        "vulnerable_record_rejected": 159
+      }
+    },
+    "version": "1"
   },
   "syntax_versions": {
     "tree-sitter": "0.26.0",

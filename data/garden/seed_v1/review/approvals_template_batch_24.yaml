@@ -2,40 +2,6 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
-  # tier B: registry_unavailable
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:knwl.js': []}
-  - repository_key: benhmoore/knwl
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 4f7f4e978cbf597ae73dd415d58c11e74d324d5758ca79486148f8f6fb262920
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/benhmoore/Knwl
-      - https://github.com/benhmoore/Knwl/blob/88aa966b1415a167c7c91b70053b72c7762c1cc0/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:sha.js': ['BSD-3-Clause AND MIT']}
-  - repository_key: browserify/sha.js
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 58dcf38be1438f739412b87eb70d64bf00e9976d529bb119f700d8b3167924f0
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/browserify/sha.js
-      - https://github.com/browserify/sha.js/blob/f2a258e9f2d0fcd113bfbaa49706e1ac0d979ba5/LICENSE
-    notes: ""
-
   # tier B: registry_disagrees
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:apprise': ['BSD-2-Clause']}
@@ -395,23 +361,6 @@ repositories:
 
   # tier B: registry_disagrees
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/mattermost/mattermost-plugin-github': ['Apache-2.0'], 'Go:github.com/mattermost/mattermost-server': ['AGPL-3.0', 'Apache-2.0']}
-  - repository_key: mattermost/mattermost-plugin-github
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE.txt
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mattermost/mattermost-plugin-github
-      - https://github.com/mattermost/mattermost-plugin-github/blob/9b41b1fd43c408f4be53026ee337bbeaa74ad47c/LICENSE.txt
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/mohammed90/caddy-ssh': ['Apache-2.0', 'BSD-3-Clause']}
   - repository_key: mohammed90/caddy-ssh
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +374,55 @@ repositories:
     evidence_urls:
       - https://github.com/mohammed90/caddy-ssh
       - https://github.com/mohammed90/caddy-ssh/blob/4b3e639d64c55f91152ffb51a4af35a8845c95a3/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:bleach': ['non-standard']}
+  - repository_key: mozilla/bleach
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: bec2238c149a632b8fb26813f687aceabab80327f3270769c2c16157883d3130
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mozilla/bleach
+      - https://github.com/mozilla/bleach/blob/f77e0f6392177a06e46a49abd61a4d9f035e57fd/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/nektos/act': ['BSD-3-Clause', 'MIT']}
+  - repository_key: nektos/act
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: da3ece2d2daf5c812c8606d2922094f51818258d4ce0e041b4ee8409ba3b381f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/nektos/act
+      - https://github.com/nektos/act/blob/0c739c8e39c41aa5a07665f732da9cab6df0097a/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/neuvector/neuvector': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}
+  - repository_key: neuvector/neuvector
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/neuvector/neuvector
+      - https://github.com/neuvector/neuvector/blob/955904b5762f296d209bf395a5fcc7a40a53c424/LICENSE
     notes: ""

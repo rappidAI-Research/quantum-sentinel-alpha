@@ -34,7 +34,9 @@
     "broad_localization_span": 89,
     "later_fix_changes_same_function": 126,
     "later_fix_unverifiable": 10,
-    "reported_incomplete_fix": 47
+    "reported_incomplete_fix": 47,
+    "split_leakage_shared_package_with_holdout_reserved": 2,
+    "split_leakage_shared_package_with_validation": 11
   },
   "fix_pattern_by_family": {
     "authn_authz": "87/122",
@@ -52,6 +54,65 @@
   },
   "fix_pattern_consistent": "696/1030",
   "groups": 1157,
+  "human_review": {
+    "independent_of_implementation": false,
+    "rates": {
+      "abstention_invalid": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "cwe_wrong_or_ambiguous": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "hard_negative_not_safe": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "label_wrong": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "localization_imprecise_or_wrong": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "pair_inconsistent": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      }
+    },
+    "reviewed_items": 0,
+    "reviewer": null,
+    "sample_id": "sentinel-garden-human-review-v1",
+    "sample_items": 64,
+    "stale_decisions": [],
+    "status": "not_performed"
+  },
   "later_fix_checked": 1117,
   "later_fix_incomplete_lookups": 8,
   "manual": {
@@ -204,5 +265,10 @@
     "sample_items": 44
   },
   "post_fix_invalidated": 91,
-  "span_lines_median": 2
+  "span_lines_median": 2,
+  "temporal_quarantine_overlap": {
+    "package_in_train_or_validation": 6,
+    "records": 159,
+    "repository_in_train_or_validation": 20
+  }
 }

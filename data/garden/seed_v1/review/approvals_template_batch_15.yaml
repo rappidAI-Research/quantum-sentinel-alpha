@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:metacalc': ['MIT']}
-  - repository_key: metarhia/metacalc
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 0d846143ef2e45c4c3fc0ea9cb28915f42a6a1799c3750014ca4e21cf97e1627
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/metarhia/metacalc
-      - https://github.com/metarhia/metacalc/blob/625c23d63eabfa16fc815f5832b147b08d2144bd/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:unzip-stream': ['MIT']}
   - repository_key: mhr3/unzip-stream
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -293,23 +276,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:jspdf': ['MIT']}
-  - repository_key: mrrio/jspdf
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 67534aed319a10cb67add8627d9d521482e583e19c7d71ac662320c8b6f93447
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/MrRio/jsPDF
-      - https://github.com/MrRio/jsPDF/blob/d8bb3b39efcd129994f7a3b01b632164144ec43e/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:hellojs': ['MIT']}
   - repository_key: mrswitch/hello.js
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/nicolas-van/modern-async
       - https://github.com/nicolas-van/modern-async/blob/0010d28de1b15d51db3976080e26357fa7144436/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:heroku-addonpool': ['MIT']}
+  - repository_key: nodef/heroku-addonpool
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: ce8c245227241c3b52e8a8c1ddf2a8f90afa05e01dfb91801f22b3e2f20c19e2
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/nodef/heroku-addonpool
+      - https://github.com/nodef/heroku-addonpool/blob/b1a5b316473ac92d783f3d54ee048d54082da38d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:mailparser': ['MIT']}
+  - repository_key: nodemailer/mailparser
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 4f1ac0e65b58ac085331698c7a1c01857ee00af203adce645bb0f47f4ae32b87
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/nodemailer/mailparser
+      - https://github.com/nodemailer/mailparser/blob/921a67df4cfb38f0b411037d7b26fbd4d5411b08/LICENSE
     notes: ""
