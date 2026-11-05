@@ -5,7 +5,8 @@ from pathlib import Path
 from sentinel.contracts import load_finding_schema
 from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.bakeoff import load_bakeoff
-from sentinel.eval.coding_regression import execute, load_tasks
+from sentinel.eval.coding_regression import load_tasks
+from sentinel.eval.sandbox import LocalProcessExecutor, load_policy
 from sentinel.eval.io import PROJECT_ROOT, assert_publicly_committable, case_set_sha256, load_jsonl, validate_cases
 from sentinel.foundation_model import load_foundation, validate_foundation
 from sentinel.garden import pipeline as garden
@@ -38,10 +39,13 @@ def main() -> int:
 
     tasks = load_tasks()
     for task in tasks:
-        passed, failure = execute(task["canonical_solution"], task["tests"])
+        # Reference solutions are repository-authored (trusted) code; model output never runs here.
+        passed, failure = LocalProcessExecutor().execute(task["canonical_solution"], task["tests"])
         if not passed:
             raise ValueError(f"coding task {task['task_id']} reference solution fails: {failure}")
     print(f"coding suite: coding-v1 {len(tasks)} tasks OK (reference solutions pass)")
+    policy = load_policy()
+    print(f"coding sandbox policy: {policy.runtime} {policy.image} network={policy.network} user={policy.user} OK")
 
     bakeoff = load_bakeoff(BAKEOFF_CONFIG)
     pinned = sum(1 for c in bakeoff.candidates.values() if c.revision)

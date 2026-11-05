@@ -14,7 +14,7 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
 - QuickEval v1 (`eval/sentinelbench/quickeval_v1.jsonl`): 86 clean-room synthetic cases with hashed provenance, validated line spans, accepted alternate CWEs and 30 vulnerable/secure neighbour pairs.
 - Shared evaluation path (`sentinel.eval.run_model`): one prompt (`quickeval-review-v1`), one strict output parser and one scorer for every model; malformed output is scored `invalid`, never repaired; reasoning is stripped and never stored.
 - Hugging Face backend (`AutoModelForCausalLM`, device/dtype/bitsandbytes/generation settings), reportability gate (immutable revision, loaded revision and dtype match, full case file, clean Git commit), JSON run artifacts with security and efficiency metrics, `sentinel.eval.compare` (no automatic winner).
-- Coding-regression suite `coding-v1` (16 clean-room Python tasks, contained child-process execution), `scripts/pin_hf_revisions.py`, GitHub Actions CI (`pytest` + `python -m sentinel.foundation`).
+- Coding-regression suite `coding-v1` (16 clean-room Python tasks; generated code runs only in a fail-closed container sandbox, see below), `scripts/pin_hf_revisions.py`, GitHub Actions CI (`pytest` + `python -m sentinel.foundation`).
 
 ### Milestone 1 - Foundation finalization
 
@@ -104,6 +104,10 @@ Upstream code is **not committed** (redistribution unreviewed, repository licens
 
 `python -m sentinel.train` (config `configs/train/qlora_qwen35_9b.yaml`, docs `docs/TRAINING.md`): 4-bit NF4 QLoRA with bf16 compute on the pinned foundation, LoRA r16/α32 on the 200 linear modules of the real architecture (24 Gated DeltaNet + 8 full-attention layers; 40.1 M trainable parameters). It loads only governance-approved `train.chat.jsonl` (labels and content hashes checked against the manifest, fail closed), trains the assistant reply only, checkpoints atomically with provenance (resume refuses a checkpoint trained on other data or config), writes adapter-only output and a `run.json` in every outcome (including CUDA OOM). CPU smoke tests train a tiny randomly initialised `Qwen3_5ForCausalLM` through the real loop. Nothing was trained; no weights were downloaded.
 
+### Coding-regression sandbox (runner version 3)
+
+Model-generated code from `coding-v1` runs only in a disposable container (`sentinel/eval/sandbox.py`, policy `configs/eval/coding_sandbox.yaml`, docs `docs/CODING_SANDBOX.md`): digest-pinned `python:3.12-slim` image, `--network none`, read-only root file system and task directory, user 65534, no capabilities, no host environment or credentials, CPU/memory/process/file-size/time limits. A probe container must observe this isolation before the model is loaded, otherwise the run stops (exit 3); `--skip-coding-regression` runs security evaluation only and records `not_run`. The previous child process (same user, file system and network) is kept only for trusted reference solutions. Containers share the host kernel; a disposable evaluation host is still recommended.
+
 ## QuickEval state
 
 | Group | Python | JS/TS | Go | Total |
@@ -135,9 +139,8 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 2. Approval of paid GPU time for the foundation baseline run (QuickEval v1 + `coding-v1` on the 9B checkpoint).
 3. A second, independent manual audit sample by a human reviewer (the current one is AI-reviewed and small; localization error upper bound 17 % after the automated exclusions).
 4. Final LoRA rank/LR/sequence length after one short L40S calibration run of the existing pipeline.
-5. Whether to replace `coding-v1` containment (child process + rlimits) with a real sandbox before running it on shared hosts.
-6. Release thresholds after the foundation baseline; repository license (affects redistribution of project-authored eval cases and any future committed data).
-7. Masterplan v1.2 itself is not in this repository; this milestone follows the task brief that summarizes it.
+5. Release thresholds after the foundation baseline; repository license (affects redistribution of project-authored eval cases and any future committed data).
+6. Masterplan v1.2 itself is not in this repository; this milestone follows the task brief that summarizes it.
 
 ## Next action (toward the first QLoRA run)
 

@@ -18,5 +18,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e '.[dev]'
+      # Pinned coding-sandbox image, so the container isolation tests run against real containers.
+      - run: docker pull python:3.12-slim@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30
       - run: pytest
       - run: python -m sentinel.foundation

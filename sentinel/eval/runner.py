@@ -106,8 +106,11 @@ def run_quickeval(
     full_case_set: bool = True,
     bakeoff: dict[str, Any] | None = None,
     coding_suite: CodingRegressionSuite | None = None,
+    coding_not_run: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     validate_cases(cases)
+    if coding_suite is not None:
+        coding_suite.preflight()  # fail closed before any generation when isolation is missing
     started_at = datetime.now(timezone.utc)
 
     load_start = time.perf_counter()
@@ -145,7 +148,10 @@ def run_quickeval(
     validate_predictions(predictions)
     metrics = score(cases, predictions).as_dict()
 
-    coding = not_run() if coding_suite is None else coding_suite.run(backend).as_dict()
+    if coding_suite is not None:
+        coding = coding_suite.run(backend).as_dict()
+    else:
+        coding = coding_not_run or not_run()
 
     artifact: dict[str, Any] = {
         "artifact_version": ARTIFACT_VERSION,

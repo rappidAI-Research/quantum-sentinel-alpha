@@ -48,7 +48,7 @@ No combined score or winner is computed. The decision weighs precision/false-pos
 
 QuickEval v1 is public, small (37 vulnerable / 34 hard-negative / 15 abstention cases) and authored by the project. Treat differences of one or two cases as noise. Use it to find large gaps, not for release claims. `coding-v1` is equally small (16 tasks): it detects a clear coding regression, not fine-grained skill.
 
-`coding-v1` executes model-generated Python in a child process with CPU/memory/file-size/time limits, an empty environment and a temporary directory. That is containment, not a sandbox: run the bake-off on a disposable evaluation host without credentials you would mind losing. Its answers share `max_new_tokens: 384`; an implementation cut off by that limit fails, identically for both models.
+`coding-v1` executes model-generated Python only inside the container sandbox (`configs/eval/coding_sandbox.yaml`, docs/CODING_SANDBOX.md): no network, no host files except the read-only task directory, no host environment, an unprivileged user and resource limits. When the sandbox is unavailable the run stops before the model is loaded; `--skip-coding-regression` evaluates security only and records the coding regression as `not_run`. Containers share the host kernel, so still prefer a disposable evaluation host. Its answers share `max_new_tokens: 384`; an implementation cut off by that limit fails, identically for both models.
 
 ## Cost note
 
