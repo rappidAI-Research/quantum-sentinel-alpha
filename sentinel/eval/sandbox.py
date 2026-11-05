@@ -211,6 +211,10 @@ class ContainerExecutor:
             name,
             "--network",
             "none",
+            # stdout is read through the attached pipe; the daemon must not also write it to a host-side
+            # log file (json-file has no rotation by default), or a flood could fill the host disk
+            "--log-driver",
+            "none",
             "--read-only",
             "--tmpfs",
             f"/tmp:rw,nosuid,nodev,noexec,size={p.tmpfs_mib}m",

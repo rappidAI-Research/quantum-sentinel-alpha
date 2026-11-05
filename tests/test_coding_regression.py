@@ -159,6 +159,7 @@ def test_container_command_enforces_the_policy(tmp_path) -> None:
     joined = " ".join(args)
     for flag in (
         "--network none",
+        "--log-driver none",
         "--read-only",
         "--cap-drop ALL",
         "--security-opt no-new-privileges",

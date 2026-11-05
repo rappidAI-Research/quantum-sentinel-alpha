@@ -32,7 +32,7 @@ executor is `sentinel.eval.sandbox.ContainerExecutor`. Each task gets a fresh co
 | Identity | `--user 65534:65534` (nobody), `--cap-drop ALL`, `--security-opt no-new-privileges` |
 | Credentials and environment | no `--env`/`--env-file`; the host environment is never passed in |
 | Limits | 1 CPU, 1 GiB memory without swap, 64 processes, 1 MiB per file, 20 s wall clock per task |
-| Output | stdout drained by the parent, only the last 4 KiB kept; stderr discarded |
+| Output | stdout drained by the parent, only the last 4 KiB kept; stderr discarded; `--log-driver none`, so the daemon writes no host-side container log a flood could grow |
 
 **Fail closed.** Before the model is loaded, `run_model` calls the suite's preflight. It requires the
 container runtime, a reachable daemon and the pinned image, then starts a probe container that must
