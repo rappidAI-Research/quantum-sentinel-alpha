@@ -159,6 +159,30 @@ class PatchScore:
     security_verified: bool = False  # never established by these checks
 
 
+def check_coordinates(hunks: list[DiffHunk], line_count: int) -> None:
+    """Hunks must lie inside the excerpt, in order, without overlap, with consistent new-side starts.
+
+    The strict applicator checks every context and removed line, but a pure insertion carries no
+    such line, so its position is only checked here (an insertion at line 999 of a 3-line excerpt
+    must not be appended silently)."""
+    previous_end = 0  # last old line consumed by the previous hunk
+    delta = 0  # new-side minus old-side line count so far
+    for hunk in hunks:
+        if hunk.old_count == 0:
+            # insertion after line old_start (0 = before the first line)
+            if not previous_end <= hunk.old_start <= line_count:
+                raise PatchError(f"insertion after line {hunk.old_start} is outside the excerpt (1-{line_count}) or out of order")
+            expected_new = hunk.old_start + delta + 1
+        else:
+            if hunk.old_start < 1 or hunk.old_start <= previous_end or hunk.old_start + hunk.old_count - 1 > line_count:
+                raise PatchError(f"hunk lines {hunk.old_start}-{hunk.old_start + hunk.old_count - 1} are outside the excerpt (1-{line_count}) or overlap")
+            expected_new = hunk.old_start + delta if hunk.new_count else hunk.old_start + delta - 1
+        if hunk.new_start != expected_new:
+            raise PatchError(f"hunk new start {hunk.new_start} is inconsistent (expected {expected_new})")
+        previous_end = hunk.old_start + hunk.old_count - (1 if hunk.old_count else 0)
+        delta += hunk.new_count - hunk.old_count
+
+
 def changed_line_count(hunks: list[DiffHunk]) -> int:
     return sum(len(h.removed) + len(h.added_after) for h in hunks)
 
@@ -188,6 +212,11 @@ def score_patch(case: dict[str, Any], reply: str) -> PatchScore:
     except PatchError as exc:
         return PatchScore(well_formed=False, applies=False, syntax_ok=False, exact_match=False, normalized_match=False,
                           touches_span=False, changed_lines=None, error=str(exc), **base)
+    try:
+        check_coordinates(hunks, len(case["code"].splitlines()))
+    except PatchError as exc:
+        return PatchScore(well_formed=False, applies=False, syntax_ok=False, exact_match=False, normalized_match=False,
+                          touches_span=False, changed_lines=changed_line_count(hunks), error=str(exc), **base)
     patched = apply_unified_patch(case["code"], diff)
     if patched is None:
         return PatchScore(well_formed=True, applies=False, syntax_ok=False, exact_match=False, normalized_match=False,

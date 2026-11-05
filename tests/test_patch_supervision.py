@@ -102,3 +102,35 @@ def test_patch_eval_runner_with_the_reference_replay(case, tmp_path) -> None:
     result = json.loads(out.read_text())
     assert result["applies_rate"] == result["exact_match_rate"] == 1.0
     assert result["security_verified"] is False and result["contract"]["prompt_version"] == "sentinel-patch-v1"
+
+
+@pytest.mark.parametrize(
+    "hunk, message",
+    [
+        ("@@ -999,0 +999,1 @@\n+    pass\n", "outside the excerpt"),  # review finding: appended past EOF
+        ("@@ -1,0 +5,1 @@\n+    pass\n", "new start"),
+    ],
+)
+def test_hunk_coordinates_must_fit_the_excerpt(case, hunk, message) -> None:
+    from sentinel.eval.patch import check_coordinates
+
+    reply = f"--- a/{case['file']}\n+++ b/{case['file']}\n{hunk}"
+    _, hunks = parse_patch(reply, case["file"])
+    with pytest.raises(PatchError, match=message):
+        check_coordinates(hunks, len(case["code"].splitlines()))
+    score = score_patch(case, reply)
+    assert not score.applies and not score.exact_match and not score.well_formed
+
+
+def test_overlapping_hunks_are_rejected(case) -> None:
+    from sentinel.eval.patch import check_coordinates
+
+    lines = case["code"].splitlines()
+    reply = (
+        f"--- a/{case['file']}\n+++ b/{case['file']}\n"
+        f"@@ -1,1 +1,1 @@\n-{lines[0]}\n+{lines[0]}  # a\n"
+        f"@@ -1,1 +1,1 @@\n-{lines[0]}\n+{lines[0]}  # b\n"
+    )
+    _, hunks = parse_patch(reply, case["file"])
+    with pytest.raises(PatchError, match="overlap"):
+        check_coordinates(hunks, len(lines))

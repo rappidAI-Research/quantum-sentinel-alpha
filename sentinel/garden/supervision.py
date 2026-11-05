@@ -22,7 +22,7 @@ import json
 import re
 from typing import Any
 
-from sentinel.eval.patch import PATCH_PROMPT_VERSION, PatchError, build_patch_messages, parse_patch
+from sentinel.eval.patch import PATCH_PROMPT_VERSION, PatchError, build_patch_messages, check_coordinates, parse_patch
 from sentinel.garden import render
 from sentinel.garden.quality import apply_unified_patch
 
@@ -63,7 +63,8 @@ def patch_eligibility(record: dict[str, Any], fixed: dict[str, Any] | None) -> s
     if apply_unified_patch(record["input"]["code"], record["target"]["patch"]) != fixed["input"]["code"]:
         return "patch_does_not_reproduce_fix"
     try:
-        parse_patch(record["target"]["patch"], record["input"]["file"])
+        _, hunks = parse_patch(record["target"]["patch"], record["input"]["file"])
+        check_coordinates(hunks, len(record["input"]["code"].splitlines()))
     except PatchError:
         return "patch_not_in_output_contract"
     return "eligible"
