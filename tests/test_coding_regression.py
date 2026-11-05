@@ -127,6 +127,7 @@ def _fake_runtime(probe_report):
 
 
 GOOD_PROBE = {
+    "env": {"PATH": "/usr/local/bin:/usr/bin", "HOME": "/", "HTTP_PROXY": "", "no_proxy": "", "GPG_KEY": "7169605F"},
     "uid": 65534,
     "gid": 65534,
     "interfaces": ["lo"],
@@ -145,6 +146,8 @@ GOOD_PROBE = {
         ({"root_writable": True}, "root file system is writable"),
         ({"work_writable": True}, "task directory is writable"),
         ({"mounts": GOOD_PROBE["mounts"] + ["/home/user/.aws"]}, "unexpected mounts"),
+        ({"env": {**GOOD_PROBE["env"], "HTTPS_PROXY": "http://user:secret@proxy:3128"}}, "proxy variables"),
+        ({"env": {**GOOD_PROBE["env"], "HF_TOKEN": "hf_x"}}, "credential-like"),
     ],
 )
 def test_probe_must_observe_the_required_isolation(monkeypatch, change, message) -> None:
@@ -169,7 +172,11 @@ def test_container_command_enforces_the_policy(tmp_path) -> None:
     ):
         assert flag in joined
     assert args[-1] == POLICY.image and "@sha256:" in POLICY.image
-    assert not any(a in {"-e", "--env", "--env-file", "--privileged", "-v", "--volume"} for a in args)
+    assert not any(a in {"-e", "--env-file", "--privileged", "-v", "--volume"} for a in args)
+    # the only --env flags blank the proxy variables the Docker CLI would otherwise inject
+    env_values = [args[i + 1] for i, a in enumerate(args) if a == "--env"]
+    assert env_values and all(v.endswith("=") and v[:-1] in sandbox.PROXY_VARIABLES for v in env_values)
+    assert {v[:-1] for v in env_values} == set(sandbox.PROXY_VARIABLES)
 
 
 def test_runtime_start_failure_is_an_infrastructure_error_not_a_task_result(monkeypatch) -> None:
@@ -294,6 +301,25 @@ def test_container_has_no_network_host_files_or_host_environment(tmp_path, monke
         "    return 'ok'\n"
     )
     assert executor.execute(probe, "assert isolated() == 'ok', isolated()") == (True, None)
+
+
+@pytest.mark.parametrize("kind", EXECUTORS)
+def test_generated_code_exiting_125_to_127_is_a_task_failure(kind) -> None:
+    # review finding: these statuses are also Docker's own start-up errors
+    for status in (125, 126, 127):
+        assert _executor(kind).execute(f"import sys\nsys.exit({status})\n", "assert True") == (False, f"exit_{status}")
+
+
+@CONTAINER
+def test_client_proxy_configuration_does_not_reach_generated_code(tmp_path, monkeypatch) -> None:
+    config = tmp_path / "docker-config"
+    config.mkdir()
+    (config / "config.json").write_text(json.dumps({"proxies": {"default": {"httpProxy": "http://user:secret@proxy.example:3128"}}}))
+    monkeypatch.setenv("DOCKER_CONFIG", str(config))
+    executor = ContainerExecutor(dataclasses.replace(POLICY, timeout_seconds=15))
+    executor.preflight()
+    code = "import os\ndef leaked():\n    return sorted(k for k, v in os.environ.items() if 'proxy' in k.lower() and v)\n"
+    assert executor.execute(code, "assert leaked() == [], leaked()") == (True, None)
 
 
 @CONTAINER

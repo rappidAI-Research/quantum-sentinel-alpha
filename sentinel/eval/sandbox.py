@@ -59,6 +59,14 @@ POLICY_KEYS = {
 # the tmpfs and the read-only task directory. Anything else is an extra host mount.
 _ALLOWED_MOUNTS = {"/", "/tmp", "/work", "/dev", "/proc", "/sys", "/etc/hostname", "/etc/hosts", "/etc/resolv.conf"}
 _SYSTEM_MOUNT_PREFIXES = ("/dev/", "/proc/", "/sys/")
+# The Docker CLI injects the client's proxy configuration (~/.docker/config.json "proxies", which may
+# carry credentials in the URL) into every container unless the variable is set explicitly. Each is
+# set to the empty string; the probe fails closed if any proxy variable still has a value.
+PROXY_VARIABLES = (
+    "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY", "NO_PROXY", "ALL_PROXY",
+    "http_proxy", "https_proxy", "ftp_proxy", "no_proxy", "all_proxy",
+)
+_SECRET_NAME = ("TOKEN", "SECRET", "PASSWORD", "PASSWD", "CREDENTIAL", "AUTH", "ACCESS_KEY", "API_KEY")
 # Exit statuses of `docker run`/`podman run` itself (the container never ran the code).
 _RUNTIME_ERRORS = {125, 126, 127}
 _TAIL_BYTES = 4096
@@ -68,6 +76,8 @@ _TAIL_BYTES = 4096
 # `os._exit(0)` in the solution cannot fake a pass.
 RUNNER = """import importlib.util, sys
 marker = sys.stdin.readline().strip()
+sys.stdout.write('qsa-start-' + marker + '\\n')
+sys.stdout.flush()
 spec = importlib.util.spec_from_file_location('_qsa_solution', '/work/solution.py')
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
@@ -97,6 +107,7 @@ try:
 except OSError:
     root_home_readable = False
 print(json.dumps({
+    'env': {key: value for key, value in os.environ.items()},
     'uid': os.getuid(),
     'gid': os.getgid(),
     'interfaces': sorted(interfaces),
@@ -167,16 +178,18 @@ Run = Callable[..., subprocess.CompletedProcess]
 
 
 def _drain(stream: Any, keep: int, sink: dict[str, Any]) -> None:
-    """Read a pipe to EOF, keeping only the last `keep` bytes, so output size is bounded."""
-    tail = b""
+    """Read a pipe to EOF, keeping only the first and last `keep` bytes, so output size is bounded."""
+    head = tail = b""
     total = 0
     while True:
         chunk = stream.read(65536)
         if not chunk:
             break
         total += len(chunk)
+        if len(head) < keep:
+            head = (head + chunk)[:keep]
         tail = (tail + chunk)[-keep:]
-    sink["tail"], sink["bytes"] = tail, total
+    sink["head"], sink["tail"], sink["bytes"] = head, tail, total
 
 
 class ContainerExecutor:
@@ -215,6 +228,7 @@ class ContainerExecutor:
             # log file (json-file has no rotation by default), or a flood could fill the host disk
             "--log-driver",
             "none",
+            *[arg for name in PROXY_VARIABLES for arg in ("--env", f"{name}=")],
             "--read-only",
             "--tmpfs",
             f"/tmp:rw,nosuid,nodev,noexec,size={p.tmpfs_mib}m",
@@ -312,8 +326,10 @@ class ContainerExecutor:
                 reader.join(timeout=10)
                 return False, "timeout"
             reader.join(timeout=10)
-        if returncode in _RUNTIME_ERRORS:
+        started = f"qsa-start-{marker}".encode("utf-8") in sink.get("head", b"")
+        if returncode in _RUNTIME_ERRORS and not started:
             # The runtime could not start the container: an infrastructure failure, never a task result.
+            # (Generated code that exits with 125-127 itself has printed the start token first.)
             raise IsolationUnavailable(f"{p.runtime} run failed with exit status {returncode}")
         if returncode == 137:
             return False, "resource_limit"
@@ -342,6 +358,16 @@ def check_probe(observed: dict[str, Any], policy: SandboxPolicy) -> list[str]:
         problems.append("the task directory is writable")
     if observed.get("root_home_readable") is not False:
         problems.append("/root is readable by the container user")
+    env = observed.get("env")
+    if not isinstance(env, dict):
+        problems.append("environment not reported")
+    else:
+        proxies = sorted(k for k, v in env.items() if "proxy" in k.lower() and v)
+        if proxies:
+            problems.append(f"proxy variables reach the container: {proxies} (they can carry credentials)")
+        secrets_like = sorted(k for k, v in env.items() if v and any(word in k.upper() for word in _SECRET_NAME))
+        if secrets_like:
+            problems.append(f"credential-like variables reach the container: {secrets_like}")
     mounts = observed.get("mounts")
     if not isinstance(mounts, list):
         problems.append("mount table not reported")

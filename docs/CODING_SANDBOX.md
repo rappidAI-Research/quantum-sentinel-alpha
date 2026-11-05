@@ -30,17 +30,19 @@ executor is `sentinel.eval.sandbox.ContainerExecutor`. Each task gets a fresh co
 | Host file system | none, except the per-task directory (solution, hidden tests, runner) mounted **read-only** at `/work` |
 | Root file system | `--read-only`; `/tmp` is a 16 MiB `noexec,nosuid,nodev` tmpfs |
 | Identity | `--user 65534:65534` (nobody), `--cap-drop ALL`, `--security-opt no-new-privileges` |
-| Credentials and environment | no `--env`/`--env-file`; the host environment is never passed in |
+| Credentials and environment | the host environment is never passed in; the proxy variables the Docker CLI would inject from `~/.docker/config.json` (proxy URLs can carry credentials) are set to empty strings |
 | Limits | 1 CPU, 1 GiB memory without swap, 64 processes, 1 MiB per file, 20 s wall clock per task |
 | Output | stdout drained by the parent, only the last 4 KiB kept; stderr discarded; `--log-driver none`, so the daemon writes no host-side container log a flood could grow |
 
 **Fail closed.** Before the model is loaded, `run_model` calls the suite's preflight. It requires the
 container runtime, a reachable daemon and the pinned image, then starts a probe container that must
 observe exactly the required isolation: uid/gid 65534, only the `lo` interface, a read-only root
-file system and task directory, no access to `/root`, and no mounts besides the runtime's own
-pseudo file systems, `/tmp` and `/work`. Any failure raises `IsolationUnavailable` and the run stops
+file system and task directory, no access to `/root`, no mounts besides the runtime's own
+pseudo file systems, `/tmp` and `/work`, no proxy variable with a value and no credential-like
+variable (`*TOKEN*`, `*SECRET*`, `*PASSWORD*`, `*AUTH*`, ...). Any failure raises `IsolationUnavailable` and the run stops
 with exit code 3 and nothing written. A runtime error while starting a task container (exit status
-125-127) also aborts the run instead of being counted as a failed task.
+125-127 before the runner printed its start token) also aborts the run instead of being counted as
+a failed task; generated code that exits with those statuses itself is an ordinary task failure.
 
 `LocalProcessExecutor` (the old child process) still exists for trusted, repository-authored code:
 `python -m sentinel.foundation` uses it to check the reference solutions. `CodingV1.run` refuses it.
