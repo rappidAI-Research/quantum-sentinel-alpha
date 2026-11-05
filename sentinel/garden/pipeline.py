@@ -27,7 +27,7 @@ from jsonschema import Draft202012Validator
 from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.io import validate_cases
 from sentinel.garden import build as build_module
-from sentinel.garden import render, syntax
+from sentinel.garden import human_review, render, supervision, syntax
 from sentinel.garden.build import ExtractionSettings, Rejected
 from sentinel.garden.audit import OsvQuery, load_exclusions, load_manual_review, manual_exclusions, run_audit, summarize
 from sentinel.garden.audit import report_markdown as audit_report_markdown
@@ -48,7 +48,7 @@ from sentinel.garden.split import SplitSettings, assign_split, check_split_invar
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "configs" / "garden" / "seed_v1.yaml"
-PIPELINE_VERSION = "2"  # 2: Go/JS/TS structure from tree-sitter parse trees
+PIPELINE_VERSION = "3"  # 2: tree-sitter parse trees; 3: manifest supervision hashes, patch task, no fixed confidence
 MANIFEST_DROP_FIELDS = ("input", "target")  # code, context, evidence text and patch stay out of Git
 
 
@@ -312,7 +312,11 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
     return records
 
 
-def manifest_row(record: dict[str, Any]) -> dict[str, Any]:
+def manifest_row(record: dict[str, Any], pairs: dict[str, dict[str, dict[str, Any]]] | None = None) -> dict[str, Any]:
+    """Metadata-only manifest row. `supervision` binds the Git-ignored input, target and rendered
+    training examples to this committed row (sentinel.garden.supervision)."""
+    if pairs is None:
+        pairs = supervision.pairs_by_id([record])
     row = {k: v for k, v in record.items() if k not in MANIFEST_DROP_FIELDS}
     target = record["target"]
     row["label"] = {
@@ -326,6 +330,7 @@ def manifest_row(record: dict[str, Any]) -> dict[str, Any]:
         "lines": len(record["input"]["code"].splitlines()),
         "patch_sha256": hashlib.sha256(target["patch"].encode("utf-8")).hexdigest() if target["patch"] else None,
     }
+    row["supervision"] = supervision.supervision(record, pairs)
     return row
 
 
@@ -383,10 +388,31 @@ def statistics(config: GardenConfig, records: list[dict[str, Any]], build_log: l
             "flags": dict(sorted(Counter(f for r in accepted for f in r["quality"]["flags"]).items())),
             "fix_year": count(accepted, lambda r: r["provenance"]["fix_committed_at"][:4]),
         },
+        "supervision": supervision_statistics(records),
         "governance": {
             "by_approval_status": count(records, lambda r: r["governance"]["approval_status"]),
             "accepted_blockers": dict(sorted(blockers.items())),
             "training_approved": sum(1 for r in records if r["governance"]["approval_status"] == "training_approved"),
+        },
+    }
+
+
+def supervision_statistics(records: list[dict[str, Any]]) -> dict[str, Any]:
+    from sentinel.eval.patch import PATCH_PROMPT_VERSION
+    from sentinel.eval.prompt import PROMPT_VERSION
+
+    pairs = supervision.pairs_by_id(records)
+    vulnerable = [r for r in records if r["kind"] == "vulnerable"]
+    eligibility = {r["record_id"]: supervision.supervision(r, pairs)["patch_eligibility"] for r in vulnerable}
+    eligible = [r for r in vulnerable if eligibility[r["record_id"]] == "eligible"]
+    return {
+        "version": supervision.SUPERVISION_VERSION,
+        "detection": {"prompt_version": PROMPT_VERSION, "render_version": render.RENDER_VERSION, "confidence": "not_supervised"},
+        "patch": {
+            "prompt_version": PATCH_PROMPT_VERSION,
+            "render_version": supervision.PATCH_RENDER_VERSION,
+            "vulnerable_records_by_eligibility": dict(sorted(Counter(eligibility.values()).items())),
+            "eligible_by_split": dict(sorted(Counter(r["split"] for r in eligible).items())),
         },
     }
 
@@ -404,9 +430,11 @@ EXPORT_FILES = (
     "train.jsonl",
     "validation.jsonl",
     "train.chat.jsonl",
+    "train.patch.chat.jsonl",
     "staging.jsonl",
     "holdout_reserved.jsonl",
     "holdout_reserved.eval_cases.jsonl",
+    "holdout_reserved.patch_cases.jsonl",
     "rejected.jsonl",
 )
 
@@ -424,7 +452,10 @@ def write_exports(workdir: Path, records: list[dict[str, Any]]) -> None:
     _write_jsonl(workdir / "records.jsonl", records)
     _write_jsonl(workdir / "train.jsonl", [r for r in approved if r["split"] == "train"])
     _write_jsonl(workdir / "validation.jsonl", [r for r in approved if r["split"] == "validation"])
-    _write_jsonl(workdir / "train.chat.jsonl", [render.to_chat_example(r) for r in approved if r["split"] == "train"])
+    approved_train = [r for r in approved if r["split"] == "train"]
+    _write_jsonl(workdir / "train.chat.jsonl", [render.to_chat_example(r) for r in approved_train])
+    # patch examples need both halves of a verified pair; both are approved together (same repository)
+    _write_jsonl(workdir / "train.patch.chat.jsonl", supervision.patch_examples(approved_train))
     _write_jsonl(
         workdir / "staging.jsonl",
         select(lambda r: r["quality"]["status"] == "accepted" and r["governance"]["approval_status"] == "pending_review"),
@@ -434,6 +465,7 @@ def write_exports(workdir: Path, records: list[dict[str, Any]]) -> None:
     holdout_cases = [render.to_eval_case(r) for r in holdout]
     validate_cases(holdout_cases)
     _write_jsonl(workdir / "holdout_reserved.eval_cases.jsonl", holdout_cases)
+    _write_jsonl(workdir / "holdout_reserved.patch_cases.jsonl", supervision.patch_cases(holdout))
     _write_jsonl(workdir / "rejected.jsonl", select(lambda r: r["quality"]["status"] == "rejected"))
     sums = "".join(f"{file_sha256(workdir / name)}  {name}\n" for name in EXPORT_FILES)
     (workdir / "SHA256SUMS").write_text(sums, encoding="utf-8")
@@ -476,7 +508,8 @@ def curate(config: GardenConfig, workdir: Path | None = None, log: Any = print) 
     discovery_stats = json.loads((committed / "discovery_stats.json").read_text(encoding="utf-8"))
     stats = statistics(config, records, build_log, discovery_stats)
     stats["candidates_sha256"] = file_sha256(committed / "candidates.jsonl")
-    _write_jsonl(committed / "manifest.jsonl", [manifest_row(r) for r in records])
+    pairs = supervision.pairs_by_id(records)
+    _write_jsonl(committed / "manifest.jsonl", [manifest_row(r, pairs) for r in records])
     stats["manifest_sha256"] = file_sha256(committed / "manifest.jsonl")
     _write_json(committed / "stats.json", stats)
     _write_json(committed / "EXTERNAL_RESOURCES.json", external_resources(records))
@@ -601,6 +634,27 @@ def review(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     return summary
 
 
+def review_packages(config: GardenConfig, log: Any = print) -> list[dict[str, Any]]:
+    """Blind evidence packages for an independent human review (offline: records + OSV cache).
+
+    Packages contain upstream code and stay in the Git-ignored work directory; the committed
+    audit/human_review_sample.jsonl lists the items and the sha256 of each package.
+    """
+    committed = config.committed_dir
+    audit_dir = committed / "audit"
+    automated = _read_jsonl(audit_dir / "automated.jsonl") if (audit_dir / "automated.jsonl").is_file() else []
+    index = human_review.write_packages(
+        _read_jsonl(config.workdir / "records.jsonl"),
+        config.workdir / "cache" / "osv",
+        automated,
+        load_manual_review(audit_dir / "manual_review.yaml"),
+        config.workdir / "review_packages",
+        audit_dir,
+    )
+    log(f"review-packages: {len(index)} items -> {config.workdir / 'review_packages'} (index: {audit_dir / 'human_review_sample.jsonl'})")
+    return index
+
+
 def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     """Automated quality audit of the curated records (network: OSV API, upstream git)."""
     committed = config.committed_dir
@@ -630,18 +684,24 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
         if carried:
             log(f"audit: {len(carried)} later-fix exclusions kept from the previous run (incomplete recheck)")
             result["exclusions"] = sorted(result["exclusions"] + carried, key=lambda e: (e["record_id"], e["reason"]))
+    index_path = audit_dir / "human_review_sample.jsonl"
+    index = _read_jsonl(index_path) if index_path.is_file() else []
+    human = human_review.load_human_review(audit_dir / "human_review.yaml", index)
     document = {
         "audit_version": result["audit_version"],
         "automated": result["exclusions"],
         "manual": manual_exclusions(manual),
+        "human": human_review.human_exclusions(human),
     }
     exclusions_path.write_text(
-        "# Generated by `python -m sentinel.garden audit` (automated section) and the manual review (manual section).\n"
+        "# Generated by `python -m sentinel.garden audit` (automated section), the AI-assisted manual review (manual section)\n"
+        "# and the independent human review (human section, from audit/human_review.yaml written by a person).\n"
         "# Applied by `curate` as failed checks `audit:<reason>`. Records are only ever excluded, never relabelled.\n"
         + yaml.safe_dump(document, sort_keys=False, width=200),
         encoding="utf-8",
     )
     summary = summarize(result, manual)
+    summary["human_review"] = human_review.summarize_human(human, index)
     _write_json(audit_dir / "summary.json", summary)
     (committed / "AUDIT_REPORT.md").write_text(audit_report_markdown(summary, result, manual), encoding="utf-8")
     log(f"audit: {summary['groups']} groups, {len(result['exclusions'])} automated exclusions -> {audit_dir}")
@@ -765,6 +825,10 @@ def check(config: GardenConfig) -> dict[str, Any]:
     rows = _read_jsonl(committed / "manifest.jsonl")
     if any("input" in row or "target" in row for row in rows):
         raise ValueError("manifest must not contain code, context or targets")
+    for row in rows:
+        problem = supervision.manifest_supervision_problem(row)
+        if problem:
+            raise ValueError(f"{row['record_id']}: {problem} (rerun curate)")
     registry = load_registry()
     sources = {s["source_id"]: s for s in registry["sources"]}
     approvals = load_approvals()
@@ -791,6 +855,9 @@ def check(config: GardenConfig) -> dict[str, Any]:
     resources_path = committed / "EXTERNAL_RESOURCES.json"
     if json.loads(resources_path.read_text(encoding="utf-8")) != json.loads(json.dumps(external_resources(rows))):
         raise ValueError("EXTERNAL_RESOURCES.json does not match manifest.jsonl (rerun curate)")
+    index_path = committed / "audit" / "human_review_sample.jsonl"
+    if index_path.is_file():
+        human_review.load_human_review(committed / "audit" / "human_review.yaml", _read_jsonl(index_path))
     review_summary = committed / "review" / "summary.json"
     if review_summary.is_file():
         if json.loads(review_summary.read_text(encoding="utf-8"))["manifest_sha256"] != stats["manifest_sha256"]:

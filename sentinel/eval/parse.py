@@ -3,6 +3,12 @@
 Only format normalization is applied (reasoning-tag and markdown-fence stripping, locating the
 JSON object, CWE spelling, case of the decision). Missing or malformed security fields are never
 filled in: such output becomes an ``invalid`` prediction carrying the error.
+
+Parser version 3: `confidence` is optional for findings. Prompt `quickeval-review-v2` does not ask for
+it (no dataset label can supervise it); outputs made with `quickeval-review-v1` still carry a number
+and parse exactly as under version 2. A reported value is self-reported and uncalibrated; `null` in
+the prediction means "not reported". Calibrated confidence is measured separately
+(sentinel/eval/calibration.py, docs/CALIBRATION.md).
 """
 
 from __future__ import annotations
@@ -12,10 +18,11 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-PARSER_VERSION = "2"
+PARSER_VERSION = "3"
 
 DECISIONS = {"finding", "no_finding", "abstain"}
-FINDING_KEYS = {"decision", "cwe", "start_line", "end_line", "confidence", "evidence"}
+FINDING_REQUIRED_KEYS = {"decision", "cwe", "start_line", "end_line", "evidence"}
+FINDING_KEYS = FINDING_REQUIRED_KEYS | {"confidence"}
 NON_FINDING_KEYS = {"decision", "evidence"}
 MAX_EVIDENCE_CHARS = 1000
 
@@ -97,7 +104,7 @@ def _validate(payload: dict[str, Any], line_count: int) -> tuple[dict[str, Any] 
             raise OutputError(f"unexpected fields for {decision}: {sorted(extra)}")
         return None, decision, _evidence(payload.get("evidence"), required=False)
 
-    missing = FINDING_KEYS - set(payload)
+    missing = FINDING_REQUIRED_KEYS - set(payload)
     if missing:
         raise OutputError(f"finding is missing fields: {sorted(missing)}")
     extra = set(payload) - FINDING_KEYS
@@ -121,11 +128,13 @@ def _validate(payload: dict[str, Any], line_count: int) -> tuple[dict[str, Any] 
     if not 1 <= start <= end <= line_count:
         raise OutputError(f"line span {start}-{end} is outside the excerpt (1-{line_count}) or reversed")
 
-    confidence = payload["confidence"]
-    if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0.0 <= confidence <= 1.0:
-        raise OutputError("confidence must be a number between 0.0 and 1.0")
+    confidence = payload.get("confidence")
+    if confidence is not None:
+        if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0.0 <= confidence <= 1.0:
+            raise OutputError("confidence must be a number between 0.0 and 1.0 (or omitted)")
+        confidence = float(confidence)
 
-    finding = {"cwe": cwe, "start_line": start, "end_line": end, "confidence": float(confidence)}
+    finding = {"cwe": cwe, "start_line": start, "end_line": end, "confidence": confidence}
     return finding, decision, _evidence(payload["evidence"], required=True)
 
 

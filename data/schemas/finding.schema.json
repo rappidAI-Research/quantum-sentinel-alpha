@@ -24,7 +24,7 @@
     "schema_version": {"const": "1.0"},
     "id": {"type": "string", "pattern": "^QSA-[A-Za-z0-9._-]+$"},
     "severity": {"enum": ["low", "medium", "high", "critical"]},
-    "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "confidence": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0, "description": "A calibrated probability that the finding is correct, or null when no calibration is available. Never a fixed placeholder."},
     "cwe": {"type": "string", "pattern": "^(CWE-[1-9][0-9]*|unknown)$"},
     "file": {"type": "string", "minLength": 1, "pattern": "^(?!/).+"},
     "start_line": {"type": "integer", "minimum": 1},

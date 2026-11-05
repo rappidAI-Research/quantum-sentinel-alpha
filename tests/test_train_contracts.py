@@ -98,7 +98,7 @@ def test_revoked_approval_stops_training(garden: GardenWorkdir) -> None:
 
 def test_unapproved_record_in_export_is_refused(garden: GardenWorkdir) -> None:
     garden.train[0]["governance"] = {"approval_status": "pending_review", "blockers": ["repository_not_reviewed"]}
-    with pytest.raises(GovernanceError, match="not training_approved"):
+    with pytest.raises(GovernanceError, match="not training_approved|approved train records"):
         load_training_data(garden.write().config_path, approvals=garden.approvals)
 
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import shutil
 import uuid
@@ -12,7 +13,7 @@ from typing import Any
 import yaml
 
 from sentinel.data.registry import load_registry
-from sentinel.garden import render
+from sentinel.garden import render, supervision
 from sentinel.garden.build import build_records
 from sentinel.garden.pipeline import PROJECT_ROOT, manifest_row
 from tests.garden_fixtures import PY_NEW, PY_OLD, SETTINGS, FakeRepo, candidate
@@ -116,8 +117,31 @@ class GardenWorkdir:
         dump(self.workdir / "train.jsonl", self.train)
         dump(self.workdir / "validation.jsonl", self.validation)
         dump(self.workdir / "train.chat.jsonl", [render.to_chat_example(r) for r in self.train])
-        dump(self.committed / "manifest.jsonl", [manifest_row(r) for r in self.train + self.validation] + self.extra_manifest)
+        dump(self.workdir / "train.patch.chat.jsonl", supervision.patch_examples(self.train))
+        self.write_sums()
+        everything = self.train + self.validation
+        pairs = supervision.pairs_by_id(everything)
+        dump(self.committed / "manifest.jsonl", [manifest_row(r, pairs) for r in everything] + self.extra_manifest)
         return self
+
+    def write_sums(self) -> None:
+        """What an exporter (or someone regenerating the export files) writes next to them."""
+        names = ("train.jsonl", "validation.jsonl", "train.chat.jsonl", "train.patch.chat.jsonl")
+        (self.workdir / "SHA256SUMS").write_text(
+            "".join(f"{hashlib.sha256((self.workdir / n).read_bytes()).hexdigest()}  {n}\n" for n in names)
+        )
+
+    def rewrite_export(self, train: list[dict[str, Any]]) -> None:
+        """Simulate a consistent forgery of the Git-ignored exports: records, chat renderings and
+        checksums all regenerated from edited records; only the committed manifest is untouched."""
+
+        def dump(path: Path, rows: list[dict[str, Any]]) -> None:
+            path.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
+
+        dump(self.workdir / "train.jsonl", train)
+        dump(self.workdir / "train.chat.jsonl", [render.to_chat_example(r) for r in train])
+        dump(self.workdir / "train.patch.chat.jsonl", supervision.patch_examples(train))
+        self.write_sums()
 
     def cleanup(self) -> None:
         shutil.rmtree(self.root, ignore_errors=True)

@@ -141,3 +141,74 @@ def test_out_of_memory_is_recorded_with_a_hint(setup) -> None:
         train(config, data, model_loader=oom, log=lambda _: None)
     run = json.loads((config.output_dir / "run.json").read_text())
     assert run["status"] == "failed_oom" and "micro_batch_size" in run["hint"]
+
+
+def test_tampered_checkpoint_is_refused_and_pickles_never_execute(setup, tmp_path) -> None:
+    config, data = setup
+    train(config, data, model_loader=loader, log=lambda _: None)
+    latest = sorted((config.output_dir / "checkpoints").iterdir())[-1]
+    resumed_config = dataclasses.replace(config, training=dataclasses.replace(config.training, max_steps=6))
+
+    # 1. any modified file is detected before anything is loaded
+    state_file = latest / "state.json"
+    original = state_file.read_text()
+    state_file.write_text(original.replace('"step": 4', '"step": 1'))
+    with pytest.raises(RuntimeError, match="modified after it was written"):
+        train(resumed_config, data, resume=True, model_loader=loader, log=lambda _: None)
+    state_file.write_text(original)
+
+    # 2. an attacker who also rewrites checksums.json still cannot run code through the pickle
+    marker = tmp_path / "pwned"
+
+    class Planted:
+        def __reduce__(self):
+            return (Path.touch, (marker,))
+
+    torch.save({"optimizer": Planted()}, latest / "trainer_state.pt")
+    from sentinel.train.trainer import CHECKSUMS, _file_digests
+
+    (latest / CHECKSUMS).write_text(json.dumps(_file_digests(latest)))
+    with pytest.raises(Exception, match="(?i)weights_only|unpickl|unsupported"):
+        train(resumed_config, data, resume=True, model_loader=loader, log=lambda _: None)
+    assert not marker.exists()
+
+
+def test_logged_loss_is_the_mean_of_the_optimizer_step(setup) -> None:
+    from sentinel.train.data import batches, encode_all
+    from sentinel.train.trainer import _to_tensors, apply_lora
+
+    config, data = setup
+    config = dataclasses.replace(
+        config,
+        lora=dataclasses.replace(config.lora, dropout=0.0),
+        training=dataclasses.replace(config.training, max_steps=1, logging_every_steps=1, learning_rate=0.0, warmup_ratio=0.0),
+    )
+    run = train(config, data, model_loader=loader, log=lambda _: None)
+    logged = run["state"]["history"][0]["loss"]
+
+    # the same two micro-batches through an identical, unchanged model (learning rate 0)
+    model, tokenizer = loader(config)
+    model, _ = apply_lora(model, config, gradient_checkpointing=False)
+    examples, _ = encode_all(tokenizer, data.train, config.data.max_seq_len, config.data.end_of_turn)
+    first_step = batches(examples, 1, epoch=0, seed=config.training.seed)[:2]
+    with torch.no_grad():
+        losses = [float(model(**_to_tensors(b, tokenizer.pad_token_id, model.device)).loss) for b in first_step]
+    assert losses[0] != pytest.approx(losses[1])
+    assert logged == pytest.approx(sum(losses) / 2, abs=1e-4)
+
+
+def test_patch_task_trains_and_is_recorded(setup, monkeypatch) -> None:
+    config, _ = setup
+    garden = GardenWorkdir()
+    monkeypatch.setattr(train_data, "load_registry", approved_registry)
+    try:
+        data = load_training_data(garden.write().config_path, approvals=garden.approvals, tasks=("detection", "patch"))
+        config = dataclasses.replace(config, data=dataclasses.replace(config.data, tasks=("detection", "patch")))
+        run = train(config, data, model_loader=loader, log=lambda _: None)
+        assert run["status"] == "completed" and run["data"]["tasks"] == ["detection", "patch"]
+        assert run["data"]["examples_by_task"]["train"]["patch"] == 1
+        record = json.loads((config.output_dir / "adapter" / "training_run.json").read_text())
+        assert record["tasks"] == ["detection", "patch"] and record["prompt_version"] == "quickeval-review-v2"
+        assert record["patch_prompt_version"] == "sentinel-patch-v1"
+    finally:
+        garden.cleanup()

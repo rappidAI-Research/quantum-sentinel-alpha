@@ -395,3 +395,42 @@ def test_incomplete_recheck_keeps_earlier_later_fix_exclusions(monkeypatch: pyte
         assert written["automated"] == [earlier, unverified]
     finally:
         shutil.rmtree(root, ignore_errors=True)
+
+
+# --- leakage through package identity (gap found in the November 2026 review) -------------------
+
+
+def _moved_copy(record: dict, split: str, repository_key: str) -> dict:
+    """The same package published from another repository key, with unrelated code and advisory."""
+    other = copy.deepcopy(record)
+    other["record_id"] = record["record_id"][:-4] + "ffff"
+    other["split"] = split
+    other["input"]["code"] = "def other(x):\n    return x\n\n"
+    other["provenance"].update(advisory_id="GHSA-aaaa-bbbb-cccc", aliases=[], fixed_revision="d" * 40, repository_key=repository_key)
+    return other
+
+
+def test_package_moved_to_another_repository_is_split_leakage() -> None:
+    # e.g. npm `send`: visionmedia/send in train, pillarjs/send in validation. The repository split
+    # keys them apart; before this check the audit did not see the overlap.
+    train = built()["vulnerable"]
+    train["provenance"]["repository_key"] = "visionmedia/send"
+    validation = _moved_copy(train, "validation", "pillarjs/send")
+    assert set(train["provenance"]["packages"]) == set(validation["provenance"]["packages"])
+    assert audit.split_leakage([train, validation]) == {train["record_id"]: "shared_package_with_validation"}
+
+    holdout = _moved_copy(train, "holdout_reserved", "pillarjs/send")
+    assert audit.split_leakage([train, holdout]) == {train["record_id"]: "shared_package_with_holdout_reserved"}
+
+
+def test_quarantine_overlap_is_reported_not_excluded() -> None:
+    train = built()["vulnerable"]
+    quarantine = _moved_copy(train, "temporal_quarantine", train["provenance"]["repository_key"])
+    moved = _moved_copy(train, "temporal_quarantine", "someone/fork")
+    moved["record_id"] = moved["record_id"][:-4] + "eeee"
+    assert audit.split_leakage([train, quarantine, moved]) == {}
+    assert audit.quarantine_overlap([train, quarantine, moved]) == {
+        "records": 2,
+        "repository_in_train_or_validation": 1,
+        "package_in_train_or_validation": 1,
+    }

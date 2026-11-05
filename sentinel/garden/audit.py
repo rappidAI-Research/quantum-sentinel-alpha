@@ -371,6 +371,30 @@ def split_leakage(records: list[dict[str, Any]], threshold: float = 0.7) -> dict
             if others:
                 leaks[record["record_id"]] = f"shared_{'commit' if key == provenance['fixed_revision'] else 'advisory'}_with_{sorted(others)[0]}"
                 break
+    # The same package published from two repository keys (a moved or renamed repository, a fork that
+    # publishes the same package, or an advisory that lists the host package) is one project for
+    # leakage purposes, although the repository-level split treats the keys as different. Evaluation
+    # splits (validation, holdout_reserved) must not share a package with training records.
+    # temporal_quarantine is excluded on purpose: it holds post-cutoff records of training
+    # repositories by design (reported separately, never trained on).
+    package_splits: dict[tuple[str, str], set[tuple[str, str]]] = defaultdict(set)
+    for record in accepted:
+        provenance = record["provenance"]
+        for package in provenance["packages"]:
+            package_splits[(provenance["ecosystem"], package)].add((record["split"], provenance["repository_key"]))
+    for record in accepted:
+        if record["split"] != "train" or record["record_id"] in leaks:
+            continue
+        provenance = record["provenance"]
+        for package in provenance["packages"]:
+            others = sorted(
+                split
+                for split, repository in package_splits[(provenance["ecosystem"], package)]
+                if split in {"validation", "holdout_reserved"} and repository != provenance["repository_key"]
+            )
+            if others:
+                leaks[record["record_id"]] = f"shared_package_with_{others[0]}"
+                break
     prints = {r["record_id"]: code.shingles(code.normalized_tokens(r["input"]["language"], r["input"]["code"])) for r in accepted}
     held = [r for r in accepted if r["split"] != "train"]
     for record in accepted:
@@ -381,6 +405,28 @@ def split_leakage(records: list[dict[str, Any]], threshold: float = 0.7) -> dict
                 leaks[record["record_id"]] = f"near_duplicate_of_{other['split']}"
                 break
     return leaks
+
+
+def quarantine_overlap(records: list[dict[str, Any]]) -> dict[str, int]:
+    """temporal_quarantine records that share a repository or a package with train/validation.
+
+    By design (sentinel/garden/split.py) post-cutoff records of training repositories go to
+    temporal_quarantine. They are never trained on, but an evaluation on the quarantine is then not
+    repository-disjoint; report results on these records separately.
+    """
+    accepted = [r for r in records if r["quality"]["status"] == "accepted"]  # what curate exported
+    seen_repos = {r["provenance"]["repository_key"] for r in accepted if r["split"] in {"train", "validation"}}
+    seen_packages = {
+        (r["provenance"]["ecosystem"], p) for r in accepted if r["split"] in {"train", "validation"} for p in r["provenance"]["packages"]
+    }
+    quarantine = [r for r in accepted if r["split"] == "temporal_quarantine"]
+    same_repo = [r for r in quarantine if r["provenance"]["repository_key"] in seen_repos]
+    same_package = [
+        r for r in quarantine
+        if r["provenance"]["repository_key"] not in seen_repos
+        and any((r["provenance"]["ecosystem"], p) in seen_packages for p in r["provenance"]["packages"])
+    ]
+    return {"records": len(quarantine), "repository_in_train_or_validation": len(same_repo), "package_in_train_or_validation": len(same_package)}
 
 
 # --------------------------------------------------------------------------------------------
@@ -519,17 +565,18 @@ def run_audit(
         "audit_version": AUDIT_VERSION,
         "groups": results,
         "exclusions": sorted(unique.values(), key=lambda e: (e["record_id"], e["reason"])),
+        "quarantine_overlap": quarantine_overlap(records),
         "sample": stratified_sample(groups, pairs_per_language=8, abstentions_per_language=3, salt="sentinel-garden-audit-v1"),
     }
 
 
 def load_exclusions(path: Path) -> dict[str, list[str]]:
-    """record_id -> reasons, from automated and manual audit exclusions."""
+    """record_id -> reasons, from automated, AI-assisted manual and independent human exclusions."""
     if not path.is_file():
         return {}
     document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     result: dict[str, list[str]] = defaultdict(list)
-    for section in ("automated", "manual"):
+    for section in ("automated", "manual", "human"):
         for entry in document.get(section) or []:
             result[entry["record_id"]].append(entry["reason"])
     return dict(result)
@@ -580,6 +627,7 @@ def summarize(audit: dict[str, Any], manual: dict[str, Any]) -> dict[str, Any]:
         "abstentions_checked": sum(1 for g in groups if "abstention" in g),
         "abstentions_invalid": sum(1 for g in groups if g.get("abstention", {}).get("problems")),
         "exclusions_by_reason": dict(sorted(Counter(e["reason"].split(":")[0] for e in audit["exclusions"]).items())),
+        "temporal_quarantine_overlap": audit.get("quarantine_overlap"),
     }
     # Error rates describe the current sample only: a verdict on a group that is no longer sampled
     # (the population changed) is kept for its exclusions but not counted, and sampled items without a
@@ -676,6 +724,18 @@ def report_markdown(summary: dict[str, Any], audit: dict[str, Any], manual: dict
         *([f"| manual review | {len(manual_exclusions(manual))} |"] if manual_exclusions(manual) else []),
         "",
     ]
+    overlap = summary.get("temporal_quarantine_overlap")
+    if overlap:
+        lines += [
+            "Split leakage: train records that share an advisory, a fix commit, near-duplicate code or a published package "
+            "with another split are excluded (`split_leakage_*`); a shared package catches moved, renamed or forked repositories "
+            "that the repository-level split keys apart.",
+            "",
+            f"Temporal quarantine (never trained on): {overlap['records']} records, of which {overlap['repository_in_train_or_validation']} "
+            f"come from a repository and {overlap['package_in_train_or_validation']} from a package that also has train/validation records "
+            "(by design of the temporal cutoff). An evaluation on the quarantine is therefore not repository-disjoint; report these records separately.",
+            "",
+        ]
     if later:
         lines += ["### Invalidated hard negatives", "", "| Group | Advisory | Function | Later evidence |", "| --- | --- | --- | --- |"]
         for g in later[:40]:
@@ -712,6 +772,31 @@ def report_markdown(summary: dict[str, Any], audit: dict[str, Any], manual: dict
     if notes:
         lines += ["", "Findings from the manual review:", ""]
         lines += [f"- `{i['group_id']}` ({i.get('item', 'pair')}): {i['notes']}" for i in notes]
+    human = summary.get("human_review")
+    if human:
+        lines += ["", "## Independent human review", ""]
+        if human["status"] == "not_performed":
+            lines += [
+                f"**Not performed.** {human['sample_items']} blind evidence packages are prepared (`python -m sentinel.garden review-packages`; "
+                "index `audit/human_review_sample.jsonl`, template `audit/human_review.TEMPLATE.yaml`). The AI-assisted sample above is "
+                "not an independent review; no error rate in this report comes from a human reviewer.",
+            ]
+        else:
+            lines += [
+                f"Reviewer: {human['reviewer']['name']} ({human['reviewer']['affiliation']}); independent of the implementation: "
+                f"{human['independent_of_implementation']}. Reviewed {human['reviewed_items']} of {human['sample_items']} items"
+                + (f"; {len(human['stale_decisions'])} decisions are stale (package changed) and not counted" if human["stale_decisions"] else "")
+                + ".",
+                "",
+                "| Question | Judged | Errors | Wilson 95 % |",
+                "| --- | ---: | ---: | --- |",
+                *[
+                    f"| {key} | {r['judged']} | {r['errors']} | "
+                    + (f"{r['wilson95'][0]:.1%} - {r['wilson95'][1]:.1%}" if r["judged"] else "-")
+                    + " |"
+                    for key, r in human["rates"].items()
+                ],
+            ]
     lines += [
         "",
         "## Uncertainties",

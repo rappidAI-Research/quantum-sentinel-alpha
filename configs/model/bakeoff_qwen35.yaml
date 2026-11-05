@@ -12,7 +12,7 @@
 # of each repository (e.g. `huggingface-cli repo info` / the "Files and versions" history).
 bakeoff_id: qwen35-4b-vs-9b-quickeval-v1
 cases: eval/sentinelbench/quickeval_v1.jsonl
-prompt_version: quickeval-review-v1
+prompt_version: quickeval-review-v2   # no self-reported confidence (docs/CALIBRATION.md); v1 stays reproducible
 
 generation:
   max_new_tokens: 384

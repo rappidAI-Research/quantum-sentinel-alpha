@@ -12,7 +12,7 @@ import yaml
 from sentinel.eval.backends import GenerationSettings, RuntimeSettings
 from sentinel.eval.coding_regression import SUITES
 from sentinel.eval.io import PROJECT_ROOT
-from sentinel.eval.prompt import PROMPT_VERSION
+from sentinel.eval.prompt import PROMPTS
 from sentinel.eval.runner import is_immutable_revision
 
 TOP_LEVEL_KEYS = {"bakeoff_id", "cases", "prompt_version", "generation", "runtime", "coding_suite", "candidates"}
@@ -37,6 +37,7 @@ class BakeoffConfig:
     coding_suite: str
     candidates: dict[str, Candidate]
     sha256: str
+    prompt_version: str
 
 
 def load_bakeoff(path: Path) -> BakeoffConfig:
@@ -45,8 +46,8 @@ def load_bakeoff(path: Path) -> BakeoffConfig:
     if not isinstance(document, dict):
         raise ValueError("bake-off config must be a mapping")
     _require_keys(document, TOP_LEVEL_KEYS, TOP_LEVEL_KEYS, "bake-off config")
-    if document["prompt_version"] != PROMPT_VERSION:
-        raise ValueError(f"config targets prompt {document['prompt_version']!r}, code provides {PROMPT_VERSION!r}")
+    if document["prompt_version"] not in PROMPTS:
+        raise ValueError(f"config targets prompt {document['prompt_version']!r}; known prompts: {sorted(PROMPTS)}")
 
     cases = PROJECT_ROOT / document["cases"]
     if not cases.is_file():
@@ -94,6 +95,7 @@ def load_bakeoff(path: Path) -> BakeoffConfig:
         coding_suite=document["coding_suite"],
         candidates=candidates,
         sha256=hashlib.sha256(raw_bytes).hexdigest(),
+        prompt_version=document["prompt_version"],
     )
 
 

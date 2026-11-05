@@ -17,7 +17,7 @@ from sentinel.eval.coding_regression import CodingRegressionSuite, not_run
 from sentinel.eval.io import PROJECT_ROOT, case_set_sha256, case_set_summary, validate_cases, validate_predictions
 from sentinel.eval.metrics import SCORER_VERSION, score
 from sentinel.eval.parse import PARSER_VERSION, parse_model_output
-from sentinel.eval.prompt import PROMPT_VERSION, build_messages, prompt_sha256
+from sentinel.eval.prompt import PROMPT_VERSION, build_messages, prompt_sha256, system_prompt
 
 ARTIFACT_VERSION = "1.0"
 ARTIFACT_KIND = "quantum-sentinel-alpha.quickeval-run"
@@ -106,8 +106,15 @@ def run_quickeval(
     full_case_set: bool = True,
     bakeoff: dict[str, Any] | None = None,
     coding_suite: CodingRegressionSuite | None = None,
+    prompt_version: str = PROMPT_VERSION,
 ) -> dict[str, Any]:
     validate_cases(cases)
+    system_prompt(prompt_version)  # unknown prompt versions fail before the model is used
+    adapter_prompt = (getattr(backend, "adapter_info", None) or {}).get("training_run") or {}
+    if adapter_prompt.get("prompt_version") not in (None, prompt_version):
+        raise ValueError(
+            f"adapter was trained with prompt {adapter_prompt['prompt_version']!r}; evaluate it with the same prompt, not {prompt_version!r}"
+        )
     started_at = datetime.now(timezone.utc)
 
     load_start = time.perf_counter()
@@ -119,7 +126,7 @@ def run_quickeval(
     generated_tokens: int | None = 0
     for case in cases:
         case_start = time.perf_counter()
-        result = backend.generate(build_messages(case))
+        result = backend.generate(build_messages(case, prompt_version))
         latency = time.perf_counter() - case_start
         generation_seconds += latency
         if result.generated_tokens is None:
@@ -163,8 +170,8 @@ def run_quickeval(
         "runtime": {**runtime.as_dict(), **backend.describe()},
         "generation": generation.as_dict(),
         "contract": {
-            "prompt_version": PROMPT_VERSION,
-            "prompt_sha256": prompt_sha256(),
+            "prompt_version": prompt_version,
+            "prompt_sha256": prompt_sha256(prompt_version),
             "parser_version": PARSER_VERSION,
             "scorer_version": SCORER_VERSION,
         },

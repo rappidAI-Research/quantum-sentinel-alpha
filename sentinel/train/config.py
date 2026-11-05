@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import MISSING, asdict, dataclass
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +26,7 @@ class DataSettings:
     garden_config: str
     max_seq_len: int
     end_of_turn: str
+    tasks: tuple[str, ...] = ("detection",)  # "patch" adds verified upstream-fix patch examples (opt-in)
 
 
 @dataclass(frozen=True)
@@ -91,8 +92,9 @@ class TrainConfig:
 def _section(document: dict[str, Any], name: str, cls: type) -> Any:
     raw = document[name]
     expected = set(cls.__dataclass_fields__)
-    if not isinstance(raw, dict) or set(raw) != expected:
-        raise ConfigError(f"{name} must define exactly {sorted(expected)}")
+    optional = {key for key, f in cls.__dataclass_fields__.items() if f.default is not MISSING}
+    if not isinstance(raw, dict) or not expected - optional <= set(raw) <= expected:
+        raise ConfigError(f"{name} must define exactly {sorted(expected - optional)}" + (f" (optional: {sorted(optional)})" if optional else ""))
     return cls(**raw)
 
 
@@ -114,6 +116,10 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
         raise ConfigError("quantization.mode must be nf4 or none")
     if quantization.compute_dtype not in {"bfloat16", "float16", "float32"}:
         raise ConfigError("quantization.compute_dtype must be bfloat16, float16 or float32")
+    if isinstance(settings.tasks, list):
+        settings = DataSettings(**{**asdict(settings), "tasks": tuple(settings.tasks)})
+    if not settings.tasks or "detection" not in settings.tasks or not set(settings.tasks) <= {"detection", "patch"} or len(set(settings.tasks)) != len(settings.tasks):
+        raise ConfigError("data.tasks must contain 'detection' and may add 'patch' (each once)")
     if settings.max_seq_len < 256:
         raise ConfigError("data.max_seq_len must be at least 256")
     try:

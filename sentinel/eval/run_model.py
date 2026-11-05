@@ -26,10 +26,11 @@ from sentinel.eval.backends import (
 from sentinel.eval.bakeoff import load_bakeoff
 from sentinel.eval.coding_regression import SUITES
 from sentinel.eval.io import PROJECT_ROOT, load_jsonl
+from sentinel.eval.prompt import PROMPT_VERSION, PROMPTS
 from sentinel.eval.runner import is_immutable_revision, run_quickeval, write_artifact
 
 # Flags that would change the shared bake-off setup; rejected together with --bakeoff.
-SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite")
+SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -47,6 +48,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-new-tokens", type=int)
     parser.add_argument("--limit", type=int, help="smoke test on the first N cases; never reportable")
     parser.add_argument("--allow-unpinned", action="store_true", help="permit a non-reportable run without a pinned revision")
+    parser.add_argument(
+        "--prompt-version",
+        choices=sorted(PROMPTS),
+        help=f"review prompt (default {PROMPT_VERSION}; quickeval-review-v1 only to reproduce older runs)",
+    )
     parser.add_argument("--adapter", type=Path, help="evaluate a LoRA adapter (trained for exactly this model and revision)")
     parser.add_argument(
         "--coding-suite",
@@ -76,6 +82,7 @@ def main(argv: list[str] | None = None) -> int:
         model_id, revision = candidate.model_id, args.revision or candidate.revision
         cases_path, generation, runtime = config.cases, config.generation, candidate.runtime
         coding_suite_name = config.coding_suite
+        prompt_version = config.prompt_version
         bakeoff_meta = {
             "id": config.bakeoff_id,
             "candidate": candidate.name,
@@ -91,6 +98,7 @@ def main(argv: list[str] | None = None) -> int:
         revision = args.revision
         cases_path = args.cases
         coding_suite_name = args.coding_suite
+        prompt_version = args.prompt_version or PROMPT_VERSION
         generation = GenerationSettings(**({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}))
         runtime = RuntimeSettings(
             **{key: value for key in ("device", "dtype", "quantization") if (value := getattr(args, key)) is not None}
@@ -134,6 +142,7 @@ def main(argv: list[str] | None = None) -> int:
         full_case_set=full_case_set,
         bakeoff=bakeoff_meta,
         coding_suite=coding_suite,
+        prompt_version=prompt_version,
     )
     write_artifact(args.output, artifact)
 
