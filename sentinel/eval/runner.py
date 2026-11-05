@@ -94,6 +94,16 @@ def validate_run_artifact(artifact: dict[str, Any]) -> None:
     Draft202012Validator(schema).validate(artifact)
 
 
+def check_adapter_prompt(backend: ModelBackend, prompt_version: str) -> None:
+    """An unknown prompt or an adapter trained with another prompt fails before any model work."""
+    system_prompt(prompt_version)
+    adapter_prompt = (getattr(backend, "adapter_info", None) or {}).get("training_run") or {}
+    if adapter_prompt.get("prompt_version") not in (None, prompt_version):
+        raise ValueError(
+            f"adapter was trained with prompt {adapter_prompt['prompt_version']!r}; evaluate it with the same prompt, not {prompt_version!r}"
+        )
+
+
 def run_quickeval(
     cases: list[dict[str, Any]],
     backend: ModelBackend,
@@ -106,15 +116,13 @@ def run_quickeval(
     full_case_set: bool = True,
     bakeoff: dict[str, Any] | None = None,
     coding_suite: CodingRegressionSuite | None = None,
+    coding_not_run: dict[str, Any] | None = None,
     prompt_version: str = PROMPT_VERSION,
 ) -> dict[str, Any]:
     validate_cases(cases)
-    system_prompt(prompt_version)  # unknown prompt versions fail before the model is used
-    adapter_prompt = (getattr(backend, "adapter_info", None) or {}).get("training_run") or {}
-    if adapter_prompt.get("prompt_version") not in (None, prompt_version):
-        raise ValueError(
-            f"adapter was trained with prompt {adapter_prompt['prompt_version']!r}; evaluate it with the same prompt, not {prompt_version!r}"
-        )
+    check_adapter_prompt(backend, prompt_version)
+    if coding_suite is not None:
+        coding_suite.preflight()  # fail closed before any generation when isolation is missing
     started_at = datetime.now(timezone.utc)
 
     load_start = time.perf_counter()
@@ -152,7 +160,10 @@ def run_quickeval(
     validate_predictions(predictions)
     metrics = score(cases, predictions).as_dict()
 
-    coding = not_run() if coding_suite is None else coding_suite.run(backend).as_dict()
+    if coding_suite is not None:
+        coding = coding_suite.run(backend).as_dict()
+    else:
+        coding = coding_not_run or not_run()
 
     artifact: dict[str, Any] = {
         "artifact_version": ARTIFACT_VERSION,

@@ -6,6 +6,11 @@ Bake-off: python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen
               --candidate qwen35-4b --revision <sha> --output runs/qwen35-4b.json
 Adapter:  add --adapter runs/train/<run>/adapter to evaluate a QLoRA adapter on the same base revision.
 No GPU:   add --backend baseline to exercise the full path with the regex baseline.
+
+The coding-regression suite executes model-generated code, only inside the container sandbox
+(configs/eval/coding_sandbox.yaml, docs/CODING_SANDBOX.md). When the sandbox is unavailable the run
+stops before the model is loaded. --skip-coding-regression evaluates security only and records the
+coding regression as not_run.
 """
 
 from __future__ import annotations
@@ -24,10 +29,11 @@ from sentinel.eval.backends import (
     RuntimeSettings,
 )
 from sentinel.eval.bakeoff import load_bakeoff
-from sentinel.eval.coding_regression import SUITES
+from sentinel.eval.coding_regression import SUITES, not_run
 from sentinel.eval.io import PROJECT_ROOT, load_jsonl
 from sentinel.eval.prompt import PROMPT_VERSION, PROMPTS
-from sentinel.eval.runner import is_immutable_revision, run_quickeval, write_artifact
+from sentinel.eval.runner import check_adapter_prompt, is_immutable_revision, run_quickeval, write_artifact
+from sentinel.eval.sandbox import IsolationUnavailable
 
 # Flags that would change the shared bake-off setup; rejected together with --bakeoff.
 SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version")
@@ -57,7 +63,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--coding-suite",
         choices=sorted(SUITES),
-        help="also run a coding-regression suite (executes model-generated code; use a disposable host)",
+        help="also run a coding-regression suite (executes model-generated code in the container sandbox)",
+    )
+    parser.add_argument(
+        "--skip-coding-regression",
+        action="store_true",
+        help="do not execute generated code (security evaluation only; coding regression is recorded as not_run)",
     )
     return parser
 
@@ -116,8 +127,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit is not None:
         cases = cases[: args.limit]
 
-    coding_suite = SUITES[coding_suite_name]() if coding_suite_name else None
-
+    if args.skip_coding_regression and args.coding_suite:
+        parser.error("--skip-coding-regression contradicts --coding-suite")
     backend: ModelBackend
     if args.backend == "baseline":
         backend = BaselineBackend()
@@ -126,6 +137,29 @@ def main(argv: list[str] | None = None) -> int:
             backend = HFBackend(model_id, revision, runtime, generation, adapter=args.adapter)
         except ValueError as exc:
             parser.error(str(exc))
+    # Cheap identity checks first (adapter base model, revision and prompt; no model is loaded), so a
+    # wrong adapter gets its precise error whether or not the sandbox is available. Then the sandbox
+    # preflight, still before the model is loaded.
+    try:
+        check_adapter_prompt(backend, prompt_version)
+    except ValueError as exc:
+        parser.error(str(exc))
+
+    coding_suite = None
+    coding_skipped = None
+    if coding_suite_name and args.skip_coding_regression:
+        coding_skipped = not_run(f"{coding_suite_name} skipped with --skip-coding-regression (no generated code executed)")
+    elif coding_suite_name:
+        coding_suite = SUITES[coding_suite_name]()
+        try:
+            coding_suite.preflight()  # fail closed before the model is loaded
+        except IsolationUnavailable as exc:
+            print(
+                f"error: coding regression needs the container sandbox and it is unavailable: {exc}\n"
+                "Prepare the host (docs/CODING_SANDBOX.md) or rerun with --skip-coding-regression.",
+                file=sys.stderr,
+            )
+            return 3
 
     try:
         display_path = str(cases_path.resolve().relative_to(PROJECT_ROOT))
@@ -142,6 +176,7 @@ def main(argv: list[str] | None = None) -> int:
         full_case_set=full_case_set,
         bakeoff=bakeoff_meta,
         coding_suite=coding_suite,
+        coding_not_run=coding_skipped,
         prompt_version=prompt_version,
     )
     write_artifact(args.output, artifact)

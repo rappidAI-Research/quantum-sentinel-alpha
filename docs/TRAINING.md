@@ -73,7 +73,7 @@ python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --
 python -m sentinel.eval.compare runs/eval/qwen35-9b-baseline.json runs/eval/qwen35-9b-qlora-v0.json
 ```
 
-`--adapter` refuses an adapter trained for another base model or revision before anything is downloaded, and an adapter trained with another review prompt than the run uses; the run artifact records the adapter's weight and config hashes. The bake-off config uses `quickeval-review-v2`, so the baseline and every adapter share one prompt. Add `--coding-suite coding-v1` to both runs to measure coding regression; the Garden holdout reservation (`holdout_reserved.eval_cases.jsonl`) can be evaluated with `--model ... --cases ...` for a temporal/generalization check.
+`--adapter` refuses an adapter trained for another base model or revision before anything is downloaded, and an adapter trained with another review prompt than the run uses; the run artifact records the adapter's weight and config hashes. The bake-off config uses `quickeval-review-v2`, so the baseline and every adapter share one prompt. It also includes `coding-v1`, whose generated code runs only in the container sandbox (docs/CODING_SANDBOX.md); without a sandbox the run stops before the model is loaded, and `--skip-coding-regression` gives a security-only run (both runs must then skip it, or `compare` refuses them). Order of checks before any model is loaded: adapter base model, revision and prompt, then the sandbox preflight. The Garden holdout reservation (`holdout_reserved.eval_cases.jsonl`) can be evaluated with `--model ... --cases ...` for a temporal/generalization check.
 
 ## Tests
 

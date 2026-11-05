@@ -1,0 +1,27 @@
+# Isolation policy for executing model-generated code (coding-regression suites such as coding-v1).
+# Docs: docs/CODING_SANDBOX.md. Loaded and validated by sentinel.eval.sandbox.load_policy.
+#
+# Model-generated code only ever runs inside a disposable container started from this exact image
+# digest: no network, no host mounts except the read-only task directory, no credentials or host
+# environment, an unprivileged user, a read-only root file system and CPU/memory/process limits.
+# If the container runtime, its daemon or the pinned image is not available, the run fails closed
+# before the model is loaded. To evaluate security only, skip the suite explicitly
+# (`run_model --skip-coding-regression`); the artifact then records coding regression as not_run.
+#
+# The image is never pulled automatically. Prepare an evaluation host once with:
+#   docker pull python:3.12-slim@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30
+# Changing any value here changes the coding contract hash, so runs under different policies are
+# not compared by `sentinel.eval.compare`.
+schema_version: "1.0"
+runtime: docker             # docker | podman (same CLI flags)
+# Official python:3.12-slim multi-platform index, resolved from Docker Hub on 2026-11-05.
+image: python:3.12-slim@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30
+user: "65534:65534"         # nobody:nogroup inside the container
+network: none
+cpus: 1.0
+memory_mib: 1024            # memory + swap; the kernel kills the process above it
+pids_limit: 64
+tmpfs_mib: 16               # /tmp is the only writable path (noexec)
+file_size_mib: 1            # RLIMIT_FSIZE inside the container
+timeout_seconds: 20         # wall clock per task, including container start
+max_output_kib: 64          # stdout kept by the parent; the rest is drained and discarded

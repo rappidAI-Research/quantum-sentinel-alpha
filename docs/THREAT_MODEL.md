@@ -15,7 +15,7 @@ Status: initial Phase-0 threat model. This document defines product boundaries, 
 1. **Repository input is untrusted.** Source files, comments, docs and agent instructions may contain adversarial text or prompt injection.
 2. **Model output is untrusted until validated.** The model may hallucinate vulnerabilities, locations, CWE labels, evidence, tool requests or patches.
 3. **Deterministic tools are outside the model.** Indexing, schema validation, static signals, test execution and enforcement cannot be delegated to model intent.
-4. **Execution is a separate boundary.** Sentinel is not its own sandbox. Tests or tools must run through an isolated execution layer; Ghost may provide this later but is not required for model training.
+4. **Execution is a separate boundary.** Sentinel is not its own sandbox. Tests or tools must run through an isolated execution layer; Ghost may provide this later but is not required for model training. Model-generated code in coding-regression suites runs only in the container sandbox of docs/CODING_SANDBOX.md, which fails closed when isolation is unavailable.
 5. **External data is untrusted until governed.** Public availability does not imply permission to train, redistribute or publish derived artifacts.
 
 ## Primary threats and required controls
