@@ -21,13 +21,17 @@ No repository and no source is approved today. Neither the pipeline nor an autom
 
 Every Sentinel Garden record preserves: advisory ID and aliases, OSV record hash, source and metadata source IDs, upstream repository, vulnerable and fixed revisions (full SHAs), fix commit date, file path, function name and file line ranges, root license files with sha256 at the fixed revision, detected license (unreviewed), label, localization method, evidence source, content sha256 and normalized-token sha256. See `data/schemas/garden_record.schema.json`.
 
+## Training-target integrity
+
+Each manifest row binds the record's full input and target and its rendered training examples with canonical sha256 hashes (`supervision` block). Training refuses any export whose records, labels, evidence text, patches, context, rendering or checksums differ from the committed manifest, and any export that holds more or fewer records than the manifest approves. Corrupted data is never repaired in place; `curate` regenerates the export from the curated records.
+
 ## Redistribution
 
 Upstream code, excerpts, contexts and patches are **not committed** to this repository: redistribution has not been reviewed and the repository license is not declared. Only metadata (`data/garden/seed_v1/`) is committed, and records are rebuilt deterministically from immutable upstream revisions (`python -m sentinel.garden verify`).
 
 ## Split policy
 
-Splits are repository-level, not function-level: a repository contributes to exactly one of train, validation and `holdout_reserved`, and must not contribute to both training and the private SentinelBench holdout. A provisional temporal cutoff (`2026-07-01`, after the selected foundation checkpoint was published) keeps newer fixes out of train and validation; it must be frozen before large-scale collection. Exact, normalized and fuzzy hashes and an embedded-snippet check are used against every evaluation case and coding task to prevent benchmark leakage.
+Splits are repository-level, not function-level: a repository contributes to exactly one of train, validation and `holdout_reserved`, and must not contribute to both training and the private SentinelBench holdout. A package published from two repository keys (moved, renamed or forked repositories) is treated as one project by the audit, which excludes the train-side records. The temporal cutoff (`2026-07-01`, frozen in `sentinel-garden-split-v1`) keeps newer fixes out of train and validation; post-cutoff fixes of training repositories form `temporal_quarantine`, which is never trained on but is not repository-disjoint from training. Exact, normalized and fuzzy hashes and an embedded-snippet check are used against every evaluation case and coding task to prevent benchmark leakage.
 
 ## Removal
 

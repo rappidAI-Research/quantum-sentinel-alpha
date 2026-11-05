@@ -37,7 +37,9 @@ Each accepted fix yields up to three records sharing a `group_id`:
 | `post_fix` | `no_finding` | same function at the fix revision (+ helpers the fix added) | secure hard negative **scoped to the advisory's weakness** (`label_scope`); other weaknesses are not verified |
 | `caller_abstention` | `abstain` | an unchanged function in the same file that calls the vulnerable function, shown without the callee's body | evidence is insufficient by construction: the vulnerable code is withheld (`withheld_callee`) |
 
-`input` has the same fields as an evaluation case (`language`, `file`, `context`, `code`), so `sentinel.eval.prompt.build_messages` renders training and evaluation identically. `render.to_chat_example` produces the chat example; every rendered reply is parsed with the strict QuickEval parser and must reproduce the label (`target_matches_eval_contract`).
+`input` has the same fields as an evaluation case (`language`, `file`, `context`, `code`), so `sentinel.eval.prompt.build_messages` renders training and evaluation identically (prompt `quickeval-review-v2`). `render.to_chat_example` produces the chat example; every rendered reply is parsed with the strict QuickEval parser and must reproduce the label without a confidence value (`target_matches_eval_contract`; docs/CALIBRATION.md). Verified vulnerable/fixed pairs also yield patch-generation examples (docs/PATCH_SUPERVISION.md).
+
+Every manifest row carries a `supervision` block (`sentinel/garden/supervision.py`): canonical sha256 of the full input and the full target (including evidence text and patch), of the rendered detection example and, for patch-eligible records, of the patch example, plus the patch-eligibility reason. The training loader recomputes them (docs/TRAINING.md), so the Git-ignored exports cannot be edited without detection; `check` validates the block structurally.
 
 ## Quality checks
 
@@ -70,10 +72,14 @@ The split policy is **frozen** in `configs/garden/split_policy.yaml` (`sentinel-
 | Fix pattern vs CWE family | remediation indicators in the changed lines (e.g. parameterised queries for CWE-89, path normalisation for CWE-22) | heuristic flag for manual review, never an exclusion |
 | Hard-negative validity | every other OSV advisory of the same package: a later upstream fix that changes the same function, an advisory that calls this fix incomplete, or a later fix commit in the same repository that cannot be read (unverified) | `post_fix` record excluded; an incomplete recheck keeps the exclusions of the previous run |
 | Abstention validity | the call passes non-constant data; the caller does not duplicate the vulnerable code | abstention excluded |
-| Split leakage | the same advisory/CVE or fix commit in two splits, or near-identical code (Jaccard ≥ 0.7) across splits | train-side record excluded; holdout/validation records are never moved |
+| Split leakage | the same advisory/CVE or fix commit in two splits, near-identical code (Jaccard ≥ 0.7) across splits, or the same published package (ecosystem + name) from another repository in validation or holdout_reserved (moved, renamed or forked repositories, e.g. `visionmedia/send` → `pillarjs/send`) | train-side record excluded; holdout/validation records are never moved |
 | Localization precision | span length and share of the function | a broad span (> 12 lines and > 40 % of the function) excludes the vulnerable record (and with it the group): in the manual sample every broad span was imprecise |
 
 A deterministic stratified sample (per language: pairs round-robin over CWE families, plus abstentions) is reviewed by hand; verdicts are stored with the reviewer's identity in `audit/manual_review.yaml` and reported with Wilson 95 % intervals. Rates count only items of the current sample (sampled items without a verdict are reported as pending; a verdict on a group that is no longer sampled keeps its exclusions but is not counted), once for the whole sample and once for the items that survive the automated exclusions - the estimate for the exported data. Exclusions (`audit/exclusions.yaml`, automated and manual sections) are applied by `curate` as failed checks `audit:<reason>`; records are only ever excluded, never relabelled. No exploit or test is executed.
+
+**Independent human review.** The sample above is AI-reviewed. `python -m sentinel.garden review-packages` draws a separate deterministic sample of the exportable population (accepted train/validation groups; per language 12 pairs round-robin over CWE families and 4 abstentions; salt `sentinel-garden-human-review-v1`) and writes one blind evidence package per item to the Git-ignored `review_packages/` (advisory text and links, fix and vulnerable commit links, the vulnerable excerpt with the labelled span marked, the function-level patch, the fixed excerpt or the abstention excerpt with its withheld callee, expected labels and a checklist on label correctness, CWE attribution and ambiguity, localization, hard-negative safety, pair consistency, abstention validity and recognised duplicates). AI verdicts and automated signals are kept out of the package (`signals.json` next to it). The committed index `audit/human_review_sample.jsonl` binds each item to the package sha256; a reviewer copies `audit/human_review.TEMPLATE.yaml` to `audit/human_review.yaml`, records their identity and whether they are independent of the implementation, and decides each item. `audit` validates the file, ignores decisions on changed packages (stale), applies `exclude_records` as `audit:human_review:*` and reports human error rates separately from automated and AI results. No tool writes decisions; until a person does, the report states that no independent review was performed.
+
+**Temporal quarantine overlap.** By design, post-cutoff fixes of training repositories go to `temporal_quarantine` (never trained on). The audit reports how many quarantine records share a repository or a package with train/validation (20 and 6 of 159 on the current seed); results on the quarantine must report them separately, as the quarantine is not repository-disjoint.
 
 ## Rights review
 
@@ -105,8 +111,9 @@ Git-ignored work directory `artifacts/garden/seed_v1/`:
 | `records.raw.jsonl`, `build_log.jsonl` | build output and per-candidate outcome |
 | `records.jsonl` | every curated record with code, split, quality and governance |
 | `staging.jsonl` | accepted, **not approved** records (the current seed) |
-| `train.jsonl`, `validation.jsonl`, `train.chat.jsonl` | training-approved records only (empty until approvals exist) |
-| `holdout_reserved.jsonl`, `holdout_reserved.eval_cases.jsonl` | holdout reservation |
+| `train.jsonl`, `validation.jsonl`, `train.chat.jsonl`, `train.patch.chat.jsonl` | training-approved records and their detection / patch examples only (empty until approvals exist) |
+| `holdout_reserved.jsonl`, `holdout_reserved.eval_cases.jsonl`, `holdout_reserved.patch_cases.jsonl` | holdout reservation (detection and patch cases) |
+| `review_packages/<item>/package.md`, `signals.json` | blind evidence packages for the independent human review |
 | `rejected.jsonl` | rejected records with failed checks |
 
 Committed directory `data/garden/seed_v1/` (metadata only, no upstream code, context, evidence text or patch):
@@ -124,7 +131,7 @@ Upstream code is not committed because its redistribution has not been reviewed 
 ## Known limitations
 
 - Labels are derived from maintainers' fixes and GitHub-reviewed advisories; they were not re-verified by running exploits or tests. A `post_fix` record is a hard negative for the advisory's weakness only.
-- `finding` evidence is the advisory summary, not a hand-written source-to-sink explanation. Patch records are upstream patches, not model-verified remediations.
+- `finding` evidence is the advisory summary, not a hand-written source-to-sink explanation. Patch ground truth is the upstream fix of an audited pair; it is not shown to be secure (no exploit or test is run).
 - The one-function rule favours small, local fixes; multi-function, cross-file and configuration fixes are not represented.
-- JS/TS function detection is heuristic; unusual layouts are rejected rather than guessed, which lowers yield.
-- The temporal cutoff and split salt are provisional and must be frozen before large-scale collection.
+- Go/JS/TS structure comes from tree-sitter parse trees; layouts the grammar parses with errors are rejected rather than guessed, which lowers yield.
+- Labels have not yet been checked by an independent human reviewer (packages prepared, decisions pending).
