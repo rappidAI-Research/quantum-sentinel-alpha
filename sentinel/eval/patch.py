@@ -8,7 +8,11 @@ excerpt. Ground truth is a verified upstream fix (sentinel.garden.supervision.pa
 Scoring is deliberately limited to what can be checked without executing code:
 - `well_formed`: the reply is exactly one unified diff for the case file with consistent hunk counts;
 - `applies`: it applies strictly to the vulnerable excerpt (every context and removed line matches);
-- `syntax_ok`: the patched excerpt still parses (Python `ast`, tree-sitter for Go/JS/TS);
+- `syntax_ok`: the patch introduces no parse error: the strict parse-error count of the patched
+  excerpt (Python `ast`; tree-sitter ERROR/MISSING nodes for Go/JS/TS) is not higher than the
+  vulnerable excerpt's. Function excerpts are not always parseable on their own (a method outside
+  its class, a fix that adds a module-level helper), so absolute parseability would penalise
+  correct patches; `reference_syntax_ok_rate` reports the same check on the upstream fixes;
 - `exact_match` / `normalized_match`: equal to the upstream fixed excerpt, byte for byte or after
   the Garden code normalization (comments/layout ignored);
 - `touches_span`: at least one changed line lies within `SPAN_TOLERANCE` lines of the reported
@@ -183,6 +187,22 @@ def check_coordinates(hunks: list[DiffHunk], line_count: int) -> None:
         delta += hunk.new_count - hunk.old_count
 
 
+def syntax_errors(language: str, code: str) -> int:
+    """Strict parse-error count (no bracket-balance fallback)."""
+    if language == "python":
+        import ast
+        import textwrap
+
+        try:
+            ast.parse(textwrap.dedent(code))
+            return 0
+        except (SyntaxError, ValueError):
+            return 1
+    from sentinel.garden import syntax
+
+    return syntax._error_count(syntax.parse(language, code).root)
+
+
 def changed_line_count(hunks: list[DiffHunk]) -> int:
     return sum(len(h.removed) + len(h.added_after) for h in hunks)
 
@@ -225,10 +245,11 @@ def score_patch(case: dict[str, Any], reply: str) -> PatchScore:
     language = case["language"]
     reference = case["reference_fixed_code"]
     normalized = code.normalized_tokens(language, patched) == code.normalized_tokens(language, reference)
+    baseline = syntax_errors(language, case["code"])
     return PatchScore(
         well_formed=True,
         applies=True,
-        syntax_ok=code.excerpt_is_well_formed(language, patched),
+        syntax_ok=syntax_errors(language, patched) <= baseline,
         exact_match=patched == reference,
         normalized_match=normalized,
         touches_span=_touches(hunks, case["finding"]["start_line"], case["finding"]["end_line"]),
@@ -238,14 +259,20 @@ def score_patch(case: dict[str, Any], reply: str) -> PatchScore:
     )
 
 
-def summarize(scores: list[PatchScore]) -> dict[str, Any]:
+def summarize(scores: list[PatchScore], cases: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     n = len(scores)
+    reference_syntax_rate = (
+        sum(1 for c in cases if syntax_errors(c["language"], c["reference_fixed_code"]) <= syntax_errors(c["language"], c["code"])) / len(cases)
+        if cases
+        else None
+    )
 
     def rate(key: str) -> float | None:
         return sum(1 for s in scores if getattr(s, key)) / n if n else None
 
     ratios = [s.changed_lines / s.reference_changed_lines for s in scores if s.applies and s.changed_lines and s.reference_changed_lines]
     return {
+        "reference_syntax_ok_rate": reference_syntax_rate,
         "cases": n,
         "well_formed_rate": rate("well_formed"),
         "applies_rate": rate("applies"),
@@ -281,7 +308,7 @@ def run_patch_eval(cases: list[dict[str, Any]], backend: Any) -> dict[str, Any]:
         "kind": "quantum-sentinel-alpha.patch-eval",
         "contract": {"prompt_version": PATCH_PROMPT_VERSION, "parser_version": PATCH_PARSER_VERSION, "scorer_version": PATCH_SCORER_VERSION},
         "backend": getattr(backend, "name", type(backend).__name__),
-        **summarize(scores),
+        **summarize(scores, cases),
     }
 
 

@@ -26,13 +26,14 @@ A vulnerable record is patch ground truth only if all of the following hold
 5. the patch applies strictly (every context and removed line matches) and turns the vulnerable
    excerpt into the accepted fixed excerpt **exactly**;
 6. the patch satisfies the patch output contract (one unified diff for the case file, consistent
-   hunk counts).
+   hunk counts, hunk coordinates inside the excerpt, in order and without overlap).
 
 On the current seed, 941 vulnerable records are eligible (train 709, validation 72,
 holdout_reserved 96, temporal_quarantine 64); 106 are not because the audit rejected the fixed
 version, and 159 because the vulnerable record itself was rejected. Every eligible reference patch
-scores as well formed, applicable, syntactically valid, exact and on the labelled span under its own
-scorer.
+scores as well formed, applicable, exact and on the labelled span under its own scorer; 931 of 941
+(98.9 %) also pass the strict syntax check (the other ten add module-level helpers that make the
+function excerpt unparseable on its own).
 
 Training examples are bound to the committed manifest (`supervision.patch_example_sha256`) like
 detection examples, and inherit the governance gate: a pair is exported only when both records are
@@ -55,7 +56,7 @@ Implemented and tested, all offline:
 | --- | --- |
 | `well_formed` | the reply satisfies the output contract |
 | `applies` | strict application to the vulnerable excerpt |
-| `syntax_ok` | the patched excerpt parses (Python `ast`; tree-sitter for Go/JS/TS) |
+| `syntax_ok` | the patch adds no parse error: strict error count (Python `ast`, tree-sitter ERROR/MISSING nodes for Go/JS/TS) not higher than the vulnerable excerpt's; `reference_syntax_ok_rate` gives the same check on the upstream fixes |
 | `exact_match` / `normalized_match` | equal to the upstream fixed excerpt, byte for byte / after the Garden normalization |
 | `touches_span` | a changed line lies within 2 lines of the labelled span (diffs of one change can align differently) |
 | `changed_lines` vs `reference_changed_lines` | size relative to the upstream fix (a minimality signal) |

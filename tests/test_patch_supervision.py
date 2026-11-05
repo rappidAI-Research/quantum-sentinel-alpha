@@ -134,3 +134,33 @@ def test_overlapping_hunks_are_rejected(case) -> None:
     _, hunks = parse_patch(reply, case["file"])
     with pytest.raises(PatchError, match="overlap"):
         check_coordinates(hunks, len(lines))
+
+
+@pytest.mark.parametrize(
+    "language, original, broken",
+    [
+        ("python", "def f(x):\n    return x\n", "def f(x):\n    return +\n"),  # review finding: bracket fallback passed this
+        ("python", "x = 1\n", "x =\n"),
+        ("javascript", "function f(x) {\n  return x;\n}\n", "function f(x) {\n  return +;\n}\n"),
+        ("go", "func f(x int) int {\n\treturn x\n}\n", "func f(x int) int {\n\treturn +\n}\n"),
+    ],
+)
+def test_syntax_metric_is_strict(language, original, broken) -> None:
+    from sentinel.eval.patch import syntax_errors
+
+    assert syntax_errors(language, original) == 0 and syntax_errors(language, broken) > 0
+    last = original.splitlines()
+    new = broken.splitlines()
+    changed = next(i for i, (a, b) in enumerate(zip(last, new)) if a != b)
+    case = {
+        "case_id": "c",
+        "language": language,
+        "file": "a.x",
+        "code": original,
+        "finding": {"cwe": "CWE-20", "start_line": changed + 1, "end_line": changed + 1},
+        "reference_patch": f"--- a/a.x\n+++ b/a.x\n@@ -{changed + 1},1 +{changed + 1},1 @@\n-{last[changed]}\n+{last[changed]}\n".replace(f"+{last[changed]}\n", f"+{last[changed]} \n"),
+        "reference_fixed_code": original,
+    }
+    reply = f"--- a/a.x\n+++ b/a.x\n@@ -{changed + 1},1 +{changed + 1},1 @@\n-{last[changed]}\n+{new[changed]}\n"
+    score = score_patch(case, reply)
+    assert score.applies and not score.syntax_ok
