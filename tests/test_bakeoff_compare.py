@@ -11,6 +11,23 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
 
 
+@pytest.fixture(autouse=True)
+def trusted_coding_executor(monkeypatch):
+    """These tests check run comparison, not isolation: the baseline backend's coding answers are
+    repository-authored, so a trusted stand-in replaces the container where Docker is unavailable.
+    Isolation itself is tested in tests/test_coding_regression.py."""
+    from sentinel.eval import coding_regression
+    from sentinel.eval.sandbox import LocalProcessExecutor, load_policy
+
+    class StandIn(LocalProcessExecutor):
+        isolated = True
+
+        def describe(self):
+            return {"executor": "container", "isolated": True, "policy": load_policy().__dict__, "test_stand_in": True}
+
+    monkeypatch.setattr(coding_regression, "ContainerExecutor", StandIn)
+
+
 def write_config(tmp_path: Path, mutate) -> Path:
     document = yaml.safe_load(CONFIG.read_text())
     mutate(document)
