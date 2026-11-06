@@ -16,17 +16,18 @@ from typing import Any
 from sentinel.eval.parse import parse_model_output
 from sentinel.eval.prompt import PROMPT_VERSION, build_messages
 
-# The output contract requires a confidence for findings. Garden labels carry no calibrated
-# confidence, so the training format uses one fixed, documented value. It is a formatting policy,
-# not a measurement, and can be changed before the first training run without rebuilding data.
-FINDING_CONFIDENCE = 0.9
+# Detection replies carry no confidence. Garden labels are upstream-fix facts, not probabilities, so
+# any number written here would be invented supervision (the earlier constant 0.9 taught the model
+# that every finding deserves 90 % confidence). Prompt `quickeval-review-v2` does not ask for one;
+# calibrated confidence is measured on independent validation data (docs/CALIBRATION.md).
+RENDER_VERSION = "detection-v2"
 
 
 def _case_view(record: dict[str, Any]) -> dict[str, Any]:
     return {"case_id": record["record_id"], **record["input"]}
 
 
-def assistant_reply(record: dict[str, Any], finding_confidence: float = FINDING_CONFIDENCE) -> str:
+def assistant_reply(record: dict[str, Any]) -> str:
     target = record["target"]
     if target["decision"] == "finding":
         payload: dict[str, Any] = {
@@ -34,7 +35,6 @@ def assistant_reply(record: dict[str, Any], finding_confidence: float = FINDING_
             "cwe": target["cwe"],
             "start_line": target["start_line"],
             "end_line": target["end_line"],
-            "confidence": finding_confidence,
             "evidence": target["evidence"],
         }
     else:
@@ -42,10 +42,16 @@ def assistant_reply(record: dict[str, Any], finding_confidence: float = FINDING_
     return json.dumps(payload, ensure_ascii=False)
 
 
-def to_chat_example(record: dict[str, Any], finding_confidence: float = FINDING_CONFIDENCE) -> dict[str, Any]:
-    messages = build_messages(_case_view(record))
-    messages.append({"role": "assistant", "content": assistant_reply(record, finding_confidence)})
-    return {"record_id": record["record_id"], "prompt_version": PROMPT_VERSION, "messages": messages}
+def to_chat_example(record: dict[str, Any]) -> dict[str, Any]:
+    messages = build_messages(_case_view(record), PROMPT_VERSION)
+    messages.append({"role": "assistant", "content": assistant_reply(record)})
+    return {
+        "record_id": record["record_id"],
+        "task": "detection",
+        "prompt_version": PROMPT_VERSION,
+        "render_version": RENDER_VERSION,
+        "messages": messages,
+    }
 
 
 def reply_matches_contract(record: dict[str, Any]) -> bool:
@@ -57,7 +63,7 @@ def reply_matches_contract(record: dict[str, Any]) -> bool:
         return False
     if target["decision"] == "finding":
         finding = prediction["finding"]
-        return (finding["cwe"], finding["start_line"], finding["end_line"]) == (
+        return finding["confidence"] is None and (finding["cwe"], finding["start_line"], finding["end_line"]) == (
             target["cwe"],
             target["start_line"],
             target["end_line"],

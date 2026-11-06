@@ -22,10 +22,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+from sentinel.eval.patch import PATCH_PROMPT_VERSION
+from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.train.config import TrainConfig, matching_modules
 from sentinel.train.data import EncodedExample, TrainingData, batches, encode_all, pad_batch
 
-RUN_VERSION = "1"
+RUN_VERSION = "2"  # 2: checksummed checkpoints loaded with weights_only, window-mean loss, task mix recorded
 EXIT_FAILED = 1
 EXIT_GOVERNANCE = 2
 EXIT_OOM = 3
@@ -185,6 +187,29 @@ def checkpoint_provenance(config: TrainConfig, data: TrainingData) -> dict[str, 
     }
 
 
+CHECKSUMS = "checksums.json"
+
+
+def _file_digests(directory: Path) -> dict[str, str]:
+    return {
+        str(path.relative_to(directory)): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(directory.rglob("*"))
+        if path.is_file() and path.name != CHECKSUMS
+    }
+
+
+def verify_checkpoint_files(path: Path) -> None:
+    """Every file of a checkpoint must be exactly what the trainer wrote (no extra, missing or changed file)."""
+    file = path / CHECKSUMS
+    if not file.is_file():
+        raise RuntimeError(f"{path} has no {CHECKSUMS}; refusing to resume from an unverifiable checkpoint")
+    recorded = json.loads(file.read_text(encoding="utf-8"))
+    found = _file_digests(path)
+    if found != recorded:
+        changed = sorted(set(found) ^ set(recorded) | {k for k in set(found) & set(recorded) if found[k] != recorded[k]})
+        raise RuntimeError(f"checkpoint {path} was modified after it was written ({', '.join(changed[:5])}); refusing to resume")
+
+
 def check_resume_provenance(path: Path, expected: dict[str, Any]) -> None:
     file = path / "provenance.json"
     if not file.is_file():
@@ -218,6 +243,7 @@ def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState,
     )
     (tmp / "provenance.json").write_text(json.dumps(provenance, indent=2, sort_keys=True), encoding="utf-8")
     (tmp / "state.json").write_text(json.dumps(vars(state), indent=2), encoding="utf-8")
+    (tmp / CHECKSUMS).write_text(json.dumps(_file_digests(tmp), indent=2, sort_keys=True), encoding="utf-8")
     if path.exists():
         shutil.rmtree(path)
     tmp.rename(path)  # a checkpoint directory only appears once it is complete
@@ -227,13 +253,17 @@ def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState,
 
 
 def load_checkpoint(model: Any, optimizer: Any, scheduler: Any, path: Path) -> RunState:
+    """Resume state. The checkpoint is verified against its checksums, adapter weights come from
+    safetensors and the optimizer/scheduler/RNG state is unpickled with `weights_only=True` (tensors
+    and plain containers only), so a planted pickle cannot execute code on load."""
     import torch
     from peft import set_peft_model_state_dict
     from safetensors.torch import load_file
 
+    verify_checkpoint_files(path)
     weights = load_file(str(path / "adapter" / "adapter_model.safetensors"))
     set_peft_model_state_dict(model, weights)
-    blob = torch.load(path / "trainer_state.pt", weights_only=False)
+    blob = torch.load(path / "trainer_state.pt", weights_only=True)
     optimizer.load_state_dict(blob["optimizer"])
     scheduler.load_state_dict(blob["scheduler"])
     random.setstate(blob["python_rng"])
@@ -314,6 +344,8 @@ def train(
         "config": {"path": str(config.path), "sha256": config.sha256, **config.as_dict()},
         "data": {
             "sha256": data.sha256,
+            "tasks": list(data.tasks),
+            "examples_by_task": data.examples_by_task,
             "train_examples": len(data.train),
             "validation_examples": len(data.validation),
             "repositories": data.repositories,
@@ -384,6 +416,7 @@ def train(
         model.train()
         device = model.device
         accumulated = 0
+        window_loss = 0.0  # mean loss of the current optimizer step (sum of loss / window)
         window_tokens, window_started = 0, time.monotonic()
         optimizer.zero_grad(set_to_none=True)
         while state.step < total_steps and state.epoch < config.training.num_epochs:
@@ -395,6 +428,7 @@ def train(
                 if not math.isfinite(float(loss.detach())):
                     raise RuntimeError(f"non-finite loss at step {state.step + 1} (micro-batch {index} of epoch {state.epoch})")
                 loss.backward()
+                window_loss += float(loss.detach())
                 accumulated += 1
                 window_tokens += int(inputs["attention_mask"].sum())
                 last_in_epoch = index == len(epoch_batches) - 1
@@ -405,6 +439,7 @@ def train(
                 scheduler.step()
                 optimizer.zero_grad(set_to_none=True)
                 accumulated = 0
+                step_loss, window_loss = window_loss, 0.0
                 state.step += 1
                 # only advanced at an optimizer step, so an interrupt checkpoint never skips unapplied gradients
                 state.batch_in_epoch = index + 1
@@ -413,7 +448,7 @@ def train(
                     entry = {
                         "step": state.step,
                         "epoch": state.epoch,
-                        "loss": round(float(loss.detach()) * window, 5),
+                        "loss": round(step_loss, 5),  # mean over the step's micro-batches, not the last one
                         "learning_rate": scheduler.get_last_lr()[0],
                         "grad_norm": round(grad_norm, 5),
                         "tokens_per_second": round(window_tokens / elapsed, 2) if elapsed > 0 else None,
@@ -436,7 +471,20 @@ def train(
         save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance)
         adapter_keys = save_adapter(model, output_dir / "adapter")
         (output_dir / "adapter" / "training_run.json").write_text(
-            json.dumps({"run_name": config.run_name, "base_model": config.model_id, "base_revision": config.revision, "data_sha256": data.sha256}, indent=2) + "\n",
+            json.dumps(
+                {
+                    "run_name": config.run_name,
+                    "base_model": config.model_id,
+                    "base_revision": config.revision,
+                    "data_sha256": data.sha256,
+                    "tasks": list(data.tasks),
+                    # evaluate this adapter with the prompt it was trained on (checked by the eval runner)
+                    "prompt_version": PROMPT_VERSION,
+                    "patch_prompt_version": PATCH_PROMPT_VERSION if "patch" in data.tasks else None,
+                },
+                indent=2,
+            )
+            + "\n",
             encoding="utf-8",
         )
         run.update(status="completed", adapter={"path": str(output_dir / "adapter"), "tensors": len(adapter_keys)})

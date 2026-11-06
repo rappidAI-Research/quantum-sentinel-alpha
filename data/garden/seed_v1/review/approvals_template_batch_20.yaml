@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@viking04/merge': ['MIT']}
-  - repository_key: viking04/merge
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENCE
-    license_file_sha256: d5b1ab52f889963ea9efb48dc33f955a526ad63b84829a4580316d6f785f5da0
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/viking04/merge
-      - https://github.com/viking04/merge/blob/baba40332080b38b33840d2614df6d4142dedaf6/LICENCE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:@vitejs/plugin-rsc': ['MIT']}
-  - repository_key: vitejs/vite-plugin-react
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 29b68325fe026047d13e187b44c33b2acacf7dc647dec4583702e59f235e13b5
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/vitejs/vite-plugin-react
-      - https://github.com/vitejs/vite-plugin-react/blob/582fba0b9a52b13fcff6beaaa3bfbd532bc5359d/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:vyper': ['Apache-2.0']}
   - repository_key: vyperlang/vyper
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/fastify/middie
       - https://github.com/fastify/middie/blob/d44cd56eb724490babf7b452fdbbdd37ea2effba/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:glance': ['MIT']}
+  - repository_key: jarofghosts/glance
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: c47883885f5564087f4153a1245192a745d3d84203cf93a9288712d419808c60
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/jarofghosts/glance
+      - https://github.com/jarofghosts/glance/blob/8cfd88e44ebd3f07e3a2eaf376a3e758b6c4ca19/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:mixin-deep': ['MIT']}
+  - repository_key: jonschlinkert/mixin-deep
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 9580cc528a1c38d1560a9d36e34404fe1ea9d8e6f44c596dac2a3104ef63cdab
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/jonschlinkert/mixin-deep
+      - https://github.com/jonschlinkert/mixin-deep/blob/578b0bc5e74e14de9ef4975f504dc698796bdf9c/LICENSE
     notes: ""

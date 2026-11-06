@@ -68,7 +68,7 @@ Prepare an evaluation host once:
 docker pull python:3.12-slim@sha256:b18b261e1b4974b4f321451ad5251ded85abb22c2b8b262da527dda1d031ab30
 ```
 
-Then run the bake-off or a direct evaluation with `--coding-suite coding-v1` as before. Podman works
+Then run the bake-off (it includes `coding-v1` and the review prompt `quickeval-review-v2`) or a direct evaluation with `--coding-suite coding-v1`. Before the sandbox preflight, `run_model` validates the requested model, revision and any adapter (base model, revision and training prompt), so a wrong adapter is refused with its own error whether or not the sandbox exists. Podman works
 with `runtime: podman` in the policy.
 
 To evaluate security only (no container needed, nothing executed):

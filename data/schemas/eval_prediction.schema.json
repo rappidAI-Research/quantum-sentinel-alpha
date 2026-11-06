@@ -21,7 +21,7 @@
         "cwe": {"type": "string", "pattern": "^(CWE-[1-9][0-9]*|unknown)$"},
         "start_line": {"type": "integer", "minimum": 1},
         "end_line": {"type": "integer", "minimum": 1},
-        "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+        "confidence": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0, "description": "Self-reported and uncalibrated; null when the output did not report one (prompt quickeval-review-v2). Calibration is measured separately."}
       }
     },
     "patch_verification": {

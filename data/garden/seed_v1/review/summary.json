@@ -1,25 +1,25 @@
 {
   "batches": 25,
   "by_tier": {
-    "A": 513,
-    "B": 111,
+    "A": 511,
+    "B": 110,
     "C": 15,
-    "D": 127
+    "D": 125
   },
   "license_changed_between_revisions": 23,
   "license_lookup_failed": 0,
-  "manifest_sha256": "3420131f0f32a32298fd9c4a3825b044a0501587fec6b4472c3426c40da08572",
+  "manifest_sha256": "1d26d71ae82e93eac7be61cd8d3cb8ca23e2fad4921d3a46c62b150f35408a96",
   "records_by_tier": {
-    "A": 1260,
-    "B": 330,
+    "A": 1256,
+    "B": 328,
     "C": 33,
-    "D": 305
+    "D": 298
   },
   "registry_agreement": {
-    "agrees": 559,
-    "disagrees": 140,
+    "agrees": 557,
+    "disagrees": 137,
     "unavailable": 28,
     "unrecognised": 39
   },
-  "repositories": 766
+  "repositories": 761
 }

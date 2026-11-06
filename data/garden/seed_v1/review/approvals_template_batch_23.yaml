@@ -2,40 +2,6 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
-  # tier B: license_file_changed_between_revisions
-  # records: 3 {'train/post_fix': 1, 'train/vulnerable': 2}
-  # registry (deps.dev): {'npm:@hono/node-server': ['MIT']}
-  - repository_key: honojs/node-server
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 6895190430d809c4c57a7582ecc2f99acbc2ea39a5dfad20262a41d5b3e91733
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/honojs/node-server
-      - https://github.com/honojs/node-server/blob/cd076e117cfe4cb8d31f9eb11d2e8f38a6cb8faf/LICENSE
-    notes: ""
-
-  # tier B: other_permissive_license:multiple:Apache-2.0|MIT
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/ipld/go-codec-dagpb': ['Apache-2.0', 'MIT']}
-  - repository_key: ipld/go-codec-dagpb
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected multiple:Apache-2.0|MIT>"
-    license_file: LICENSE-APACHE
-    license_file_sha256: b41dcb3b39cb28279a67949b10d522356ca5c58260eb1983f7aad8b61e928b42
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/ipld/go-codec-dagpb
-      - https://github.com/ipld/go-codec-dagpb/blob/a17ace35cc760a2698645c09868f9050fa219f57/LICENSE-APACHE
-    notes: ""
-
   # tier B: registry_disagrees
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:istio.io/istio': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'ISC', 'MIT', 'MPL-2.0']}
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/beego/beego
       - https://github.com/beego/beego/blob/ea5ae58d40589d249cf577a053e490509de2bf57/LICENSE
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:knwl.js': []}
+  - repository_key: benhmoore/knwl
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 4f7f4e978cbf597ae73dd415d58c11e74d324d5758ca79486148f8f6fb262920
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/benhmoore/Knwl
+      - https://github.com/benhmoore/Knwl/blob/88aa966b1415a167c7c91b70053b72c7762c1cc0/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:sha.js': ['BSD-3-Clause AND MIT']}
+  - repository_key: browserify/sha.js
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 58dcf38be1438f739412b87eb70d64bf00e9976d529bb119f700d8b3167924f0
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/browserify/sha.js
+      - https://github.com/browserify/sha.js/blob/f2a258e9f2d0fcd113bfbaa49706e1ac0d979ba5/LICENSE
     notes: ""

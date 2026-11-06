@@ -31,13 +31,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"invalid training config: {exc}", file=sys.stderr)
         return 1
     try:
-        data = load_training_data(PROJECT_ROOT / config.data.garden_config)
+        data = load_training_data(PROJECT_ROOT / config.data.garden_config, tasks=config.data.tasks)
     except GovernanceError as exc:
         print(f"refused (governance): {exc}", file=sys.stderr)
         return 2
     print(
         f"foundation {config.model_id}@{config.revision}; train {len(data.train)} / validation {len(data.validation)} "
-        f"approved examples from {data.repositories} repositories; data sha256 {data.sha256[:12]}"
+        f"approved examples from {data.repositories} repositories (tasks {', '.join(data.tasks)}: {data.examples_by_task}); "
+        f"data sha256 {data.sha256[:12]}"
     )
     if args.dry_run:
         print("dry run: configuration, governance and data checks passed; no model loaded")

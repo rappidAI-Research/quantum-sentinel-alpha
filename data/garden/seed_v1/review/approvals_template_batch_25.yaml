@@ -2,57 +2,6 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
-  # tier B: registry_unrecognised
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:bleach': ['non-standard']}
-  - repository_key: mozilla/bleach
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: bec2238c149a632b8fb26813f687aceabab80327f3270769c2c16157883d3130
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mozilla/bleach
-      - https://github.com/mozilla/bleach/blob/f77e0f6392177a06e46a49abd61a4d9f035e57fd/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/nektos/act': ['BSD-3-Clause', 'MIT']}
-  - repository_key: nektos/act
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: da3ece2d2daf5c812c8606d2922094f51818258d4ce0e041b4ee8409ba3b381f
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/nektos/act
-      - https://github.com/nektos/act/blob/0c739c8e39c41aa5a07665f732da9cab6df0097a/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/neuvector/neuvector': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}
-  - repository_key: neuvector/neuvector
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/neuvector/neuvector
-      - https://github.com/neuvector/neuvector/blob/955904b5762f296d209bf395a5fcc7a40a53c424/LICENSE
-    notes: ""
-
   # tier B: registry_disagrees
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:go.opentelemetry.io/otel': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/bridge/opentracing': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/exporters/otlp/otlptrace': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/exporters/zipkin': ['Apache-2.0', 'BSD-3-Clause'], 'Go:go.opentelemetry.io/otel/sdk': ['Apache-2.0', 'BSD-3-Clause']}

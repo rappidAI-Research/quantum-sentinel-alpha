@@ -69,7 +69,7 @@ python -m sentinel.garden review     # network: deps.dev; rights review queue an
 python -m sentinel.garden check      # offline consistency check of the committed manifest
 ```
 
-Current seed (`sentinel-garden-seed-v1`, frozen split policy `sentinel-garden-split-v1`): 2,773 records, 2,322 accepted (1,053 findings, 960 post-fix hard negatives, 309 abstentions; Go, Python, JavaScript, TypeScript), **0 training-approved**. Quality audit: `data/garden/seed_v1/AUDIT_REPORT.md`. Rights review queue (766 repositories, nothing approved): `data/garden/seed_v1/REVIEW_QUEUE.md`, workflow in `docs/RIGHTS_REVIEW.md`.
+Current seed (`sentinel-garden-seed-v1`, frozen split policy `sentinel-garden-split-v1`): 2,773 records, 2,309 accepted (1,047 findings, 954 post-fix hard negatives, 308 abstentions; Go, Python, JavaScript, TypeScript; 941 verified pairs also serve as patch ground truth), **0 training-approved**. Every exported training example is bound to the committed manifest by hash (`docs/TRAINING.md`). Quality audit: `data/garden/seed_v1/AUDIT_REPORT.md`; independent human review packages prepared, not yet reviewed. Rights review queue (761 repositories, nothing approved): `data/garden/seed_v1/REVIEW_QUEUE.md`, workflow in `docs/RIGHTS_REVIEW.md`. Detection confidence is not supervised (`docs/CALIBRATION.md`); patch generation is a separate task (`docs/PATCH_SUPERVISION.md`).
 
 Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v1/` holds only metadata, statistics and the review queue. See `docs/SENTINEL_GARDEN.md` and `docs/DATA_GOVERNANCE.md`.
 

@@ -7,7 +7,7 @@ Status: **optional, not run.** Qwen3.5-9B is the selected training foundation (`
 `configs/model/bakeoff_qwen35.yaml` fixes everything except model identity:
 
 - cases: `eval/sentinelbench/quickeval_v1.jsonl` (86 clean-room cases, hashed into every artifact)
-- prompt: `quickeval-review-v1` (`sentinel/eval/prompt.py`, hashed into every artifact)
+- prompt: `quickeval-review-v2` (`sentinel/eval/prompt.py`, hashed into every artifact; no self-reported confidence, docs/CALIBRATION.md; `quickeval-review-v1` stays available with `--prompt-version` to reproduce older artifacts)
 - output contract, strict parser and scorer (versioned in every artifact)
 - greedy decoding, `max_new_tokens: 384`, `enable_thinking: false`, seed 0
 - runtime: CUDA, bfloat16, no quantization. Both models fit unquantized on one 48 GB L40S.

@@ -1,10 +1,10 @@
 # Quantum Sentinel Alpha Status
 
-Last updated: 2026-11-04
+Last updated: 2026-11-05
 
 ## Current phase
 
-Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), and the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (staging only, not training-approved). No model has been run or trained.
+Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), and the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR). No model has been run or trained; no record is training-approved.
 
 ## Completed
 
@@ -57,8 +57,8 @@ Produced by the pipeline from real advisories and upstream fix commits (OSV expo
 | Candidates (single fix commit, localizable CWE, max. 4 per repository) | 4,830 (Go 1,335, PyPI 1,524, npm 1,971) |
 | Fix commits turned into records (one-function rule) | 1,206 |
 | Records built | 2,773 |
-| Records accepted | **2,322** |
-| Records rejected (a record can fail several checks): audit exclusions - later fix of the same function 126, reported incomplete fix 47, unverifiable later fix 10, broad localization span 89, manual 10, invalid abstention 1, siblings of excluded records 104; pipeline checks - siblings 56, trivial span 29, label conflicts 36, diff inconsistency 14, duplicates 14, syntax 4 | 451 |
+| Records accepted | **2,309** |
+| Records rejected (a record can fail several checks): audit exclusions - later fix of the same function 126, reported incomplete fix 47, unverifiable later fix 10, broad localization span 89, manual 10, invalid abstention 1, siblings of excluded records 104, **package shared with validation/holdout 13** (November 2026); pipeline checks - siblings 56, trivial span 29, label conflicts 36, diff inconsistency 14, duplicates 14, syntax 4 | 464 |
 | **Training-approved records** | **0** |
 
 Accepted records by language and label:
@@ -66,14 +66,14 @@ Accepted records by language and label:
 | Language | finding | no_finding (post-fix hard negative) | abstain | Total |
 | --- | ---: | ---: | ---: | ---: |
 | Python | 302 | 271 | 89 | 662 |
-| JavaScript | 302 | 273 | 63 | 638 |
+| JavaScript | 300 | 271 | 63 | 634 |
 | TypeScript | 161 | 150 | 47 | 358 |
-| Go | 288 | 266 | 110 | 664 |
-| **Total** | **1,053** | **960** | **309** | **2,322** |
+| Go | 284 | 262 | 109 | 655 |
+| **Total** | **1,047** | **954** | **308** | **2,309** |
 
-- 947 complete vulnerable/fixed pairs; 911 repositories; 161 distinct primary CWEs. Most frequent: CWE-79 (98), CWE-22 (95), CWE-1321 (78), CWE-400 (49), CWE-20 (43), CWE-200 (42), CWE-1333 (39), CWE-601 (33), CWE-78 (32). 165 findings carry a coarse CWE (flagged).
+- 941 complete vulnerable/fixed pairs (all 941 are patch ground truth, docs/PATCH_SUPERVISION.md); 906 repositories; 161 distinct primary CWEs. Most frequent: CWE-79 (98), CWE-22 (95), CWE-1321 (78), CWE-400 (49), CWE-20 (43), CWE-200 (42), CWE-1333 (39), CWE-601 (33), CWE-78 (32). 165 findings carry a coarse CWE (flagged).
 - Localization (diff-derived): 661 changed-line spans, 296 insertion points (missing checks), 96 mixed.
-- Splits (repository-level, frozen policy): train 1,737 records / 685 repos, validation 191 / 81, holdout_reserved 235 / 89, temporal_quarantine 159 / 65. No repository is in two splits; no train/validation record is after the cutoff.
+- Splits (repository-level, frozen policy): train 1,724 records / 680 repos, validation 191 / 81, holdout_reserved 235 / 89, temporal_quarantine 159 / 65. No repository is in two of train, validation and holdout_reserved, and (since November 2026) no published package spans train and validation/holdout; no train/validation record is after the cutoff. `temporal_quarantine` holds post-cutoff fixes of training repositories by design: 20 of its 159 records share a repository and 6 a package with train/validation, so results on it are not repository-disjoint.
 - Evaluation contamination: 0 hits against QuickEval v1, the public seed, `coding-v1` (and `private/`, which is empty here).
 - Determinism: `curate` is byte-identical across runs; `verify` rebuilds every record from the frozen candidates with 0 hash mismatches. Go/JS/TS structure comes from tree-sitter with pinned grammars (recorded in `stats.json`, enforced by `check`).
 
@@ -92,11 +92,11 @@ Accepted records by language and label:
   - Manual exclusions (10 records): two groups with imprecise spans from the first review (golang-jwt/jwt, auth0/node-jsonwebtoken), two from the second (pyod, orval), and the gotenberg post-fix record, whose advisory reports a bypass of exactly that fix.
 - The sample is small: the upper bounds, not the point estimates, are what to plan with.
 
-**Rights review** (`python -m sentinel.garden review`, workflow `docs/RIGHTS_REVIEW.md`, queue `data/garden/seed_v1/REVIEW_QUEUE.md`): 766 repositories with train/validation records, each with the license file URL at the used revision, its sha256 and the deps.dev registry license. Tier A (permissive, consistent evidence) 513 repos / 1,260 records; tier B (permissive, open question) 111 / 330; tier C (weak copyleft) 15 / 33; tier D (strong copyleft, unknown, none) 127 / 305. deps.dev agrees for 559, disagrees for 140, unavailable 28, unrecognised 39; the license file changed between the used revisions in 23 repositories; a failed license lookup is recorded as missing evidence and never yields tier A. Approval templates (25 batches, tiers A and B) are not loadable until a reviewer fills them. Source dossiers for `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (terms, hashes, open questions) are in `docs/RIGHTS_REVIEW.md`. **Nothing is approved.** Non-permissive repositories need a written `non_permissive_justification` in addition to approval.
+**Rights review** (`python -m sentinel.garden review`, workflow `docs/RIGHTS_REVIEW.md`, queue `data/garden/seed_v1/REVIEW_QUEUE.md`): 761 repositories with train/validation records, each with the license file URL at the used revision, its sha256 and the deps.dev registry license. Tier A (permissive, consistent evidence) 511 repos / 1,256 records; tier B (permissive, open question) 110 / 328; tier C (weak copyleft) 15 / 33; tier D (strong copyleft, unknown, none) 125 / 298. deps.dev agrees for 557, disagrees for 137, unavailable 28, unrecognised 39; the license file changed between the used revisions in 23 repositories; a failed license lookup is recorded as missing evidence and never yields tier A. Approval templates (25 batches, tiers A and B) are not loadable until a reviewer fills them. Source dossiers for `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (terms, hashes, open questions) are in `docs/RIGHTS_REVIEW.md`. **Nothing is approved.** Non-permissive repositories need a written `non_permissive_justification` in addition to approval.
 
 **Reconstruction and external resources:** `python -m sentinel.garden reconstruct` rebuilds the Git-ignored records from upstream for an approved subset and checks every record hash (no substitution when an upstream is gone). `data/garden/seed_v1/EXTERNAL_RESOURCES.json` lists every upstream repository and commit the dataset depends on; exports carry `SHA256SUMS`. No upstream code is committed or uploaded anywhere.
 
-**Approval status:** all 2,322 accepted records are a **non-approved staging dataset**. 1,928 train/validation records are `pending_review`; 845 records (holdout, quarantine, rejected) are `excluded`. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed, accepted records): 1,924 permissive, 188 strong copyleft (mostly AGPL-3.0), 35 weak copyleft, 68 unknown, 107 without a root license file.
+**Approval status:** all 2,309 accepted records are a **non-approved staging dataset**. 1,915 train/validation records are `pending_review`; 858 records (holdout, quarantine, rejected) are `excluded`. Blockers on every accepted record: `repository_not_reviewed`, `source_not_approved:ghsa-osv-fix-commits`, `source_not_approved:osv`, `source_not_approved:github-advisory-db`. `train.jsonl` and `validation.jsonl` are empty. Detected licenses (unreviewed, accepted records): 1,918 permissive, 186 strong copyleft (mostly AGPL-3.0), 35 weak copyleft, 65 unknown, 105 without a root license file.
 
 Upstream code is **not committed** (redistribution unreviewed, repository license undeclared). The Git-ignored `artifacts/garden/seed_v1/` holds the full records; `data/garden/seed_v1/` holds candidates, manifest (metadata only), statistics, reports, audit results and the review queue.
 
@@ -107,6 +107,18 @@ Upstream code is **not committed** (redistribution unreviewed, repository licens
 ### Coding-regression sandbox (runner version 3)
 
 Model-generated code from `coding-v1` runs only in a disposable container (`sentinel/eval/sandbox.py`, policy `configs/eval/coding_sandbox.yaml`, docs `docs/CODING_SANDBOX.md`): digest-pinned `python:3.12-slim` image, `--network none`, read-only root file system and task directory, user 65534, no capabilities, no host environment or credentials, CPU/memory/process/file-size/time limits. A probe container must observe this isolation before the model is loaded, otherwise the run stops (exit 3); `--skip-coding-regression` runs security evaluation only and records `not_run`. The previous child process (same user, file system and network) is kept only for trusted reference solutions. Containers share the host kernel; a disposable evaluation host is still recommended.
+
+### Milestone 5 - Training-readiness hardening (November 2026, not run)
+
+Integrated on top of the coding sandbox (PR #7, merged as `13dae45`): one evaluation path checks the adapter's base model, revision and training prompt, then the sandbox preflight, then loads the model; the review prompt is `quickeval-review-v2`, and runs are compared only with identical prompt, parser, scorer and coding contract (which includes the sandbox policy).
+
+| Area | Problem found | Change | State |
+| --- | --- | --- | --- |
+| Target integrity | The loader compared label fields and the code hash only. Evidence text, the upstream patch, the prompt context and file name could be edited in `train.jsonl` and re-rendered into `train.chat.jsonl` without detection, and records could be dropped from the export. | Manifest `supervision` block: canonical sha256 of the full input, the full target and every rendered example (detection and patch). The loader recomputes them, requires exactly the manifest's approved records per split and checks `SHA256SUMS`; nothing is repaired. | Implemented and tested (`tests/test_train_integrity.py`) |
+| Confidence | Every training finding carried `"confidence": 0.9`, a constant presented as a probability. | Prompt `quickeval-review-v2` and the training replies carry no confidence; parser v3 accepts findings with or without it (v1 outputs parse unchanged; `quickeval-review-v1` is byte-identical and pinned); schemas allow `null`; calibration metrics and a measurement protocol (decision-prefix likelihoods, fit on validation, report on held-out data) in `sentinel/eval/calibration.py`, `docs/CALIBRATION.md`. | Implemented and tested; no calibration measured |
+| Patch supervision | Stored upstream patches were never supervised. | Separate task `sentinel-patch-v1`: ground truth only from accepted vulnerable records whose accepted fixed sibling is reproduced exactly by the strictly applied patch; deterministic `train.patch.chat.jsonl` (opt-in `data.tasks: [detection, patch]`) and `holdout_reserved.patch_cases.jsonl`; strict diff parser; offline scorer (well formed, applies, syntax, exact/normalized match, span, size) and `python -m sentinel.eval.patch`. Security is never claimed. | Implemented and tested; functional/security tests not possible without per-project environments (`docs/PATCH_SUPERVISION.md`) |
+| Data quality | The AI-reviewed sample is not independent; the audit missed one leakage path. | Blind, reproducible evidence packages for 64 items of the exportable population (`review-packages`), committed index with package hashes, template and validator for `audit/human_review.yaml`, human rates reported separately. New leakage check: a package published from two repository keys (moved, renamed, forked repositories such as `visionmedia/send` → `pillarjs/send`, `MrRio/jsPDF` → `parallax/jsPDF`) excluded 13 train records; quarantine overlap reported. Audit + curate remain a byte-identical fixed point. | Implemented and tested; **human review not performed** |
+| QLoRA reliability | Resume unpickled `trainer_state.pt` with `weights_only=False` and no integrity check; the logged step loss was the last micro-batch times the window; adapters did not record their prompt. | Checksummed checkpoints, `weights_only=True`, step-mean loss, prompt and task mix in `training_run.json` with an evaluation-time prompt check. Verified with the real Qwen3.5-9B tokenizer and weight index (no weights): masking, prompt identity and weight-name mapping are correct. | Fixed and tested (CPU smoke tests; GPU not run) |
 
 ## QuickEval state
 
@@ -123,7 +135,7 @@ Model-generated code from `coding-v1` runs only in a disposable container (`sent
 
 ## Benchmark state
 
-No model has been evaluated. The only QuickEval v1 results are from the regex engineering baseline and are not model performance.
+No model has been evaluated. The only QuickEval v1 results are from the regex engineering baseline and are not model performance. No patch-generation result and no calibration result exists.
 
 ## Model state
 
@@ -135,15 +147,16 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 
 ## Blockers and open decisions
 
-1. **Training approvals (blocks any training export).** An authorized reviewer must (a) approve the registry sources `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (dossiers in `docs/RIGHTS_REVIEW.md`; GHSA metadata is CC-BY-4.0 and needs attribution), and (b) review repositories in `data/garden/seed_v1/REVIEW_QUEUE.md` (tier A first) and record decisions in `data/garden/approvals.yaml`. Policy decision needed on copyleft (AGPL/GPL), unlicensed repositories and the 140 deps.dev disagreements.
+1. **Training approvals (blocks any training export).** An authorized reviewer must (a) approve the registry sources `ghsa-osv-fix-commits`, `osv` and `github-advisory-db` (dossiers in `docs/RIGHTS_REVIEW.md`; GHSA metadata is CC-BY-4.0 and needs attribution), and (b) review repositories in `data/garden/seed_v1/REVIEW_QUEUE.md` (tier A first) and record decisions in `data/garden/approvals.yaml`. Policy decision needed on copyleft (AGPL/GPL), unlicensed repositories and the 137 deps.dev disagreements.
 2. Approval of paid GPU time for the foundation baseline run (QuickEval v1 + `coding-v1` on the 9B checkpoint).
-3. A second, independent manual audit sample by a human reviewer (the current one is AI-reviewed and small; localization error upper bound 17 % after the automated exclusions).
+3. An independent human reviewer for the 64 prepared evidence packages (`audit/human_review_sample.jsonl`; the existing sample is AI-reviewed and small; localization error upper bound 17 % after the automated exclusions). Their exclusions would change the dataset before training.
 4. Final LoRA rank/LR/sequence length after one short L40S calibration run of the existing pipeline.
 5. Release thresholds after the foundation baseline; repository license (affects redistribution of project-authored eval cases and any future committed data).
 6. Masterplan v1.2 itself is not in this repository; this milestone follows the task brief that summarizes it.
 
 ## Next action (toward the first QLoRA run)
 
-1. Rights review: approve the three registry sources and review the tier A repositories in `REVIEW_QUEUE.md` (license file links and sha256 listed; fill `review/approvals_template_batch_*.yaml` and merge into `data/garden/approvals.yaml`). Tier A alone covers 513 repositories and up to 1,260 train/validation records. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl` and `train.chat.jsonl` deterministically - no rebuild needed.
+1. Rights review: approve the three registry sources and review the tier A repositories in `REVIEW_QUEUE.md` (license file links and sha256 listed; fill `review/approvals_template_batch_*.yaml` and merge into `data/garden/approvals.yaml`). Tier A alone covers 511 repositories and up to 1,256 train/validation records. Then `python -m sentinel.garden curate` populates `train.jsonl`, `validation.jsonl`, `train.chat.jsonl` and `train.patch.chat.jsonl` deterministically - no rebuild needed - and the manifest binds every exported example.
+   In parallel: an independent reviewer works through the 64 packages from `python -m sentinel.garden review-packages` and records decisions in `audit/human_review.yaml`; rerun `audit` and `curate` afterwards.
 2. With approved GPU time, run the foundation baseline: `python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`.
 3. `python -m sentinel.train --dry-run` (passes once approvals exist), a short L40S calibration (`max_steps: 20`), then the first QLoRA run, evaluated with `run_model --adapter` on QuickEval v1, `coding-v1` and the Garden validation split against the baseline (`docs/TRAINING.md`).

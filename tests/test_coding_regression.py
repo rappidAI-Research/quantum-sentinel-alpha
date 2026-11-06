@@ -221,7 +221,20 @@ def test_run_model_stops_before_loading_the_model_without_isolation(monkeypatch,
         raise IsolationUnavailable("docker daemon is not reachable")
 
     monkeypatch.setattr(CodingV1, "preflight", unavailable)
-    monkeypatch.setattr(run_model, "HFBackend", lambda *a, **kw: pytest.fail("model must not be loaded"))
+    class NeverLoaded:  # constructing the backend only validates identity; loading must not happen
+        name = "hf"
+        adapter_info = None
+
+        def __init__(self, *a, **kw):
+            pass
+
+        def load(self):
+            pytest.fail("model must not be loaded")
+
+        def generate(self, messages):
+            pytest.fail("nothing may be generated")
+
+    monkeypatch.setattr(run_model, "HFBackend", NeverLoaded)
     out = tmp_path / "run.json"
     code = run_model.main(
         ["--bakeoff", "configs/model/bakeoff_qwen35.yaml", "--candidate", "qwen35-9b", "--output", str(out)]

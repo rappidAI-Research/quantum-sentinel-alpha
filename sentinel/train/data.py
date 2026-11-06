@@ -1,11 +1,17 @@
 """Governance-gated training data.
 
-Fail-closed rules (any violation raises `GovernanceError`; nothing is skipped silently):
-- train examples come only from `train.chat.jsonl` in the Garden work directory, and must be exactly
-  the rendering of `train.jsonl` (no hand-edited chat file);
-- every train/validation record must be `training_approved` in the committed manifest, must STILL
-  pass the governance gate with today's registry and approvals (a revoked approval stops training),
-  and its code hash must match the manifest;
+Fail-closed rules (any violation raises `GovernanceError`; nothing is skipped or repaired):
+- train examples come only from `train.chat.jsonl` (and, for the patch task, `train.patch.chat.jsonl`)
+  in the Garden work directory, and must be exactly the rendering of `train.jsonl`;
+- `train.jsonl` / `validation.jsonl` must contain exactly the records the committed manifest marks
+  `training_approved` for that split (no record added, none dropped);
+- every train/validation record must STILL pass the governance gate with today's registry and
+  approvals (a revoked approval stops training);
+- integrity against the committed manifest (`supervision` block, sentinel.garden.supervision): the
+  canonical hashes of the full input (code, context, file, language) and the full target (decision,
+  CWE, span, evidence text, patch) and of every rendered chat example must match. Editing any
+  supervised field - not only the code or the label - is detected;
+- the export files must match their `SHA256SUMS`;
 - train records must be in split `train`, validation records in split `validation`; no repository
   may appear in both, and no record may come from a holdout/quarantine repository or an eval-only
   source;
@@ -23,7 +29,7 @@ from typing import Any, Protocol
 
 from sentinel.data.registry import load_registry, validate_registry
 from sentinel.eval.prompt import PROMPT_VERSION
-from sentinel.garden import render
+from sentinel.garden import render, supervision
 from sentinel.garden.governance import gate, load_approvals
 from sentinel.garden.pipeline import PROJECT_ROOT, load_config
 
@@ -34,13 +40,18 @@ class GovernanceError(RuntimeError):
     """Training data is missing, unapproved or inconsistent with the governance records."""
 
 
+TASKS = ("detection", "patch")
+
+
 @dataclass(frozen=True)
 class TrainingData:
-    train: list[dict[str, Any]]  # chat examples
+    train: list[dict[str, Any]]  # chat examples (all selected tasks)
     validation: list[dict[str, Any]]
     sha256: str  # canonical hash of train + validation examples
     record_ids: tuple[str, ...]
     repositories: int
+    tasks: tuple[str, ...] = ("detection",)
+    examples_by_task: dict[str, dict[str, int]] | None = None
 
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -49,7 +60,26 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
-def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | None = None) -> TrainingData:
+def _verify_sums(workdir: Path, names: tuple[str, ...]) -> None:
+    sums_path = workdir / "SHA256SUMS"
+    if not sums_path.is_file():
+        raise GovernanceError(f"missing {sums_path} (regenerate the exports with curate)")
+    sums = {}
+    for line in sums_path.read_text(encoding="utf-8").splitlines():
+        digest, _, name = line.partition("  ")
+        sums[name] = digest
+    for name in names:
+        digest = hashlib.sha256((workdir / name).read_bytes()).hexdigest()
+        if sums.get(name) != digest:
+            raise GovernanceError(f"{name} does not match SHA256SUMS (modified after export; regenerate with curate)")
+
+
+def load_training_data(
+    garden_config_path: Path, approvals: dict[str, Any] | None = None, tasks: tuple[str, ...] = ("detection",)
+) -> TrainingData:
+    unknown = set(tasks) - set(TASKS)
+    if not tasks or unknown or "detection" not in tasks:
+        raise GovernanceError(f"tasks must include 'detection' and only use {TASKS}, got {tasks}")
     config = load_config(garden_config_path)
     workdir = config.workdir
     manifest = {row["record_id"]: row for row in _read_jsonl(config.committed_dir / "manifest.jsonl")}
@@ -66,6 +96,18 @@ def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | Non
             "no training-approved records: train.jsonl is empty. Training requires repository approvals in "
             "data/garden/approvals.yaml and approved registry sources (docs/RIGHTS_REVIEW.md)."
         )
+
+    for split, records in (("train", train_records), ("validation", validation_records)):
+        expected = {rid for rid, row in manifest.items() if row["split"] == split and row["governance"]["approval_status"] == "training_approved"}
+        present = [r["record_id"] for r in records]
+        if len(present) != len(set(present)):
+            raise GovernanceError(f"{split}.jsonl contains duplicate records")
+        if set(present) != expected:
+            missing, extra = sorted(expected - set(present)), sorted(set(present) - expected)
+            raise GovernanceError(
+                f"{split}.jsonl does not hold exactly the manifest's approved {split} records "
+                f"(missing {missing[:3]}, unexpected {extra[:3]}); regenerate with curate"
+            )
 
     held_out_repos = {
         row["provenance"]["repository_key"] for row in manifest.values() if row["split"] in {"holdout_reserved", "temporal_quarantine"}
@@ -90,11 +132,25 @@ def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | Non
         for key in ("decision", "cwe", "alternate_cwes", "start_line", "end_line", "evidence_source"):
             if target.get(key) != label.get(key):
                 raise GovernanceError(f"{rid} target {key}={target.get(key)!r} does not match the manifest ({label.get(key)!r})")
+        for key in ("kind", "group_id", "pair_id"):
+            # record structure decides which examples are derived (e.g. a patch example needs its pair)
+            if record.get(key) != row.get(key):
+                raise GovernanceError(f"{rid} {key}={record.get(key)!r} does not match the manifest ({row.get(key)!r})")
         if record["input"]["language"] != label.get("language"):
             raise GovernanceError(f"{rid} language does not match the manifest")
         code_hash = hashlib.sha256(record["input"]["code"].encode("utf-8")).hexdigest()
         if code_hash != row["provenance"]["content_sha256"] or code_hash != record["provenance"]["content_sha256"]:
             raise GovernanceError(f"{rid} code does not match the manifest content hash")
+        bound = row.get("supervision")
+        problem = supervision.manifest_supervision_problem(row)
+        if problem:
+            raise GovernanceError(f"{rid}: {problem}")
+        if supervision.canonical_sha256(record["input"]) != bound["input_sha256"]:
+            raise GovernanceError(f"{rid} input (code, context, file or language) does not match the manifest")
+        if supervision.canonical_sha256(record["target"]) != bound["target_sha256"]:
+            raise GovernanceError(f"{rid} target (label, span, evidence text or patch) does not match the manifest")
+        if supervision.canonical_sha256(render.to_chat_example(record)) != bound["detection_example_sha256"]:
+            raise GovernanceError(f"{rid} detection example does not match the manifest (prompt or rendering changed; rerun curate)")
 
     for record in train_records:
         check(record, "train")
@@ -109,6 +165,36 @@ def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | Non
             raise GovernanceError(f"{example['record_id']}: prompt {example['prompt_version']} != {PROMPT_VERSION}")
         if [m["role"] for m in example["messages"]] != ["system", "user", "assistant"]:
             raise GovernanceError(f"{example['record_id']}: unexpected message roles")
+        if supervision.canonical_sha256(example) != manifest[example["record_id"]]["supervision"]["detection_example_sha256"]:
+            raise GovernanceError(f"{example['record_id']}: chat example does not match the manifest")
+    _verify_sums(workdir, ("train.jsonl", "validation.jsonl", "train.chat.jsonl", "train.patch.chat.jsonl"))
+
+    def bound_patch_examples(records: list[dict[str, Any]], label: str) -> list[dict[str, Any]]:
+        examples = supervision.patch_examples(records)
+        expected = {
+            rid for rid, row in manifest.items()
+            if row["split"] == label
+            and row["governance"]["approval_status"] == "training_approved"
+            and (row.get("supervision") or {}).get("patch_eligibility") == "eligible"
+        }
+        produced = [e["record_id"] for e in examples]
+        if set(produced) != expected or len(produced) != len(set(produced)):
+            raise GovernanceError(
+                f"{label} patch examples do not match the manifest's approved patch-eligible records "
+                f"(missing {sorted(expected - set(produced))[:3]}, unexpected {sorted(set(produced) - expected)[:3]})"
+            )
+        for example in examples:
+            digest = manifest[example["record_id"]]["supervision"]["patch_example_sha256"]
+            if digest is None or supervision.canonical_sha256(example) != digest:
+                raise GovernanceError(f"{example['record_id']}: {label} patch example is not the verified pair bound in the manifest")
+        return examples
+
+    train_patch = bound_patch_examples(train_records, "train")
+    validation_patch = bound_patch_examples(validation_records, "validation")
+    if _read_jsonl(workdir / "train.patch.chat.jsonl") != train_patch:
+        raise GovernanceError("train.patch.chat.jsonl is not the rendering of the verified pairs in train.jsonl (regenerate with curate)")
+    if "patch" in tasks and not train_patch:
+        raise GovernanceError("task 'patch' selected but no approved, verified vulnerable/fixed pair exists in train.jsonl")
 
     train_repos = {r["provenance"]["repository_key"] for r in train_records}
     validation_repos = {r["provenance"]["repository_key"] for r in validation_records}
@@ -119,13 +205,22 @@ def load_training_data(garden_config_path: Path, approvals: dict[str, Any] | Non
         raise GovernanceError("duplicate record ids across train and validation")
 
     validation = [render.to_chat_example(r) for r in validation_records]
-    canonical = json.dumps({"train": chat, "validation": validation}, sort_keys=True, ensure_ascii=False)
+    train_examples, validation_examples = list(chat), list(validation)
+    if "patch" in tasks:
+        train_examples += train_patch
+        validation_examples += validation_patch
+    canonical = json.dumps({"tasks": list(tasks), "train": train_examples, "validation": validation_examples}, sort_keys=True, ensure_ascii=False)
     return TrainingData(
-        train=chat,
-        validation=validation,
+        train=train_examples,
+        validation=validation_examples,
         sha256=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
         record_ids=tuple(sorted(ids)),
         repositories=len(train_repos | validation_repos),
+        tasks=tuple(tasks),
+        examples_by_task={
+            "train": {"detection": len(chat), "patch": len(train_patch) if "patch" in tasks else 0},
+            "validation": {"detection": len(validation), "patch": len(validation_patch) if "patch" in tasks else 0},
+        },
     )
 
 
@@ -145,6 +240,7 @@ class EncodedExample:
     record_id: str
     input_ids: list[int]
     labels: list[int]
+    task: str = "detection"
 
 
 def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_len: int, end_of_turn: str) -> EncodedExample | None:
@@ -166,6 +262,7 @@ def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_le
         record_id=example["record_id"],
         input_ids=prompt_ids + reply_ids,
         labels=[IGNORE_INDEX] * len(prompt_ids) + reply_ids,
+        task=example.get("task", "detection"),
     )
 
 
@@ -177,7 +274,8 @@ def encode_all(tokenizer: ChatTokenizer, examples: list[dict[str, Any]], max_seq
     for example in examples:
         encoded = encode_example(tokenizer, example, max_seq_len, end_of_turn)
         if encoded is None:
-            dropped.append(example["record_id"])
+            task = example.get("task", "detection")
+            dropped.append(example["record_id"] if task == "detection" else f"{task}:{example['record_id']}")
         else:
             kept.append(encoded)
     return kept, dropped
@@ -185,7 +283,8 @@ def encode_all(tokenizer: ChatTokenizer, examples: list[dict[str, Any]], max_seq
 
 def batches(examples: list[EncodedExample], micro_batch_size: int, epoch: int, seed: int) -> list[list[EncodedExample]]:
     """Deterministic per-epoch shuffle (independent of torch), so a resumed run sees the same order."""
-    order = sorted(examples, key=lambda e: hashlib.sha256(f"{seed}\x00{epoch}\x00{e.record_id}".encode()).hexdigest())
+    # a vulnerable record can appear once per task, so the task is part of the key
+    order = sorted(examples, key=lambda e: hashlib.sha256(f"{seed}\x00{epoch}\x00{e.task}\x00{e.record_id}".encode()).hexdigest())
     return [order[i : i + micro_batch_size] for i in range(0, len(order), micro_batch_size)]
 
 

@@ -3,40 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:pipecat-ai': ['BSD-2-Clause']}
-  - repository_key: pipecat-ai/pipecat
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
-    license_file: LICENSE
-    license_file_sha256: e31a733ecb79cbffafd5474e964e5eca15e0a0876a42b1d7253b51b198eb61aa
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pipecat-ai/pipecat
-      - https://github.com/pipecat-ai/pipecat/blob/7519c26ac5508573c35fa3a9c4717b013993d129/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:tree-kill': ['MIT']}
-  - repository_key: pkrumins/node-tree-kill
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 33eba3cb810ee4b03426ec7fecf22e7529e2fe95f8163e7213016459bee7a276
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/pkrumins/node-tree-kill
-      - https://github.com/pkrumins/node-tree-kill/blob/deee138a8cbc918463d8af5ce8c2bec33c3fd164/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/play-with-docker/play-with-docker': ['MIT']}
   - repository_key: play-with-docker/play-with-docker
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/sahellebusch/flattenizer
       - https://github.com/sahellebusch/flattenizer/blob/3c6a6353df7c8879e931973b81a49a47f6c2b399/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:saleor': ['BSD-3-Clause']}
+  - repository_key: saleor/saleor
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 38f8aff3d2e04d03808d1a7eb6bd326c8e932fdf0b835bd96fdb80a89fb5258f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/saleor/saleor
+      - https://github.com/saleor/saleor/blob/521dfd6394f3926a77c60d8633c058e16d0f916d/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@saltcorn/server': ['MIT']}
+  - repository_key: saltcorn/saltcorn
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 5f515d5df542a22665127c304dfbc6f9c223a146e27eff946867075fcea48057
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/saltcorn/saltcorn
+      - https://github.com/saltcorn/saltcorn/blob/9e066ae8ba317469053cc27e95dcdf5b6e60e12d/LICENSE
     notes: ""
