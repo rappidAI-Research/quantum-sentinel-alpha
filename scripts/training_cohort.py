@@ -69,6 +69,7 @@ def question_group(question: str) -> str:
 
 def build(config_path: Path, inspect: bool) -> dict[str, Any]:
     config = load_config(config_path)
+    pilot.CACHE = config.workdir / "cache" / "git"  # the selected dataset's own upstream cache
     data = config.committed_dir
     out = data / "cohort"
     rows = _jsonl(data / "manifest.jsonl")

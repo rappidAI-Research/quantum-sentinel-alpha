@@ -3450,7 +3450,7 @@
       "package_metadata": [
        {
         "file": "setup.cfg",
-        "license": null
+        "license": "Apache License, Version 2.0"
        },
        {
         "file": "setup.py",
@@ -3474,7 +3474,7 @@
       "package_metadata": [
        {
         "file": "setup.cfg",
-        "license": null
+        "license": "Apache License, Version 2.0"
        },
        {
         "file": "setup.py",

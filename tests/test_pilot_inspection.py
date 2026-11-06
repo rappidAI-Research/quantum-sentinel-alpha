@@ -280,24 +280,28 @@ def test_unreadable_parent_is_not_taken_as_absence(module, source, monkeypatch) 
 
 
 @pytest.mark.parametrize(
-    "text, expected",
+    "filename, text, expected",
     [
-        ('[project]\nlicense = {file = "LICENSE"}\n', None),  # a pointer, not a declaration
-        ('[project]\nlicense = {text = "MIT"}\n', "MIT"),
-        ('setup(\n    license=about["__license__"],\n)\n', None),  # computed at build time
-        ('setup(license=find_meta("license"))\n', None),
-        ('[metadata]\nlicense = file: LICENSE\n', None),
-        ('[metadata]\nlicense = MIT\n', "MIT"),
-        ("[metadata]\nlicense: GPL-3.0\n", "GPL-3.0"),  # review finding: ConfigParser also accepts ':'
-        ("[metadata]\nclassifiers =\n    License :: OSI Approved :: MIT License\n", "MIT License"),
-        ("setup(\n    license = about.__license__,\n)\n", None),  # an attribute reference, not a name
-        ('setup(name="x", license="MIT License")\n', "MIT License"),
-        ('classifiers = [\n  "License :: OSI Approved :: Apache Software License",\n]\n', "Apache Software License"),
+        ("pyproject.toml", '[project]\nlicense = {file = "LICENSE"}\n', None),  # a pointer, not a declaration
+        ("pyproject.toml", '[project]\nlicense = {text = "MIT"}\n', "MIT"),
+        ("pyproject.toml", '[project]\nlicense = "Apache-2.0"\n', "Apache-2.0"),
+        ("setup.py", 'setup(\n    license=about["__license__"],\n)\n', None),  # computed at build time
+        ("setup.py", 'setup(license=find_meta("license"))\n', None),
+        ("setup.py", "setup(\n    license = about.__license__,\n)\n", None),  # an attribute reference
+        ("setup.py", 'setup(name="x", license="MIT License")\n', "MIT License"),
+        ("setup.py", 'classifiers = [\n  "License :: OSI Approved :: Apache Software License",\n]\n', "Apache Software License"),
+        ("setup.cfg", "[metadata]\nlicense = file: LICENSE\n", None),
+        ("setup.cfg", "[metadata]\nlicense = MIT\n", "MIT"),
+        ("setup.cfg", "[metadata]\nlicense: GPL-3.0\n", "GPL-3.0"),  # review finding: ConfigParser also accepts ':'
+        # review finding: parentheses are literal text in setup.cfg, not a computed expression
+        ("setup.cfg", "[metadata]\nlicense = GNU General Public License v3 (GPLv3)\n", "GNU General Public License v3 (GPLv3)"),
+        ("setup.cfg", "[metadata]\nclassifiers =\n    License :: OSI Approved :: MIT License\n", "MIT License"),
+        ("setup.cfg", "not an ini file = [\n", "unparseable"),
     ],
 )
-def test_python_metadata_reads_literal_declarations_only(module, text, expected) -> None:
+def test_python_metadata_reads_literal_declarations_only(module, filename, text, expected) -> None:
     # review finding (Garden v2): parser artifacts such as "{file =" or "about['" were reported as conflicts
-    assert module.python_metadata_license(text) == expected
+    assert module.python_metadata_license(text, filename) == expected
 
 
 @pytest.mark.parametrize(

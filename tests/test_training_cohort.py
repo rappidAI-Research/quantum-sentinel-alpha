@@ -100,3 +100,10 @@ def test_cohort_rebuilds_offline_from_committed_data() -> None:
     ]
     assert rebuilt["if_recommended_are_approved"] == COHORT["if_recommended_are_approved"]
     assert rebuilt["decision_groups"] == COHORT["decision_groups"]
+
+
+def test_inspection_reads_the_selected_datasets_own_cache() -> None:
+    # review finding: the inspector used Garden v1's cache path for every dataset version
+    module = _module()
+    module.build(V2, inspect=False)
+    assert module.pilot.CACHE == pipeline.load_config(V2).workdir / "cache" / "git"

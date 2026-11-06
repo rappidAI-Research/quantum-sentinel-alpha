@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import configparser
 import hashlib
 import json
 import posixpath
@@ -66,19 +67,30 @@ NOTICE_NAME = re.compile(r"^(NOTICE|NOTICES|COPYING|COPYRIGHT|PATENTS|LICEN[CS]E
 _PY_LICENSE_TEXT = re.compile(r"""(?im)^\s*license\s*=\s*\{\s*text\s*=\s*["']([^"'\n]+)["']""")
 _PY_LICENSE_LITERAL = re.compile(r"""(?im)^\s*license\s*=\s*["']([^"'\n]+)["']""")  # pyproject / setup.py keyword
 _PY_LICENSE_KWARG = re.compile(r"""\blicense\s*=\s*["']([^"'\n]+)["']""")  # setup(..., license="MIT")
-# setup.cfg (ConfigParser accepts `=` and `:`); `(?!:)` keeps classifier lines `License :: ...` out
-_PY_LICENSE_CFG = re.compile(r"""(?im)^\s*license\s*[=:](?!:)\s*([^"'{\[\n(][^\n]*?)\s*$""")
 _PY_CLASSIFIER = re.compile(r"License :: OSI Approved :: ([^\"'\n]+)")
 
 
-def python_metadata_license(text: str) -> str | None:
-    """The license a pyproject.toml / setup.cfg / setup.py declares as a literal, or None."""
-    for pattern in (_PY_LICENSE_TEXT, _PY_LICENSE_LITERAL, _PY_LICENSE_KWARG, _PY_LICENSE_CFG):
-        for match in pattern.finditer(text):
-            value = match.group(1).strip()
-            if pattern is _PY_LICENSE_CFG and (value.startswith(("file:", "attr:")) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9 .+-]*", value)):
-                continue  # a setup.cfg directive or an expression, not a license name
-            return value
+def python_metadata_license(text: str, filename: str = "setup.py") -> str | None:
+    """The license a pyproject.toml / setup.cfg / setup.py declares, or None.
+
+    setup.cfg is an INI file: its `license` option is literal text (parentheses included) unless it
+    is a `file:`/`attr:` directive, so any other value is kept and stays visible as a question.
+    pyproject.toml and setup.py count only quoted literals, never computed expressions."""
+    if posixpath.basename(filename) == "setup.cfg":
+        parser = configparser.ConfigParser(interpolation=None, strict=False)
+        try:
+            parser.read_string(text)
+        except configparser.Error:
+            return "unparseable"
+        if parser.has_option("metadata", "license"):
+            value = " ".join(parser.get("metadata", "license").split())
+            if value and not value.startswith(("file:", "attr:")):
+                return value
+    else:
+        for pattern in (_PY_LICENSE_TEXT, _PY_LICENSE_LITERAL, _PY_LICENSE_KWARG):
+            match = pattern.search(text)
+            if match:
+                return match.group(1).strip()
     classifier = _PY_CLASSIFIER.search(text)
     return classifier.group(1).strip() if classifier else None
 
@@ -293,7 +305,7 @@ def _package_license(repo: Path, revision: str, file_path: str, language: str, p
                 except ValueError:
                     value = "unparseable"
             else:
-                value = python_metadata_license(text)
+                value = python_metadata_license(text, name)
             found.append({"file": path, "license": value})
         if found or not directory:
             return found
