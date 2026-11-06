@@ -1,0 +1,5680 @@
+{
+ "cohort_version": "1",
+ "if_recommended_are_approved": {
+  "by_decision": {
+   "abstain": 25,
+   "finding": 52,
+   "no_finding": 52
+  },
+  "by_language": {
+   "go": 41,
+   "javascript": 34,
+   "python": 30,
+   "typescript": 24
+  },
+  "by_split": {
+   "train": 103,
+   "validation": 26
+  },
+  "by_split_and_decision": {
+   "train/abstain": 21,
+   "train/finding": 41,
+   "train/no_finding": 41,
+   "validation/abstain": 4,
+   "validation/finding": 11,
+   "validation/no_finding": 11
+  },
+  "cwe": {
+   "CWE-129": 1,
+   "CWE-1321": 3,
+   "CWE-1333": 4,
+   "CWE-178": 1,
+   "CWE-183": 1,
+   "CWE-20": 2,
+   "CWE-203": 2,
+   "CWE-208": 1,
+   "CWE-209": 1,
+   "CWE-22": 5,
+   "CWE-285": 2,
+   "CWE-290": 1,
+   "CWE-306": 2,
+   "CWE-330": 1,
+   "CWE-338": 1,
+   "CWE-347": 1,
+   "CWE-377": 1,
+   "CWE-502": 3,
+   "CWE-601": 3,
+   "CWE-627": 1,
+   "CWE-732": 1,
+   "CWE-77": 2,
+   "CWE-78": 2,
+   "CWE-79": 5,
+   "CWE-862": 1,
+   "CWE-89": 1,
+   "CWE-918": 2,
+   "CWE-94": 1
+  },
+  "cwe_family": {
+   "authn_authz": 7,
+   "code_injection": 1,
+   "command_injection": 4,
+   "crypto_tls_integrity": 4,
+   "deserialization_input_validation": 6,
+   "information_exposure": 4,
+   "other": 2,
+   "path_traversal": 5,
+   "prototype_pollution": 3,
+   "redirect_ssrf": 5,
+   "resource_limits_redos": 5,
+   "sql_injection": 1,
+   "xss_output_encoding": 5
+  },
+  "patch_examples_by_split": {
+   "train": 41,
+   "validation": 11
+  },
+  "record_ids_sha256": "3dfde06f9e1d5e1064dd460ad46e967fd98088149b6945ed2261c594f3f93ab8",
+  "records": 129
+ },
+ "manifest_sha256": "1d26d71ae82e93eac7be61cd8d3cb8ca23e2fad4921d3a46c62b150f35408a96",
+ "repositories": [
+  {
+   "advisories": [
+    "GHSA-rfh5-c9h5-q8jm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:reflex': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "redirect_ssrf"
+   ],
+   "cwes": [
+    "CWE-601"
+   ],
+   "evidence": {
+    "paths": [
+     "reflex/utils/codespaces.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "ade12549f3c0ddab3d7382c581bc04a3c1f989ec": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "Apache Software License"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "770df32eba7d7f939b0fb92a4b7daf59f85c2267cee763cc991aafb71abf6041"
+       }
+      }
+     },
+     "b7958c95813550d2126fccd8e142da6e6efe6df7": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "Apache Software License"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "770df32eba7d7f939b0fb92a4b7daf59f85c2267cee763cc991aafb71abf6041"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "0ba07852898e842601ab6565a93ad1a36e9e17775c9e09c3bc3428ac431c8b43"
+   },
+   "evidence_urls": [
+    "https://github.com/reflex-dev/reflex",
+    "https://github.com/reflex-dev/reflex/blob/ade12549f3c0ddab3d7382c581bc04a3c1f989ec/LICENSE",
+    "https://deps.dev/pypi/reflex",
+    "https://github.com/advisories/GHSA-rfh5-c9h5-q8jm"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "770df32eba7d7f939b0fb92a4b7daf59f85c2267cee763cc991aafb71abf6041",
+   "license_file_url": "https://github.com/reflex-dev/reflex/blob/ade12549f3c0ddab3d7382c581bc04a3c1f989ec/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-601",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-9f5e96d471fae469",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 6
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-caller-abstention-64e8f105b161b306",
+    "sg-py-post-fix-96793541b157b545",
+    "sg-py-vulnerable-90fbf05fc92f448b"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "reflex-dev/reflex",
+   "revisions": [
+    "ade12549f3c0ddab3d7382c581bc04a3c1f989ec",
+    "b7958c95813550d2126fccd8e142da6e6efe6df7"
+   ],
+   "split": "train",
+   "url": "https://github.com/reflex-dev/reflex"
+  },
+  {
+   "advisories": [
+    "GHSA-cf56-g6w6-pqq2"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:twisted': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "xss_output_encoding"
+   ],
+   "cwes": [
+    "CWE-79"
+   ],
+   "evidence": {
+    "paths": [
+     "src/twisted/web/_template_util.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "046a164f89a0f08d3239ecebd750360f8914df33": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "MIT License"
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802"
+       }
+      }
+     },
+     "4a930de12fb67e88fefcb8822104152f42b27abc": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "MIT License"
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "9b62194bae5d927a404141a59d9b11ad007dea1ae5a897644d0a2fb4f5ee9134"
+   },
+   "evidence_urls": [
+    "https://github.com/twisted/twisted",
+    "https://github.com/twisted/twisted/blob/046a164f89a0f08d3239ecebd750360f8914df33/LICENSE",
+    "https://deps.dev/pypi/twisted",
+    "https://github.com/advisories/GHSA-cf56-g6w6-pqq2"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802",
+   "license_file_url": "https://github.com/twisted/twisted/blob/046a164f89a0f08d3239ecebd750360f8914df33/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-79",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-2653816d69c8eb4b",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-caller-abstention-c651d2036b55fc04",
+    "sg-py-post-fix-2c8c6637eeef9b3c",
+    "sg-py-vulnerable-a6465d9e506095b2"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "twisted/twisted",
+   "revisions": [
+    "046a164f89a0f08d3239ecebd750360f8914df33",
+    "4a930de12fb67e88fefcb8822104152f42b27abc"
+   ],
+   "split": "train",
+   "url": "https://github.com/twisted/twisted"
+  },
+  {
+   "advisories": [
+    "GHSA-f83h-ghpp-7wcc"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:pdfminer-six': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "deserialization_input_validation"
+   ],
+   "cwes": [
+    "CWE-502"
+   ],
+   "evidence": {
+    "paths": [
+     "pdfminer/cmapdb.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "51683b2528e2aa685dd8b9e61f6ccf9f76a59a62": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
+       }
+      }
+     },
+     "b808ee05dd7f0c8ea8ec34bdf394d40e63501086": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "3536c0be2f1ffd9dbba30bf54e6c61bf15055d2e2192e6fa5aeb5adf27cddaa1"
+   },
+   "evidence_urls": [
+    "https://github.com/pdfminer/pdfminer.six",
+    "https://github.com/pdfminer/pdfminer.six/blob/b808ee05dd7f0c8ea8ec34bdf394d40e63501086/LICENSE",
+    "https://deps.dev/pypi/pdfminer-six",
+    "https://github.com/advisories/GHSA-f83h-ghpp-7wcc"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2",
+   "license_file_url": "https://github.com/pdfminer/pdfminer.six/blob/b808ee05dd7f0c8ea8ec34bdf394d40e63501086/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-502",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-40bf0a361002fd3a",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-caller-abstention-5322d140fb39d391",
+    "sg-py-post-fix-30cd4380e7f53106",
+    "sg-py-vulnerable-5ede684ffa13dab2"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "pdfminer/pdfminer.six",
+   "revisions": [
+    "51683b2528e2aa685dd8b9e61f6ccf9f76a59a62",
+    "b808ee05dd7f0c8ea8ec34bdf394d40e63501086"
+   ],
+   "split": "train",
+   "url": "https://github.com/pdfminer/pdfminer.six"
+  },
+  {
+   "advisories": [
+    "GHSA-28gh-q3gw-pvx8"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:taipy': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "taipy/gui/extension/library.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "129fd407ffca49ee4ab853772c88d0c873e038dd": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "taipy/gui/LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "taipy/gui/pyproject.toml",
+        "license": "Apache-2.0"
+       },
+       {
+        "file": "taipy/gui/setup.py",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a"
+       }
+      }
+     },
+     "d8556b92128defb4ea079e8776b1385cdc17e3fa": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "taipy/gui/LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "taipy/gui/pyproject.toml",
+        "license": "Apache-2.0"
+       },
+       {
+        "file": "taipy/gui/setup.py",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "870ff6df50b30bc6cbdbfd8499f34120e2e7c84ca29fbb5544f713ac955e507c"
+   },
+   "evidence_urls": [
+    "https://github.com/Avaiga/taipy",
+    "https://github.com/Avaiga/taipy/blob/129fd407ffca49ee4ab853772c88d0c873e038dd/LICENSE",
+    "https://deps.dev/pypi/taipy",
+    "https://github.com/advisories/GHSA-28gh-q3gw-pvx8"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "d018748ddcfcff04ef5a46599eec2f06e76524db22173a39ab458382093ef15a",
+   "license_file_url": "https://github.com/Avaiga/taipy/blob/129fd407ffca49ee4ab853772c88d0c873e038dd/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-f6ee7abe3c823b39",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-24a538099df17619",
+    "sg-py-vulnerable-188e879734ef307b"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "avaiga/taipy",
+   "revisions": [
+    "129fd407ffca49ee4ab853772c88d0c873e038dd",
+    "d8556b92128defb4ea079e8776b1385cdc17e3fa"
+   ],
+   "split": "train",
+   "url": "https://github.com/Avaiga/taipy"
+  },
+  {
+   "advisories": [
+    "GHSA-h7cm-mrvq-wcfr"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:piccolo': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "information_exposure"
+   ],
+   "cwes": [
+    "CWE-203"
+   ],
+   "evidence": {
+    "paths": [
+     "piccolo/apps/user/tables.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "e12c4694ed2068fb08e40209b4dcd2609796752b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "cc52298bed7ab88278db450c206ef9354d096c307292fadd9d7723e54fc46012"
+       }
+      }
+     },
+     "edcfe3568382922ba3e3b65896e6e7272f972261": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "cc52298bed7ab88278db450c206ef9354d096c307292fadd9d7723e54fc46012"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "aaf37e1f42b45e862f7433fa91203588b02227ca5b9270c527affd3feab4d77d"
+   },
+   "evidence_urls": [
+    "https://github.com/piccolo-orm/piccolo",
+    "https://github.com/piccolo-orm/piccolo/blob/edcfe3568382922ba3e3b65896e6e7272f972261/LICENSE",
+    "https://deps.dev/pypi/piccolo",
+    "https://github.com/advisories/GHSA-h7cm-mrvq-wcfr"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "cc52298bed7ab88278db450c206ef9354d096c307292fadd9d7723e54fc46012",
+   "license_file_url": "https://github.com/piccolo-orm/piccolo/blob/edcfe3568382922ba3e3b65896e6e7272f972261/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-203",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-af230c3137ceaac4",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-850636f9d37bab0f",
+    "sg-py-vulnerable-2bbdfcd886be13de"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "piccolo-orm/piccolo",
+   "revisions": [
+    "e12c4694ed2068fb08e40209b4dcd2609796752b",
+    "edcfe3568382922ba3e3b65896e6e7272f972261"
+   ],
+   "split": "train",
+   "url": "https://github.com/piccolo-orm/piccolo"
+  },
+  {
+   "advisories": [
+    "GHSA-xr38-w74q-r8jv"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:invenio-app-rdm': ['MIT'], 'PyPI:invenio-drafts-resources': ['MIT'], 'PyPI:invenio-rdm-records': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz"
+   ],
+   "cwes": [
+    "CWE-862"
+   ],
+   "evidence": {
+    "paths": [
+     "invenio_drafts_resources/services/records/service.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "039b0cff1ad4b952000f4d8c3a93f347108b6626": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "6b2388f171d54c983c644657bd3557d3a8169fddb4c21299cf92efca38af6865"
+       }
+      }
+     },
+     "998ede99c377c84f11fe22c07c20f90c88c463dc": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "6b2388f171d54c983c644657bd3557d3a8169fddb4c21299cf92efca38af6865"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "757f722c82e6d68a62fcd6b1d0820dc0d7fb08ef4edafb1b130b33efc64b01de"
+   },
+   "evidence_urls": [
+    "https://github.com/inveniosoftware/invenio-drafts-resources",
+    "https://github.com/inveniosoftware/invenio-drafts-resources/blob/039b0cff1ad4b952000f4d8c3a93f347108b6626/LICENSE",
+    "https://deps.dev/pypi/invenio-app-rdm",
+    "https://deps.dev/pypi/invenio-drafts-resources",
+    "https://deps.dev/pypi/invenio-rdm-records",
+    "https://github.com/advisories/GHSA-xr38-w74q-r8jv"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "6b2388f171d54c983c644657bd3557d3a8169fddb4c21299cf92efca38af6865",
+   "license_file_url": "https://github.com/inveniosoftware/invenio-drafts-resources/blob/039b0cff1ad4b952000f4d8c3a93f347108b6626/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-862",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-fc96a79dca85c852",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 5
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-e63850c672ea8a28",
+    "sg-py-vulnerable-2cfa88800634fea2"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "inveniosoftware/invenio-drafts-resources",
+   "revisions": [
+    "039b0cff1ad4b952000f4d8c3a93f347108b6626",
+    "998ede99c377c84f11fe22c07c20f90c88c463dc"
+   ],
+   "split": "train",
+   "url": "https://github.com/inveniosoftware/invenio-drafts-resources"
+  },
+  {
+   "advisories": [
+    "GHSA-9pv8-q5rx-c8gq"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:django-make-app': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "code_injection"
+   ],
+   "cwes": [
+    "CWE-94"
+   ],
+   "evidence": {
+    "paths": [
+     "django_make_app/io_utils.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "acd814433d1021aa8783362521b0bd151fdfc9d2": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c2a3d7311b9ef3d75b952c7c0285c862da0f26080e4752d167bb83fdc5152c2c"
+       }
+      }
+     },
+     "e42d3bf31e7c66dc741a96de79daef0ba76f74a1": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c2a3d7311b9ef3d75b952c7c0285c862da0f26080e4752d167bb83fdc5152c2c"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "a6262a7ee9b95ff0d9ea04411edf54dbbd3bd5189dd3ddba442278eb44dd1c5b"
+   },
+   "evidence_urls": [
+    "https://github.com/illagrenan/django-make-app",
+    "https://github.com/illagrenan/django-make-app/blob/acd814433d1021aa8783362521b0bd151fdfc9d2/LICENSE",
+    "https://deps.dev/pypi/django-make-app",
+    "https://github.com/advisories/GHSA-9pv8-q5rx-c8gq"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c2a3d7311b9ef3d75b952c7c0285c862da0f26080e4752d167bb83fdc5152c2c",
+   "license_file_url": "https://github.com/illagrenan/django-make-app/blob/acd814433d1021aa8783362521b0bd151fdfc9d2/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-94",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-0f9314d6486e04e4",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-b033d1e3e716603e",
+    "sg-py-vulnerable-592419c8a9bff265"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "illagrenan/django-make-app",
+   "revisions": [
+    "acd814433d1021aa8783362521b0bd151fdfc9d2",
+    "e42d3bf31e7c66dc741a96de79daef0ba76f74a1"
+   ],
+   "split": "train",
+   "url": "https://github.com/illagrenan/django-make-app"
+  },
+  {
+   "advisories": [
+    "GHSA-82vr-5769-6358"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:ethyca-fides': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "crypto_tls_integrity"
+   ],
+   "cwes": [
+    "CWE-338"
+   ],
+   "evidence": {
+    "paths": [
+     "src/fides/api/service/privacy_request/request_runner_service.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "611b36bc0119c9c24d826e8b56824dff0b8fb573": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache License 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "685bae61c203d29ed189f4b066a5223a9bb774c6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache License 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "fa7b45d764e377268e859896de177e9fcdeb0fee608026a21fdba08b44fc18d1"
+   },
+   "evidence_urls": [
+    "https://github.com/ethyca/fides",
+    "https://github.com/ethyca/fides/blob/685bae61c203d29ed189f4b066a5223a9bb774c6/LICENSE",
+    "https://deps.dev/pypi/ethyca-fides",
+    "https://github.com/advisories/GHSA-82vr-5769-6358"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+   "license_file_url": "https://github.com/ethyca/fides/blob/685bae61c203d29ed189f4b066a5223a9bb774c6/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-338",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-8176d49573a1c5ff",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-9b735c35af506e48",
+    "sg-py-vulnerable-a01953e70e8b8e0c"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "ethyca/fides",
+   "revisions": [
+    "611b36bc0119c9c24d826e8b56824dff0b8fb573",
+    "685bae61c203d29ed189f4b066a5223a9bb774c6"
+   ],
+   "split": "train",
+   "url": "https://github.com/ethyca/fides"
+  },
+  {
+   "advisories": [
+    "GHSA-8p42-7597-p2f6"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:dcnnt': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "command_injection"
+   ],
+   "cwes": [
+    "CWE-77"
+   ],
+   "evidence": {
+    "paths": [
+     "dcnnt/plugins/notifications.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "4084ea18f96d9a953315f5555fca45f26639b8be": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "8b0fb4a9b7f496ae42b4f45bee32d08d5e43d1fc9660207c80f132eb718eabe9"
+       }
+      }
+     },
+     "b4021d784a97e25151a5353aa763a741e9a148f5": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.py",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "8b0fb4a9b7f496ae42b4f45bee32d08d5e43d1fc9660207c80f132eb718eabe9"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "40de98286efc6f86aa2b395d18e3eed194119a58f092bd9ec4ff451da4eaf536"
+   },
+   "evidence_urls": [
+    "https://github.com/cyanomiko/dcnnt-py",
+    "https://github.com/cyanomiko/dcnnt-py/blob/b4021d784a97e25151a5353aa763a741e9a148f5/LICENSE",
+    "https://deps.dev/pypi/dcnnt",
+    "https://github.com/advisories/GHSA-8p42-7597-p2f6"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "8b0fb4a9b7f496ae42b4f45bee32d08d5e43d1fc9660207c80f132eb718eabe9",
+   "license_file_url": "https://github.com/cyanomiko/dcnnt-py/blob/b4021d784a97e25151a5353aa763a741e9a148f5/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-77",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-f07342f892943c99",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-2ac68fbc1d7a1498",
+    "sg-py-vulnerable-0fe7fb8b8bd0d08b"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "cyanomiko/dcnnt-py",
+   "revisions": [
+    "4084ea18f96d9a953315f5555fca45f26639b8be",
+    "b4021d784a97e25151a5353aa763a741e9a148f5"
+   ],
+   "split": "train",
+   "url": "https://github.com/cyanomiko/dcnnt-py"
+  },
+  {
+   "advisories": [
+    "GHSA-cq96-9974-v8hm",
+    "GHSA-x4x5-jv3x-9c7m"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE.txt detected as Apache-2.0, identical at all 4 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:qiskit-ibm-runtime': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "deserialization_input_validation",
+    "other"
+   ],
+   "cwes": [
+    "CWE-502",
+    "CWE-627"
+   ],
+   "evidence": {
+    "paths": [
+     "qiskit_ibm_runtime/options/options.py",
+     "qiskit_ibm_runtime/utils/json.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "1cba6967e7af156e9d9f610db7753419138c732a": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "Apache-2.0",
+        "sha256": "7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7"
+       }
+      }
+     },
+     "2e8c8c8df83ba310f52d1651a426bad879e0bd38": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "Apache-2.0",
+        "sha256": "7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7"
+       }
+      }
+     },
+     "a750d8c6485cbc134e339abcda6459b537a889c6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "Apache-2.0",
+        "sha256": "7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7"
+       }
+      }
+     },
+     "b78fca114133051805d00043a404b25a33835f4d": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "Apache-2.0",
+        "sha256": "7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "7bb295e767cbddecd7e2584243a3fedcfc97cdb628ded42d879d03dd333792f5"
+   },
+   "evidence_urls": [
+    "https://github.com/Qiskit/qiskit-ibm-runtime",
+    "https://github.com/Qiskit/qiskit-ibm-runtime/blob/b78fca114133051805d00043a404b25a33835f4d/LICENSE.txt",
+    "https://deps.dev/pypi/qiskit-ibm-runtime",
+    "https://github.com/advisories/GHSA-cq96-9974-v8hm",
+    "https://github.com/advisories/GHSA-x4x5-jv3x-9c7m"
+   ],
+   "language": "python",
+   "license_file": "LICENSE.txt",
+   "license_file_sha256": "7b7de08c64b1824bdc2b9f4b530814a9d0b5905a38ad0e96a717f3dd46d2bbe7",
+   "license_file_url": "https://github.com/Qiskit/qiskit-ibm-runtime/blob/b78fca114133051805d00043a404b25a33835f4d/LICENSE.txt",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-502",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-007e842ad136af17",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     },
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-627",
+      "fix_pattern_consistent": null,
+      "group_id": "sgg-0ae3839ff13e8de2",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 4
+     }
+    ],
+    "score": 4.5
+   },
+   "record_ids": [
+    "sg-py-post-fix-2bd2e94d45dfa62e",
+    "sg-py-post-fix-53b4dae9f9a1b6f9",
+    "sg-py-vulnerable-5fd03e69018c5fe6",
+    "sg-py-vulnerable-d145e7d5e4aa6583"
+   ],
+   "records": {
+    "post_fix": 2,
+    "vulnerable": 2
+   },
+   "repository_key": "qiskit/qiskit-ibm-runtime",
+   "revisions": [
+    "1cba6967e7af156e9d9f610db7753419138c732a",
+    "2e8c8c8df83ba310f52d1651a426bad879e0bd38",
+    "a750d8c6485cbc134e339abcda6459b537a889c6",
+    "b78fca114133051805d00043a404b25a33835f4d"
+   ],
+   "split": "train",
+   "url": "https://github.com/Qiskit/qiskit-ibm-runtime"
+  },
+  {
+   "advisories": [
+    "GHSA-8423-w5wx-h2r6"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) COPYING detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:pannellum': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "xss_output_encoding"
+   ],
+   "cwes": [
+    "CWE-79"
+   ],
+   "evidence": {
+    "paths": [
+     "src/js/pannellum.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "9391ef8da6a6a98c6a9f8c97f101adb900523681": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "COPYING": {
+        "detected": "MIT",
+        "sha256": "e20b384f83f8f580d69e32d2419e093d777830689b3ab48cafbe4284b6ebc3c1"
+       }
+      }
+     },
+     "bb19235ac074df05c545c8d2d2235916d2aef0b8": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "COPYING": {
+        "detected": "MIT",
+        "sha256": "e20b384f83f8f580d69e32d2419e093d777830689b3ab48cafbe4284b6ebc3c1"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "9afd24a2bd42b1ce0bdd00548634f03bbdf39bd4e124cb10db87f6384774a6a0"
+   },
+   "evidence_urls": [
+    "https://github.com/mpetroff/pannellum",
+    "https://github.com/mpetroff/pannellum/blob/9391ef8da6a6a98c6a9f8c97f101adb900523681/COPYING",
+    "https://deps.dev/npm/pannellum",
+    "https://github.com/advisories/GHSA-8423-w5wx-h2r6"
+   ],
+   "language": "javascript",
+   "license_file": "COPYING",
+   "license_file_sha256": "e20b384f83f8f580d69e32d2419e093d777830689b3ab48cafbe4284b6ebc3c1",
+   "license_file_url": "https://github.com/mpetroff/pannellum/blob/9391ef8da6a6a98c6a9f8c97f101adb900523681/COPYING",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-79",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-a2ca09573aa32380",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-d4bb6ec4dee84ad3",
+    "sg-js-post-fix-6232650d92b42a90",
+    "sg-js-vulnerable-d65a306fb849f809"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "mpetroff/pannellum",
+   "revisions": [
+    "9391ef8da6a6a98c6a9f8c97f101adb900523681",
+    "bb19235ac074df05c545c8d2d2235916d2aef0b8"
+   ],
+   "split": "train",
+   "url": "https://github.com/mpetroff/pannellum"
+  },
+  {
+   "advisories": [
+    "GHSA-g4xp-36c3-f7mr"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as BSD-2-Clause, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@hapi/inert': ['BSD-3-Clause'], 'npm:inert': ['BSD-3-Clause']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "lib/directory.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "b9cf3bd96cb2e28d05d120bbd27ee84a99b365d9": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-2-Clause",
+        "sha256": "416d44f354e84fc5306f4e9cc64f3957173075c7cf0f34d1a958afd6956d2ad2"
+       }
+      }
+     },
+     "e8f99f94da4cb08e8032eda984761c3f111e3e82": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-2-Clause",
+        "sha256": "416d44f354e84fc5306f4e9cc64f3957173075c7cf0f34d1a958afd6956d2ad2"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "c056968eccb02f1c579551d31fc1d2f37fcef83bb70158154a4d8520d5edb857"
+   },
+   "evidence_urls": [
+    "https://github.com/hapijs/inert",
+    "https://github.com/hapijs/inert/blob/e8f99f94da4cb08e8032eda984761c3f111e3e82/LICENSE",
+    "https://deps.dev/npm/%40hapi%2Finert",
+    "https://deps.dev/npm/inert",
+    "https://github.com/advisories/GHSA-g4xp-36c3-f7mr"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "416d44f354e84fc5306f4e9cc64f3957173075c7cf0f34d1a958afd6956d2ad2",
+   "license_file_url": "https://github.com/hapijs/inert/blob/e8f99f94da4cb08e8032eda984761c3f111e3e82/LICENSE",
+   "license_spdx_detected": "BSD-2-Clause",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-6d0702a6dd6fb4fc",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-fc015d3acabd0a67",
+    "sg-js-post-fix-7c692c6a2120d0d2",
+    "sg-js-vulnerable-67f8ac6bbb55f321"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "hapijs/inert",
+   "revisions": [
+    "b9cf3bd96cb2e28d05d120bbd27ee84a99b365d9",
+    "e8f99f94da4cb08e8032eda984761c3f111e3e82"
+   ],
+   "split": "train",
+   "url": "https://github.com/hapijs/inert"
+  },
+  {
+   "advisories": [
+    "GHSA-4cpg-3vgw-4877"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:plist': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "prototype_pollution"
+   ],
+   "cwes": [
+    "CWE-1321"
+   ],
+   "evidence": {
+    "paths": [
+     "lib/parse.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "96e2303d059e6be0c9e0c4773226d14b4758de52": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "3677dc86e6e5f119b500c308cc24cf533e2eb44c41050ea64584e049e5b70161"
+       }
+      }
+     },
+     "aff22f47a62b2955f2c2276e16b3069b2807504e": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "3677dc86e6e5f119b500c308cc24cf533e2eb44c41050ea64584e049e5b70161"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "4ab7330b306d1366675230bbbf121836bc568537e683e16a97c4dd507d38607f"
+   },
+   "evidence_urls": [
+    "https://github.com/TooTallNate/plist.js",
+    "https://github.com/TooTallNate/plist.js/blob/96e2303d059e6be0c9e0c4773226d14b4758de52/LICENSE",
+    "https://deps.dev/npm/plist",
+    "https://github.com/advisories/GHSA-4cpg-3vgw-4877"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "3677dc86e6e5f119b500c308cc24cf533e2eb44c41050ea64584e049e5b70161",
+   "license_file_url": "https://github.com/TooTallNate/plist.js/blob/96e2303d059e6be0c9e0c4773226d14b4758de52/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1321",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-60118f9d671438c4",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-2c48278982e0646a",
+    "sg-js-post-fix-a806d40c1e7c690b",
+    "sg-js-vulnerable-c89993171439fc63"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "tootallnate/plist.js",
+   "revisions": [
+    "96e2303d059e6be0c9e0c4773226d14b4758de52",
+    "aff22f47a62b2955f2c2276e16b3069b2807504e"
+   ],
+   "split": "train",
+   "url": "https://github.com/TooTallNate/plist.js"
+  },
+  {
+   "advisories": [
+    "GHSA-fjxv-7rqg-78g4"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) License detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:form-data': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "crypto_tls_integrity"
+   ],
+   "cwes": [
+    "CWE-330"
+   ],
+   "evidence": {
+    "paths": [
+     "lib/form_data.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "3d1723080e6577a66f17f163ecd345a21d8d0fd0": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "License": {
+        "detected": "MIT",
+        "sha256": "e5b780d4f38d1d3328e3e53186c4e62d3fa149ea6f2bacd5de5ad0c30ac85343"
+       }
+      }
+     },
+     "d8d67dc8ac79285154edf7d3f57dbab593b9a146": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "License": {
+        "detected": "MIT",
+        "sha256": "e5b780d4f38d1d3328e3e53186c4e62d3fa149ea6f2bacd5de5ad0c30ac85343"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "2c976b84842502d5d1b36ea263030161e6ef493c460633b55417ee8d70e3fdba"
+   },
+   "evidence_urls": [
+    "https://github.com/form-data/form-data",
+    "https://github.com/form-data/form-data/blob/3d1723080e6577a66f17f163ecd345a21d8d0fd0/License",
+    "https://deps.dev/npm/form-data",
+    "https://github.com/advisories/GHSA-fjxv-7rqg-78g4"
+   ],
+   "language": "javascript",
+   "license_file": "License",
+   "license_file_sha256": "e5b780d4f38d1d3328e3e53186c4e62d3fa149ea6f2bacd5de5ad0c30ac85343",
+   "license_file_url": "https://github.com/form-data/form-data/blob/3d1723080e6577a66f17f163ecd345a21d8d0fd0/License",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-330",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-f9fc45b8c9be2aba",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 6
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-36b1968c2636a7de",
+    "sg-js-post-fix-59cfbaae3c09d73b",
+    "sg-js-vulnerable-b5788d79b6c4c9bd"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "form-data/form-data",
+   "revisions": [
+    "3d1723080e6577a66f17f163ecd345a21d8d0fd0",
+    "d8d67dc8ac79285154edf7d3f57dbab593b9a146"
+   ],
+   "split": "train",
+   "url": "https://github.com/form-data/form-data"
+  },
+  {
+   "advisories": [
+    "GHSA-5q6m-3h65-w53x"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:react-dev-utils': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "command_injection"
+   ],
+   "cwes": [
+    "CWE-78"
+   ],
+   "evidence": {
+    "paths": [
+     "packages/react-dev-utils/getProcessForPort.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "22f46a8d5dfc46fe0f613cd7efbc82344823f461": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/react-dev-utils/LICENSE": {
+        "detected": "MIT",
+        "sha256": "f657f99d3fb9647db92628e96007aabb46e5f04f33e49999075aab8e250ca7ce"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/react-dev-utils/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "f657f99d3fb9647db92628e96007aabb46e5f04f33e49999075aab8e250ca7ce"
+       }
+      }
+     },
+     "f5e415f3a5b66f07dcc60aba1b445fa7cda97268": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/react-dev-utils/LICENSE": {
+        "detected": "MIT",
+        "sha256": "f657f99d3fb9647db92628e96007aabb46e5f04f33e49999075aab8e250ca7ce"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/react-dev-utils/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "f657f99d3fb9647db92628e96007aabb46e5f04f33e49999075aab8e250ca7ce"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "146f39fd91d7f4f3f07974aae25f53adcc42161ccb79b5f4471ed9c830e6bb87"
+   },
+   "evidence_urls": [
+    "https://github.com/facebook/create-react-app",
+    "https://github.com/facebook/create-react-app/blob/f5e415f3a5b66f07dcc60aba1b445fa7cda97268/LICENSE",
+    "https://deps.dev/npm/react-dev-utils",
+    "https://github.com/advisories/GHSA-5q6m-3h65-w53x"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "f657f99d3fb9647db92628e96007aabb46e5f04f33e49999075aab8e250ca7ce",
+   "license_file_url": "https://github.com/facebook/create-react-app/blob/f5e415f3a5b66f07dcc60aba1b445fa7cda97268/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-78",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-436bd6cd5e31eb6e",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-6f719edd97aeb800",
+    "sg-js-post-fix-9530654cbc40e78d",
+    "sg-js-vulnerable-26cf8cf00f2ad867"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "facebook/create-react-app",
+   "revisions": [
+    "22f46a8d5dfc46fe0f613cd7efbc82344823f461",
+    "f5e415f3a5b66f07dcc60aba1b445fa7cda97268"
+   ],
+   "split": "train",
+   "url": "https://github.com/facebook/create-react-app"
+  },
+  {
+   "advisories": [
+    "GHSA-h452-7996-h45h"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:cookiejar': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "resource_limits_redos"
+   ],
+   "cwes": [
+    "CWE-1333"
+   ],
+   "evidence": {
+    "paths": [
+     "cookiejar.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "a9a320c3c49d65df491f5721969cfbf9e128d9af": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "3d51f096fd603973bc8e6c659e449176a689d1d55b6b3bf8c2c9dea77348124e"
+       }
+      }
+     },
+     "eaa00021caf6ae09449dde826108153b578348e5": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "3d51f096fd603973bc8e6c659e449176a689d1d55b6b3bf8c2c9dea77348124e"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "a7457186d15762c2d70842168a7832d57e527b528631076981dcab3af0ba95e2"
+   },
+   "evidence_urls": [
+    "https://github.com/bmeck/node-cookiejar",
+    "https://github.com/bmeck/node-cookiejar/blob/eaa00021caf6ae09449dde826108153b578348e5/LICENSE",
+    "https://deps.dev/npm/cookiejar",
+    "https://github.com/advisories/GHSA-h452-7996-h45h"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "3d51f096fd603973bc8e6c659e449176a689d1d55b6b3bf8c2c9dea77348124e",
+   "license_file_url": "https://github.com/bmeck/node-cookiejar/blob/eaa00021caf6ae09449dde826108153b578348e5/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1333",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-eb1689b826041e33",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-6b10f1469c68d1fe",
+    "sg-js-vulnerable-39fe25b3e5ed3143"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "bmeck/node-cookiejar",
+   "revisions": [
+    "a9a320c3c49d65df491f5721969cfbf9e128d9af",
+    "eaa00021caf6ae09449dde826108153b578348e5"
+   ],
+   "split": "train",
+   "url": "https://github.com/bmeck/node-cookiejar"
+  },
+  {
+   "advisories": [
+    "GHSA-qmm9-x5gr-4gfm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:hekto': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "redirect_ssrf"
+   ],
+   "cwes": [
+    "CWE-601"
+   ],
+   "evidence": {
+    "paths": [
+     "bin/hekto.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "1e5c75f8259ba0daf9b2600db3c246cda1934c46": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "b42f0daf5989c7dce08abf36b3fc47e9711dcb6fa21c9b61f0f56574dd20312b"
+       }
+      }
+     },
+     "c33aaae609c7236a7cb555a62d8b99dfbcb5da09": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "b42f0daf5989c7dce08abf36b3fc47e9711dcb6fa21c9b61f0f56574dd20312b"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "935f329867e448270a4e9e55384a339e8056cd3b20f1ab5a766345942a26e568"
+   },
+   "evidence_urls": [
+    "https://github.com/herber/hekto",
+    "https://github.com/herber/hekto/blob/1e5c75f8259ba0daf9b2600db3c246cda1934c46/LICENSE",
+    "https://deps.dev/npm/hekto",
+    "https://github.com/advisories/GHSA-qmm9-x5gr-4gfm"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "b42f0daf5989c7dce08abf36b3fc47e9711dcb6fa21c9b61f0f56574dd20312b",
+   "license_file_url": "https://github.com/herber/hekto/blob/1e5c75f8259ba0daf9b2600db3c246cda1934c46/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-601",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-897cd935fdfd3deb",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-971ff735d1f9d953",
+    "sg-js-vulnerable-2c2972301ba83750"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "herber/hekto",
+   "revisions": [
+    "1e5c75f8259ba0daf9b2600db3c246cda1934c46",
+    "c33aaae609c7236a7cb555a62d8b99dfbcb5da09"
+   ],
+   "split": "train",
+   "url": "https://github.com/herber/hekto"
+  },
+  {
+   "advisories": [
+    "GHSA-5cf7-cxrf-mq73"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as BSD-3-Clause, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:bostr': ['BSD-3-Clause']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz"
+   ],
+   "cwes": [
+    "CWE-285"
+   ],
+   "evidence": {
+    "paths": [
+     "auth.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "49181f4ec9ae1472c6675cab56bbc01e723855af": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "BSD-3-Clause"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-3-Clause",
+        "sha256": "7d3f85060fda9cb56f4f2dc6ac11a91b632b585f7616dcf8ed1c84c117fec413"
+       }
+      }
+     },
+     "8b131e239b92db889ac5d8fd02bee1d3a035fd9d": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "BSD-3-Clause"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-3-Clause",
+        "sha256": "7d3f85060fda9cb56f4f2dc6ac11a91b632b585f7616dcf8ed1c84c117fec413"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "a455d6e7d72226cff79c0b4f6b5b795f528dc528bd8ee0d4de66215eb816ca87"
+   },
+   "evidence_urls": [
+    "https://github.com/Yonle/bostr",
+    "https://github.com/Yonle/bostr/blob/49181f4ec9ae1472c6675cab56bbc01e723855af/LICENSE",
+    "https://deps.dev/npm/bostr",
+    "https://github.com/advisories/GHSA-5cf7-cxrf-mq73"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "7d3f85060fda9cb56f4f2dc6ac11a91b632b585f7616dcf8ed1c84c117fec413",
+   "license_file_url": "https://github.com/Yonle/bostr/blob/49181f4ec9ae1472c6675cab56bbc01e723855af/LICENSE",
+   "license_spdx_detected": "BSD-3-Clause",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-285",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-3d1e423a0045d599",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-0edda684ba1ffc3f",
+    "sg-js-vulnerable-43c75033b35aaa12"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "yonle/bostr",
+   "revisions": [
+    "49181f4ec9ae1472c6675cab56bbc01e723855af",
+    "8b131e239b92db889ac5d8fd02bee1d3a035fd9d"
+   ],
+   "split": "train",
+   "url": "https://github.com/Yonle/bostr"
+  },
+  {
+   "advisories": [
+    "GHSA-7p89-p6hx-q4fw"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:basic-auth-connect': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "information_exposure"
+   ],
+   "cwes": [
+    "CWE-208"
+   ],
+   "evidence": {
+    "paths": [
+     "index.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "bac1e6a8530e1efd0028800b9b588a37adb0d203": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "04cca811780163bb5e810014ae344e0a7b3fcb6e4ec98f73a649045bc040a387"
+       }
+      }
+     },
+     "d3b6a633311654a5afc8102fc1c5c331a9eca684": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "04cca811780163bb5e810014ae344e0a7b3fcb6e4ec98f73a649045bc040a387"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "e5779a10387b2ddd9504ee53cfe46ec5f5343ec98ceebbed6722b2aa13615770"
+   },
+   "evidence_urls": [
+    "https://github.com/expressjs/basic-auth-connect",
+    "https://github.com/expressjs/basic-auth-connect/blob/bac1e6a8530e1efd0028800b9b588a37adb0d203/LICENSE",
+    "https://deps.dev/npm/basic-auth-connect",
+    "https://github.com/advisories/GHSA-7p89-p6hx-q4fw"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "04cca811780163bb5e810014ae344e0a7b3fcb6e4ec98f73a649045bc040a387",
+   "license_file_url": "https://github.com/expressjs/basic-auth-connect/blob/bac1e6a8530e1efd0028800b9b588a37adb0d203/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-208",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-90f5a9a149e26d68",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-e1741b2e2f551529",
+    "sg-js-vulnerable-d59a731675225f86"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "expressjs/basic-auth-connect",
+   "revisions": [
+    "bac1e6a8530e1efd0028800b9b588a37adb0d203",
+    "d3b6a633311654a5afc8102fc1c5c331a9eca684"
+   ],
+   "split": "train",
+   "url": "https://github.com/expressjs/basic-auth-connect"
+  },
+  {
+   "advisories": [
+    "GHSA-3843-rr4g-m8jq",
+    "GHSA-grjp-4jmr-mjcw"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 4 used revisions",
+    "package registry (deps.dev) agrees: {'npm:express-xss-sanitizer': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "other",
+    "prototype_pollution"
+   ],
+   "cwes": [
+    "CWE-1321",
+    "CWE-183"
+   ],
+   "evidence": {
+    "paths": [
+     "lib/sanitize.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "3bf8aaaf4dbb1c209dcb8d87a82711a54c1ab39a": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ec2ed6f68a6c1db6cf444629832fa74ffd366303cc459edfb7aaad72401354e"
+       }
+      }
+     },
+     "5623009ef11dcf095c163a38dea07b9cc22ad19f": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ec2ed6f68a6c1db6cf444629832fa74ffd366303cc459edfb7aaad72401354e"
+       }
+      }
+     },
+     "62d6542a2a57298da7a2e02de623454007e4f6d6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ec2ed6f68a6c1db6cf444629832fa74ffd366303cc459edfb7aaad72401354e"
+       }
+      }
+     },
+     "fe0ebce263341f247b2360a8d55b9985b9155234": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ec2ed6f68a6c1db6cf444629832fa74ffd366303cc459edfb7aaad72401354e"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "216993f2b0c4df7537788806b4bd547254170946f9077eea597828bdb1047c51"
+   },
+   "evidence_urls": [
+    "https://github.com/AhmedAdelFahim/express-xss-sanitizer",
+    "https://github.com/AhmedAdelFahim/express-xss-sanitizer/blob/5623009ef11dcf095c163a38dea07b9cc22ad19f/LICENSE",
+    "https://deps.dev/npm/express-xss-sanitizer",
+    "https://github.com/advisories/GHSA-3843-rr4g-m8jq",
+    "https://github.com/advisories/GHSA-grjp-4jmr-mjcw"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "2ec2ed6f68a6c1db6cf444629832fa74ffd366303cc459edfb7aaad72401354e",
+   "license_file_url": "https://github.com/AhmedAdelFahim/express-xss-sanitizer/blob/5623009ef11dcf095c163a38dea07b9cc22ad19f/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "moderate",
+      "cwe": "CWE-1321",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-39a10ea67405b6b9",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 6
+     },
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-183",
+      "fix_pattern_consistent": null,
+      "group_id": "sgg-ecb1535639e848f5",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 5
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-js-caller-abstention-8877433b01acb577",
+    "sg-js-post-fix-f5916492e333f0e7",
+    "sg-js-post-fix-f7fe243cfe44e256",
+    "sg-js-vulnerable-a959acbcb2b8d6cd",
+    "sg-js-vulnerable-f977705f9c2c5143"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 2,
+    "vulnerable": 2
+   },
+   "repository_key": "ahmedadelfahim/express-xss-sanitizer",
+   "revisions": [
+    "3bf8aaaf4dbb1c209dcb8d87a82711a54c1ab39a",
+    "5623009ef11dcf095c163a38dea07b9cc22ad19f",
+    "62d6542a2a57298da7a2e02de623454007e4f6d6",
+    "fe0ebce263341f247b2360a8d55b9985b9155234"
+   ],
+   "split": "train",
+   "url": "https://github.com/AhmedAdelFahim/express-xss-sanitizer"
+  },
+  {
+   "advisories": [
+    "GHSA-458f-26r3-x2c3"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/schollz/rwtxt': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "xss_output_encoding"
+   ],
+   "cwes": [
+    "CWE-79"
+   ],
+   "evidence": {
+    "paths": [
+     "rwtxt.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "c09fb17375c4c47b49524c688288af1fe20e730a": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "212186b36a3918811ed69d8df18254c8e468f11dd68c690e231f55ff9bd98dc1"
+       }
+      }
+     },
+     "ca8d3f1b5b82cc2279b452be469a9666d3ed401d": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "212186b36a3918811ed69d8df18254c8e468f11dd68c690e231f55ff9bd98dc1"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "2445dc53a94feab09c81f48ac4f45d0fc2c47d6d70819b91b6a9364033b7e716"
+   },
+   "evidence_urls": [
+    "https://github.com/schollz/rwtxt",
+    "https://github.com/schollz/rwtxt/blob/c09fb17375c4c47b49524c688288af1fe20e730a/LICENSE",
+    "https://deps.dev/go/github.com%2Fschollz%2Frwtxt",
+    "https://github.com/advisories/GHSA-458f-26r3-x2c3"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "212186b36a3918811ed69d8df18254c8e468f11dd68c690e231f55ff9bd98dc1",
+   "license_file_url": "https://github.com/schollz/rwtxt/blob/c09fb17375c4c47b49524c688288af1fe20e730a/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-79",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-bf084f238c52bef6",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-2f7d4d546c6a73e1",
+    "sg-go-post-fix-6c0f4f0af8e663e3",
+    "sg-go-vulnerable-1ac56210a39d1e73"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "schollz/rwtxt",
+   "revisions": [
+    "c09fb17375c4c47b49524c688288af1fe20e730a",
+    "ca8d3f1b5b82cc2279b452be469a9666d3ed401d"
+   ],
+   "split": "train",
+   "url": "https://github.com/schollz/rwtxt"
+  },
+  {
+   "advisories": [
+    "GHSA-3258-qmv8-frp3"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/free5gc/smf': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz"
+   ],
+   "cwes": [
+    "CWE-306"
+   ],
+   "evidence": {
+    "paths": [
+     "internal/sbi/server.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "8385c00a0434bfc40c0fd331130cdd65c7495a98": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "ed127da2459a21616a5b84450ed3b77a68468db5758592bdfbf5f0008f90a925"
+       }
+      }
+     },
+     "e23ce97565f285eb99eed153743c62bf4c767c6e": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "ed127da2459a21616a5b84450ed3b77a68468db5758592bdfbf5f0008f90a925"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "38371b5fa68024fc374f5f79bbe93a98663db05f8649333f023bbf0a793a51ed"
+   },
+   "evidence_urls": [
+    "https://github.com/free5gc/smf",
+    "https://github.com/free5gc/smf/blob/e23ce97565f285eb99eed153743c62bf4c767c6e/LICENSE",
+    "https://deps.dev/go/github.com%2Ffree5gc%2Fsmf",
+    "https://github.com/advisories/GHSA-3258-qmv8-frp3"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "ed127da2459a21616a5b84450ed3b77a68468db5758592bdfbf5f0008f90a925",
+   "license_file_url": "https://github.com/free5gc/smf/blob/e23ce97565f285eb99eed153743c62bf4c767c6e/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-306",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-f1144abdaa482956",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-472d8a7c5de2a19f",
+    "sg-go-post-fix-016230aed7c48500",
+    "sg-go-vulnerable-66a7d840995c08c8"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "free5gc/smf",
+   "revisions": [
+    "8385c00a0434bfc40c0fd331130cdd65c7495a98",
+    "e23ce97565f285eb99eed153743c62bf4c767c6e"
+   ],
+   "split": "train",
+   "url": "https://github.com/free5gc/smf"
+  },
+  {
+   "advisories": [
+    "GHSA-qqxw-m5fj-f7gv"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/oauth2-proxy/oauth2-proxy': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "redirect_ssrf"
+   ],
+   "cwes": [
+    "CWE-601"
+   ],
+   "evidence": {
+    "paths": [
+     "oauthproxy.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "a316f8a06f3c0ca2b5fc5fa18a91781b313607b2": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e"
+       }
+      }
+     },
+     "fc59a6d683cad00ca658c215511566c2d4ca3cf5": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "bd355724959f9ede224f9ee620cbff92f620c3aa83379fffdebacffd618a414b"
+   },
+   "evidence_urls": [
+    "https://github.com/oauth2-proxy/oauth2_proxy",
+    "https://github.com/oauth2-proxy/oauth2_proxy/blob/a316f8a06f3c0ca2b5fc5fa18a91781b313607b2/LICENSE",
+    "https://deps.dev/go/github.com%2Foauth2-proxy%2Foauth2-proxy",
+    "https://github.com/advisories/GHSA-qqxw-m5fj-f7gv"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e",
+   "license_file_url": "https://github.com/oauth2-proxy/oauth2_proxy/blob/a316f8a06f3c0ca2b5fc5fa18a91781b313607b2/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-601",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-88567ffe3b5adecd",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-521f39a8df84455e",
+    "sg-go-post-fix-2d5ee6fe4df3a06f",
+    "sg-go-vulnerable-25b3b46f80c5e6d3"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "oauth2-proxy/oauth2_proxy",
+   "revisions": [
+    "a316f8a06f3c0ca2b5fc5fa18a91781b313607b2",
+    "fc59a6d683cad00ca658c215511566c2d4ca3cf5"
+   ],
+   "split": "train",
+   "url": "https://github.com/oauth2-proxy/oauth2_proxy"
+  },
+  {
+   "advisories": [
+    "GHSA-9j2f-3rj3-wgpg"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE, license.hcl detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/opencloud-eu/reva/v2': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "internal/grpc/interceptors/auth/scope.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "324cb8cc2fa89454862059a79086f16dad0f1f78": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
+       },
+       "license.hcl": {
+        "detected": "unknown",
+        "sha256": "3ef839824d9dd69f7c999eb2ab94bad00b4fc93334a24792c1a11566b0f9b755"
+       }
+      }
+     },
+     "95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
+       },
+       "license.hcl": {
+        "detected": "unknown",
+        "sha256": "3ef839824d9dd69f7c999eb2ab94bad00b4fc93334a24792c1a11566b0f9b755"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "e4d988675ef29615a13b1c624f2805949cb98498d0e1a460a7257f27172676ed"
+   },
+   "evidence_urls": [
+    "https://github.com/opencloud-eu/reva",
+    "https://github.com/opencloud-eu/reva/blob/95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1/LICENSE",
+    "https://github.com/opencloud-eu/reva/blob/95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1/license.hcl",
+    "https://deps.dev/go/github.com%2Fopencloud-eu%2Freva%2Fv2",
+    "https://github.com/advisories/GHSA-9j2f-3rj3-wgpg"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320",
+   "license_file_url": "https://github.com/opencloud-eu/reva/blob/95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-415984076072e28a",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-f13a58e6042f0626",
+    "sg-go-post-fix-48d9d1a9161472ee",
+    "sg-go-vulnerable-3c58e2f59d7e8e18"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "opencloud-eu/reva",
+   "revisions": [
+    "324cb8cc2fa89454862059a79086f16dad0f1f78",
+    "95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1"
+   ],
+   "split": "train",
+   "url": "https://github.com/opencloud-eu/reva"
+  },
+  {
+   "advisories": [
+    "GHSA-9qq8-cgcv-qmc9"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/smallstep/certificates': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "resource_limits_redos"
+   ],
+   "cwes": [
+    "CWE-129"
+   ],
+   "evidence": {
+    "paths": [
+     "acme/challenge.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "bb94179fa4c64bda3d3a66ab112f39f9563e0c2c": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "6fac0a40e0507e3ba32cd3471c808fa5ba4b088700bd22d81250f40f6cc74db5"
+       }
+      }
+     },
+     "ffd31ac0a87e03b0224cb8363094bfe602242888": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "6fac0a40e0507e3ba32cd3471c808fa5ba4b088700bd22d81250f40f6cc74db5"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "584ac9dd294213c48b9d367d5b394baeb04d6dbddbd8f31c4564d54944c2dc2c"
+   },
+   "evidence_urls": [
+    "https://github.com/smallstep/certificates",
+    "https://github.com/smallstep/certificates/blob/ffd31ac0a87e03b0224cb8363094bfe602242888/LICENSE",
+    "https://deps.dev/go/github.com%2Fsmallstep%2Fcertificates",
+    "https://github.com/advisories/GHSA-9qq8-cgcv-qmc9"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "6fac0a40e0507e3ba32cd3471c808fa5ba4b088700bd22d81250f40f6cc74db5",
+   "license_file_url": "https://github.com/smallstep/certificates/blob/ffd31ac0a87e03b0224cb8363094bfe602242888/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-129",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-532d378d5edccf88",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-12363c0482873b5f",
+    "sg-go-post-fix-3f573f5c19cb5b6f",
+    "sg-go-vulnerable-1953885ab91b0503"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "smallstep/certificates",
+   "revisions": [
+    "bb94179fa4c64bda3d3a66ab112f39f9563e0c2c",
+    "ffd31ac0a87e03b0224cb8363094bfe602242888"
+   ],
+   "split": "train",
+   "url": "https://github.com/smallstep/certificates"
+  },
+  {
+   "advisories": [
+    "GHSA-6wxm-mpqj-6jpf"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/golang/glog': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "crypto_tls_integrity"
+   ],
+   "cwes": [
+    "CWE-377"
+   ],
+   "evidence": {
+    "paths": [
+     "glog_file.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "b8741656e406e66d6992bc2c9575e460ecaa0ec2": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+       }
+      }
+     },
+     "f64253318f461eb4e5a3e0e669073d721e10da70": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "a0a9a4f50bf63e521e7ec83963996fb50b3ded3efdd3787cfac1fc95e8c72a4e"
+   },
+   "evidence_urls": [
+    "https://github.com/golang/glog",
+    "https://github.com/golang/glog/blob/b8741656e406e66d6992bc2c9575e460ecaa0ec2/LICENSE",
+    "https://deps.dev/go/github.com%2Fgolang%2Fglog",
+    "https://github.com/advisories/GHSA-6wxm-mpqj-6jpf"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68",
+   "license_file_url": "https://github.com/golang/glog/blob/b8741656e406e66d6992bc2c9575e460ecaa0ec2/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-377",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-2f165d490d72be2b",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-7c11e32e1386472f",
+    "sg-go-post-fix-d63809bacf8516c1",
+    "sg-go-vulnerable-172eb4a2e5ae260d"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "golang/glog",
+   "revisions": [
+    "b8741656e406e66d6992bc2c9575e460ecaa0ec2",
+    "f64253318f461eb4e5a3e0e669073d721e10da70"
+   ],
+   "split": "train",
+   "url": "https://github.com/golang/glog"
+  },
+  {
+   "advisories": [
+    "GHSA-3f65-m234-9mxr"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/huandu/facebook/v2': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "information_exposure"
+   ],
+   "cwes": [
+    "CWE-209"
+   ],
+   "evidence": {
+    "paths": [
+     "session.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "1591be276561bbdb019c0279f1d33cb18a650e1b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "cebbb247fbbd6003c71f83f276c039f1810b496cf015ff3f753d6c547c39b1a4"
+       }
+      }
+     },
+     "8b34431b91b32903c8821b1d7621bf81a029d8e4": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "cebbb247fbbd6003c71f83f276c039f1810b496cf015ff3f753d6c547c39b1a4"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "2a2d7113c8c9e429252d99bf737e2912935080735c83f9ebfa6db1b0cb38a3b9"
+   },
+   "evidence_urls": [
+    "https://github.com/huandu/facebook",
+    "https://github.com/huandu/facebook/blob/8b34431b91b32903c8821b1d7621bf81a029d8e4/LICENSE",
+    "https://deps.dev/go/github.com%2Fhuandu%2Ffacebook%2Fv2",
+    "https://github.com/advisories/GHSA-3f65-m234-9mxr"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "cebbb247fbbd6003c71f83f276c039f1810b496cf015ff3f753d6c547c39b1a4",
+   "license_file_url": "https://github.com/huandu/facebook/blob/8b34431b91b32903c8821b1d7621bf81a029d8e4/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-209",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-1809ccd5c1e650aa",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-30e039b9e72666e0",
+    "sg-go-post-fix-689f0c279b2b1540",
+    "sg-go-vulnerable-9688c57fcfcba7f8"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "huandu/facebook",
+   "revisions": [
+    "1591be276561bbdb019c0279f1d33cb18a650e1b",
+    "8b34431b91b32903c8821b1d7621bf81a029d8e4"
+   ],
+   "split": "train",
+   "url": "https://github.com/huandu/facebook"
+  },
+  {
+   "advisories": [
+    "GHSA-5248-h45p-9pgw"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/openclarity/kubeclarity/backend': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "sql_injection"
+   ],
+   "cwes": [
+    "CWE-89"
+   ],
+   "evidence": {
+    "paths": [
+     "backend/pkg/database/id_view.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "1d1178840703a72d9082b7fc4aea0a3326c5d294": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "backend/pkg/database/license_view.go": {
+        "detected": "Apache-2.0",
+        "sha256": "00431e363e5c180331528eeefd526d12e40f9ce0b5845a6bee047fe43f34c752"
+       }
+      },
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "095a02629dc985a107b5591eab62c1a058ae301fc9fe97cd251a4e38ab46bc76"
+       }
+      }
+     },
+     "5f6b411161100c15196c8149c0b1df5537c88a05": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "backend/pkg/database/license_view.go": {
+        "detected": "Apache-2.0",
+        "sha256": "00431e363e5c180331528eeefd526d12e40f9ce0b5845a6bee047fe43f34c752"
+       }
+      },
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "095a02629dc985a107b5591eab62c1a058ae301fc9fe97cd251a4e38ab46bc76"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "7b6c82662cbcb8045b1d261d0232325cec3b461daa2df47a112e1d60eac335c9"
+   },
+   "evidence_urls": [
+    "https://github.com/openclarity/kubeclarity",
+    "https://github.com/openclarity/kubeclarity/blob/1d1178840703a72d9082b7fc4aea0a3326c5d294/LICENSE",
+    "https://deps.dev/go/github.com%2Fopenclarity%2Fkubeclarity%2Fbackend",
+    "https://github.com/advisories/GHSA-5248-h45p-9pgw"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "095a02629dc985a107b5591eab62c1a058ae301fc9fe97cd251a4e38ab46bc76",
+   "license_file_url": "https://github.com/openclarity/kubeclarity/blob/1d1178840703a72d9082b7fc4aea0a3326c5d294/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-89",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-22599266ed0472f0",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-post-fix-0029d00c3f93f3be",
+    "sg-go-vulnerable-260d9150dcc92ca1"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "openclarity/kubeclarity",
+   "revisions": [
+    "1d1178840703a72d9082b7fc4aea0a3326c5d294",
+    "5f6b411161100c15196c8149c0b1df5537c88a05"
+   ],
+   "split": "train",
+   "url": "https://github.com/openclarity/kubeclarity"
+  },
+  {
+   "advisories": [
+    "GHSA-46mp-8w32-6g94",
+    "GHSA-r5p3-955p-5ggq"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/kyverno/kyverno': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz",
+    "deserialization_input_validation"
+   ],
+   "cwes": [
+    "CWE-20",
+    "CWE-285"
+   ],
+   "evidence": {
+    "paths": [
+     "pkg/cosign/cosign.go",
+     "pkg/engine/wildcards/wildcards.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "53d08d8095b98deba672c9bd2b2d1393b4b312a8": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "5f42a0bad8ca0812b676f11f8674f87403ca2367": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "8777672fb17bdf252bd2e7d8de3441e240404a60": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "cbd7d4ca24de1c55396fc3295e9fc3215832be7c": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "2b4590559d3ae97ac238ad59eeb518debd904cdb020b998ece093f30a6c8a1a4"
+   },
+   "evidence_urls": [
+    "https://github.com/kyverno/kyverno",
+    "https://github.com/kyverno/kyverno/blob/cbd7d4ca24de1c55396fc3295e9fc3215832be7c/LICENSE",
+    "https://deps.dev/go/github.com%2Fkyverno%2Fkyverno",
+    "https://github.com/advisories/GHSA-46mp-8w32-6g94",
+    "https://github.com/advisories/GHSA-r5p3-955p-5ggq"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+   "license_file_url": "https://github.com/kyverno/kyverno/blob/cbd7d4ca24de1c55396fc3295e9fc3215832be7c/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-20",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-2a03dad3b55d5c07",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 1
+     },
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-285",
+      "fix_pattern_consistent": false,
+      "group_id": "sgg-f86c1753db12107f",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 1
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-5a38ff6926a5a07b",
+    "sg-go-caller-abstention-b59da6b77e0bf112",
+    "sg-go-post-fix-2df31d1cefa975ae",
+    "sg-go-post-fix-d553dfdc0ba89358",
+    "sg-go-vulnerable-7be0cc4b460921d5",
+    "sg-go-vulnerable-802fecdb5d88f1d1"
+   ],
+   "records": {
+    "caller_abstention": 2,
+    "post_fix": 2,
+    "vulnerable": 2
+   },
+   "repository_key": "kyverno/kyverno",
+   "revisions": [
+    "53d08d8095b98deba672c9bd2b2d1393b4b312a8",
+    "5f42a0bad8ca0812b676f11f8674f87403ca2367",
+    "8777672fb17bdf252bd2e7d8de3441e240404a60",
+    "cbd7d4ca24de1c55396fc3295e9fc3215832be7c"
+   ],
+   "split": "train",
+   "url": "https://github.com/kyverno/kyverno"
+  },
+  {
+   "advisories": [
+    "GHSA-f9f4-5859-29mf"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/sqls-server/sqls': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "command_injection"
+   ],
+   "cwes": [
+    "CWE-77"
+   ],
+   "evidence": {
+    "paths": [
+     "main.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "468a23fc89af89f632cc023a10c031e4bc781797": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "00aa9f139248c5e0f7ce8d8e56191a06c825818f689f26839bb6c80c4e6f3aa5"
+       }
+      }
+     },
+     "efe7f66d16e9479e242d3876c2a4a878ee190568": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "00aa9f139248c5e0f7ce8d8e56191a06c825818f689f26839bb6c80c4e6f3aa5"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "5fb726b200cac592525c0c0b19cf4628e4bbab88da49048b42e800f6e643025d"
+   },
+   "evidence_urls": [
+    "https://github.com/sqls-server/sqls",
+    "https://github.com/sqls-server/sqls/blob/468a23fc89af89f632cc023a10c031e4bc781797/LICENSE",
+    "https://deps.dev/go/github.com%2Fsqls-server%2Fsqls",
+    "https://github.com/advisories/GHSA-f9f4-5859-29mf"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "00aa9f139248c5e0f7ce8d8e56191a06c825818f689f26839bb6c80c4e6f3aa5",
+   "license_file_url": "https://github.com/sqls-server/sqls/blob/468a23fc89af89f632cc023a10c031e4bc781797/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-77",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-13165f8ecda8dc35",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 8
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-27fd4db728b31f53",
+    "sg-go-post-fix-5878018417c1d731",
+    "sg-go-vulnerable-af79893f2ba30a97"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "sqls-server/sqls",
+   "revisions": [
+    "468a23fc89af89f632cc023a10c031e4bc781797",
+    "efe7f66d16e9479e242d3876c2a4a878ee190568"
+   ],
+   "split": "train",
+   "url": "https://github.com/sqls-server/sqls"
+  },
+  {
+   "advisories": [
+    "GHSA-5xjx-4xcm-hpcm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:ts-nodash': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "prototype_pollution"
+   ],
+   "cwes": [
+    "CWE-1321"
+   ],
+   "evidence": {
+    "paths": [
+     "src/Merge.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "78f4ffab4ed76c43f6f7fb91d8b329acb0d6e684": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "e6bcd6324bc1dd7b54e7a2dcc1877ee86a638d078aaf78a5bff57e14186080be"
+       }
+      }
+     },
+     "b9cc2b3b49f6cd5228e406bc57e17a28b998fea5": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "e6bcd6324bc1dd7b54e7a2dcc1877ee86a638d078aaf78a5bff57e14186080be"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "babe70892b8d51c4cc2a833e4752787b88249850d273a5eb1872c079838f9561"
+   },
+   "evidence_urls": [
+    "https://github.com/BadOPCode/NoDash",
+    "https://github.com/BadOPCode/NoDash/blob/b9cc2b3b49f6cd5228e406bc57e17a28b998fea5/LICENSE",
+    "https://deps.dev/npm/ts-nodash",
+    "https://github.com/advisories/GHSA-5xjx-4xcm-hpcm"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "e6bcd6324bc1dd7b54e7a2dcc1877ee86a638d078aaf78a5bff57e14186080be",
+   "license_file_url": "https://github.com/BadOPCode/NoDash/blob/b9cc2b3b49f6cd5228e406bc57e17a28b998fea5/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1321",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-be793e8647f5bf22",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-caller-abstention-f0fa9d834e585472",
+    "sg-ts-post-fix-495c3753e1a7dde2",
+    "sg-ts-vulnerable-2e01fcc4d6b26943"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "badopcode/nodash",
+   "revisions": [
+    "78f4ffab4ed76c43f6f7fb91d8b329acb0d6e684",
+    "b9cc2b3b49f6cd5228e406bc57e17a28b998fea5"
+   ],
+   "split": "train",
+   "url": "https://github.com/BadOPCode/NoDash"
+  },
+  {
+   "advisories": [
+    "GHSA-mwhf-vhr5-7j23"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:whatsapp-api-js': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "crypto_tls_integrity"
+   ],
+   "cwes": [
+    "CWE-347"
+   ],
+   "evidence": {
+    "paths": [
+     "src/index.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "441e43d525e23a6eb64640ed2aa6a29ebc3e47c7": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "d5c7cf07f761bc2b280c3fe99c5d8a096f13c82ec390c520606de2813cad483d"
+       }
+      }
+     },
+     "56620c65126427496a94d176082fbd8393a95b6d": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "d5c7cf07f761bc2b280c3fe99c5d8a096f13c82ec390c520606de2813cad483d"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "9ba6d0777432a047e695e38f3f3a6e1db991157c4e0fd5a957d0834714c3eccd"
+   },
+   "evidence_urls": [
+    "https://github.com/Secreto31126/whatsapp-api-js",
+    "https://github.com/Secreto31126/whatsapp-api-js/blob/56620c65126427496a94d176082fbd8393a95b6d/LICENSE",
+    "https://deps.dev/npm/whatsapp-api-js",
+    "https://github.com/advisories/GHSA-mwhf-vhr5-7j23"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "d5c7cf07f761bc2b280c3fe99c5d8a096f13c82ec390c520606de2813cad483d",
+   "license_file_url": "https://github.com/Secreto31126/whatsapp-api-js/blob/56620c65126427496a94d176082fbd8393a95b6d/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-347",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-a5f02a80b981def2",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-caller-abstention-5c18b0a319d3b12d",
+    "sg-ts-post-fix-d8468faeeccf32dd",
+    "sg-ts-vulnerable-f83b98f89d7d4266"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "secreto31126/whatsapp-api-js",
+   "revisions": [
+    "441e43d525e23a6eb64640ed2aa6a29ebc3e47c7",
+    "56620c65126427496a94d176082fbd8393a95b6d"
+   ],
+   "split": "train",
+   "url": "https://github.com/Secreto31126/whatsapp-api-js"
+  },
+  {
+   "advisories": [
+    "GHSA-frq9-3hp2-xvxg"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:mcp-markdownify-server': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "redirect_ssrf"
+   ],
+   "cwes": [
+    "CWE-918"
+   ],
+   "evidence": {
+    "paths": [
+     "src/server.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "0284aa8f34d32c65e20d8cda2d429b7943c9af03": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "fd8dd0549a488e658618032e5d607fce2ebe514ef39fae995a94b4c02d537aa6"
+       }
+      }
+     },
+     "949f12e633320548c565c6ec892d33695b158d64": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "fd8dd0549a488e658618032e5d607fce2ebe514ef39fae995a94b4c02d537aa6"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "7078eaa21135cefd307d8b93de4384a0b8f38993cc25ebfd492f66b63448d906"
+   },
+   "evidence_urls": [
+    "https://github.com/zcaceres/markdownify-mcp",
+    "https://github.com/zcaceres/markdownify-mcp/blob/0284aa8f34d32c65e20d8cda2d429b7943c9af03/LICENSE",
+    "https://deps.dev/npm/mcp-markdownify-server",
+    "https://github.com/advisories/GHSA-frq9-3hp2-xvxg"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "fd8dd0549a488e658618032e5d607fce2ebe514ef39fae995a94b4c02d537aa6",
+   "license_file_url": "https://github.com/zcaceres/markdownify-mcp/blob/0284aa8f34d32c65e20d8cda2d429b7943c9af03/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-918",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-905c755a84ce10ba",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 3
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-bf94ffe3f0407b00",
+    "sg-ts-vulnerable-ca00dea321ec51f2"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "zcaceres/markdownify-mcp",
+   "revisions": [
+    "0284aa8f34d32c65e20d8cda2d429b7943c9af03",
+    "949f12e633320548c565c6ec892d33695b158d64"
+   ],
+   "split": "train",
+   "url": "https://github.com/zcaceres/markdownify-mcp"
+  },
+  {
+   "advisories": [
+    "GHSA-f9wg-5f46-cjmw"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as ISC, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@next-auth/upstash-redis-adapter': ['ISC'], 'npm:next-auth': ['ISC']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz"
+   ],
+   "cwes": [
+    "CWE-290"
+   ],
+   "evidence": {
+    "paths": [
+     "packages/next-auth/src/core/lib/default-callbacks.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "6e15bdcb2d93c1ad5ee3889f702607637e79db50": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/next-auth/package.json",
+        "license": "ISC"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "ISC",
+        "sha256": "523848dd40e2bd005c46d80ea3c4c2477dbd8b93239814bb204b9de9693c8155"
+       }
+      }
+     },
+     "7a4bf038b119ae65ffbff67645e65d6ab9c4f847": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/next-auth/package.json",
+        "license": "ISC"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "ISC",
+        "sha256": "523848dd40e2bd005c46d80ea3c4c2477dbd8b93239814bb204b9de9693c8155"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "f53334baa61c47fbee6e2763254135c5287108d09018288e1fd3c058861eb246"
+   },
+   "evidence_urls": [
+    "https://github.com/nextauthjs/next-auth",
+    "https://github.com/nextauthjs/next-auth/blob/6e15bdcb2d93c1ad5ee3889f702607637e79db50/LICENSE",
+    "https://deps.dev/npm/%40next-auth%2Fupstash-redis-adapter",
+    "https://deps.dev/npm/next-auth",
+    "https://github.com/advisories/GHSA-f9wg-5f46-cjmw"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "523848dd40e2bd005c46d80ea3c4c2477dbd8b93239814bb204b9de9693c8155",
+   "license_file_url": "https://github.com/nextauthjs/next-auth/blob/6e15bdcb2d93c1ad5ee3889f702607637e79db50/LICENSE",
+   "license_spdx_detected": "ISC",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-290",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-057bc822d2185485",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-823772be14e97aa4",
+    "sg-ts-vulnerable-b1d953d964558cae"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "nextauthjs/next-auth",
+   "revisions": [
+    "6e15bdcb2d93c1ad5ee3889f702607637e79db50",
+    "7a4bf038b119ae65ffbff67645e65d6ab9c4f847"
+   ],
+   "split": "train",
+   "url": "https://github.com/nextauthjs/next-auth"
+  },
+  {
+   "advisories": [
+    "GHSA-gw32-9rmw-qwww"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE.md detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:svelte': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "xss_output_encoding"
+   ],
+   "cwes": [
+    "CWE-79"
+   ],
+   "evidence": {
+    "paths": [
+     "src/compiler/compile/render_ssr/handlers/Element.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "3bc791bcba97f0810165c7a2e215563993a0989b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.md": {
+        "detected": "MIT",
+        "sha256": "97a941bae1c510c556c5daf017180e4939ea392357d9a7bae2657e3e20c69c42"
+       }
+      }
+     },
+     "a31dec5eb30978cff7ff4d77f4bf316841f711bc": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.md": {
+        "detected": "MIT",
+        "sha256": "97a941bae1c510c556c5daf017180e4939ea392357d9a7bae2657e3e20c69c42"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "95dd00b45bf45b72c3f042e5a79f6fc317286af40feaab87ff34de199189811f"
+   },
+   "evidence_urls": [
+    "https://github.com/sveltejs/svelte",
+    "https://github.com/sveltejs/svelte/blob/a31dec5eb30978cff7ff4d77f4bf316841f711bc/LICENSE.md",
+    "https://deps.dev/npm/svelte",
+    "https://github.com/advisories/GHSA-gw32-9rmw-qwww"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE.md",
+   "license_file_sha256": "97a941bae1c510c556c5daf017180e4939ea392357d9a7bae2657e3e20c69c42",
+   "license_file_url": "https://github.com/sveltejs/svelte/blob/a31dec5eb30978cff7ff4d77f4bf316841f711bc/LICENSE.md",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-79",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-d4f0b4d3f1d57746",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-8b76b0a448ab38c5",
+    "sg-ts-vulnerable-18346f51ec85472e"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "sveltejs/svelte",
+   "revisions": [
+    "3bc791bcba97f0810165c7a2e215563993a0989b",
+    "a31dec5eb30978cff7ff4d77f4bf316841f711bc"
+   ],
+   "split": "train",
+   "url": "https://github.com/sveltejs/svelte"
+  },
+  {
+   "advisories": [
+    "GHSA-h5c3-5r3r-rr8q"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@octokit/plugin-paginate-rest': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "resource_limits_redos"
+   ],
+   "cwes": [
+    "CWE-1333"
+   ],
+   "evidence": {
+    "paths": [
+     "src/iterator.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "bb6c4f945d8023902cf387391d2b2209261044ab": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "8cd41c03a45ebf957a00d335d9dfab638b7ddba797a7d2f23bc1c4157a50db72"
+       }
+      }
+     },
+     "d9c1e8faa6517e5294dedce6525f0d6677d3dffd": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "8cd41c03a45ebf957a00d335d9dfab638b7ddba797a7d2f23bc1c4157a50db72"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "935d04c84126e86b372385b2688aedd94eccc95b5702ddf59a1ad568bc414514"
+   },
+   "evidence_urls": [
+    "https://github.com/octokit/plugin-paginate-rest.js",
+    "https://github.com/octokit/plugin-paginate-rest.js/blob/bb6c4f945d8023902cf387391d2b2209261044ab/LICENSE",
+    "https://deps.dev/npm/%40octokit%2Fplugin-paginate-rest",
+    "https://github.com/advisories/GHSA-h5c3-5r3r-rr8q"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "8cd41c03a45ebf957a00d335d9dfab638b7ddba797a7d2f23bc1c4157a50db72",
+   "license_file_url": "https://github.com/octokit/plugin-paginate-rest.js/blob/bb6c4f945d8023902cf387391d2b2209261044ab/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1333",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-3a68af45233c2940",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-89c4450664320b67",
+    "sg-ts-vulnerable-57c7357e3aaac50c"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "octokit/plugin-paginate-rest.js",
+   "revisions": [
+    "bb6c4f945d8023902cf387391d2b2209261044ab",
+    "d9c1e8faa6517e5294dedce6525f0d6677d3dffd"
+   ],
+   "split": "train",
+   "url": "https://github.com/octokit/plugin-paginate-rest.js"
+  },
+  {
+   "advisories": [
+    "GHSA-j2wh-wrv3-4x4g"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@graphql-mesh/cli': ['MIT'], 'npm:@graphql-mesh/http': ['MIT'], 'npm:@graphql-mesh/runtime': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "packages/http/src/index.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "5c19f8d6f79f2d9bfbeb6458c8dc7a1729c37db9": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/http/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c0c5f43383ea01ad807ff036234e940f79d30b2f7e75f6a784925a1a7736207d"
+       }
+      }
+     },
+     "95d93e7c140c2995b37e9d822aa3fe4e24ed2e78": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/http/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c0c5f43383ea01ad807ff036234e940f79d30b2f7e75f6a784925a1a7736207d"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "ff014b791596d5110bfa3dbd63bfb4dc0c4938cf7d33f2a09bb26376882eb2da"
+   },
+   "evidence_urls": [
+    "https://github.com/Urigo/graphql-mesh",
+    "https://github.com/Urigo/graphql-mesh/blob/95d93e7c140c2995b37e9d822aa3fe4e24ed2e78/LICENSE",
+    "https://deps.dev/npm/%40graphql-mesh%2Fcli",
+    "https://deps.dev/npm/%40graphql-mesh%2Fhttp",
+    "https://deps.dev/npm/%40graphql-mesh%2Fruntime",
+    "https://github.com/advisories/GHSA-j2wh-wrv3-4x4g"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c0c5f43383ea01ad807ff036234e940f79d30b2f7e75f6a784925a1a7736207d",
+   "license_file_url": "https://github.com/Urigo/graphql-mesh/blob/95d93e7c140c2995b37e9d822aa3fe4e24ed2e78/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-d2c5a2e8c2477720",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-5bdd24747b601acc",
+    "sg-ts-vulnerable-5f3ceb2d0b81a0fc"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "urigo/graphql-mesh",
+   "revisions": [
+    "5c19f8d6f79f2d9bfbeb6458c8dc7a1729c37db9",
+    "95d93e7c140c2995b37e9d822aa3fe4e24ed2e78"
+   ],
+   "split": "train",
+   "url": "https://github.com/Urigo/graphql-mesh"
+  },
+  {
+   "advisories": [
+    "GHSA-396q-4vc8-28x9"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@microsoft/kiota-http-fetchlibrary': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "deserialization_input_validation"
+   ],
+   "cwes": [
+    "CWE-178"
+   ],
+   "evidence": {
+    "paths": [
+     "packages/http/fetch/src/middlewares/options/redirectHandlerOptions.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "09f8bd9b34d68bf412a9b78f6ca7e7961ef14974": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/http/fetch/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+       }
+      }
+     },
+     "765d509a98a8e0024da094584b5ad524b004fa25": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "packages/http/fetch/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "119a92c59afb7dd217086699247a608fd9cd91ed55227ce7461a020fba5801c5"
+   },
+   "evidence_urls": [
+    "https://github.com/microsoft/kiota-typescript",
+    "https://github.com/microsoft/kiota-typescript/blob/09f8bd9b34d68bf412a9b78f6ca7e7961ef14974/LICENSE",
+    "https://deps.dev/npm/%40microsoft%2Fkiota-http-fetchlibrary",
+    "https://github.com/advisories/GHSA-396q-4vc8-28x9"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+   "license_file_url": "https://github.com/microsoft/kiota-typescript/blob/09f8bd9b34d68bf412a9b78f6ca7e7961ef14974/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-178",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-575b9cd703ef3c59",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-post-fix-f2ef5ad7e31086a5",
+    "sg-ts-vulnerable-97e08cf94267def4"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "microsoft/kiota-typescript",
+   "revisions": [
+    "09f8bd9b34d68bf412a9b78f6ca7e7961ef14974",
+    "765d509a98a8e0024da094584b5ad524b004fa25"
+   ],
+   "split": "train",
+   "url": "https://github.com/microsoft/kiota-typescript"
+  },
+  {
+   "advisories": [
+    "GHSA-vv7q-7jx5-f767"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:fastmcp': ['Apache-2.0'], 'PyPI:fastmcp-slim': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "redirect_ssrf"
+   ],
+   "cwes": [
+    "CWE-918"
+   ],
+   "evidence": {
+    "paths": [
+     "src/fastmcp/utilities/openapi/director.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "Apache-2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+       }
+      }
+     },
+     "c861862aededc7294cea5634d77e6926444ca101": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": "Apache-2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "6dae9187c3a5a912bd50e7ef6d17d7ae5fa8f6e2e5283b7aea0e8b97ba8855d5"
+   },
+   "evidence_urls": [
+    "https://github.com/PrefectHQ/fastmcp",
+    "https://github.com/PrefectHQ/fastmcp/blob/40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71/LICENSE",
+    "https://deps.dev/pypi/fastmcp",
+    "https://deps.dev/pypi/fastmcp-slim",
+    "https://github.com/advisories/GHSA-vv7q-7jx5-f767"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1",
+   "license_file_url": "https://github.com/PrefectHQ/fastmcp/blob/40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-918",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-ef751b72473a0d33",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-caller-abstention-658b794150a12ae8",
+    "sg-py-post-fix-816c2c199290eb72",
+    "sg-py-vulnerable-e68f00160132c8a2"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "prefecthq/fastmcp",
+   "revisions": [
+    "40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71",
+    "c861862aededc7294cea5634d77e6926444ca101"
+   ],
+   "split": "validation",
+   "url": "https://github.com/PrefectHQ/fastmcp"
+  },
+  {
+   "advisories": [
+    "GHSA-8phj-f9w2-cjcc"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:aim': ['Apache-2.0']}"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "aim/web/api/views.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "0b99c6ca08e0ba7e7011453a2f68033e9b1d1bce": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT License"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "b9e53df5e32d14bbd3a2c738e2db7187fb531e93": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "setup.cfg",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "MIT License"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "d89a799a033f4650266f42ea2c5cf6895a05a831ed9f078b2b6d0f4b3a8e5d97"
+   },
+   "evidence_urls": [
+    "https://github.com/aimhubio/aim",
+    "https://github.com/aimhubio/aim/blob/b9e53df5e32d14bbd3a2c738e2db7187fb531e93/LICENSE",
+    "https://deps.dev/pypi/aim",
+    "https://github.com/advisories/GHSA-8phj-f9w2-cjcc"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+   "license_file_url": "https://github.com/aimhubio/aim/blob/b9e53df5e32d14bbd3a2c738e2db7187fb531e93/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [
+    "setup.py at 0b99c6ca08e0 declares license 'MIT License', root license is Apache-2.0",
+    "setup.py at b9e53df5e32d declares license 'MIT License', root license is Apache-2.0"
+   ],
+   "proposed_decision": "needs_clarification",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-3a4e5af7af1e14ee",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-9ee90cb213fbb3a0",
+    "sg-py-vulnerable-88222657812b3b71"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "aimhubio/aim",
+   "revisions": [
+    "0b99c6ca08e0ba7e7011453a2f68033e9b1d1bce",
+    "b9e53df5e32d14bbd3a2c738e2db7187fb531e93"
+   ],
+   "split": "validation",
+   "url": "https://github.com/aimhubio/aim"
+  },
+  {
+   "advisories": [
+    "GHSA-v5f6-hjmf-9mc5"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'PyPI:pydrive2': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "deserialization_input_validation"
+   ],
+   "cwes": [
+    "CWE-502"
+   ],
+   "evidence": {
+    "paths": [
+     "pydrive2/settings.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "4d83d04948f16804026eaf4449ac02c75ba907a4": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache License 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "57763138117d06abe49ad042cb8f414c3f306cf751ff7188f239abd856b23e43"
+       }
+      }
+     },
+     "c57355dc2033ad90b7050d681b2c3ba548ff0004": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.py",
+        "license": "Apache License 2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "57763138117d06abe49ad042cb8f414c3f306cf751ff7188f239abd856b23e43"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "96cdc8e332536e09411cf00ccdb589ecda8bc3d60756780afb3be80939133815"
+   },
+   "evidence_urls": [
+    "https://github.com/iterative/PyDrive2",
+    "https://github.com/iterative/PyDrive2/blob/c57355dc2033ad90b7050d681b2c3ba548ff0004/LICENSE",
+    "https://deps.dev/pypi/pydrive2",
+    "https://github.com/advisories/GHSA-v5f6-hjmf-9mc5"
+   ],
+   "language": "python",
+   "license_file": "LICENSE",
+   "license_file_sha256": "57763138117d06abe49ad042cb8f414c3f306cf751ff7188f239abd856b23e43",
+   "license_file_url": "https://github.com/iterative/PyDrive2/blob/c57355dc2033ad90b7050d681b2c3ba548ff0004/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-502",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-8aadaf0d1d50ed1c",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-py-post-fix-ad87bf98714b59b8",
+    "sg-py-vulnerable-755184e58ab413b8"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "iterative/pydrive2",
+   "revisions": [
+    "4d83d04948f16804026eaf4449ac02c75ba907a4",
+    "c57355dc2033ad90b7050d681b2c3ba548ff0004"
+   ],
+   "split": "validation",
+   "url": "https://github.com/iterative/PyDrive2"
+  },
+  {
+   "advisories": [
+    "GHSA-w9mr-4mfr-499f"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) license.md detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:ms': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "resource_limits_redos"
+   ],
+   "cwes": [
+    "CWE-1333"
+   ],
+   "evidence": {
+    "paths": [
+     "index.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "b83b36d7266fb1bd779fd19a2f98bab17a04d999": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "license.md": {
+        "detected": "MIT",
+        "sha256": "6652830c2607c722b66f1b57de15877ab8fc5dca406cc5b335afeb365d0f32c1"
+       }
+      }
+     },
+     "caae2988ba2a37765d055c4eee63d383320ee662": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "license.md": {
+        "detected": "MIT",
+        "sha256": "6652830c2607c722b66f1b57de15877ab8fc5dca406cc5b335afeb365d0f32c1"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "3978c3277ed82c68339513b28847861c0b112a8539cf1bd0e11e9c03570e9530"
+   },
+   "evidence_urls": [
+    "https://github.com/vercel/ms",
+    "https://github.com/vercel/ms/blob/caae2988ba2a37765d055c4eee63d383320ee662/license.md",
+    "https://deps.dev/npm/ms",
+    "https://github.com/advisories/GHSA-w9mr-4mfr-499f"
+   ],
+   "language": "javascript",
+   "license_file": "license.md",
+   "license_file_sha256": "6652830c2607c722b66f1b57de15877ab8fc5dca406cc5b335afeb365d0f32c1",
+   "license_file_url": "https://github.com/vercel/ms/blob/caae2988ba2a37765d055c4eee63d383320ee662/license.md",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1333",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-fea0240ee5236af4",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-7afe8a0ad0af0d21",
+    "sg-js-vulnerable-3122e472ae3e069c"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "vercel/ms",
+   "revisions": [
+    "b83b36d7266fb1bd779fd19a2f98bab17a04d999",
+    "caae2988ba2a37765d055c4eee63d383320ee662"
+   ],
+   "split": "validation",
+   "url": "https://github.com/vercel/ms"
+  },
+  {
+   "advisories": [
+    "GHSA-m6fv-jmcg-4jfg"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:send': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "xss_output_encoding"
+   ],
+   "cwes": [
+    "CWE-79"
+   ],
+   "evidence": {
+    "paths": [
+     "index.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "ae4f2989491b392ae2ef3b0015a019770ae65d35": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9"
+       }
+      }
+     },
+     "b69cbb3dc4c09c37917d08a4c13fcd1bac97ade5": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "cef25c11dcd94a8300d7cd8963bdeb9cc7d0f010a61c68d8469e94c825001ae2"
+   },
+   "evidence_urls": [
+    "https://github.com/pillarjs/send",
+    "https://github.com/pillarjs/send/blob/ae4f2989491b392ae2ef3b0015a019770ae65d35/LICENSE",
+    "https://deps.dev/npm/send",
+    "https://github.com/advisories/GHSA-m6fv-jmcg-4jfg"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "25a328069fe771f8ed5b6f983ed4b0e6c84b3312ac0f69b28c3d52dc277962c9",
+   "license_file_url": "https://github.com/pillarjs/send/blob/ae4f2989491b392ae2ef3b0015a019770ae65d35/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-79",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-a96fb01241b1ea7d",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-9af0b30998b8db02",
+    "sg-js-vulnerable-b035f5030aa4526b"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "pillarjs/send",
+   "revisions": [
+    "ae4f2989491b392ae2ef3b0015a019770ae65d35",
+    "b69cbb3dc4c09c37917d08a4c13fcd1bac97ade5"
+   ],
+   "split": "validation",
+   "url": "https://github.com/pillarjs/send"
+  },
+  {
+   "advisories": [
+    "GHSA-6jqp-j69q-pm62"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:aws-lambda-multipart-parser': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "deserialization_input_validation"
+   ],
+   "cwes": [
+    "CWE-20"
+   ],
+   "evidence": {
+    "paths": [
+     "index.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "56ccb03af4dddebc2b2defb348b6558783d5757e": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "921cbd9b449ad3e85a997e853b96c43b02bed4ea524b144ebcd353c8cce31aff"
+       }
+      }
+     },
+     "573ade8f4bf41acc7d78029d288f37104a650447": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "921cbd9b449ad3e85a997e853b96c43b02bed4ea524b144ebcd353c8cce31aff"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "8ec6129ee94f72882f55389004dc8f72f37d044300b88be36c41e90c20e9595e"
+   },
+   "evidence_urls": [
+    "https://github.com/myshenin/aws-lambda-multipart-parser",
+    "https://github.com/myshenin/aws-lambda-multipart-parser/blob/56ccb03af4dddebc2b2defb348b6558783d5757e/LICENSE",
+    "https://deps.dev/npm/aws-lambda-multipart-parser",
+    "https://github.com/advisories/GHSA-6jqp-j69q-pm62"
+   ],
+   "language": "javascript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "921cbd9b449ad3e85a997e853b96c43b02bed4ea524b144ebcd353c8cce31aff",
+   "license_file_url": "https://github.com/myshenin/aws-lambda-multipart-parser/blob/56ccb03af4dddebc2b2defb348b6558783d5757e/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-20",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-9c07946f83438a5c",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 1
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-js-post-fix-bae8ad0abbd9dcdd",
+    "sg-js-vulnerable-72604fd01a5c7f9d"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "myshenin/aws-lambda-multipart-parser",
+   "revisions": [
+    "56ccb03af4dddebc2b2defb348b6558783d5757e",
+    "573ade8f4bf41acc7d78029d288f37104a650447"
+   ],
+   "split": "validation",
+   "url": "https://github.com/myshenin/aws-lambda-multipart-parser"
+  },
+  {
+   "advisories": [
+    "GHSA-vjh7-5r6x-xh6g"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/IceWhaleTech/CasaOS-Gateway': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz"
+   ],
+   "cwes": [
+    "CWE-306"
+   ],
+   "evidence": {
+    "paths": [
+     "route/gateway_route.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "391dd7f0f239020c46bf057cfa25f82031fc15f7": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     },
+     "f76b6bcd949be30867b2c3829cbeb94b0c354aef": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "6d46571b203d5fd9b270317b43fd696812f788267f11924e3289b7aead39faae"
+   },
+   "evidence_urls": [
+    "https://github.com/IceWhaleTech/CasaOS-Gateway",
+    "https://github.com/IceWhaleTech/CasaOS-Gateway/blob/391dd7f0f239020c46bf057cfa25f82031fc15f7/LICENSE",
+    "https://deps.dev/go/github.com%2FIceWhaleTech%2FCasaOS-Gateway",
+    "https://github.com/advisories/GHSA-vjh7-5r6x-xh6g"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+   "license_file_url": "https://github.com/IceWhaleTech/CasaOS-Gateway/blob/391dd7f0f239020c46bf057cfa25f82031fc15f7/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-306",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-741d565b4c89aa85",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-post-fix-836f5a68fe36a67a",
+    "sg-go-vulnerable-d09457fcf4800990"
+   ],
+   "records": {
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "icewhaletech/casaos-gateway",
+   "revisions": [
+    "391dd7f0f239020c46bf057cfa25f82031fc15f7",
+    "f76b6bcd949be30867b2c3829cbeb94b0c354aef"
+   ],
+   "split": "validation",
+   "url": "https://github.com/IceWhaleTech/CasaOS-Gateway"
+  },
+  {
+   "advisories": [
+    "GHSA-43mm-m3h2-3prc",
+    "GHSA-79pf-vx4x-7jmm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/filebrowser/filebrowser': ['Apache-2.0'], 'Go:github.com/filebrowser/filebrowser/v2': ['Apache-2.0']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "authn_authz",
+    "information_exposure"
+   ],
+   "cwes": [
+    "CWE-203",
+    "CWE-732"
+   ],
+   "evidence": {
+    "paths": [
+     "auth/json.go",
+     "http/tus_handlers.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "148b3c59422401ff00f255ae3044282d7a42192b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "4a1946819f24b20b3144360151a4dc1ed1b8e407bfb11045a74884abd6816100"
+       }
+      }
+     },
+     "24781badd413ee20333aba5cce1919d676e01889": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "4a1946819f24b20b3144360151a4dc1ed1b8e407bfb11045a74884abd6816100"
+       }
+      }
+     },
+     "4094fb359babac70e88d0ed4bfe3bd100744aad6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "4a1946819f24b20b3144360151a4dc1ed1b8e407bfb11045a74884abd6816100"
+       }
+      }
+     },
+     "7ed1425115be602c2b23236c410098ea2d74b42f": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "4a1946819f24b20b3144360151a4dc1ed1b8e407bfb11045a74884abd6816100"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "afec24a2f0516a3d7d871c5eaf0c414b9b05a543c31fd7a65cf533b1d11745aa"
+   },
+   "evidence_urls": [
+    "https://github.com/filebrowser/filebrowser",
+    "https://github.com/filebrowser/filebrowser/blob/7ed1425115be602c2b23236c410098ea2d74b42f/LICENSE",
+    "https://deps.dev/go/github.com%2Ffilebrowser%2Ffilebrowser",
+    "https://deps.dev/go/github.com%2Ffilebrowser%2Ffilebrowser%2Fv2",
+    "https://github.com/advisories/GHSA-43mm-m3h2-3prc",
+    "https://github.com/advisories/GHSA-79pf-vx4x-7jmm"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "4a1946819f24b20b3144360151a4dc1ed1b8e407bfb11045a74884abd6816100",
+   "license_file_url": "https://github.com/filebrowser/filebrowser/blob/7ed1425115be602c2b23236c410098ea2d74b42f/LICENSE",
+   "license_spdx_detected": "Apache-2.0",
+   "obligations": [
+    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-732",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-085d9c8ebf5e5e90",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     },
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-203",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-a097b7d0d05a256c",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-go-post-fix-8961c499820b03d4",
+    "sg-go-post-fix-a211321b7becd253",
+    "sg-go-vulnerable-874e3596ad03514b",
+    "sg-go-vulnerable-dad5e984d11ec53f"
+   ],
+   "records": {
+    "post_fix": 2,
+    "vulnerable": 2
+   },
+   "repository_key": "filebrowser/filebrowser",
+   "revisions": [
+    "148b3c59422401ff00f255ae3044282d7a42192b",
+    "24781badd413ee20333aba5cce1919d676e01889",
+    "4094fb359babac70e88d0ed4bfe3bd100744aad6",
+    "7ed1425115be602c2b23236c410098ea2d74b42f"
+   ],
+   "split": "validation",
+   "url": "https://github.com/filebrowser/filebrowser"
+  },
+  {
+   "advisories": [
+    "GHSA-fjgq-224f-fq37"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'Go:github.com/goadesign/goa': ['MIT'], 'Go:goa.design/goa': ['MIT'], 'Go:goa.design/goa/v3': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22"
+   ],
+   "evidence": {
+    "paths": [
+     "service.go"
+    ],
+    "problems": [],
+    "revisions": {
+     "4f2e80285f2e75171a19083735760f7d3f0fe49a": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "dc6856a49be04a7fb37879eceb01e99e40106a5707a931444e50c216739c21b1"
+       }
+      }
+     },
+     "70b5a199d0f813d74423993832c424e1fc73fb39": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "dc6856a49be04a7fb37879eceb01e99e40106a5707a931444e50c216739c21b1"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "66a64c48ad998d0498647e265675c5d869af30ce3269a2a0012a98fa72b98a72"
+   },
+   "evidence_urls": [
+    "https://github.com/goadesign/goa",
+    "https://github.com/goadesign/goa/blob/70b5a199d0f813d74423993832c424e1fc73fb39/LICENSE",
+    "https://deps.dev/go/github.com%2Fgoadesign%2Fgoa",
+    "https://deps.dev/go/goa.design%2Fgoa",
+    "https://deps.dev/go/goa.design%2Fgoa%2Fv3",
+    "https://github.com/advisories/GHSA-fjgq-224f-fq37"
+   ],
+   "language": "go",
+   "license_file": "LICENSE",
+   "license_file_sha256": "dc6856a49be04a7fb37879eceb01e99e40106a5707a931444e50c216739c21b1",
+   "license_file_url": "https://github.com/goadesign/goa/blob/70b5a199d0f813d74423993832c424e1fc73fb39/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "moderate",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-f65546417dd17874",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 2
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-go-caller-abstention-62b89b29a0d661b4",
+    "sg-go-post-fix-908f8110ae8153cc",
+    "sg-go-vulnerable-5f11ce590cffa8aa"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "goadesign/goa",
+   "revisions": [
+    "4f2e80285f2e75171a19083735760f7d3f0fe49a",
+    "70b5a199d0f813d74423993832c424e1fc73fb39"
+   ],
+   "split": "validation",
+   "url": "https://github.com/goadesign/goa"
+  },
+  {
+   "advisories": [
+    "GHSA-27m7-ffhq-jqrm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:mcp-watch': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "command_injection"
+   ],
+   "cwes": [
+    "CWE-78"
+   ],
+   "evidence": {
+    "paths": [
+     "src/scanner/McpScanner.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "0fca7228bd313ae5aa938d61311377e88ce6e682": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ade7403edfce1135fb84bb5c529fdf01c26789008d7de16fd6d5df7efe46cbd"
+       }
+      }
+     },
+     "e7da78c5b4b960f8b66c254059ad9ebc544a91a6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "2ade7403edfce1135fb84bb5c529fdf01c26789008d7de16fd6d5df7efe46cbd"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "2ca89996bdeb453cba4f85bb861597f002882abe13cae95da43872c30aa11740"
+   },
+   "evidence_urls": [
+    "https://github.com/kapilduraphe/mcp-watch",
+    "https://github.com/kapilduraphe/mcp-watch/blob/e7da78c5b4b960f8b66c254059ad9ebc544a91a6/LICENSE",
+    "https://deps.dev/npm/mcp-watch",
+    "https://github.com/advisories/GHSA-27m7-ffhq-jqrm"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE",
+   "license_file_sha256": "2ade7403edfce1135fb84bb5c529fdf01c26789008d7de16fd6d5df7efe46cbd",
+   "license_file_url": "https://github.com/kapilduraphe/mcp-watch/blob/e7da78c5b4b960f8b66c254059ad9ebc544a91a6/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-78",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-ad7e8d2a7b80113a",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 1
+     }
+    ],
+    "score": 5.0
+   },
+   "record_ids": [
+    "sg-ts-caller-abstention-4cf160b63bce861f",
+    "sg-ts-post-fix-3f5de24d3d052bbf",
+    "sg-ts-vulnerable-7a52c878fbfa32d2"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "kapilduraphe/mcp-watch",
+   "revisions": [
+    "0fca7228bd313ae5aa938d61311377e88ce6e682",
+    "e7da78c5b4b960f8b66c254059ad9ebc544a91a6"
+   ],
+   "split": "validation",
+   "url": "https://github.com/kapilduraphe/mcp-watch"
+  },
+  {
+   "advisories": [
+    "GHSA-x4hg-hfwf-p9mw"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE.txt detected as MIT, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@asymmetric-effort/nogginlessdom': ['MIT']}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwe_families": [
+    "resource_limits_redos"
+   ],
+   "cwes": [
+    "CWE-1333"
+   ],
+   "evidence": {
+    "paths": [
+     "src/dom/html-elements.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "25a3cbac665fae5663f8b71c073b80c3152dbe7b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "060b54c83b60b4326ad86816cb3d4aafb63e298a739a08366019363ec377a859"
+       }
+      }
+     },
+     "785e6ac6e124d1a89b3ccf40bbd75fc8e4cb215d": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "060b54c83b60b4326ad86816cb3d4aafb63e298a739a08366019363ec377a859"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "b41f74ccbb3b6242ee913b9c8925cae6131eedef88de6109dfad6cb8a0c636c6"
+   },
+   "evidence_urls": [
+    "https://github.com/asymmetric-effort/NogginLessDom",
+    "https://github.com/asymmetric-effort/NogginLessDom/blob/25a3cbac665fae5663f8b71c073b80c3152dbe7b/LICENSE.txt",
+    "https://deps.dev/npm/%40asymmetric-effort%2Fnogginlessdom",
+    "https://github.com/advisories/GHSA-x4hg-hfwf-p9mw"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE.txt",
+   "license_file_sha256": "060b54c83b60b4326ad86816cb3d4aafb63e298a739a08366019363ec377a859",
+   "license_file_url": "https://github.com/asymmetric-effort/NogginLessDom/blob/25a3cbac665fae5663f8b71c073b80c3152dbe7b/LICENSE.txt",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-1333",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-08b7bdcb5afb6bea",
+      "has_abstention": true,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 4,
+      "span_lines": 8
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-ts-caller-abstention-3278a37786395b73",
+    "sg-ts-post-fix-81d668dd3a03ca4d",
+    "sg-ts-vulnerable-f50278dbf16141ad"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 1
+   },
+   "repository_key": "asymmetric-effort/nogginlessdom",
+   "revisions": [
+    "25a3cbac665fae5663f8b71c073b80c3152dbe7b",
+    "785e6ac6e124d1a89b3ccf40bbd75fc8e4cb215d"
+   ],
+   "split": "validation",
+   "url": "https://github.com/asymmetric-effort/NogginLessDom"
+  },
+  {
+   "advisories": [
+    "GHSA-5rq4-664w-9x2c",
+    "GHSA-chqc-8p9q-pq6q"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE.txt detected as MIT, identical at all 4 used revisions",
+    "package registry (deps.dev) agrees: {'npm:basic-ftp': ['MIT']}"
+   ],
+   "cwe_families": [
+    "other",
+    "path_traversal"
+   ],
+   "cwes": [
+    "CWE-22",
+    "CWE-93"
+   ],
+   "evidence": {
+    "paths": [
+     "src/Client.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "2a2a0e6514357b9eda07c2f8afbd3f04727a7cd9": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "5b417c1f5ee996875e86b4959851c94e102edbbb3c68199bd3336c7351c924f9"
+       },
+       "NOTICE.txt": {
+        "detected": "unknown",
+        "sha256": "aa25344de4935cf2ceacc92e890039b073b0475e2d876025870a5e04551dc5f6"
+       }
+      }
+     },
+     "2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "5b417c1f5ee996875e86b4959851c94e102edbbb3c68199bd3336c7351c924f9"
+       },
+       "NOTICE.txt": {
+        "detected": "unknown",
+        "sha256": "aa25344de4935cf2ceacc92e890039b073b0475e2d876025870a5e04551dc5f6"
+       }
+      }
+     },
+     "515d21fee0b05be5ab934af5acb79d1d977e8026": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "5b417c1f5ee996875e86b4959851c94e102edbbb3c68199bd3336c7351c924f9"
+       },
+       "NOTICE.txt": {
+        "detected": "unknown",
+        "sha256": "aa25344de4935cf2ceacc92e890039b073b0475e2d876025870a5e04551dc5f6"
+       }
+      }
+     },
+     "65c90d949c0f8a9709759dff9e76bbe07061812b": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.txt": {
+        "detected": "MIT",
+        "sha256": "5b417c1f5ee996875e86b4959851c94e102edbbb3c68199bd3336c7351c924f9"
+       },
+       "NOTICE.txt": {
+        "detected": "unknown",
+        "sha256": "aa25344de4935cf2ceacc92e890039b073b0475e2d876025870a5e04551dc5f6"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "c852ba830b29b8aabec6cc3ea4b18f62b0fa2c5fcb22f94dd993e3961719b438"
+   },
+   "evidence_urls": [
+    "https://github.com/patrickjuchli/basic-ftp",
+    "https://github.com/patrickjuchli/basic-ftp/blob/2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b/LICENSE.txt",
+    "https://deps.dev/npm/basic-ftp",
+    "https://github.com/advisories/GHSA-5rq4-664w-9x2c",
+    "https://github.com/advisories/GHSA-chqc-8p9q-pq6q"
+   ],
+   "language": "typescript",
+   "license_file": "LICENSE.txt",
+   "license_file_sha256": "5b417c1f5ee996875e86b4959851c94e102edbbb3c68199bd3336c7351c924f9",
+   "license_file_url": "https://github.com/patrickjuchli/basic-ftp/blob/2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b/LICENSE.txt",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice (MIT/ISC/BSD) with any redistributed copy of the code"
+   ],
+   "open_questions": [
+    "NOTICE.txt at 2a2a0e651435 (detected unknown) may add terms; check which code it covers",
+    "NOTICE.txt at 2ecc8e2c500c (detected unknown) may add terms; check which code it covers",
+    "NOTICE.txt at 515d21fee0b0 (detected unknown) may add terms; check which code it covers",
+    "NOTICE.txt at 65c90d949c0f (detected unknown) may add terms; check which code it covers"
+   ],
+   "proposed_decision": "needs_clarification",
+   "quality": {
+    "groups": [
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-93",
+      "fix_pattern_consistent": null,
+      "group_id": "sgg-7a4269e055ffb16a",
+      "has_abstention": true,
+      "has_hard_negative": false,
+      "patch_eligible": false,
+      "score": 3,
+      "span_lines": 2
+     },
+     {
+      "correspondence": "strong",
+      "cwe": "CWE-22",
+      "fix_pattern_consistent": true,
+      "group_id": "sgg-ac86d7fb4de42b6c",
+      "has_abstention": false,
+      "has_hard_negative": true,
+      "patch_eligible": true,
+      "score": 5,
+      "span_lines": 2
+     }
+    ],
+    "score": 4.0
+   },
+   "record_ids": [
+    "sg-ts-caller-abstention-914f1cc850c1dfab",
+    "sg-ts-post-fix-13a54fe7f9b907e7",
+    "sg-ts-vulnerable-456652cfd690705d",
+    "sg-ts-vulnerable-c084e764388c97bc"
+   ],
+   "records": {
+    "caller_abstention": 1,
+    "post_fix": 1,
+    "vulnerable": 2
+   },
+   "repository_key": "patrickjuchli/basic-ftp",
+   "revisions": [
+    "2a2a0e6514357b9eda07c2f8afbd3f04727a7cd9",
+    "2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b",
+    "515d21fee0b05be5ab934af5acb79d1d977e8026",
+    "65c90d949c0f8a9709759dff9e76bbe07061812b"
+   ],
+   "split": "validation",
+   "url": "https://github.com/patrickjuchli/basic-ftp"
+  }
+ ],
+ "review_queue_sha256": "5b631383ed6e0fbc1167995c86582426be766d52a6b40bfa693b929064f3ee90",
+ "selection": {
+  "max_records": 20,
+  "min_score": 3.0,
+  "plan": {
+   "go/train": 10,
+   "go/validation": 3,
+   "javascript/train": 10,
+   "javascript/validation": 3,
+   "python/train": 10,
+   "python/validation": 3,
+   "typescript/train": 8,
+   "typescript/validation": 3
+  },
+  "tier_a_scored": 510
+ },
+ "status": "PROPOSAL - not an approval; see docs/PILOT_DATASET_RIGHTS_REVIEW.md"
+}
