@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import difflib
 import hashlib
+import re
 from dataclasses import dataclass, field
+from pathlib import PurePosixPath
 from typing import Any, Protocol
 
 from sentinel.garden import code
@@ -51,6 +53,55 @@ class ExtractionSettings:
     max_import_lines: int
     max_context_chars: int
     abstention_min_callee_name_length: int
+    # Garden v2 refinements. The defaults reproduce Garden v1 exactly; a dataset enables them in its
+    # config, so an existing dataset version never changes when the extractor improves.
+    member_additions: bool = False  # complete new functions/methods inserted in a class or object body
+    version_hunks_as_noise: bool = False  # module-level version-string bumps are not logic changes
+    tooling_files_excluded: bool = False  # build/test tooling files are not runtime source
+
+
+# Build, packaging and test tooling that is not shipped runtime code (Garden v2, `tooling_files_excluded`).
+_TOOLING_FILE = re.compile(
+    r"^(?:[\w.-]+\.config\.[cm]?[jt]s|\.?eslintrc\.[cm]?js|\.?prettierrc\.[cm]?js|gruntfile\.[jt]s|gulpfile\.[jt]s"
+    r"|karma\.conf\.js|tests?\.[cm]?[jt]s|tests?\.py|setup\.py|noxfile\.py|fabfile\.py|magefile\.go)$",
+    re.IGNORECASE,
+)
+# A version-string assignment (`__version__ = "1.2.3"`, `const Version = "v1.2.3"`, `version: '1.2.3',`).
+_VERSION_LINE = re.compile(
+    r"""^\s*(?:export\s+)?(?:const\s+|var\s+|let\s+)?(?:__version__|VERSION|Version|version)\s*(?::\s*string\s*)?[:=]\s*"""
+    r"""(["'`])v?[0-9][0-9A-Za-z.+_-]*\1\s*[,;]?\s*$"""
+)
+
+
+def is_runtime_source(path: str, settings: ExtractionSettings) -> bool:
+    if code.path_role(path) != "source":
+        return False
+    return not (settings.tooling_files_excluded and _TOOLING_FILE.match(PurePosixPath(path).name))
+
+
+def _is_version_bump(hunk: Hunk, old_noise: set[int], new_noise: set[int]) -> bool:
+    """Only version-string assignments change (checked only for hunks outside every function)."""
+    removed = [t for n, t in hunk.removed if n not in old_noise]
+    added = [t for n, t in hunk.added if n not in new_noise]
+    return bool(removed) and bool(added) and all(_VERSION_LINE.match(t) for t in removed + added)
+
+
+def _member_additions(hunk: Hunk, new_functions: list[code.Function], new_noise: set[int]) -> list[tuple[int, int]] | None:
+    """New-file ranges of complete functions a pure insertion adds inside a class or object body.
+
+    Every non-noise inserted line must belong to a function that the insertion adds completely
+    (signature to closing line, decorators included); anything else (a field, a statement, part
+    of a function) returns None and the hunk is treated as before."""
+    if not hunk.is_insertion or not hunk.added:
+        return None
+    numbers = [n for n, _ in hunk.added]
+    first, last = min(numbers), max(numbers)
+    meaningful = [n for n in numbers if n not in new_noise]
+    complete = [f for f in new_functions if first <= f.start and f.end <= last]
+    outer = [f for f in complete if not any(g != f and g.start <= f.start and f.end <= g.end for g in complete)]
+    if not meaningful or not outer or not all(any(f.start <= n <= f.end for f in outer) for n in meaningful):
+        return None
+    return [(f.start, f.end) for f in sorted(outer, key=lambda f: f.start)]
 
 
 @dataclass
@@ -113,7 +164,7 @@ def _is_top_level_addition(hunk: Hunk, language: str, new_noise: set[int]) -> bo
     return code.excerpt_is_well_formed(language, "\n".join(lines) + "\n")
 
 
-def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Change]:
+def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str], settings: ExtractionSettings | None = None) -> list[_Change]:
     parent = info.parents[0]
     changes: dict[tuple[str, int, int], _Change] = {}
     additions: dict[str, list[tuple[int, int]]] = {}
@@ -153,6 +204,13 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str]) -> list[_Cha
             if old_fn is None and _is_top_level_addition(hunk, language, new_noise):
                 additions.setdefault(path, []).append((hunk.new_start, hunk.new_start + hunk.new_count - 1))
                 continue
+            if old_fn is None and settings is not None:
+                members = _member_additions(hunk, new_functions, new_noise) if settings.member_additions else None
+                if members:
+                    additions.setdefault(path, []).extend(members)
+                    continue
+                if settings.version_hunks_as_noise and _is_version_bump(hunk, old_noise, new_noise):
+                    continue  # metadata only; not part of the function-level label or patch
             new_fn = _containing(
                 new_functions,
                 hunk.new_start,
@@ -326,7 +384,7 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     sources = [
         (status, path)
         for status, path in changed
-        if code.language_of(path) in allowed_languages and code.path_role(path) == "source"
+        if code.language_of(path) in allowed_languages and is_runtime_source(path, settings)
     ]
     if not sources:
         raise Rejected("no_source_change_in_language")
@@ -335,7 +393,7 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     if len(sources) > settings.max_source_files_changed:
         raise Rejected("too_many_source_files")
 
-    changes = _locate_changes(repo, info, [path for _, path in sources])
+    changes = _locate_changes(repo, info, [path for _, path in sources], settings)
     if not changes:
         raise Rejected("no_logic_change")
     if len(changes) > settings.max_changed_functions:

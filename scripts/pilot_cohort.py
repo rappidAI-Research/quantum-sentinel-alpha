@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import configparser
 import hashlib
 import json
 import posixpath
@@ -60,6 +61,73 @@ PLAN = {
 MAX_RECORDS = 20
 MIN_SCORE = 3.0
 NOTICE_NAME = re.compile(r"^(NOTICE|NOTICES|COPYING|COPYRIGHT|PATENTS|LICEN[CS]E|THIRD[_-]?PARTY[A-Z_-]*|ADDITIONAL[_-]TERMS)(\.(md|txt|rst))?$", re.I)
+# Literal license declarations in Python packaging files. Only quoted literals count: a value
+# computed at build time (`about["__license__"]`, `find_meta("license")`) or a pointer to the license
+# file (`license = {file = "LICENSE"}`) declares nothing beyond the root license file.
+_PY_LICENSE_TEXT = re.compile(r"""(?im)^\s*license\s*=\s*\{\s*text\s*=\s*["']([^"'\n]+)["']""")
+_PY_LICENSE_LITERAL = re.compile(r"""(?im)^\s*license\s*=\s*["']([^"'\n]+)["']""")  # pyproject / setup.py keyword
+_PY_LICENSE_KWARG = re.compile(r"""\blicense\s*=\s*["']([^"'\n]+)["']""")  # setup(..., license="MIT")
+_PY_CLASSIFIER = re.compile(r"License :: OSI Approved :: ([^\"'\n]+)")
+
+
+def python_metadata_license(text: str, filename: str = "setup.py") -> str | None:
+    """The license a pyproject.toml / setup.cfg / setup.py declares, or None.
+
+    setup.cfg is an INI file: its `license` option is literal text (parentheses included) unless it
+    is a `file:`/`attr:` directive, so any other value is kept and stays visible as a question.
+    pyproject.toml and setup.py count only quoted literals, never computed expressions."""
+    if posixpath.basename(filename) == "setup.cfg":
+        parser = configparser.ConfigParser(interpolation=None, strict=False)
+        try:
+            parser.read_string(text)
+        except configparser.Error:
+            return "unparseable"
+        if parser.has_option("metadata", "license"):
+            value = " ".join(parser.get("metadata", "license").split())
+            if value and not value.startswith(("file:", "attr:")):
+                return value
+    else:
+        for pattern in (_PY_LICENSE_TEXT, _PY_LICENSE_LITERAL, _PY_LICENSE_KWARG):
+            match = pattern.search(text)
+            if match:
+                return match.group(1).strip()
+    classifier = _PY_CLASSIFIER.search(text)
+    return classifier.group(1).strip() if classifier else None
+
+
+def normalize_license(value: Any) -> str | None:
+    """SPDX id, or a family ("BSD", "Apache") when the value names no variant/version, for a metadata
+    license value; None when it only points at the license file. Anything unrecognised is returned
+    unchanged, so it stays visible as a question."""
+    if isinstance(value, dict):  # package.json {"type": "MIT"} (deprecated form)
+        value = value.get("type")
+    if value is None:
+        return None
+    raw = str(value).strip()
+    text = re.sub(r"\s+", " ", raw.lower()).strip()
+    if text.startswith("see license in") or text.startswith("see licence in"):
+        return None
+    if text in SPDX_ALIASES:
+        return SPDX_ALIASES[text]
+    words = re.sub(r"[()]", " ", text).replace("licence", "license").replace("license", " ").replace(" version ", " ").split()
+    joined = " ".join(words)
+    if joined in {"apache 2", "apache 2.0", "apache v2", "apache-2", "asl 2", "asl 2.0", "apache software 2.0", "apache software 2", "apache-2.0"}:
+        return "Apache-2.0"
+    if joined in {"apache", "apache software"}:
+        return "Apache"
+    if joined in {"mit", "the mit", "expat"}:
+        return "MIT"
+    if joined == "isc":
+        return "ISC"
+    if joined in {"bsd 3-clause", "new bsd", "modified bsd", "3-clause bsd", "bsd 3 clause"}:
+        return "BSD-3-Clause"
+    if joined in {"bsd 2-clause", "simplified bsd", "2-clause bsd", "freebsd", "bsd 2 clause"}:
+        return "BSD-2-Clause"
+    if joined == "bsd":
+        return "BSD"
+    return raw
+
+
 SPDX_ALIASES = {
     "mit": "MIT",
     "mit license": "MIT",
@@ -196,6 +264,20 @@ def _blobs(repo: Path, revision: str, directory: str) -> list[str]:
     return [line.split("\t", 1)[1] for line in out.splitlines() if "\t" in line and line.split()[1] == "blob"]
 
 
+def _tree_absent(repo: Path, revision: str, directory: str) -> bool:
+    """True only when the directory is confirmed not to exist at the revision: its parent tree was
+    read successfully and holds no entry of that name. Any failure to read the parent is not absence."""
+    if not directory:
+        return False
+    parent, name = posixpath.split(directory)
+    spec = f"{revision}:{parent}" if parent else revision
+    try:
+        out = _git(repo, "ls-tree", spec).decode("utf-8", "replace")
+    except RuntimeError:
+        return _tree_absent(repo, revision, parent)  # absent if its parent is (confirmed the same way)
+    return not any(line.split("\t", 1)[1] == name for line in out.splitlines() if "\t" in line)
+
+
 def _package_license(repo: Path, revision: str, file_path: str, language: str, problems: list[str]) -> list[dict[str, Any]]:
     names = {"javascript": ["package.json"], "typescript": ["package.json"], "python": ["pyproject.toml", "setup.cfg", "setup.py"], "go": []}[language]
     directory = posixpath.dirname(file_path)
@@ -204,7 +286,8 @@ def _package_license(repo: Path, revision: str, file_path: str, language: str, p
         try:
             present = _blobs(repo, revision, directory)
         except RuntimeError as exc:
-            problems.append(f"cannot list {directory or '/'} at {revision}: {exc}")  # never read as "no metadata"
+            if not _tree_absent(repo, revision, directory):
+                problems.append(f"cannot list {directory or '/'} at {revision}: {exc}")  # never read as "no metadata"
             present = []
         for name in names:
             if name not in present:
@@ -222,9 +305,7 @@ def _package_license(repo: Path, revision: str, file_path: str, language: str, p
                 except ValueError:
                     value = "unparseable"
             else:
-                match = re.search(r"(?im)^\s*license\s*[=:]\s*(?:\{\s*text\s*=\s*)?[\"']?([^\"'\n,}]+)", text) or re.search(r"license\s*=\s*[\"']([^\"']+)", text)
-                classifier = re.search(r"License :: OSI Approved :: ([^\"'\n]+)", text)
-                value = (match.group(1).strip() if match else None) or (classifier.group(1).strip() if classifier else None)
+                value = python_metadata_license(text, name)
             found.append({"file": path, "license": value})
         if found or not directory:
             return found
@@ -296,11 +377,14 @@ def inspect_repository(key: str, records: list[dict[str, Any]], root_license: st
     language = records[0]["label"]["language"]
     evidence: dict[str, Any] = {**state, "revisions": {}, "problems": []}
 
-    def license_files(revision: str, directory: str, out: dict[str, Any], problems: list[str]) -> None:
+    def license_files(revision: str, directory: str, out: dict[str, Any], problems: list[str], absent: list[str]) -> None:
         try:
             names = _blobs(repo, revision, directory)
         except RuntimeError as exc:
-            problems.append(f"cannot inspect {directory or '/'} at {revision}: {exc}")
+            if _tree_absent(repo, revision, directory):
+                absent.append(directory)  # confirmed: the directory does not exist at this revision
+            else:
+                problems.append(f"cannot inspect {directory or '/'} at {revision}: {exc}")
             return
         for name in names:
             if not is_license_or_notice(name):
@@ -319,15 +403,16 @@ def inspect_repository(key: str, records: list[dict[str, Any]], root_license: st
         notices: dict[str, Any] = {}
         nested: dict[str, Any] = {}
         metadata: list[dict[str, Any]] = []
+        absent: list[str] = []
         try:
             _git(repo, "cat-file", "-e", f"{revision}^{{commit}}")
         except RuntimeError as exc:
             problems.append(f"cannot read commit {revision}: {exc}")
         else:
-            license_files(revision, "", notices, problems)
+            license_files(revision, "", notices, problems, absent)
             directories = sorted({d for f in files for d in _parents(f)})
             for directory in directories:
-                license_files(revision, directory, nested, problems)
+                license_files(revision, directory, nested, problems, absent)
             metadata = [m for f in files for m in _package_license(repo, revision, f, language, problems)]
         evidence["revisions"][revision] = {
             "inspection": "incomplete" if problems else "complete",
@@ -335,6 +420,8 @@ def inspect_repository(key: str, records: list[dict[str, Any]], root_license: st
             "license_files_on_record_paths": nested,
             "package_metadata": metadata,
         }
+        if absent:  # only present when non-empty, so earlier evidence keeps its exact form
+            evidence["revisions"][revision]["absent_directories"] = sorted(set(absent))
         evidence["problems"] += problems
     return evidence
 
@@ -373,9 +460,13 @@ def assess(entry: dict[str, Any], evidence: dict[str, Any] | None, state: dict[s
             value = meta["license"]
             if value is None:
                 continue
-            normalized = SPDX_ALIASES.get(str(value).strip().lower(), str(value).strip())
-            # the generic "BSD License" classifier names no variant: compatible only with a BSD root license
-            if normalized != root_spdx and not (normalized == "BSD" and root_spdx.startswith("BSD-")):
+            normalized = normalize_license(value)
+            if normalized is None:
+                continue  # points at the license file
+            # a family without variant/version ("BSD License", "Apache Software License") is compatible
+            # only with a root license of that family
+            family_ok = (normalized == "BSD" and root_spdx.startswith("BSD-")) or (normalized == "Apache" and root_spdx == "Apache-2.0")
+            if normalized != root_spdx and not family_ok:
                 questions.append(f"{meta['file']} at {revision[:12]} declares license {value!r}, root license is {root_spdx}")
     questions = sorted(set(questions))
     if questions:

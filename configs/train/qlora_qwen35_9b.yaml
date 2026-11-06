@@ -10,7 +10,7 @@ run_name: qsa-qlora-qwen35-9b-v0
 foundation: configs/model/foundation.yaml
 
 data:
-  garden_config: configs/garden/seed_v1.yaml     # train.chat.jsonl / validation.jsonl in its workdir
+  garden_config: configs/garden/seed_v2.yaml     # Garden v2 (superset of v1); train.chat.jsonl / validation.jsonl in its workdir
   max_seq_len: 4096          # examples longer than this are dropped and counted, never truncated
   end_of_turn: "<|im_end|>"  # appended to each assistant reply; must be a single token of the tokenizer
   tasks: [detection]         # add `patch` to also train patch generation on verified upstream fixes (docs/PATCH_SUPERVISION.md)
