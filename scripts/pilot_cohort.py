@@ -41,7 +41,7 @@ sys.path.insert(0, str(ROOT))
 from sentinel.data.registry import load_registry  # noqa: E402
 from sentinel.garden.audit import family_of  # noqa: E402
 from sentinel.garden.governance import gate  # noqa: E402
-from sentinel.garden.licenses import detect_license_text  # noqa: E402
+from sentinel.garden.licenses import LICENSE_FILE, detect_license_text  # noqa: E402
 
 SEED = ROOT / "data" / "garden" / "seed_v1"
 OUT = SEED / "pilot"
@@ -231,46 +231,107 @@ def _package_license(repo: Path, revision: str, file_path: str, language: str, p
         directory = posixpath.dirname(directory)
 
 
-def inspect_repository(key: str, records: list[dict[str, Any]], root_license: str) -> dict[str, Any]:
-    repo = CACHE / key.replace("/", "__")
+def is_license_or_notice(name: str) -> bool:
+    """NOTICE-type files and every license file name, suffixed ones included (LICENSE.GPL, LICENSE-MIT,
+    COPYING.LESSER), using the same matcher as the review queue."""
+    return bool(NOTICE_NAME.match(name) or LICENSE_FILE.match(name))
+
+
+def source_state(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """The exact source state an inspection must cover: revisions, file paths and the records using them."""
     revisions = sorted({r["provenance"][k] for r in records for k in ("vulnerable_revision", "fixed_revision")})
-    files = sorted({r["provenance"]["file_path"] for r in records})
+    paths = sorted({r["provenance"]["file_path"] for r in records})
+    binding = sorted(
+        (r["record_id"], r["provenance"]["vulnerable_revision"], r["provenance"]["fixed_revision"], r["provenance"]["file_path"])
+        for r in records
+    )
+    digest = hashlib.sha256(json.dumps(binding, separators=(",", ":")).encode()).hexdigest()
+    return {"revisions": revisions, "paths": paths, "source_state_sha256": digest}
+
+
+def stale_reason(evidence: dict[str, Any] | None, state: dict[str, Any]) -> str | None:
+    """Why cached evidence cannot stand for the current source state (None when it can)."""
+    if not isinstance(evidence, dict):
+        return "no inspection covers the revisions and paths the records use (run with --inspect)"
+    if evidence.get("source_state_sha256") != state["source_state_sha256"]:
+        return "cached inspection was made for other records, revisions or paths (run with --inspect)"
+    if sorted(evidence.get("revisions") or {}) != state["revisions"] or evidence.get("paths") != state["paths"]:
+        return "cached inspection does not cover exactly the revisions and paths the records use (run with --inspect)"
+    for revision, data in evidence["revisions"].items():
+        if not isinstance(data, dict) or data.get("inspection") not in {"complete", "incomplete"} or not all(
+            k in data for k in ("root_notice_and_license_files", "license_files_on_record_paths", "package_metadata")
+        ):
+            return f"cached inspection of {revision[:12]} is incomplete or malformed (run with --inspect)"
+    if not isinstance(evidence.get("problems"), list):
+        return "cached inspection has no problem list (run with --inspect)"
+    return None
+
+
+def inspect_repository(key: str, records: list[dict[str, Any]], root_license: str) -> dict[str, Any]:
+    """Read root and nested NOTICE/license files and package metadata at every used revision.
+
+    Every failed Git read (missing commit in a partial cache, unreadable tree, missing blob) is
+    recorded in `problems` with its revision and path and marks that revision `incomplete`; a failed
+    read is never taken as the absence of a file.
+    """
+    repo = CACHE / key.replace("/", "__")
+    state = source_state(records)
+    files = state["paths"]
     language = records[0]["label"]["language"]
-    evidence: dict[str, Any] = {"revisions": {}, "paths": files, "problems": []}
-    for revision in revisions:
+    evidence: dict[str, Any] = {**state, "revisions": {}, "problems": []}
+
+    def license_files(revision: str, directory: str, out: dict[str, Any], problems: list[str]) -> None:
         try:
-            root = _blobs(repo, revision, "")
+            names = _blobs(repo, revision, directory)
         except RuntimeError as exc:
-            evidence["problems"].append(f"cannot read {revision}: {exc}")
-            continue
-        notices = {}
-        for name in root:
-            if NOTICE_NAME.match(name):
-                content = _git(repo, "show", f"{revision}:{name}")
-                notices[name] = {"sha256": hashlib.sha256(content).hexdigest(), "detected": detect_license_text(content.decode("utf-8", "replace"))}
-        nested = {}
-        for file_path in files:
-            directory = posixpath.dirname(file_path)
-            while directory:
-                try:
-                    for name in _blobs(repo, revision, directory):
-                        if NOTICE_NAME.match(name):
-                            path = posixpath.join(directory, name)
-                            content = _git(repo, "show", f"{revision}:{path}")
-                            nested[path] = {"sha256": hashlib.sha256(content).hexdigest(), "detected": detect_license_text(content.decode("utf-8", "replace"))}
-                except RuntimeError as exc:
-                    # an unreadable directory is unknown, never "no license file there"
-                    evidence["problems"].append(f"cannot inspect {directory} at {revision}: {exc}")
-                directory = posixpath.dirname(directory)
+            problems.append(f"cannot inspect {directory or '/'} at {revision}: {exc}")
+            return
+        for name in names:
+            if not is_license_or_notice(name):
+                continue
+            path = posixpath.join(directory, name) if directory else name
+            try:
+                content = _git(repo, "show", f"{revision}:{path}")
+            except RuntimeError as exc:
+                problems.append(f"cannot read {path} at {revision}: {exc}")
+                out[path] = {"sha256": None, "detected": None, "read_error": True}
+                continue
+            out[path] = {"sha256": hashlib.sha256(content).hexdigest(), "detected": detect_license_text(content.decode("utf-8", "replace"))}
+
+    for revision in state["revisions"]:
+        problems: list[str] = []
+        notices: dict[str, Any] = {}
+        nested: dict[str, Any] = {}
+        metadata: list[dict[str, Any]] = []
+        try:
+            _git(repo, "cat-file", "-e", f"{revision}^{{commit}}")
+        except RuntimeError as exc:
+            problems.append(f"cannot read commit {revision}: {exc}")
+        else:
+            license_files(revision, "", notices, problems)
+            directories = sorted({d for f in files for d in _parents(f)})
+            for directory in directories:
+                license_files(revision, directory, nested, problems)
+            metadata = [m for f in files for m in _package_license(repo, revision, f, language, problems)]
         evidence["revisions"][revision] = {
+            "inspection": "incomplete" if problems else "complete",
             "root_notice_and_license_files": notices,
             "license_files_on_record_paths": nested,
-            "package_metadata": [m for f in files for m in _package_license(repo, revision, f, language, evidence["problems"])],
+            "package_metadata": metadata,
         }
+        evidence["problems"] += problems
     return evidence
 
 
-def assess(entry: dict[str, Any], evidence: dict[str, Any] | None) -> tuple[str, list[str], list[str]]:
+def _parents(file_path: str) -> list[str]:
+    out, directory = [], posixpath.dirname(file_path)
+    while directory:
+        out.append(directory)
+        directory = posixpath.dirname(directory)
+    return out
+
+
+def assess(entry: dict[str, Any], evidence: dict[str, Any] | None, state: dict[str, Any] | None = None) -> tuple[str, list[str], list[str]]:
     """recommended_for_review | needs_clarification | exclude, with confirmed facts and open questions."""
     confirmed = [
         f"root license file(s) {', '.join(f['path'] for f in entry['license_files_latest'])} detected as {entry['license_detected']}, "
@@ -278,15 +339,17 @@ def assess(entry: dict[str, Any], evidence: dict[str, Any] | None) -> tuple[str,
         f"package registry (deps.dev) agrees: {entry['registry_licenses']}",
     ]
     questions: list[str] = []
+    if state is not None and (reason := stale_reason(evidence, state)):
+        return "needs_clarification", confirmed, [reason]
     if evidence is None:
         return "needs_clarification", confirmed, ["no inspection covers the revisions and paths the records use (run with --inspect)"]
-    if evidence["problems"]:
-        questions += evidence["problems"]
+    questions += evidence["problems"]
+    questions += [f"inspection of {rev[:12]} is incomplete" for rev, d in evidence["revisions"].items() if d.get("inspection") != "complete"]
     root_spdx = entry["license_detected"]
     for revision, data in evidence["revisions"].items():
         for name, info in {**data["root_notice_and_license_files"], **data["license_files_on_record_paths"]}.items():
-            if posixpath.basename(name).lower().split(".")[0] in {"license", "licence", "copying"} and info["detected"] == root_spdx:
-                continue
+            if LICENSE_FILE.match(posixpath.basename(name)) and info["detected"] == root_spdx:
+                continue  # the root license again (or an identical-license copy)
             if re.search(r"\.(py|go|js|ts|tsx|hcl|json|ya?ml)$", name):
                 continue  # source/config files whose names only resemble a license file
             questions.append(f"{name} at {revision[:12]} (detected {info['detected']}) may add terms; check which code it covers")
@@ -356,12 +419,14 @@ def build(inspect: bool) -> dict[str, Any]:
         key = s["repository_key"]
         entry = queue[key]
         records = by_repo[key]
-        revisions = sorted({r["provenance"][k] for r in records for k in ("vulnerable_revision", "fixed_revision")})
-        paths = sorted({r["provenance"]["file_path"] for r in records})
+        state = source_state(records)
+        revisions = state["revisions"]
         evidence = inspect_repository(key, records, entry["license_detected"]) if inspect else previous.get(key)
-        if evidence is not None and (sorted(evidence.get("revisions", {})) != revisions or evidence.get("paths") != paths):
-            evidence = None  # stale: inspected other revisions or paths than the records now use
-        decision, confirmed, questions = assess(entry, evidence)
+        # cached evidence stands only for the exact source state it was made for; otherwise it is
+        # dropped (never carried forward) and the repository needs a fresh inspection
+        decision, confirmed, questions = assess(entry, evidence, state)
+        if stale_reason(evidence, state):
+            evidence = None
         repositories.append(
             {
                 "repository_key": key,

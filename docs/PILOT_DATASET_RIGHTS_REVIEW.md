@@ -9,7 +9,8 @@ authorized reviewer named by rappidAI Research (docs/RIGHTS_REVIEW.md). The acti
 Machine-readable evidence: `data/garden/seed_v1/pilot/cohort.json`. Proposed approval templates (not
 loadable, every decision field `<REQUIRED>`): `data/garden/seed_v1/pilot/proposed_approvals.yaml`.
 Regenerate both with `python scripts/pilot_cohort.py --inspect`; `tests/test_pilot_cohort.py` checks
-that they match the committed manifest and approve nothing.
+that they match the committed manifest, that the evidence covers the current source state, and that
+they approve nothing.
 
 ## Executive summary
 
@@ -91,6 +92,17 @@ Then each selected repository was inspected at **every** vulnerable and fixed re
 use, from the Git cache: root `NOTICE`/`COPYING`/`LICENSE*`/`PATENTS`/`THIRD_PARTY*` files, license
 files in every directory on the path of a used file, and license fields in `package.json`,
 `pyproject.toml`, `setup.cfg` and `setup.py`.
+
+**Evidence integrity.** Each repository's evidence carries a `source_state_sha256` over its record IDs
+with their vulnerable and fixed revisions and file paths, plus the inspected revision and path lists.
+A rebuild without `--inspect` reuses cached evidence only when all of these match the current
+manifest and every revision entry is well formed; otherwise the evidence is dropped and the repository
+becomes `needs_clarification` until it is inspected again. Every failed Git read (a commit missing
+from a partial cache, an unreadable tree, a missing license or metadata blob) is recorded in
+`problems` with its revision and path and marks that revision `inspection: incomplete`; a failed read
+is never taken as the absence of a file, and an incomplete inspection never yields
+`recommended_for_review`. Final inspection (2026-11-06): all 50 repositories at all of their
+revisions `complete`, 0 failed reads. Tests: `tests/test_pilot_inspection.py`, `tests/test_pilot_cohort.py`.
 
 Confirmed for the 48 recommended repositories: no NOTICE file and no license file other than the root
 license (or an identical copy of it) at any used revision; package metadata, where present, names the

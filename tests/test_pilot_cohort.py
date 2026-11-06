@@ -77,7 +77,7 @@ def _module():
     return module
 
 
-@pytest.mark.parametrize("field", ["revisions", "paths"])
+@pytest.mark.parametrize("field", ["revisions", "paths", "source_state"])
 def test_stale_evidence_is_not_reused(tmp_path, monkeypatch, field) -> None:
     # review finding: cached evidence must cover exactly the revisions and paths the records use
     module = _module()
@@ -85,14 +85,17 @@ def test_stale_evidence_is_not_reused(tmp_path, monkeypatch, field) -> None:
     target = next(r for r in cohort["repositories"] if r["proposed_decision"] == "recommended_for_review")
     if field == "revisions":
         target["evidence"]["revisions"].popitem()
-    else:
+    elif field == "paths":
         target["evidence"]["paths"] = target["evidence"]["paths"][:-1] + ["other/file.py"]
+    else:
+        target["evidence"]["source_state_sha256"] = "0" * 64
     (tmp_path / "cohort.json").write_text(json.dumps(cohort))
     monkeypatch.setattr(module, "OUT", tmp_path)
     rebuilt = {r["repository_key"]: r for r in module.build(inspect=False)["repositories"]}
     entry = rebuilt[target["repository_key"]]
     assert entry["proposed_decision"] == "needs_clarification"
-    assert any("no inspection covers" in q for q in entry["open_questions"])
+    assert any("run with --inspect" in q for q in entry["open_questions"])
+    assert entry["evidence"] is None  # stale evidence is dropped, never carried forward
 
 
 def test_inspection_failures_are_open_questions_not_absence() -> None:
@@ -105,3 +108,18 @@ def test_inspection_failures_are_open_questions_not_absence() -> None:
     evidence["problems"].append("cannot inspect pkg at 0123456789ab: fatal: bad object")
     decision, _, questions = module.assess(queue[repo["repository_key"]], evidence)
     assert decision == "needs_clarification" and any("cannot inspect pkg" in q for q in questions)
+
+
+def test_committed_evidence_covers_the_current_source_state() -> None:
+    module = _module()
+    rows = _jsonl(SEED / "manifest.jsonl")
+    by_repo: dict[str, list[dict]] = {}
+    for row in rows:
+        by_repo.setdefault(row["provenance"]["repository_key"], []).append(row)
+    for repo in COHORT["repositories"]:
+        records = [r for r in by_repo[repo["repository_key"]] if r["record_id"] in set(repo["record_ids"])]
+        state = module.source_state(records)
+        assert module.stale_reason(repo["evidence"], state) is None, repo["repository_key"]
+        if repo["proposed_decision"] == "recommended_for_review":
+            assert repo["evidence"]["problems"] == []
+            assert {d["inspection"] for d in repo["evidence"]["revisions"].values()} == {"complete"}
