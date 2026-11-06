@@ -196,20 +196,25 @@ def _blobs(repo: Path, revision: str, directory: str) -> list[str]:
     return [line.split("\t", 1)[1] for line in out.splitlines() if "\t" in line and line.split()[1] == "blob"]
 
 
-def _package_license(repo: Path, revision: str, file_path: str, language: str) -> list[dict[str, Any]]:
+def _package_license(repo: Path, revision: str, file_path: str, language: str, problems: list[str]) -> list[dict[str, Any]]:
     names = {"javascript": ["package.json"], "typescript": ["package.json"], "python": ["pyproject.toml", "setup.cfg", "setup.py"], "go": []}[language]
     directory = posixpath.dirname(file_path)
     while True:
         found = []
         try:
             present = _blobs(repo, revision, directory)
-        except RuntimeError:
+        except RuntimeError as exc:
+            problems.append(f"cannot list {directory or '/'} at {revision}: {exc}")  # never read as "no metadata"
             present = []
         for name in names:
             if name not in present:
                 continue
             path = posixpath.join(directory, name) if directory else name
-            text = _git(repo, "show", f"{revision}:{path}").decode("utf-8", "replace")
+            try:
+                text = _git(repo, "show", f"{revision}:{path}").decode("utf-8", "replace")
+            except RuntimeError as exc:
+                problems.append(f"cannot read {path} at {revision}: {exc}")
+                continue
             value = None
             if name == "package.json":
                 try:
@@ -231,7 +236,7 @@ def inspect_repository(key: str, records: list[dict[str, Any]], root_license: st
     revisions = sorted({r["provenance"][k] for r in records for k in ("vulnerable_revision", "fixed_revision")})
     files = sorted({r["provenance"]["file_path"] for r in records})
     language = records[0]["label"]["language"]
-    evidence: dict[str, Any] = {"revisions": {}, "problems": []}
+    evidence: dict[str, Any] = {"revisions": {}, "paths": files, "problems": []}
     for revision in revisions:
         try:
             root = _blobs(repo, revision, "")
@@ -253,13 +258,14 @@ def inspect_repository(key: str, records: list[dict[str, Any]], root_license: st
                             path = posixpath.join(directory, name)
                             content = _git(repo, "show", f"{revision}:{path}")
                             nested[path] = {"sha256": hashlib.sha256(content).hexdigest(), "detected": detect_license_text(content.decode("utf-8", "replace"))}
-                except RuntimeError:
-                    pass
+                except RuntimeError as exc:
+                    # an unreadable directory is unknown, never "no license file there"
+                    evidence["problems"].append(f"cannot inspect {directory} at {revision}: {exc}")
                 directory = posixpath.dirname(directory)
         evidence["revisions"][revision] = {
             "root_notice_and_license_files": notices,
             "license_files_on_record_paths": nested,
-            "package_metadata": [m for f in files for m in _package_license(repo, revision, f, language)],
+            "package_metadata": [m for f in files for m in _package_license(repo, revision, f, language, evidence["problems"])],
         }
     return evidence
 
@@ -273,7 +279,7 @@ def assess(entry: dict[str, Any], evidence: dict[str, Any] | None) -> tuple[str,
     ]
     questions: list[str] = []
     if evidence is None:
-        return "needs_clarification", confirmed, ["NOTICE/nested-license inspection not run"]
+        return "needs_clarification", confirmed, ["no inspection covers the revisions and paths the records use (run with --inspect)"]
     if evidence["problems"]:
         questions += evidence["problems"]
     root_spdx = entry["license_detected"]
@@ -350,9 +356,12 @@ def build(inspect: bool) -> dict[str, Any]:
         key = s["repository_key"]
         entry = queue[key]
         records = by_repo[key]
-        evidence = inspect_repository(key, records, entry["license_detected"]) if inspect else previous.get(key)
-        decision, confirmed, questions = assess(entry, evidence)
         revisions = sorted({r["provenance"][k] for r in records for k in ("vulnerable_revision", "fixed_revision")})
+        paths = sorted({r["provenance"]["file_path"] for r in records})
+        evidence = inspect_repository(key, records, entry["license_detected"]) if inspect else previous.get(key)
+        if evidence is not None and (sorted(evidence.get("revisions", {})) != revisions or evidence.get("paths") != paths):
+            evidence = None  # stale: inspected other revisions or paths than the records now use
+        decision, confirmed, questions = assess(entry, evidence)
         repositories.append(
             {
                 "repository_key": key,

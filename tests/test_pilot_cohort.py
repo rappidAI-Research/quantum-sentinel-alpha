@@ -68,3 +68,40 @@ def test_selection_is_reproducible_from_committed_data() -> None:
     assert [r["repository_key"] for r in rebuilt["repositories"]] == [r["repository_key"] for r in COHORT["repositories"]]
     assert [r["proposed_decision"] for r in rebuilt["repositories"]] == [r["proposed_decision"] for r in COHORT["repositories"]]
     assert rebuilt["if_recommended_are_approved"] == COHORT["if_recommended_are_approved"]
+
+
+def _module():
+    spec = importlib.util.spec_from_file_location("pilot_cohort", ROOT / "scripts" / "pilot_cohort.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("field", ["revisions", "paths"])
+def test_stale_evidence_is_not_reused(tmp_path, monkeypatch, field) -> None:
+    # review finding: cached evidence must cover exactly the revisions and paths the records use
+    module = _module()
+    cohort = json.loads(json.dumps(COHORT))
+    target = next(r for r in cohort["repositories"] if r["proposed_decision"] == "recommended_for_review")
+    if field == "revisions":
+        target["evidence"]["revisions"].popitem()
+    else:
+        target["evidence"]["paths"] = target["evidence"]["paths"][:-1] + ["other/file.py"]
+    (tmp_path / "cohort.json").write_text(json.dumps(cohort))
+    monkeypatch.setattr(module, "OUT", tmp_path)
+    rebuilt = {r["repository_key"]: r for r in module.build(inspect=False)["repositories"]}
+    entry = rebuilt[target["repository_key"]]
+    assert entry["proposed_decision"] == "needs_clarification"
+    assert any("no inspection covers" in q for q in entry["open_questions"])
+
+
+def test_inspection_failures_are_open_questions_not_absence() -> None:
+    # review finding: a failed nested read must never count as "no other license file"
+    module = _module()
+    queue = {e["repository_key"]: e for e in _jsonl(SEED / "review" / "review_queue.jsonl")}
+    repo = next(r for r in COHORT["repositories"] if r["proposed_decision"] == "recommended_for_review")
+    evidence = json.loads(json.dumps(repo["evidence"]))
+    assert module.assess(queue[repo["repository_key"]], evidence)[0] == "recommended_for_review"
+    evidence["problems"].append("cannot inspect pkg at 0123456789ab: fatal: bad object")
+    decision, _, questions = module.assess(queue[repo["repository_key"]], evidence)
+    assert decision == "needs_clarification" and any("cannot inspect pkg" in q for q in questions)

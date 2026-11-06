@@ -94,6 +94,9 @@
     "CWE-601"
    ],
    "evidence": {
+    "paths": [
+     "reflex/utils/codespaces.py"
+    ],
     "problems": [],
     "revisions": {
      "ade12549f3c0ddab3d7382c581bc04a3c1f989ec": {
@@ -194,6 +197,9 @@
     "CWE-79"
    ],
    "evidence": {
+    "paths": [
+     "src/twisted/web/_template_util.py"
+    ],
     "problems": [],
     "revisions": {
      "046a164f89a0f08d3239ecebd750360f8914df33": {
@@ -302,6 +308,9 @@
     "CWE-502"
    ],
    "evidence": {
+    "paths": [
+     "pdfminer/cmapdb.py"
+    ],
     "problems": [],
     "revisions": {
      "51683b2528e2aa685dd8b9e61f6ccf9f76a59a62": {
@@ -402,6 +411,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "taipy/gui/extension/library.py"
+    ],
     "problems": [],
     "revisions": {
      "129fd407ffca49ee4ab853772c88d0c873e038dd": {
@@ -518,6 +530,9 @@
     "CWE-203"
    ],
    "evidence": {
+    "paths": [
+     "piccolo/apps/user/tables.py"
+    ],
     "problems": [],
     "revisions": {
      "e12c4694ed2068fb08e40209b4dcd2609796752b": {
@@ -624,6 +639,9 @@
     "CWE-862"
    ],
    "evidence": {
+    "paths": [
+     "invenio_drafts_resources/services/records/service.py"
+    ],
     "problems": [],
     "revisions": {
      "039b0cff1ad4b952000f4d8c3a93f347108b6626": {
@@ -732,6 +750,9 @@
     "CWE-94"
    ],
    "evidence": {
+    "paths": [
+     "django_make_app/io_utils.py"
+    ],
     "problems": [],
     "revisions": {
      "acd814433d1021aa8783362521b0bd151fdfc9d2": {
@@ -838,6 +859,9 @@
     "CWE-338"
    ],
    "evidence": {
+    "paths": [
+     "src/fides/api/service/privacy_request/request_runner_service.py"
+    ],
     "problems": [],
     "revisions": {
      "611b36bc0119c9c24d826e8b56824dff0b8fb573": {
@@ -952,6 +976,9 @@
     "CWE-77"
    ],
    "evidence": {
+    "paths": [
+     "dcnnt/plugins/notifications.py"
+    ],
     "problems": [],
     "revisions": {
      "4084ea18f96d9a953315f5555fca45f26639b8be": {
@@ -1053,6 +1080,10 @@
     "CWE-627"
    ],
    "evidence": {
+    "paths": [
+     "qiskit_ibm_runtime/options/options.py",
+     "qiskit_ibm_runtime/utils/json.py"
+    ],
     "problems": [],
     "revisions": {
      "1cba6967e7af156e9d9f610db7753419138c732a": {
@@ -1277,6 +1308,9 @@
     "CWE-79"
    ],
    "evidence": {
+    "paths": [
+     "src/js/pannellum.js"
+    ],
     "problems": [],
     "revisions": {
      "9391ef8da6a6a98c6a9f8c97f101adb900523681": {
@@ -1377,6 +1411,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "lib/directory.js"
+    ],
     "problems": [],
     "revisions": {
      "b9cf3bd96cb2e28d05d120bbd27ee84a99b365d9": {
@@ -1478,6 +1515,9 @@
     "CWE-1321"
    ],
    "evidence": {
+    "paths": [
+     "lib/parse.js"
+    ],
     "problems": [],
     "revisions": {
      "96e2303d059e6be0c9e0c4773226d14b4758de52": {
@@ -1578,6 +1618,9 @@
     "CWE-330"
    ],
    "evidence": {
+    "paths": [
+     "lib/form_data.js"
+    ],
     "problems": [],
     "revisions": {
      "3d1723080e6577a66f17f163ecd345a21d8d0fd0": {
@@ -1678,6 +1721,9 @@
     "CWE-78"
    ],
    "evidence": {
+    "paths": [
+     "packages/react-dev-utils/getProcessForPort.js"
+    ],
     "problems": [],
     "revisions": {
      "22f46a8d5dfc46fe0f613cd7efbc82344823f461": {
@@ -1788,6 +1834,9 @@
     "CWE-1333"
    ],
    "evidence": {
+    "paths": [
+     "cookiejar.js"
+    ],
     "problems": [],
     "revisions": {
      "a9a320c3c49d65df491f5721969cfbf9e128d9af": {
@@ -1886,6 +1935,9 @@
     "CWE-601"
    ],
    "evidence": {
+    "paths": [
+     "bin/hekto.js"
+    ],
     "problems": [],
     "revisions": {
      "1e5c75f8259ba0daf9b2600db3c246cda1934c46": {
@@ -1984,6 +2036,9 @@
     "CWE-285"
    ],
    "evidence": {
+    "paths": [
+     "auth.js"
+    ],
     "problems": [],
     "revisions": {
      "49181f4ec9ae1472c6675cab56bbc01e723855af": {
@@ -2082,6 +2137,9 @@
     "CWE-208"
    ],
    "evidence": {
+    "paths": [
+     "index.js"
+    ],
     "problems": [],
     "revisions": {
      "bac1e6a8530e1efd0028800b9b588a37adb0d203": {
@@ -2183,6 +2241,9 @@
     "CWE-183"
    ],
    "evidence": {
+    "paths": [
+     "lib/sanitize.js"
+    ],
     "problems": [],
     "revisions": {
      "3bf8aaaf4dbb1c209dcb8d87a82711a54c1ab39a": {
@@ -2329,6 +2390,9 @@
     "CWE-79"
    ],
    "evidence": {
+    "paths": [
+     "rwtxt.go"
+    ],
     "problems": [],
     "revisions": {
      "c09fb17375c4c47b49524c688288af1fe20e730a": {
@@ -2419,6 +2483,9 @@
     "CWE-306"
    ],
    "evidence": {
+    "paths": [
+     "internal/sbi/server.go"
+    ],
     "problems": [],
     "revisions": {
      "8385c00a0434bfc40c0fd331130cdd65c7495a98": {
@@ -2509,6 +2576,9 @@
     "CWE-601"
    ],
    "evidence": {
+    "paths": [
+     "oauthproxy.go"
+    ],
     "problems": [],
     "revisions": {
      "a316f8a06f3c0ca2b5fc5fa18a91781b313607b2": {
@@ -2599,6 +2669,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "internal/grpc/interceptors/auth/scope.go"
+    ],
     "problems": [],
     "revisions": {
      "324cb8cc2fa89454862059a79086f16dad0f1f78": {
@@ -2690,6 +2763,9 @@
     "CWE-129"
    ],
    "evidence": {
+    "paths": [
+     "acme/challenge.go"
+    ],
     "problems": [],
     "revisions": {
      "bb94179fa4c64bda3d3a66ab112f39f9563e0c2c": {
@@ -2780,6 +2856,9 @@
     "CWE-377"
    ],
    "evidence": {
+    "paths": [
+     "glog_file.go"
+    ],
     "problems": [],
     "revisions": {
      "b8741656e406e66d6992bc2c9575e460ecaa0ec2": {
@@ -2870,6 +2949,9 @@
     "CWE-209"
    ],
    "evidence": {
+    "paths": [
+     "session.go"
+    ],
     "problems": [],
     "revisions": {
      "1591be276561bbdb019c0279f1d33cb18a650e1b": {
@@ -2960,6 +3042,9 @@
     "CWE-89"
    ],
    "evidence": {
+    "paths": [
+     "backend/pkg/database/id_view.go"
+    ],
     "problems": [],
     "revisions": {
      "1d1178840703a72d9082b7fc4aea0a3326c5d294": {
@@ -3051,6 +3136,10 @@
     "CWE-285"
    ],
    "evidence": {
+    "paths": [
+     "pkg/cosign/cosign.go",
+     "pkg/engine/wildcards/wildcards.go"
+    ],
     "problems": [],
     "revisions": {
      "53d08d8095b98deba672c9bd2b2d1393b4b312a8": {
@@ -3178,6 +3267,9 @@
     "CWE-77"
    ],
    "evidence": {
+    "paths": [
+     "main.go"
+    ],
     "problems": [],
     "revisions": {
      "468a23fc89af89f632cc023a10c031e4bc781797": {
@@ -3268,6 +3360,9 @@
     "CWE-1321"
    ],
    "evidence": {
+    "paths": [
+     "src/Merge.ts"
+    ],
     "problems": [],
     "revisions": {
      "78f4ffab4ed76c43f6f7fb91d8b329acb0d6e684": {
@@ -3368,6 +3463,9 @@
     "CWE-347"
    ],
    "evidence": {
+    "paths": [
+     "src/index.ts"
+    ],
     "problems": [],
     "revisions": {
      "441e43d525e23a6eb64640ed2aa6a29ebc3e47c7": {
@@ -3468,6 +3566,9 @@
     "CWE-918"
    ],
    "evidence": {
+    "paths": [
+     "src/server.ts"
+    ],
     "problems": [],
     "revisions": {
      "0284aa8f34d32c65e20d8cda2d429b7943c9af03": {
@@ -3566,6 +3667,9 @@
     "CWE-290"
    ],
    "evidence": {
+    "paths": [
+     "packages/next-auth/src/core/lib/default-callbacks.ts"
+    ],
     "problems": [],
     "revisions": {
      "6e15bdcb2d93c1ad5ee3889f702607637e79db50": {
@@ -3665,6 +3769,9 @@
     "CWE-79"
    ],
    "evidence": {
+    "paths": [
+     "src/compiler/compile/render_ssr/handlers/Element.ts"
+    ],
     "problems": [],
     "revisions": {
      "3bc791bcba97f0810165c7a2e215563993a0989b": {
@@ -3763,6 +3870,9 @@
     "CWE-1333"
    ],
    "evidence": {
+    "paths": [
+     "src/iterator.ts"
+    ],
     "problems": [],
     "revisions": {
      "bb6c4f945d8023902cf387391d2b2209261044ab": {
@@ -3861,6 +3971,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "packages/http/src/index.ts"
+    ],
     "problems": [],
     "revisions": {
      "5c19f8d6f79f2d9bfbeb6458c8dc7a1729c37db9": {
@@ -3961,6 +4074,9 @@
     "CWE-178"
    ],
    "evidence": {
+    "paths": [
+     "packages/http/fetch/src/middlewares/options/redirectHandlerOptions.ts"
+    ],
     "problems": [],
     "revisions": {
      "09f8bd9b34d68bf412a9b78f6ca7e7961ef14974": {
@@ -4059,6 +4175,9 @@
     "CWE-918"
    ],
    "evidence": {
+    "paths": [
+     "src/fastmcp/utilities/openapi/director.py"
+    ],
     "problems": [],
     "revisions": {
      "40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71": {
@@ -4159,6 +4278,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "aim/web/api/views.py"
+    ],
     "problems": [],
     "revisions": {
      "0b99c6ca08e0ba7e7011453a2f68033e9b1d1bce": {
@@ -4268,6 +4390,9 @@
     "CWE-502"
    ],
    "evidence": {
+    "paths": [
+     "pydrive2/settings.py"
+    ],
     "problems": [],
     "revisions": {
      "4d83d04948f16804026eaf4449ac02c75ba907a4": {
@@ -4374,6 +4499,9 @@
     "CWE-1333"
    ],
    "evidence": {
+    "paths": [
+     "index.js"
+    ],
     "problems": [],
     "revisions": {
      "b83b36d7266fb1bd779fd19a2f98bab17a04d999": {
@@ -4472,6 +4600,9 @@
     "CWE-79"
    ],
    "evidence": {
+    "paths": [
+     "index.js"
+    ],
     "problems": [],
     "revisions": {
      "ae4f2989491b392ae2ef3b0015a019770ae65d35": {
@@ -4570,6 +4701,9 @@
     "CWE-20"
    ],
    "evidence": {
+    "paths": [
+     "index.js"
+    ],
     "problems": [],
     "revisions": {
      "56ccb03af4dddebc2b2defb348b6558783d5757e": {
@@ -4668,6 +4802,9 @@
     "CWE-306"
    ],
    "evidence": {
+    "paths": [
+     "route/gateway_route.go"
+    ],
     "problems": [],
     "revisions": {
      "391dd7f0f239020c46bf057cfa25f82031fc15f7": {
@@ -4759,6 +4896,10 @@
     "CWE-732"
    ],
    "evidence": {
+    "paths": [
+     "auth/json.go",
+     "http/tus_handlers.go"
+    ],
     "problems": [],
     "revisions": {
      "148b3c59422401ff00f255ae3044282d7a42192b": {
@@ -4884,6 +5025,9 @@
     "CWE-22"
    ],
    "evidence": {
+    "paths": [
+     "service.go"
+    ],
     "problems": [],
     "revisions": {
      "4f2e80285f2e75171a19083735760f7d3f0fe49a": {
@@ -4976,6 +5120,9 @@
     "CWE-78"
    ],
    "evidence": {
+    "paths": [
+     "src/scanner/McpScanner.ts"
+    ],
     "problems": [],
     "revisions": {
      "0fca7228bd313ae5aa938d61311377e88ce6e682": {
@@ -5076,6 +5223,9 @@
     "CWE-1333"
    ],
    "evidence": {
+    "paths": [
+     "src/dom/html-elements.ts"
+    ],
     "problems": [],
     "revisions": {
      "25a3cbac665fae5663f8b71c073b80c3152dbe7b": {
@@ -5178,6 +5328,9 @@
     "CWE-93"
    ],
    "evidence": {
+    "paths": [
+     "src/Client.ts"
+    ],
     "problems": [],
     "revisions": {
      "2a2a0e6514357b9eda07c2f8afbd3f04727a7cd9": {
