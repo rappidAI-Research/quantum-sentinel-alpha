@@ -1,0 +1,67 @@
+# Sentinel Garden v2. Run: python -m sentinel.garden run --config configs/garden/seed_v2.yaml
+# Same OSV snapshot, sample order, CWE selection, quality thresholds and frozen split policy as v1
+# (configs/garden/seed_v1.yaml, which stays the immutable reference). Differences, all documented in
+# docs/GARDEN_V2.md: max_candidates_per_repository 4 -> 20, and three extraction refinements.
+# Docs: docs/SENTINEL_GARDEN.md. Every threshold below is part of the dataset definition:
+# changing one changes the dataset and must be committed together with the regenerated manifest.
+schema_version: "1.0"
+dataset_id: sentinel-garden-v2
+
+# Registry entries this dataset depends on (data/registry.yaml). A record is training-eligible
+# only if every one of them is production_approved AND its repository is approved.
+sources:
+  code_source: ghsa-osv-fix-commits   # upstream fix commits resolved from advisories
+  metadata_sources: [osv, github-advisory-db]
+
+workdir: artifacts/garden/seed_v2        # Git-ignored: caches, full records with code
+committed_dir: data/garden/seed_v2       # metadata-only manifest, frozen candidates, statistics
+
+discovery:
+  osv_bucket: https://osv-vulnerabilities.storage.googleapis.com
+  ecosystems: [PyPI, npm, Go]
+  advisory_prefix: GHSA-
+  require_github_reviewed: true
+  published_before: "2026-11-01T00:00:00Z"   # snapshot bound; later advisories are ignored
+  # Advisories are visited in sha256(salt + id) order - a deterministic, date-independent sample.
+  sample_salt: sentinel-garden-seed-v1
+  inspect_per_ecosystem: 100000             # advisory records inspected per ecosystem (all of them)
+  max_candidates_per_ecosystem: 5000        # cap on usable candidates per ecosystem
+  max_candidates_per_repository: 20         # v1: 4. Limits one project dominating the dataset; the split is
+                                            # per repository, so more advisories of one project never cross splits
+  workers: 8
+
+selection:
+  # CWEs that do not describe a localizable code weakness, or MITRE pillars (discouraged for mapping)
+  rejected_cwes: [CWE-1035, CWE-1104, CWE-1357, CWE-1395, CWE-937,
+                  CWE-284, CWE-435, CWE-664, CWE-682, CWE-691, CWE-693, CWE-697, CWE-703, CWE-707, CWE-710]
+  # Accepted but flagged as coarse labels in the statistics
+  coarse_cwes: [CWE-20, CWE-74, CWE-116, CWE-200, CWE-400, CWE-668, CWE-669, CWE-913]
+  max_cwes: 2                               # primary + one alternate; more is ambiguous
+
+extraction:
+  max_source_files_changed: 4               # non-test target-language files (only one may change logic)
+  max_changed_functions: 1                  # function-level label must be unambiguous
+  max_changed_lines: 40                     # within the changed function (removed + added)
+  max_function_lines: 150
+  min_function_lines: 3
+  max_excerpt_chars: 12000
+  max_import_lines: 12
+  max_context_chars: 1000                   # same bound as eval cases
+  abstention_min_callee_name_length: 6
+  # v2 refinements (each rejects anything it cannot localize; see sentinel/garden/build.py)
+  member_additions: true                    # new complete helper methods in a class/object body belong to the fix
+  version_hunks_as_noise: true              # module-level version-string bumps are not logic changes
+  tooling_files_excluded: true              # *.config.js, gulpfile, setup.py, root test.js/tests.py are not runtime source
+
+quality:
+  near_duplicate_jaccard: 0.85              # within the dataset, same decision
+  label_conflict_jaccard: 0.92              # different pairs, different decision -> conflict
+  contamination_jaccard: 0.5                # against every evaluation case / coding task
+  shingle_size: 5
+
+split:
+  policy: configs/garden/split_policy.yaml   # frozen; shared by all Garden dataset versions
+
+contamination:
+  eval_case_dirs: [eval/sentinelbench]      # includes the Git-ignored private/ directory when present
+  coding_suites: [eval/coding/coding_v1.jsonl]
