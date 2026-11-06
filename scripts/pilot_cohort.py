@@ -66,7 +66,8 @@ NOTICE_NAME = re.compile(r"^(NOTICE|NOTICES|COPYING|COPYRIGHT|PATENTS|LICEN[CS]E
 _PY_LICENSE_TEXT = re.compile(r"""(?im)^\s*license\s*=\s*\{\s*text\s*=\s*["']([^"'\n]+)["']""")
 _PY_LICENSE_LITERAL = re.compile(r"""(?im)^\s*license\s*=\s*["']([^"'\n]+)["']""")  # pyproject / setup.py keyword
 _PY_LICENSE_KWARG = re.compile(r"""\blicense\s*=\s*["']([^"'\n]+)["']""")  # setup(..., license="MIT")
-_PY_LICENSE_CFG = re.compile(r"""(?im)^\s*license\s*=\s*([^"'{\[\n(][^\n]*?)\s*$""")  # setup.cfg (unquoted)
+# setup.cfg (ConfigParser accepts `=` and `:`); `(?!:)` keeps classifier lines `License :: ...` out
+_PY_LICENSE_CFG = re.compile(r"""(?im)^\s*license\s*[=:](?!:)\s*([^"'{\[\n(][^\n]*?)\s*$""")
 _PY_CLASSIFIER = re.compile(r"License :: OSI Approved :: ([^\"'\n]+)")
 
 

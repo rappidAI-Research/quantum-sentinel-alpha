@@ -288,6 +288,8 @@ def test_unreadable_parent_is_not_taken_as_absence(module, source, monkeypatch) 
         ('setup(license=find_meta("license"))\n', None),
         ('[metadata]\nlicense = file: LICENSE\n', None),
         ('[metadata]\nlicense = MIT\n', "MIT"),
+        ("[metadata]\nlicense: GPL-3.0\n", "GPL-3.0"),  # review finding: ConfigParser also accepts ':'
+        ("[metadata]\nclassifiers =\n    License :: OSI Approved :: MIT License\n", "MIT License"),
         ("setup(\n    license = about.__license__,\n)\n", None),  # an attribute reference, not a name
         ('setup(name="x", license="MIT License")\n', "MIT License"),
         ('classifiers = [\n  "License :: OSI Approved :: Apache Software License",\n]\n', "Apache Software License"),
