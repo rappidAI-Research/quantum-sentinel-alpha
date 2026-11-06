@@ -1,0 +1,105 @@
+# Review batch 28: approval TEMPLATES, not approvals. Each field marked <REQUIRED> must be filled by an
+# authorized reviewer after reading the license file at the linked revision; then move the entry into
+# data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
+repositories:
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:kurwov': ['ISC']}
+  - repository_key: xiboon/kurwov
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 1528f1abd9e018744361359ac21a7fa7c2aa90312379b7fef3e1294794e3cf26
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/xiboon/kurwov
+      - https://github.com/xiboon/kurwov/blob/85d63e652594f121d6656177d7a3c0d823c976c9/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:zodb3': ['ZPL-2.1']}
+  - repository_key: zopefoundation/zodb
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: COPYING
+    license_file_sha256: 6e9f4faa0a2bff3074c420dc3c971cb70c1415f8f4f1651fc89f713da77441cf
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/zopefoundation/ZODB
+      - https://github.com/zopefoundation/ZODB/blob/cfe16277ef1b5bb094dc79da50b0df1ee1537590/COPYING
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/dadrus/heimdall': ['Apache-2.0', 'MIT']}
+  - repository_key: dadrus/heimdall
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dadrus/heimdall
+      - https://github.com/dadrus/heimdall/blob/50321b3007db1ccafdc6b1cfd6bdc3689c19a502/LICENSE
+    notes: ""
+
+  # tier B: other_permissive_license:Unlicense
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:dynamoose': ['Unlicense']}
+  - repository_key: dynamoose/dynamoose
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Unlicense>"
+    license_file: LICENSE
+    license_file_sha256: 6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dynamoose/dynamoose
+      - https://github.com/dynamoose/dynamoose/blob/324c62b4709204955931a187362f8999805b1d8e/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:openstack-heat': ['non-standard']}
+  - repository_key: openstack/heat
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/openstack/heat
+      - https://github.com/openstack/heat/blob/a49526c278e52823080c7f3fcb72785b93fd4dcb/LICENSE
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/weaviate/weaviate': []}
+  - repository_key: weaviate/weaviate
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 61fc440e31f16993a0358f2c2325618275d4487913d4ec310d6f32293fd32950
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/weaviate/weaviate
+      - https://github.com/weaviate/weaviate/blob/40f2cc32279f0f8a51016c3c6870a2c0c808e6c0/LICENSE
+    notes: ""
