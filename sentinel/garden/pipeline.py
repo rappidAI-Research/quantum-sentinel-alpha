@@ -643,6 +643,12 @@ def review_packages(config: GardenConfig, log: Any = print) -> list[dict[str, An
     committed = config.committed_dir
     audit_dir = committed / "audit"
     automated = _read_jsonl(audit_dir / "automated.jsonl") if (audit_dir / "automated.jsonl").is_file() else []
+    # With a proposed training cohort (scripts/training_cohort.py), sample only what it would train on.
+    cohort_path = committed / "cohort" / "training_cohort.json"
+    cohort = None
+    if cohort_path.is_file():
+        document = json.loads(cohort_path.read_text(encoding="utf-8"))
+        cohort = {r["repository_key"] for r in document["repositories"] if r["proposed_decision"] == "recommended_for_review"}
     index = human_review.write_packages(
         _read_jsonl(config.workdir / "records.jsonl"),
         config.workdir / "cache" / "osv",
@@ -650,6 +656,7 @@ def review_packages(config: GardenConfig, log: Any = print) -> list[dict[str, An
         load_manual_review(audit_dir / "manual_review.yaml"),
         config.workdir / "review_packages",
         audit_dir,
+        cohort,
     )
     log(f"review-packages: {len(index)} items -> {config.workdir / 'review_packages'} (index: {audit_dir / 'human_review_sample.jsonl'})")
     return index

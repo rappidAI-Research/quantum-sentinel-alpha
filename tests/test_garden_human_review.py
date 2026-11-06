@@ -147,3 +147,13 @@ def test_refreshing_the_sample_keeps_earlier_decisions_and_their_exclusions(tmp_
     assert summary["retired_decisions"] == [decided["item_id"]] and summary["sample_items"] == len(refreshed) - 1
     template = yaml.safe_load((audit_dir / "human_review.TEMPLATE.yaml").read_text())
     assert decided["item_id"] not in {i["item_id"] for i in template["items"]}
+
+
+def test_sample_can_be_restricted_to_a_proposed_cohort() -> None:
+    records = population()
+    repositories = sorted({r["provenance"]["repository_key"] for r in records})
+    chosen = {repositories[0]}
+    sample = human_review.draw_sample(records, chosen)
+    by_id = {r["record_id"]: r for r in records}
+    assert sample and all(by_id[i]["provenance"]["repository_key"] in chosen for item in sample for i in item["record_ids"])
+    assert human_review.draw_sample(records, None) == human_review.draw_sample(records)  # default population unchanged

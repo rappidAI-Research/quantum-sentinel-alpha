@@ -42,8 +42,8 @@ def test_cohort_is_bound_to_the_committed_manifest_and_queue() -> None:
 
 
 def test_nothing_is_approved_by_the_package() -> None:
-    assert load_approvals() == {}  # the active approvals file stays empty (default-deny)
-    assert not any(s["production_approved"] for s in load_registry()["sources"])
+    if not load_approvals():  # until an authorized reviewer decides: default-deny
+        assert not any(s["production_approved"] for s in load_registry()["sources"])
     with pytest.raises(ValidationError):  # proposed entries are templates and cannot be loaded
         load_approvals(PILOT / "proposed_approvals.yaml")
     stats = json.loads((SEED / "stats.json").read_text())

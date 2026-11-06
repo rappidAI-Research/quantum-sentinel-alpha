@@ -95,10 +95,15 @@ def _order(key: str) -> str:
     return hashlib.sha256(f"{SALT}\x00{key}".encode()).hexdigest()
 
 
-def draw_sample(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Deterministic stratified sample over accepted train/validation groups."""
+def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = None) -> list[dict[str, Any]]:
+    """Deterministic stratified sample over accepted train/validation groups.
+
+    `repositories` restricts the population to a proposed training cohort, so the reviewer checks
+    exactly what would be trained if that cohort were approved."""
     groups: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     for record in records:
+        if repositories is not None and record["provenance"]["repository_key"] not in repositories:
+            continue
         if record["quality"]["status"] == "accepted" and record["split"] in EXPORT_SPLITS:
             groups[record["group_id"]][record["kind"]] = record
     by_language: dict[str, list[str]] = defaultdict(list)
@@ -161,7 +166,12 @@ def _blob_url(repository: str, sha: str, path: str, lines: list[list[int]] | Non
     return f"{repository}/blob/{sha}/{path}{anchor}"
 
 
-def build_package(item: dict[str, Any], records: dict[str, dict[str, Any]], advisory: dict[str, Any] | None) -> str:
+def build_package(
+    item: dict[str, Any],
+    records: dict[str, dict[str, Any]],
+    advisory: dict[str, Any] | None,
+    decisions_path: str = "data/garden/seed_v1/audit/human_review.yaml",
+) -> str:
     """The blind evidence package for one sample item (deterministic Markdown)."""
     first = records[item["record_ids"][0]]
     provenance = first["provenance"]
@@ -246,7 +256,7 @@ def build_package(item: dict[str, Any], records: dict[str, dict[str, Any]], advi
             lines.append(f"- `{key}` ({' / '.join(sorted(question['allowed']))}): {question['ask']}")
     lines += [
         "",
-        "Record the answers in `data/garden/seed_v1/audit/human_review.yaml` under this `item_id`, together with the",
+        f"Record the answers in `{decisions_path}` under this `item_id`, together with the",
         "`package_sha256` from `audit/human_review_sample.jsonl`. List records that should not be trained on under",
         "`exclude_records` with a reason; labels are never edited.",
         "",
@@ -260,6 +270,14 @@ def automated_signals(item: dict[str, Any], automated: dict[str, dict[str, Any]]
     return {"automated_audit": automated.get(item["group_id"]), "ai_review": ai[0] if ai else None, "ai_reviewer": manual.get("reviewer")}
 
 
+def _decisions_path(committed_audit_dir: Path) -> str:
+    """Where the reviewer records decisions, as a repository-relative path (dataset-specific)."""
+    root = Path(__file__).resolve().parents[2]
+    target = committed_audit_dir.resolve() / "human_review.yaml"
+    # outside the repository (tests, scratch runs) the text must not depend on the location
+    return target.relative_to(root).as_posix() if target.is_relative_to(root) else "audit/human_review.yaml"
+
+
 def write_packages(
     records: list[dict[str, Any]],
     osv_dir: Path,
@@ -267,10 +285,11 @@ def write_packages(
     manual: dict[str, Any],
     package_dir: Path,
     committed_audit_dir: Path,
+    repositories: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     by_id = {r["record_id"]: r for r in records}
     by_group = {g["group_id"]: g for g in automated}
-    sample = draw_sample(records)
+    sample = draw_sample(records, repositories)
     index_path = committed_audit_dir / "human_review_sample.jsonl"
     previous = [json.loads(line) for line in index_path.read_text(encoding="utf-8").splitlines() if line.strip()] if index_path.is_file() else []
     package_dir.mkdir(parents=True, exist_ok=True)
@@ -279,7 +298,7 @@ def write_packages(
         provenance = by_id[item["record_ids"][0]]["provenance"]
         path = osv_dir / provenance["ecosystem"] / f"{provenance['advisory_id']}.json"
         advisory = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
-        text = build_package(item, by_id, advisory)
+        text = build_package(item, by_id, advisory, _decisions_path(committed_audit_dir))
         item_dir = package_dir / item["item_id"]
         item_dir.mkdir(parents=True, exist_ok=True)
         (item_dir / "package.md").write_text(text, encoding="utf-8")
