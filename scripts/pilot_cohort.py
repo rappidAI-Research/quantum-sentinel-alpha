@@ -258,13 +258,29 @@ def stale_reason(evidence: dict[str, Any] | None, state: dict[str, Any]) -> str 
     if sorted(evidence.get("revisions") or {}) != state["revisions"] or evidence.get("paths") != state["paths"]:
         return "cached inspection does not cover exactly the revisions and paths the records use (run with --inspect)"
     for revision, data in evidence["revisions"].items():
-        if not isinstance(data, dict) or data.get("inspection") not in {"complete", "incomplete"} or not all(
-            k in data for k in ("root_notice_and_license_files", "license_files_on_record_paths", "package_metadata")
-        ):
+        if not _well_formed_revision(data):
             return f"cached inspection of {revision[:12]} is incomplete or malformed (run with --inspect)"
-    if not isinstance(evidence.get("problems"), list):
-        return "cached inspection has no problem list (run with --inspect)"
+    if not isinstance(evidence.get("problems"), list) or not all(isinstance(p, str) for p in evidence["problems"]):
+        return "cached inspection has no valid problem list (run with --inspect)"
     return None
+
+
+def _well_formed_revision(data: Any) -> bool:
+    """Type check of one cached revision entry, so malformed cache data is dropped instead of crashing assess()."""
+    if not isinstance(data, dict) or data.get("inspection") not in {"complete", "incomplete"}:
+        return False
+    for key in ("root_notice_and_license_files", "license_files_on_record_paths"):
+        files = data.get(key)
+        if not isinstance(files, dict) or not all(
+            isinstance(name, str) and isinstance(info, dict) and "detected" in info and "sha256" in info
+            and (info["detected"] is None or isinstance(info["detected"], str))
+            for name, info in files.items()
+        ):
+            return False
+    metadata = data.get("package_metadata")
+    return isinstance(metadata, list) and all(
+        isinstance(m, dict) and isinstance(m.get("file"), str) and "license" in m for m in metadata
+    )
 
 
 def inspect_repository(key: str, records: list[dict[str, Any]], root_license: str) -> dict[str, Any]:
@@ -358,7 +374,8 @@ def assess(entry: dict[str, Any], evidence: dict[str, Any] | None, state: dict[s
             if value is None:
                 continue
             normalized = SPDX_ALIASES.get(str(value).strip().lower(), str(value).strip())
-            if normalized not in {root_spdx, "BSD"}:
+            # the generic "BSD License" classifier names no variant: compatible only with a BSD root license
+            if normalized != root_spdx and not (normalized == "BSD" and root_spdx.startswith("BSD-")):
                 questions.append(f"{meta['file']} at {revision[:12]} declares license {value!r}, root license is {root_spdx}")
     questions = sorted(set(questions))
     if questions:

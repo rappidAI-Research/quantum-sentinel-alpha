@@ -215,3 +215,38 @@ def test_suffixed_copy_of_the_root_license_is_not_a_question(module, source) -> 
     evidence, (decision, _, _) = _run(module, source)
     assert evidence["revisions"][head]["license_files_on_record_paths"]["shop/LICENSE-MIT"]["detected"] == "MIT"
     assert decision == "recommended_for_review"
+
+
+@pytest.mark.parametrize(
+    "damage",
+    [
+        lambda d: d.update(package_metadata=None),
+        lambda d: d.update(package_metadata=[{"license": "MIT"}]),
+        lambda d: d.update(root_notice_and_license_files=[]),
+        lambda d: d.update(license_files_on_record_paths={"x/LICENSE": None}),
+        lambda d: d.update(license_files_on_record_paths={"x/LICENSE": {"detected": 3, "sha256": None}}),
+    ],
+)
+def test_malformed_cached_values_are_dropped_not_crashing(module, source, damage) -> None:
+    # review finding: right keys with wrong value types must not abort the offline rebuild
+    cached, _ = _run(module, source)
+    damage(next(iter(cached["revisions"].values())))
+    state = module.source_state(source["records"])
+    assert "malformed" in module.stale_reason(cached, state)
+    assert module.assess(source["entry"], cached, state)[0] == "needs_clarification"
+
+
+@pytest.mark.parametrize("root, expected", [("MIT", "needs_clarification"), ("Apache-2.0", "needs_clarification"),
+                                            ("BSD-3-Clause", "recommended_for_review")])
+def test_generic_bsd_metadata_matches_only_a_bsd_root(module, source, root, expected) -> None:
+    # review finding: "BSD License" metadata under an MIT/Apache root is a conflict, like aimhubio/aim
+    evidence, _ = _run(module, source)
+    for data in evidence["revisions"].values():
+        data["package_metadata"] = [{"file": "setup.py", "license": "BSD License"}]
+        for info in data["root_notice_and_license_files"].values():
+            info["detected"] = root
+    entry = {**source["entry"], "license_detected": root}
+    decision, _, questions = module.assess(entry, evidence, module.source_state(source["records"]))
+    assert decision == expected
+    if expected == "needs_clarification":
+        assert any("declares license 'BSD License'" in q for q in questions)
