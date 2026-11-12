@@ -1,16 +1,39 @@
-# Quantum Sentinel Alpha
+# Quantum Sentinel-Alpha
 
-`quantum-sentinel-alpha` is a rappidAI Research project for a small, open-weight cybersecurity model and a verified repository-security engine.
+`quantum-sentinel-alpha` is the [rappidAI Research](https://www.rappidai-research.com)
+project for a security-specialized code model. The model and a separate
+repository-security engine are in development; no model weights or Engine CLI
+are released.
 
 The model is intended to specialize in source-code vulnerability detection, localization, CWE classification, evidence-backed explanation, remediation, minimal patch generation, secure code review, false-positive rejection, and explicit abstention. Initial language focus: Python, JavaScript/TypeScript, and Go.
 
-The model and the Sentinel Engine are separate layers. The model remains independently downloadable and locally runnable. The engine adds repository indexing, deterministic signals, context selection, verification, and structured JSON/SARIF output. Tool execution and sandbox enforcement remain outside the model; optional Ghost integration may be added later.
+The model and the Sentinel Engine are separate layers. The model is intended to be independently downloadable and locally runnable after release. The engine adds repository indexing, deterministic signals, context selection, verification, and structured JSON/SARIF output. Tool execution and sandbox enforcement remain outside the model; optional Ghost integration may be added later.
 
 ## Current phase
 
 Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained, no dataset source or repository is approved for training, and no paid AWS workload has been launched.
 
-See `docs/STATUS.md` for the operational source of truth.
+See [project status](docs/STATUS.md) for the operational source of truth.
+
+## Local setup
+
+Use Python 3.11 or newer. The default validation runs offline and needs no GPU
+or model weights. Model and training extras are documented separately.
+
+```sh
+git clone https://github.com/rappidAI-Research/quantum-sentinel-alpha.git
+cd quantum-sentinel-alpha
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+```
+
+For PowerShell, activate with `.\.venv\Scripts\Activate.ps1`. See
+[CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+
+The project-source license and future artifact terms are not declared. The
+foundation model's Apache-2.0 license does not automatically license this
+repository or a future Sentinel release.
 
 ## Foundation validation
 
