@@ -1,5 +1,7 @@
 # Training cohort rights review (Garden v2) - decisions for the owner
 
+> **Decided 2026-11-15:** the project owner approved the three sources and the 484 recommended repositories; the 42 clarification cases are not approved. Decision record: `docs/TRAINING_AUTHORIZATION.md`. The text below is the evidence review the decision was based on.
+
 **This is an engineering evidence review, not a legal opinion, and it approves nothing.** The active
 approvals file `data/garden/approvals.yaml` is empty and every registry source has
 `production_approved: false`, so **0 records are training-approved**. The proposed approvals are

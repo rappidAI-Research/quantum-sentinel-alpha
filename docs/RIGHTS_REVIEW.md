@@ -1,6 +1,6 @@
 # Training-Rights Review Workflow
 
-Training on Sentinel Garden data needs **two independent approvals**, both made by an authorized human reviewer. This document describes the process and records the evidence collected so far. **Nothing here is an approval, and no part of the tooling can approve anything.** The engineering team prepared the evidence; the decisions are listed under "Decisions required". **For the first training run, start with `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`** (Garden v2: 484 repositories recommended for review in five license groups, 42 clarification cases, exact field changes for the three sources).
+Training on Sentinel Garden data needs **two independent approvals**, both made by an authorized human reviewer. This document describes the process and records the evidence collected so far. **Nothing here is an approval, and no part of the tooling can approve anything.** The engineering team prepared the evidence; the decisions are listed under "Decisions required". **Decision of 2026-11-15: `docs/TRAINING_AUTHORIZATION.md`** (three sources and 484 repositories approved). Evidence: `docs/TRAINING_COHORT_RIGHTS_REVIEW.md` (Garden v2: 484 repositories recommended for review in five license groups, 42 clarification cases, exact field changes for the three sources).
 
 ## 1. Roles
 
