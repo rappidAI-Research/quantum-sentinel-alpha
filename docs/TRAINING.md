@@ -4,6 +4,8 @@ Status: **implemented, not run.** No GPU training has happened and no model weig
 
 Code: `sentinel/train/`. Configuration: `configs/train/qlora_qwen35_9b.yaml`.
 
+Dataset: **Sentinel Garden v2** (`configs/garden/seed_v2.yaml`, docs/GARDEN_V2.md). The proposed first training cohort and the exact post-authorization commands are in `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`. `scripts/authorization_preflight.py` runs the real `curate` export and this loader on a Git-ignored scratch copy with in-memory hypothetical approvals (and optionally the pinned tokenizer), to check before any decision that the proposed cohort would load: currently 1,297 detection and 528 patch examples, all within 4,096 tokens.
+
 ## What gets trained
 
 | Item | Value |

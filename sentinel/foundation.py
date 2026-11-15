@@ -61,15 +61,17 @@ def main() -> int:
     approvals = load_approvals()
     approved_repos = sum(1 for a in approvals.values() if a["decision"] == "approved_for_training")
     print(f"garden approvals: {len(approvals)} entries, {approved_repos} repositories approved for training OK")
-    config = garden.load_config(garden.DEFAULT_CONFIG_PATH)
-    if (config.committed_dir / "manifest.jsonl").is_file():
-        result = garden.check(config)
-        print(
-            f"garden dataset: {config.dataset_id} {result['records']} records, {result['accepted']} accepted, "
-            f"{result['training_approved']} training-approved OK (metadata only, no code committed)"
-        )
-    else:
-        print(f"garden dataset: {config.dataset_id} not generated yet")
+    # every committed dataset version (v1 is the immutable reference, v2 the training dataset)
+    for path in sorted(garden.DEFAULT_CONFIG_PATH.parent.glob("seed_v*.yaml")):
+        config = garden.load_config(path)
+        if (config.committed_dir / "manifest.jsonl").is_file():
+            result = garden.check(config)
+            print(
+                f"garden dataset: {config.dataset_id} {result['records']} records, {result['accepted']} accepted, "
+                f"{result['training_approved']} training-approved OK (metadata only, no code committed)"
+            )
+        else:
+            print(f"garden dataset: {config.dataset_id} not generated yet")
     return 0
 
 

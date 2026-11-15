@@ -250,3 +250,77 @@ def test_generic_bsd_metadata_matches_only_a_bsd_root(module, source, root, expe
     assert decision == expected
     if expected == "needs_clarification":
         assert any("declares license 'BSD License'" in q for q in questions)
+
+
+def test_directory_missing_at_another_revision_is_confirmed_absence(module, source) -> None:
+    # a second record uses a file in a directory that only exists at its own (later) revisions
+    repo = source["repo"]
+    (repo / "shop" / "api" / "v2").mkdir(parents=True)
+    (repo / "shop" / "api" / "v2" / "views.py").write_text("def view(x):\n    return x\n\n\n# end\n")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "api")
+    added = _git(repo, "rev-parse", "HEAD")
+    (repo / "shop" / "api" / "v2" / "views.py").write_text("def view(x):\n    return int(x)\n\n\n# end\n")
+    _git(repo, "commit", "-qam", "fix api")
+    fixed = _git(repo, "rev-parse", "HEAD")
+    source["records"].append({"record_id": "r-api", "label": {"language": "python"},
+                              "provenance": {"vulnerable_revision": added, "fixed_revision": fixed, "file_path": "shop/api/v2/views.py"}})
+    evidence, (decision, _, questions) = _run(module, source)
+    old = evidence["revisions"][source["vulnerable"]]
+    assert old["inspection"] == "complete" and old["absent_directories"] == ["shop/api", "shop/api/v2"]
+    assert evidence["problems"] == [] and decision == "recommended_for_review", questions
+
+
+def test_unreadable_parent_is_not_taken_as_absence(module, source, monkeypatch) -> None:
+    fixed = source["fixed"]
+    _failing(module, monkeypatch, lambda a: a[0] == "ls-tree" and a[1] in {f"{fixed}:shop", fixed})
+    evidence, (decision, _, _) = _run(module, source)
+    assert evidence["revisions"][fixed]["inspection"] == "incomplete" and decision == "needs_clarification"
+    assert "absent_directories" not in evidence["revisions"][fixed]
+
+
+@pytest.mark.parametrize(
+    "filename, text, expected",
+    [
+        ("pyproject.toml", '[project]\nlicense = {file = "LICENSE"}\n', None),  # a pointer, not a declaration
+        ("pyproject.toml", '[project]\nlicense = {text = "MIT"}\n', "MIT"),
+        ("pyproject.toml", '[project]\nlicense = "Apache-2.0"\n', "Apache-2.0"),
+        ("setup.py", 'setup(\n    license=about["__license__"],\n)\n', None),  # computed at build time
+        ("setup.py", 'setup(license=find_meta("license"))\n', None),
+        ("setup.py", "setup(\n    license = about.__license__,\n)\n", None),  # an attribute reference
+        ("setup.py", 'setup(name="x", license="MIT License")\n', "MIT License"),
+        ("setup.py", 'classifiers = [\n  "License :: OSI Approved :: Apache Software License",\n]\n', "Apache Software License"),
+        ("setup.cfg", "[metadata]\nlicense = file: LICENSE\n", None),
+        ("setup.cfg", "[metadata]\nlicense = MIT\n", "MIT"),
+        ("setup.cfg", "[metadata]\nlicense: GPL-3.0\n", "GPL-3.0"),  # review finding: ConfigParser also accepts ':'
+        # review finding: parentheses are literal text in setup.cfg, not a computed expression
+        ("setup.cfg", "[metadata]\nlicense = GNU General Public License v3 (GPLv3)\n", "GNU General Public License v3 (GPLv3)"),
+        ("setup.cfg", "[metadata]\nclassifiers =\n    License :: OSI Approved :: MIT License\n", "MIT License"),
+        ("setup.cfg", "not an ini file = [\n", "unparseable"),
+    ],
+)
+def test_python_metadata_reads_literal_declarations_only(module, filename, text, expected) -> None:
+    # review finding (Garden v2): parser artifacts such as "{file =" or "about['" were reported as conflicts
+    assert module.python_metadata_license(text, filename) == expected
+
+
+@pytest.mark.parametrize(
+    "value, root, conflict",
+    [
+        ("Apache 2", "Apache-2.0", False), ("Apache License (2.0)", "Apache-2.0", False), ("ASL 2", "Apache-2.0", False),
+        ("Apache License", "Apache-2.0", False), ("MIT License", "MIT", False), ("SEE LICENSE IN LICENSE.md", "MIT", False),
+        ({"type": "MIT"}, "MIT", False), ("BSD 3-Clause", "BSD-3-Clause", False),
+        # genuine conflicts stay questions
+        ("ISC", "MIT", True), ("MIT License", "Apache-2.0", True), ("BSD-3-Clause", "BSD-2-Clause", True),
+        ("BSD-3-Clause-Clear", "BSD-3-Clause", True), ("BSD-3-Clause OR AFL-2.1", "BSD-3-Clause", True),
+        ("Apache License", "MIT", True), ("unparseable", "MIT", True), ("GPL-3.0", "MIT", True),
+    ],
+)
+def test_metadata_license_conflicts_are_real_conflicts(module, source, value, root, conflict) -> None:
+    evidence, _ = _run(module, source)
+    for data in evidence["revisions"].values():
+        data["package_metadata"] = [{"file": "pyproject.toml", "license": value}]
+        for info in data["root_notice_and_license_files"].values():
+            info["detected"] = root
+    decision, _, questions = module.assess({**source["entry"], "license_detected": root}, evidence, module.source_state(source["records"]))
+    assert (decision == "needs_clarification") is conflict, questions

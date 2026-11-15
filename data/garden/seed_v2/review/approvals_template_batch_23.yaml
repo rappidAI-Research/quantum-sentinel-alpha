@@ -1,0 +1,428 @@
+# Review batch 23: approval TEMPLATES, not approvals. Each field marked <REQUIRED> must be filled by an
+# authorized reviewer after reading the license file at the linked revision; then move the entry into
+# data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
+repositories:
+  # tier B: license_file_changed_between_revisions
+  # records: 18 {'train/caller_abstention': 4, 'train/post_fix': 4, 'train/vulnerable': 10}
+  # registry (deps.dev): {'PyPI:apache-airflow': ['Apache-2.0'], 'PyPI:apache-airflow-providers-apache-hive': ['Apache-2.0'], 'PyPI:apache-airflow-providers-apache-spark': ['Apache-2.0'], 'PyPI:apache-airflow-providers-elasticsearch': ['Apache-2.0'], 'PyPI:apache-airflow-providers-ftp': ['Apache-2.0'], 'PyPI:apache-airflow-providers-samba': ['Apache-2.0']}
+  - repository_key: apache/airflow
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/apache/airflow
+      - https://github.com/apache/airflow/blob/a929d142d667f71dea29c565a7167216a9c30378/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 11 {'train/caller_abstention': 3, 'train/post_fix': 4, 'train/vulnerable': 4}
+  # registry (deps.dev): {'Go:code.gitea.io/gitea': ['MIT', 'Unlicense'], 'Go:gitea.dev': ['MIT', 'Unlicense'], 'Go:github.com/go-gitea/gitea': ['Apache-2.0', 'MIT', 'Unlicense', 'Zlib']}
+  - repository_key: go-gitea/gitea
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: ed2f10a9d78b8c6c9ef33f1420d0eb266981891caf2f15d630553f02dc60d3ae
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/go-gitea/gitea
+      - https://github.com/go-gitea/gitea/blob/1d43b736b5a16c5f80cfdcd9a9448a9c983ddaa0/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 11 {'train/caller_abstention': 3, 'train/post_fix': 3, 'train/vulnerable': 5}
+  # registry (deps.dev): {'Go:github.com/gogs/gogs': ['Apache-2.0', 'MIT'], 'Go:gogs.io/gogs': ['Apache-2.0', 'CC0-1.0', 'MIT']}
+  - repository_key: gogs/gogs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 4b5bc6bfd453444bdeaa95f9c7c8b280113cc3a72020818ad2578a8800b18a66
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/gogs/gogs
+      - https://github.com/gogs/gogs/blob/c5da9631dc75f692f313373ae229c4d47ba6517f/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 11 {'train/caller_abstention': 3, 'train/post_fix': 4, 'train/vulnerable': 4}
+  # registry (deps.dev): {'PyPI:pip': ['MIT']}
+  - repository_key: pypa/pip
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pypa/pip
+      - https://github.com/pypa/pip/blob/8e227a9be4faa9594e05d02ca05a413a2a4e7735/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 10 {'train/caller_abstention': 2, 'train/post_fix': 4, 'train/vulnerable': 4}
+  # registry (deps.dev): {'Go:github.com/authzed/spicedb': ['Apache-2.0']}
+  - repository_key: authzed/spicedb
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: e0d94d562d4f694198cdef8a20cd2d997f21440dd78a706d65c8a2b99bd3e327
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/authzed/spicedb
+      - https://github.com/authzed/spicedb/blob/fa1d7f48107e0c6c35e6a7862aa983366e70208f/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 10 {'train/post_fix': 4, 'train/vulnerable': 6}
+  # registry (deps.dev): {'npm:systeminformation': ['MIT']}
+  - repository_key: sebhildebrandt/systeminformation
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 6d8a81695f864778d1fa5bb09cf8a8743049ca472b48658b1fff24a4d41300bd
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sebhildebrandt/systeminformation
+      - https://github.com/sebhildebrandt/systeminformation/blob/bbfddde48672d0ee124fefdb3cb4442fd9dd4f03/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 9 {'train/caller_abstention': 3, 'train/post_fix': 2, 'train/vulnerable': 4}
+  # registry (deps.dev): {'Go:github.com/kubernetes/kubernetes': ['Apache-2.0', 'BSD-3-Clause', 'MIT'], 'Go:k8s.io/client-go': ['Apache-2.0', 'BSD-3-Clause', 'MIT'], 'Go:k8s.io/kubernetes': ['Apache-2.0', 'BSD-3-Clause', 'MIT'], 'Go:k8s.io/kubernetes/cmd/kubelet': None}
+  - repository_key: kubernetes/kubernetes
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/kubernetes/kubernetes
+      - https://github.com/kubernetes/kubernetes/blob/1ab06efe92d8e898ca1931471c9533ce94aba29b/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 9 {'train/caller_abstention': 1, 'train/post_fix': 4, 'train/vulnerable': 4}
+  # registry (deps.dev): {'Go:github.com/pion/dtls': ['MIT'], 'Go:github.com/pion/dtls/v2': ['MIT'], 'Go:github.com/pion/dtls/v3': ['MIT']}
+  - repository_key: pion/dtls
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 6483daf6c8aa2c8192528e60be098aa82dd18f6d7b96dc8246f4f7c3333fbf3f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pion/dtls
+      - https://github.com/pion/dtls/blob/49458d604a4f3ebce1bf9587a0f3e5f3f6b4a55e/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, other_permissive_license:multiple:Apache-2.0|BSD-3-Clause
+  # records: 9 {'train/caller_abstention': 3, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:cryptography': ['Apache-2.0 OR BSD-3-Clause']}
+  - repository_key: pyca/cryptography
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected multiple:Apache-2.0|BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pyca/cryptography
+      - https://github.com/pyca/cryptography/blob/f09c261ca10a31fe41b1262306db7f8f1da0e48a/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 9 {'train/caller_abstention': 3, 'train/post_fix': 2, 'train/vulnerable': 4}
+  # registry (deps.dev): {'PyPI:tornado': ['Apache-2.0']}
+  - repository_key: tornadoweb/tornado
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/tornadoweb/tornado
+      - https://github.com/tornadoweb/tornado/blob/24a2d96ea115f663b223887deb0060f13974c104/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 8 {'train/caller_abstention': 2, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:sentry': ['non-standard']}
+  - repository_key: getsentry/sentry
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.md
+    license_file_sha256: 1f2a39da390f36830e83d88b17f7720527a7c95f8f137b16ebb68f283cbbfabc
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/getsentry/sentry
+      - https://github.com/getsentry/sentry/blob/0c67558ae7fe08738912d4c5233b53ead048da3b/LICENSE.md
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_unrecognised
+  # records: 8 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 4}
+  # registry (deps.dev): {'PyPI:jupyter-server': ['non-standard']}
+  - repository_key: jupyter-server/jupyter_server
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 5ca74e4d2eeb9330b0d129c25f874d3544a13413bc62ae8d367819100d095072
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/jupyter-server/jupyter_server
+      - https://github.com/jupyter-server/jupyter_server/blob/290362593b2ffb23c59f8114d76f77875de4b925/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 8 {'train/post_fix': 4, 'train/vulnerable': 4}
+  # registry (deps.dev): {'PyPI:litestar': ['MIT'], 'PyPI:starlite': ['MIT']}
+  - repository_key: litestar-org/litestar
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 04d3326998a4a1b52fee53c9d56d2ecca08b2c105e1fa032b0d87d5f1881de78
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/litestar-org/litestar
+      - https://github.com/litestar-org/litestar/blob/6930a20ceb543912cd651b42deae5b9f3637a262/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:guarddog': ['Apache-2.0']}
+  - repository_key: datadog/guarddog
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c3568d6711f2a3238f2787d2762cabaf4ead08965b4e30ac1fd2b5baa7835725
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/DataDog/guarddog
+      - https://github.com/DataDog/guarddog/blob/9aa6a725b2c71d537d3c18d1c15621395ebb879c/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'npm:mathjs': ['Apache-2.0']}
+  - repository_key: josdejong/mathjs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 3b0f65a9308588e12b619b2f05c788b4a5f41220006ce563b826b0feb489fd26
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/josdejong/mathjs
+      - https://github.com/josdejong/mathjs/blob/ecb80514e80bce4e6ec7e71db8ff79954f07c57e/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'npm:sequelize': ['MIT']}
+  - repository_key: sequelize/sequelize
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 367eeae92316a2485489ffbb05f9c3bc90b439c0e0b026d81d23a6453bdc4aa8
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sequelize/sequelize
+      - https://github.com/sequelize/sequelize/blob/ee4017379db0059566ecb5424274ad4e2d66bc68/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'npm:next': ['MIT']}
+  - repository_key: vercel/next.js
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: license.md
+    license_file_sha256: ee765244e2d59f5234d474f62e0766fa0c8b99af967fdd4c0cb8dcb0c76ea224
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/vercel/next.js
+      - https://github.com/vercel/next.js/blob/6b12c60c61ee80cb0443ccd20de82ca9b4422ddd/license.md
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:restrictedpython': ['ZPL-2.1']}
+  - repository_key: zopefoundation/restrictedpython
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE.txt
+    license_file_sha256: 3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/zopefoundation/RestrictedPython
+      - https://github.com/zopefoundation/RestrictedPython/blob/3737596ec9f28c34a073cc845bd2f4c0a80cb671/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 6 {'validation/caller_abstention': 2, 'validation/post_fix': 2, 'validation/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/containers/podman': ['Apache-2.0'], 'Go:github.com/containers/podman/v2': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v3': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v4': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v5': ['Apache-2.0', 'BSD-3-Clause'], 'Go:github.com/containers/psgo': ['Apache-2.0']}
+  - repository_key: containers/podman
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 62fb8a3a9621dc2388174caaabe9c2317b694bb9a1d46c98bcf5655b68f51be3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/containers/podman
+      - https://github.com/containers/podman/blob/571c842bd357ee626019ea97d030fb772fc654ed/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 6 {'validation/caller_abstention': 2, 'validation/post_fix': 2, 'validation/vulnerable': 2}
+  # registry (deps.dev): {'Go:vitess.io/vitess': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'MIT']}
+  - repository_key: vitessio/vitess
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/vitessio/vitess
+      - https://github.com/vitessio/vitess/blob/c565cab615bc962bda061dcd645aa7506c59ca4a/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 5 {'train/caller_abstention': 2, 'train/post_fix': 1, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/concourse/concourse': ['Apache-2.0', 'BSD-3-Clause']}
+  - repository_key: concourse/concourse
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.md
+    license_file_sha256: fb843c0ea6dbcc13648368ec0bd474de0d273f8edb0b07925985b6255e91b521
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/concourse/concourse
+      - https://github.com/concourse/concourse/blob/ac60be5f0435b6592f5a4fcc089050d72ad2452c/LICENSE.md
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:flask-cors': ['MIT']}
+  - repository_key: corydolphin/flask-cors
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 134a20d852c0cf9e0f3c228767921b76f4bfc4af4a2fc7c4cc90f6b4fd407b5c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/corydolphin/flask-cors
+      - https://github.com/corydolphin/flask-cors/blob/35d875319621bd129a38b2b823abf4a2f6cda536/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/cubefs/cubefs': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'HPND']}
+  - repository_key: cubefs/cubefs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 20b2a384c46a0a0a1c839e8481fb6f260026c8b3048139cd0f35c863ef5493df
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cubefs/cubefs
+      - https://github.com/cubefs/cubefs/blob/8dccce6ac8dff3db44d7e9074094c7303a5ff5dd/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:dagster': ['Apache-2.0']}
+  - repository_key: dagster-io/dagster
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: e25b0c5be442bdf543e3f179ef0ae6a5edef5f5c70524fce00a2a657f5d3ed9d
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dagster-io/dagster
+      - https://github.com/dagster-io/dagster/blob/3a3cec2b51577c4970e6fc4c199cda6418c09a9d/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:changedetection-io': ['Apache-2.0']}
+  - repository_key: dgtlmoon/changedetection.io
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 47a348e041897a91041f8c4054fe2ceacc400f079f8e08c27a7a28b31ec2e625
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dgtlmoon/changedetection.io
+      - https://github.com/dgtlmoon/changedetection.io/blob/ec7d56f85d1e9690fca7cb4711c1fb20dffec780/LICENSE
+    notes: ""

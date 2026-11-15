@@ -2,7 +2,7 @@
 
 Sentinel Garden turns real, published security fixes into function-level training records for Quantum Sentinel Alpha. It is provenance-first and default-deny: the pipeline can discover, resolve, check and export data, but only a documented human review can make a record trainable.
 
-Code: `sentinel/garden/`. Configuration: `configs/garden/seed_v1.yaml`. Governance rules: `docs/DATA_GOVERNANCE.md`.
+Code: `sentinel/garden/`. Configurations: `configs/garden/seed_v1.yaml` (Garden v1, the immutable reference) and `configs/garden/seed_v2.yaml` (Garden v2, the training dataset: higher repository cap and three extraction refinements, `docs/GARDEN_V2.md`). Every command takes `--config`. Governance rules: `docs/DATA_GOVERNANCE.md`.
 
 ## Pipeline
 
@@ -83,7 +83,7 @@ A deterministic stratified sample (per language: pairs round-robin over CWE fami
 
 ## Rights review
 
-`python -m sentinel.garden review` prepares the repository-level review (tiers A-D, license files at every used revision, deps.dev cross-check, approval templates). Process and source dossiers: `docs/RIGHTS_REVIEW.md`.
+`python -m sentinel.garden review` prepares the repository-level review (tiers A-D, license files at every used revision, deps.dev cross-check, approval templates). Process and source dossiers: `docs/RIGHTS_REVIEW.md`. The proposed training cohort for Garden v2 (tier A, inspected for NOTICE files, nested licenses and package metadata at every revision) is prepared by `scripts/training_cohort.py`: `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`.
 
 ## Reconstruction after a fresh checkout
 
