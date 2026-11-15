@@ -1,6 +1,6 @@
 # QLoRA Training
 
-Status: **implemented, not run.** No GPU training has happened and no model weights were downloaded. Training is blocked until Sentinel Garden has training-approved records (`docs/RIGHTS_REVIEW.md`); the trainer refuses to start without them.
+Status: **implemented, not run.** No GPU training has happened and no model weights were downloaded. Training data is authorized (`docs/TRAINING_AUTHORIZATION.md`): Garden v2 holds 1,297 training-approved records and `--dry-run` passes; the trainer refuses to start whenever approvals or data hashes do not match.
 
 Code: `sentinel/train/`. Configuration: `configs/train/qlora_qwen35_9b.yaml`.
 

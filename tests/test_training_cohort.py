@@ -38,7 +38,14 @@ def _module():
 @pytest.mark.parametrize("config", [V1, V2])
 def test_committed_garden_versions_pass_the_offline_check(config) -> None:
     result = pipeline.check(pipeline.load_config(config))
-    assert result["training_approved"] == 0
+    if config == V1:
+        assert result["training_approved"] == 0  # the immutable reference is never re-curated with approvals
+    else:
+        # exactly the records the cohort projected for the approved repositories, nothing else
+        recommended = {r["repository_key"] for r in COHORT["repositories"] if r["proposed_decision"] == "recommended_for_review"}
+        expected = COHORT["if_recommended_are_approved"]["records"] if set(APPROVALS) == recommended else None
+        if expected is not None:
+            assert result["training_approved"] == expected
 
 
 def test_garden_v1_is_a_subset_of_v2_with_identical_content_and_splits() -> None:

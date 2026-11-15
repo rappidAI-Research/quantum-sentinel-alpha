@@ -11,7 +11,7 @@ The model and the Sentinel Engine are separate layers. The model is intended to 
 
 ## Current phase
 
-Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained, no dataset source or repository is approved for training, and no paid AWS workload has been launched.
+Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained and no paid AWS workload has been launched. On 2026-11-15 the project owner approved the three Garden data sources and 484 permissively licensed repositories for training (`docs/TRAINING_AUTHORIZATION.md`); Sentinel Garden v2 now holds 1,297 training-approved records.
 
 See [project status](docs/STATUS.md) for the operational source of truth.
 
@@ -98,7 +98,7 @@ Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v1
 
 ## QLoRA training (implemented, not run)
 
-`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. It refuses to start while no record is training-approved (exit code 2). Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
+`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. Its dry run passes on the approved Garden v2 records (1,177 train / 120 validation); it refuses (exit code 2) whenever approvals or data hashes do not match. Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
 
 ```bash
 python -m sentinel.train --dry-run   # governance + data checks, no model, no GPU

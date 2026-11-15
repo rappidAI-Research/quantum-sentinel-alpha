@@ -31,6 +31,14 @@ def curated_record(split: str = "train") -> dict:
     return record
 
 
+def unapproved_sources() -> dict:
+    """The registry as it was before any source decision (gate logic must not depend on today's decisions)."""
+    sources = {s["source_id"]: copy.deepcopy(s) for s in load_registry()["sources"]}
+    for source_id in ("ghsa-osv-fix-commits", "osv", "github-advisory-db"):
+        sources[source_id]["production_approved"] = False
+    return sources
+
+
 def approved_sources() -> dict:
     sources = {s["source_id"]: copy.deepcopy(s) for s in load_registry()["sources"]}
     for source_id in ("ghsa-osv-fix-commits", "osv", "github-advisory-db"):
@@ -56,12 +64,30 @@ def approval(record: dict, **overrides) -> dict:
     return entry
 
 
-def test_committed_approvals_are_empty_default_deny() -> None:
-    assert load_approvals() == {}
+AI_REVIEWER = ("claude", "codex", "gpt", "assistant", " ai", "ai ", "<required")
+
+
+def test_committed_approvals_are_documented_human_decisions() -> None:
+    """Default-deny holds for everything not listed; every listed entry is a completed human decision
+    bound to the license file the rights review recorded, and only tier A cohort repositories are listed."""
+    import json
+
+    approvals = load_approvals()  # schema-validated
+    data = Path(__file__).resolve().parents[1] / "data" / "garden" / "seed_v2"
+    queue = {json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()}
+    cohort = json.loads((data / "cohort" / "training_cohort.json").read_text())
+    recommended = {r["repository_key"] for r in cohort["repositories"] if r["proposed_decision"] == "recommended_for_review"}
+    for key, entry in approvals.items():
+        reviewer = f" {entry['reviewer'].lower()} "
+        assert not any(marker in reviewer for marker in AI_REVIEWER), f"{key}: an AI assistant cannot be the reviewer"
+        assert key in recommended, f"{key}: approved without a clean cohort inspection"
+        assert queue[key]["tier"] == "A"
+        assert entry["license_file_sha256"] == queue[key]["license_files_latest"][0]["sha256"]
+        assert entry["license_spdx"] == queue[key]["license_detected"]
 
 
 def test_unreviewed_repository_is_pending_not_approved() -> None:
-    sources = {s["source_id"]: s for s in load_registry()["sources"]}
+    sources = unapproved_sources()
     status, blockers = gate(curated_record(), sources, {})
     assert status == "pending_review"
     assert "repository_not_reviewed" in blockers
@@ -83,7 +109,7 @@ def test_approval_is_bound_to_the_reviewed_license_file() -> None:
 
 def test_repository_approval_alone_does_not_approve_sources() -> None:
     record = curated_record()
-    sources = {s["source_id"]: s for s in load_registry()["sources"]}
+    sources = unapproved_sources()
     status, _ = gate(record, sources, {record["provenance"]["repository_key"]: approval(record)})
     assert status == "pending_review"
 

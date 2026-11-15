@@ -398,20 +398,18 @@
   },
   "governance": {
     "accepted_blockers": {
-      "repository_not_reviewed": 3226,
-      "source_not_approved:ghsa-osv-fix-commits": 3226,
-      "source_not_approved:github-advisory-db": 3226,
-      "source_not_approved:osv": 3226,
+      "repository_not_reviewed": 1929,
       "split:holdout_reserved": 376,
       "split:temporal_quarantine": 322
     },
     "by_approval_status": {
       "excluded": 1443,
-      "pending_review": 2528
+      "pending_review": 1231,
+      "training_approved": 1297
     },
-    "training_approved": 0
+    "training_approved": 1297
   },
-  "manifest_sha256": "e825067455def73c3b86a4327217c9425acc308b14046023a414988f189e45f6",
+  "manifest_sha256": "fb05494fa2760725b73a3bb3092701dcc682229bb7ce4e1fbc44de28a5ce9d89",
   "pipeline_version": "3",
   "records": {
     "accepted": 3226,

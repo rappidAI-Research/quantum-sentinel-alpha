@@ -144,8 +144,10 @@ def test_repository_in_train_and_validation_is_refused(garden: GardenWorkdir) ->
         load_training_data(garden.write().config_path, approvals=garden.approvals)
 
 
-def test_cli_dry_run_refuses_without_approved_data() -> None:
-    # The committed approvals are empty, so the real configuration must refuse (exit code 2).
+def test_cli_dry_run_refuses_without_approved_data(monkeypatch: pytest.MonkeyPatch) -> None:
+    # With every repository approval revoked, the real configuration must refuse (exit code 2), whether or
+    # not the Git-ignored exports exist on this machine.
+    monkeypatch.setattr(train_data, "load_approvals", lambda: {})
     assert train_main(["--dry-run"]) == 2
 
 
