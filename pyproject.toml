@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "quantum-sentinel-alpha"
 version = "0.0.0"
-description = "rappidAI Research Quantum Sentinel Alpha foundation"
+description = "Quantum Sentinel-Alpha security-model research, evaluation and governed training pipelines"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -43,6 +43,12 @@ train = [
   "safetensors>=0.4",
   "bitsandbytes>=0.45",
 ]
+
+[project.urls]
+Homepage = "https://www.rappidai-research.com/models/quantum-sentinel-alpha"
+Repository = "https://github.com/rappidAI-Research/quantum-sentinel-alpha"
+Documentation = "https://github.com/rappidAI-Research/quantum-sentinel-alpha/tree/main/docs"
+Issues = "https://github.com/rappidAI-Research/quantum-sentinel-alpha/issues"
 
 [tool.setuptools.packages.find]
 include = ["sentinel*"]
