@@ -98,7 +98,7 @@ python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml
     --skip-coding-regression --output runs/eval/ornith15-9b-baseline.json
 ```
 
-The first run downloads the full checkpoint (19.3 GB) into the Hugging Face cache. Settings: QuickEval v1 (86 cases), prompt `quickeval-review-v2`, greedy, `max_new_tokens 384`, non-thinking prompt, stop at `<|im_end|>`. Look at `invalid` predictions in the artifact. They show how well the untuned model follows the JSON contract, which has not been measured yet.
+The first run downloads the full checkpoint (19.3 GB) into the Hugging Face cache. Settings: QuickEval v1 (86 cases), prompt `quickeval-review-v2`, greedy, `max_new_tokens 384`, non-thinking prompt, stop at `<|im_end|>`. After loading, the run hashes every loaded checkpoint file against the pinned digests (one extra read of the 19.3 GB; `runtime.revision_verification` in the artifact). Without that proof `resolved_revision` stays empty and the run is not reportable. Look at `invalid` predictions in the artifact. They show how well the untuned model follows the JSON contract, which has not been measured yet.
 
 ## 8. QLoRA training run (**GPU**, 4-bit NF4 base, bf16 compute)
 

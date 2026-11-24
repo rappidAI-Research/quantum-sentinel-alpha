@@ -24,6 +24,7 @@ from typing import Any, Callable
 
 from sentinel.eval.patch import PATCH_PROMPT_VERSION
 from sentinel.eval.prompt import PROMPT_VERSION
+from sentinel.hf_revision import reset_cuda_peak_memory
 from sentinel.train.config import TrainConfig, matching_modules
 from sentinel.train.data import EncodedExample, TrainingData, batches, encode_all, pad_batch
 
@@ -99,10 +100,18 @@ def load_foundation_model(config: TrainConfig) -> tuple[Any, Any]:
     return model, tokenizer
 
 
-def verify_foundation(model: Any, config: TrainConfig) -> None:
-    resolved = getattr(model.config, "_commit_hash", None)
-    if resolved != config.revision:
-        raise FoundationMismatch(f"loaded revision {resolved!r}, expected pinned {config.revision}")
+def verify_foundation(config: TrainConfig) -> dict[str, Any]:
+    """Prove the loaded files are the pinned revision (content digests of the resolved cache snapshot).
+
+    model.config._commit_hash is not used: it is None for the pinned Ornith checkpoint, and the
+    requested revision is never taken as evidence of the loaded one.
+    """
+    from sentinel.hf_revision import RevisionUnverified, verify_loaded_revision
+
+    try:
+        return verify_loaded_revision(config.model_id, config.revision)
+    except RevisionUnverified as exc:
+        raise FoundationMismatch(f"loaded revision not verified as the pinned {config.revision}: {exc}") from exc
 
 
 def apply_lora(model: Any, config: TrainConfig, gradient_checkpointing: bool) -> tuple[Any, list[str]]:
@@ -324,6 +333,7 @@ def train(
     *,
     resume: bool = False,
     model_loader: Callable[[TrainConfig], tuple[Any, Any]] = load_foundation_model,
+    revision_verifier: Callable[[TrainConfig], dict[str, Any]] | None = None,
     project_root: Path | None = None,
     log: Callable[[str], None] = print,
 ) -> dict[str, Any]:
@@ -365,12 +375,15 @@ def train(
     state = RunState()
     try:
         seed_everything(config.training.seed)
-        if torch.cuda.is_available():
-            torch.cuda.reset_peak_memory_stats()
+        reset_cuda_peak_memory()  # initializes CUDA and each device's allocator before resetting
         load_started = time.monotonic()
         base, tokenizer = model_loader(config)
-        run["foundation"]["loaded_revision"] = getattr(base.config, "_commit_hash", None)
-        verify_foundation(base, config)  # whatever loaded the model, it must be the pinned revision
+        # whatever loaded the model, its files must be the pinned revision (raises FoundationMismatch)
+        verification = (revision_verifier or verify_foundation)(config)
+        run["foundation"]["revision_verification"] = verification
+        run["foundation"]["loaded_revision"] = verification["revision"]
+        if verification["revision"] != config.revision:
+            raise FoundationMismatch(f"loaded revision {verification['revision']}, expected pinned {config.revision}")
         run["model_load_seconds"] = round(time.monotonic() - load_started, 3)
 
         train_examples, dropped_train = encode_all(tokenizer, data.train, config.data.max_seq_len, config.data.end_of_turn)
