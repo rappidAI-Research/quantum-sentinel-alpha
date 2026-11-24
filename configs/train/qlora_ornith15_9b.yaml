@@ -1,12 +1,12 @@
 # QLoRA fine-tuning of the selected foundation on governance-approved Sentinel Garden data.
-# Run:      python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml
-# Check:    python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run
+# Run:      python -m sentinel.train --config configs/train/qlora_ornith15_9b.yaml
+# Check:    python -m sentinel.train --config configs/train/qlora_ornith15_9b.yaml --dry-run --check-tokens
 # Docs:     docs/TRAINING.md
 #
 # The model ID and revision are NOT set here: they come from configs/model/foundation.yaml so the
 # trained adapter can only ever target the selected, pinned foundation.
 schema_version: "1.0"
-run_name: qsa-qlora-qwen35-9b-v0
+run_name: qsa-qlora-ornith15-9b-v0
 foundation: configs/model/foundation.yaml
 
 data:
@@ -24,7 +24,7 @@ lora:
   rank: 16
   alpha: 32
   dropout: 0.05
-  # Derived from the real module layout (configs/train/qwen35_9b_linear_modules.txt): all attention,
+  # Derived from the real module layout (configs/train/ornith15_9b_linear_modules.txt): all attention,
   # Gated DeltaNet and MLP projections of the 32 text layers. Excluded: in_proj_a / in_proj_b
   # (4096 -> 32 gating projections, too small for rank-16 updates), lm_head and every non-text module.
   target_modules: '^model\.layers\.\d+\.(self_attn\.(q_proj|k_proj|v_proj|o_proj)|linear_attn\.(in_proj_qkv|in_proj_z|out_proj)|mlp\.(gate_proj|up_proj|down_proj))$'
@@ -46,4 +46,4 @@ training:
   keep_last_checkpoints: 3
   logging_every_steps: 1
 
-output_dir: runs/train/qsa-qlora-qwen35-9b-v0   # Git-ignored; adapter-only outputs
+output_dir: runs/train/qsa-qlora-ornith15-9b-v0   # Git-ignored; adapter-only outputs

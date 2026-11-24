@@ -171,11 +171,11 @@ python -m sentinel.garden review      --config configs/garden/seed_v2.yaml  # re
 python scripts/training_cohort.py     --config configs/garden/seed_v2.yaml  # rebind the cohort (offline)
 python -m sentinel.garden check       --config configs/garden/seed_v2.yaml
 # 4. Training-data preflight (no model, no GPU)
-python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run
+python -m sentinel.train --config configs/train/qlora_ornith15_9b.yaml --dry-run
 # 5. Commit the regenerated manifest (only governance fields change) and run the tests
 pytest
-# 6. First Qwen3.5-9B QLoRA session (CUDA GPU; approved paid GPU time required)
-python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml
+# 6. First QLoRA session on the selected foundation (since 2026-11-24 Ornith-1.5-9B; CUDA GPU; docs/GPU_RUNBOOK.md)
+python -m sentinel.train --config configs/train/qlora_ornith15_9b.yaml
 ```
 
 To train patch generation as well, add `patch` to `data.tasks` in the training config.

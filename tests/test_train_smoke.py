@@ -1,8 +1,8 @@
-"""CPU smoke test of the real training loop on a tiny, randomly initialised Qwen3.5 text model.
+"""CPU smoke test of the real training loop on a tiny, randomly initialised Qwen3.5-architecture text model.
 
 Skipped unless torch, transformers and peft are installed (`pip install -e '.[train]'` plus a CPU
-torch build). Uses the same model class and module layout as Qwen/Qwen3.5-9B (Gated DeltaNet +
-full-attention layers), so the LoRA target regex, checkpointing, resume and adapter-only output
+torch build). Uses the same model class and module layout as the foundation ornith-ai/Ornith-1.5-9B,
+a Qwen3.5-architecture model (Gated DeltaNet + full-attention layers), so the LoRA target regex, checkpointing, resume and adapter-only output
 are exercised exactly as on the GPU - only smaller. No weights are downloaded.
 """
 

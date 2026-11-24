@@ -1,9 +1,9 @@
 """Run QuickEval against one model and write a machine-readable run artifact.
 
-Direct:   python -m sentinel.eval.run_model --model Qwen/Qwen3.5-4B --revision <sha> \\
-              --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/qwen35-4b.json
-Bake-off: python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml \\
-              --candidate qwen35-4b --revision <sha> --output runs/qwen35-4b.json
+Direct:   python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision <sha> \\
+              --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/eval/ornith15-9b.json
+Baseline: python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml \\
+              --candidate ornith15-9b --output runs/eval/ornith15-9b-baseline.json
 Adapter:  add --adapter runs/train/<run>/adapter to evaluate a QLoRA adapter on the same base revision.
 No GPU:   add --backend baseline to exercise the full path with the regex baseline.
 

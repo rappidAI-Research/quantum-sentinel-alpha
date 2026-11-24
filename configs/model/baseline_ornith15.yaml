@@ -1,0 +1,34 @@
+# Foundation baseline for Quantum Sentinel Alpha on QuickEval v1 (+ coding-v1).
+#
+# Required run: `ornith15-9b`, the selected training foundation (configs/model/foundation.yaml),
+# un-adapted. Every adapter is compared with exactly this run (same cases, prompt, parser, scorer,
+# generation settings and runtime). `python -m sentinel.foundation` checks that the candidate
+# carries the foundation's exact model ID and revision.
+#
+# Optional: `qwen35-9b`, the previous foundation, as a reference with the same settings. It is not
+# needed for training or for the before/after comparison.
+bakeoff_id: ornith15-9b-baseline-quickeval-v1
+cases: eval/sentinelbench/quickeval_v1.jsonl
+prompt_version: quickeval-review-v2   # no self-reported confidence (docs/CALIBRATION.md)
+
+generation:
+  max_new_tokens: 384
+  do_sample: false          # greedy decoding: deterministic; the same settings for the adapter run
+  enable_thinking: false    # official non-thinking prompt (<think>\n\n</think>); no chain-of-thought is requested or stored
+  seed: 0
+
+# Small clean-room Python suite; executes model-generated code in the fail-closed sandbox.
+coding_suite: coding-v1
+
+runtime:
+  device: cuda
+  dtype: bfloat16           # fits unquantized on one 48 GB L40S (g6e.xlarge)
+  quantization: none
+
+candidates:
+  - name: ornith15-9b
+    model_id: ornith-ai/Ornith-1.5-9B
+    revision: 489cb97981b8654bcfcf30ce1f94ed1b62e07b53
+  - name: qwen35-9b
+    model_id: Qwen/Qwen3.5-9B
+    revision: c202236235762e1c871ad0ccb60c8ee5ba337b9a

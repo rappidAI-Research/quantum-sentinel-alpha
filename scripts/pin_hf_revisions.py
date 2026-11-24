@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pin each bake-off candidate to the current immutable commit SHA of its Hugging Face `main` branch.
 
-    python scripts/pin_hf_revisions.py [--config configs/model/bakeoff_qwen35.yaml] [--dry-run]
+    python scripts/pin_hf_revisions.py [--config configs/model/baseline_ornith15.yaml] [--dry-run]
 
 Only candidates with `revision: null` are pinned; an existing pin is never moved. Needs network
 access to huggingface.co (set HF_TOKEN if the repositories require it). Commit the result.
@@ -22,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sentinel.eval.bakeoff import load_bakeoff  # noqa: E402
 from sentinel.eval.runner import is_immutable_revision  # noqa: E402
 
-DEFAULT_CONFIG = Path(__file__).resolve().parents[1] / "configs" / "model" / "bakeoff_qwen35.yaml"
+DEFAULT_CONFIG = Path(__file__).resolve().parents[1] / "configs" / "model" / "baseline_ornith15.yaml"
 
 
 def fetch_main_sha(model_id: str) -> str:

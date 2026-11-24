@@ -114,7 +114,7 @@ def apply_lora(model: Any, config: TrainConfig, gradient_checkpointing: bool) ->
     if len(targets) != config.lora.expected_target_count:
         raise TargetModuleMismatch(
             f"target_modules matched {len(targets)} linear modules, expected {config.lora.expected_target_count}; "
-            "the architecture differs from the inspected one (configs/train/qwen35_9b_linear_modules.txt)"
+            "the architecture differs from the inspected one (configs/train/ornith15_9b_linear_modules.txt)"
         )
     if config.quantization.mode == "nf4":
         model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=gradient_checkpointing)

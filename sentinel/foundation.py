@@ -12,7 +12,8 @@ from sentinel.foundation_model import load_foundation, validate_foundation
 from sentinel.garden import pipeline as garden
 from sentinel.garden.governance import load_approvals
 
-BAKEOFF_CONFIG = PROJECT_ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
+# Archived Qwen3.5-4B vs 9B bake-off (docs/BAKEOFF.md); still validated so it stays reproducible.
+ARCHIVED_BAKEOFF_CONFIG = PROJECT_ROOT / "configs" / "model" / "bakeoff_qwen35.yaml"
 
 
 def public_case_files() -> list[Path]:
@@ -47,12 +48,14 @@ def main() -> int:
     policy = load_policy()
     print(f"coding sandbox policy: {policy.runtime} {policy.image} network={policy.network} user={policy.user} OK")
 
-    bakeoff = load_bakeoff(BAKEOFF_CONFIG)
-    pinned = sum(1 for c in bakeoff.candidates.values() if c.revision)
-    print(f"bake-off config (optional): {bakeoff.bakeoff_id} OK ({pinned}/{len(bakeoff.candidates)} revisions pinned)")
+    archived = load_bakeoff(ARCHIVED_BAKEOFF_CONFIG)
+    print(f"bake-off config (archived, optional): {archived.bakeoff_id} OK")
 
     foundation = load_foundation()
     validate_foundation(foundation)
+    baseline = load_bakeoff(foundation.bakeoff_config)
+    pinned = sum(1 for c in baseline.candidates.values() if c.revision)
+    print(f"baseline config: {baseline.bakeoff_id} OK ({pinned}/{len(baseline.candidates)} revisions pinned)")
     print(
         f"training foundation: {foundation.model_id}@{foundation.revision} OK "
         f"(selected, basis={foundation.basis}, baseline candidate {foundation.baseline_candidate} matches)"
@@ -61,7 +64,7 @@ def main() -> int:
     approvals = load_approvals()
     approved_repos = sum(1 for a in approvals.values() if a["decision"] == "approved_for_training")
     print(f"garden approvals: {len(approvals)} entries, {approved_repos} repositories approved for training OK")
-    # every committed dataset version (v1 is the immutable reference, v2 the training dataset)
+    # every committed dataset version (v1 and v2 are immutable references, v3 the training dataset)
     for path in sorted(garden.DEFAULT_CONFIG_PATH.parent.glob("seed_v*.yaml")):
         config = garden.load_config(path)
         if (config.committed_dir / "manifest.jsonl").is_file():

@@ -13,7 +13,9 @@ import yaml
 from sentinel.foundation_model import load_foundation
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_TRAIN_CONFIG = PROJECT_ROOT / "configs" / "train" / "qlora_qwen35_9b.yaml"
+DEFAULT_TRAIN_CONFIG = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b.yaml"
+# Every linear module of the pinned foundation (scripts/inspect_foundation.py); the LoRA regex is checked against it.
+LINEAR_MODULES = PROJECT_ROOT / "configs" / "train" / "ornith15_9b_linear_modules.txt"
 TOP_KEYS = {"schema_version", "run_name", "foundation", "data", "quantization", "lora", "training", "output_dir"}
 
 

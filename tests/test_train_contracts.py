@@ -9,11 +9,11 @@ import yaml
 import sentinel.train.data as train_data
 from sentinel.foundation_model import load_foundation
 from sentinel.train.__main__ import main as train_main
-from sentinel.train.config import DEFAULT_TRAIN_CONFIG, PROJECT_ROOT, ConfigError, load_train_config, matching_modules
+from sentinel.train.config import DEFAULT_TRAIN_CONFIG, LINEAR_MODULES, PROJECT_ROOT, ConfigError, load_train_config, matching_modules
 from sentinel.train.data import IGNORE_INDEX, GovernanceError, batches, encode_all, encode_example, load_training_data, pad_batch
 from tests.train_fixtures import CharTokenizer, GardenWorkdir, approved_registry
 
-MODULES = PROJECT_ROOT / "configs" / "train" / "qwen35_9b_linear_modules.txt"
+MODULES = LINEAR_MODULES
 
 
 def module_table() -> dict[str, tuple[int, int]]:
@@ -180,6 +180,16 @@ def test_overlength_examples_are_dropped_not_truncated() -> None:
     assert kept == [] and dropped == ["r1"]
 
 
+def test_template_that_ignores_non_thinking_mode_is_refused() -> None:
+    class ThinkingTokenizer(CharTokenizer):
+        def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=False, enable_thinking=False):  # type: ignore[no-untyped-def]
+            return super().apply_chat_template(messages, tokenize, add_generation_prompt) + "<think>\n"
+
+    example = {"record_id": "r", "messages": [{"role": "user", "content": "x"}, {"role": "assistant", "content": "{}"}]}
+    with pytest.raises(ValueError, match="enable_thinking"):
+        encode_example(ThinkingTokenizer(), example, 4096, "<|im_end|>")
+
+
 def test_end_of_turn_must_be_one_token() -> None:
     with pytest.raises(ValueError, match="single token"):
         encode_all(CharTokenizer(), [example()], 4096, "</s>")
@@ -223,7 +233,7 @@ def test_run_model_refuses_mismatched_adapter(tmp_path: Path) -> None:
     (adapter / "adapter_config.json").write_text(json.dumps({"base_model_name_or_path": "Qwen/Qwen3.5-4B", "revision": "1" * 40}))
     with pytest.raises(SystemExit) as excinfo:
         run_model_main(
-            ["--bakeoff", "configs/model/bakeoff_qwen35.yaml", "--candidate", "qwen35-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")]
+            ["--bakeoff", "configs/model/baseline_ornith15.yaml", "--candidate", "ornith15-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")]
         )
     assert excinfo.value.code == 2  # argparse error before any model download
 

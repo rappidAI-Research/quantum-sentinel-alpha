@@ -23,8 +23,9 @@ dependencies = [
 dev = [
   "pytest>=8.3,<10",
 ]
-# Real model runs (Linux/CUDA). Qwen3.5 (model_type qwen3_5) needs Transformers 5.x;
-# 5.12 is the minimum the bake-off supports.
+# Real model runs (Linux/CUDA). The foundation ornith-ai/Ornith-1.5-9B is a Qwen3.5-architecture
+# model (model_type qwen3_5): it needs Transformers 5.x (its card: >= 5.8.1; it was saved with 5.12.1).
+# 5.12 is the minimum this repository supports; the offline checks used 5.24.0.
 model = [
   "torch>=2.5",
   "transformers>=5.12,<6",

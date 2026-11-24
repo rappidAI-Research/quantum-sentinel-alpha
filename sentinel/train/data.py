@@ -254,6 +254,10 @@ def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_le
         raise ValueError(f"{example['record_id']}: last message must be the assistant reply")
     # Same call as sentinel.eval.backends.HFBackend.generate: thinking disabled, generation prompt on.
     prompt_text = tokenizer.apply_chat_template(prompt_messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    if prompt_text.rstrip().endswith("<think>"):
+        # A template that ignores enable_thinking=False leaves a reasoning block open: the reply
+        # would be trained as chain-of-thought text, and evaluation would parse something else.
+        raise ValueError("chat template ignored enable_thinking=False (generation prompt ends inside <think>)")
     prompt_ids = list(tokenizer(prompt_text, add_special_tokens=False)["input_ids"])
     reply_ids = list(tokenizer(reply["content"] + end_of_turn, add_special_tokens=False)["input_ids"])
     if len(prompt_ids) + len(reply_ids) > max_seq_len:

@@ -1,6 +1,6 @@
-# Qwen3.5-4B vs Qwen3.5-9B QuickEval Bake-off (optional)
+# Qwen3.5-4B vs Qwen3.5-9B QuickEval Bake-off (archived)
 
-Status: **optional, not run.** Qwen3.5-9B is the selected training foundation (`docs/FOUNDATION.md`, `configs/model/foundation.yaml`). The bake-off is no longer a selection gate or a prerequisite for training. It remains available as an efficiency comparison, and its `qwen35-9b` candidate is the path for the **foundation baseline run** of the selected checkpoint. Running anything here needs a CUDA GPU and explicit approval for any paid instance.
+Status: **archived, optional, not run.** Since 2026-11-24 the training foundation is `ornith-ai/Ornith-1.5-9B` (`docs/FOUNDATION.md`); its baseline runs from `configs/model/baseline_ornith15.yaml` (`docs/GPU_RUNBOOK.md`). This Qwen3.5 comparison is kept only so it stays reproducible; it is not a selection gate or a training prerequisite. Running anything here needs a CUDA GPU and explicit approval for any paid instance.
 
 ## What is held identical
 
@@ -34,12 +34,12 @@ A run is marked non-reportable if the loaded model revision or the loaded parame
 
 5. Keep both artifacts. They hold every raw (reasoning-stripped) output, parsed prediction and per-case latency, so results can be audited or re-scored later.
 
-## Foundation baseline only
+## Foundation baseline
 
-The baseline of the selected foundation needs only the 9B candidate:
+The baseline of the selected foundation no longer runs from this file:
 
 ```bash
-python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b --output runs/eval/ornith15-9b-baseline.json
 ```
 
 ## Reading the result

@@ -7,7 +7,7 @@ SentinelBench is the private, versioned evaluation holdout described by the Quan
 | File | Cases | Purpose |
 | --- | --- | --- |
 | `public_seed.jsonl` | 12 | Tiny synthetic harness seed for scorer/unit tests. Not model-quality evidence. |
-| `quickeval_v1.jsonl` | 86 | Clean-room synthetic QuickEval for the Qwen3.5-9B foundation baseline and the optional 4B vs 9B bake-off. |
+| `quickeval_v1.jsonl` | 86 | Clean-room synthetic QuickEval for the Ornith-1.5-9B foundation baseline, every adapter and the archived Qwen3.5 4B vs 9B bake-off. |
 
 `quickeval_v1.jsonl` contains 37 vulnerable cases, 34 hard negatives and 15 abstention cases across Python (30), JavaScript/TypeScript (18/12) and Go (26). 30 vulnerable cases are paired via `pair_id` with a fixed or look-alike secure neighbour. `pair_accuracy` only credits a model that gets both sides right.
 
