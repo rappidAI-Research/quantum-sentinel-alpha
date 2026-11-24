@@ -25,6 +25,7 @@ from sentinel.garden import code
 from sentinel.garden.diff import Hunk, parse_unified_diff
 from sentinel.garden.gitsource import CommitInfo, GitError, LicenseFile
 from sentinel.garden.licenses import detect
+from sentinel.garden.split import parse_time
 
 
 class Repo(Protocol):
@@ -71,6 +72,90 @@ _VERSION_LINE = re.compile(
     r"""^\s*(?:export\s+)?(?:const\s+|var\s+|let\s+)?(?:__version__|VERSION|Version|version)\s*(?::\s*string\s*)?[:=]\s*"""
     r"""(["'`])v?[0-9][0-9A-Za-z.+_-]*\1\s*[,;]?\s*$"""
 )
+
+
+# Files a companion commit may change without casting doubt on which commit is the fix (Garden v3):
+# tests, documentation, changelogs and CI configuration. Anything else (dependency manifests,
+# vendored code, other languages, configuration) may itself be the fix.
+_DOC_FILE = re.compile(r"(?i)(\.(md|rst|adoc)$|(^|/)(changelog|changes|history|news|authors|contributors)[^/]*$)")  # not .txt: requirements.txt
+_DOC_DIRS = {"docs", "doc", ".github", "changelog.d", "newsfragments", "changes"}
+
+
+def _companion_only(path: str, allowed_languages: set[str], settings: ExtractionSettings) -> bool:
+    if code.path_role(path) == "test":
+        return True
+    parts = PurePosixPath(path).parts
+    if parts and parts[0].lower() in _DOC_DIRS:
+        return True
+    if _DOC_FILE.search(path):
+        return True
+    # build/test tooling of the ecosystem's language (e.g. eslint.config.mjs), already not runtime source
+    return code.language_of(path) in allowed_languages and code.path_role(path) == "source" and not is_runtime_source(path, settings)
+
+
+def _change_signature(repo: "Repo", parent: str, sha: str, paths: list[str]) -> tuple[Any, ...]:
+    """What a commit changes in runtime source, position included: per hunk, the file, the enclosing
+    function of the parent version and the hunk's line offset inside it (the absolute line outside any
+    function), and the non-blank removed and added lines.
+
+    The position matters: two commits that make the same textual edit at different places of one
+    function (fixing one of two identical calls each) are a fix in two steps, not a backport."""
+    signature = []
+    for path in sorted(paths):
+        language = code.language_of(path)
+        try:
+            functions = code.find_functions(language, repo.text(parent, path)) if language else []
+        except GitError:
+            functions = []  # the commit adds the file (or it is not UTF-8): positions are absolute lines
+        for hunk in parse_unified_diff(repo.file_diff(parent, sha, path)):
+            anchor = hunk.old_start
+            owner = (
+                min((f for f in functions if f.start <= anchor < f.end), key=lambda f: f.length, default=None)
+                if hunk.is_insertion
+                else code.innermost(functions, anchor, anchor + max(hunk.old_count, 1) - 1)
+            )
+            removed = tuple(t.strip() for _, t in hunk.removed if t.strip())
+            added = tuple(t.strip() for _, t in hunk.added if t.strip())
+            if not removed and not added:
+                continue
+            position = (owner.name, anchor - owner.start) if owner else (None, anchor)
+            signature.append((path, *position, removed, added))
+    return tuple(sorted(signature, key=repr))
+
+
+def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: ExtractionSettings) -> CommitInfo:
+    """The one fix commit of an advisory that names several commits in one repository (Garden v3).
+
+    Accepted only when the fix is unambiguous:
+    - exactly one commit changes runtime source in the ecosystem's language and every other commit
+      changes nothing but tests, documentation, changelogs or CI files; or
+    - every commit that changes runtime source makes the identical change (same files, same removed
+      and added lines: a backport to another branch, or a merge commit and the commit it merges),
+      the others again only tests/docs. The earliest of them is used (the date the fix existed).
+    Anything else, including a fix split over several different commits, is rejected."""
+    allowed_languages = code.ECOSYSTEM_LANGUAGES[candidate["ecosystem"]]
+    code_commits: list[tuple[CommitInfo, list[str]]] = []
+    for sha in candidate["fix_commits"]:
+        try:
+            info = repo.ensure_commit(sha)
+            if not info.parents:
+                raise Rejected("root_commit")
+            changed = repo.changed_files(info.parents[0], info.sha)
+        except GitError as exc:
+            raise Rejected("unresolvable_commit", str(exc)) from exc
+        runtime = [p for _, p in changed if code.language_of(p) in allowed_languages and is_runtime_source(p, settings)]
+        if runtime:
+            code_commits.append((info, runtime))
+        elif not all(_companion_only(p, allowed_languages, settings) for _, p in changed):
+            raise Rejected("multi_commit_unexplained_change", sha)
+    if not code_commits:
+        raise Rejected("no_source_change_in_language")
+    if len(code_commits) > 1:
+        signatures = {_change_signature(repo, info.parents[0], info.sha, paths) for info, paths in code_commits}
+        if len(signatures) != 1:
+            raise Rejected("multi_commit_distinct_changes", str(len(code_commits)))
+    # instants, not strings: offsets differ between commits (2026-06-30T23:45-01:00 is after 2026-07-01T00:30+01:00)
+    return min((info for info, _ in code_commits), key=lambda info: (parse_time(info.committed_at), info.sha))
 
 
 def is_runtime_source(path: str, settings: ExtractionSettings) -> bool:
@@ -368,10 +453,13 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
 
 def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSettings, dataset_id: str, code_source_id: str, metadata_source_ids: list[str]) -> list[dict[str, Any]]:
     """Resolve one candidate into records. Raises `Rejected` with a reason when it is not usable."""
-    try:
-        info = repo.ensure_commit(candidate["fix_commit"])
-    except GitError as exc:
-        raise Rejected("unresolvable_commit", str(exc)) from exc
+    if candidate.get("fix_commits"):
+        info = resolve_fix_commit(candidate, repo, settings)
+    else:
+        try:
+            info = repo.ensure_commit(candidate["fix_commit"])
+        except GitError as exc:
+            raise Rejected("unresolvable_commit", str(exc)) from exc
     if not info.parents:
         raise Rejected("root_commit")
     parent = info.parents[0]  # for a merge commit, the first-parent diff is the merged change

@@ -24,6 +24,8 @@
 # 2026-11-15: 484 repositories of the Garden v2 training cohort approved by Jonas Cikemgil (project owner);
 # decision record docs/TRAINING_AUTHORIZATION.md. Entries were prepared from data/garden/seed_v2/cohort/
 # proposed_approvals.yaml; every license file is bound by its sha256.
+# 2026-11-24: 51 tier B extension repositories of Garden v3 (groups no_registry_crosscheck and
+# registry_lists_bundled_licenses) approved by Jonas Cikemgil; decision record docs/TRAINING_AUTHORIZATION.md.
 approvals_version: '1.0'
 repositories:
 - repository_key: 9001/copyparty
@@ -614,6 +616,34 @@ repositories:
   - https://github.com/basecamp/trix/blob/272c7e27e722608732a67108ad3fe7870e233ac8/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: beego/beego
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 083c3d2da9bc2b8e9b00d9f99af9fadd042d4b2141e32322fdf108291516e17f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/beego/beego
+  - https://github.com/beego/beego/blob/ea5ae58d40589d249cf577a053e490509de2bf57/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: benhmoore/knwl
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 4f7f4e978cbf597ae73dd415d58c11e74d324d5758ca79486148f8f6fb262920
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/benhmoore/Knwl
+  - https://github.com/benhmoore/Knwl/blob/88aa966b1415a167c7c91b70053b72c7762c1cc0/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: berriai/litellm
   decision: approved_for_training
   license_spdx: MIT
@@ -754,6 +784,20 @@ repositories:
   - https://github.com/browserify/browserify-sign/blob/85994cd6348b50f2fd1b73c54e20881416f44a30/LICENSE
   notes: 'Garden v2 training cohort, group recommended:ISC; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: bsv-blockchain/ts-sdk
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.txt
+  license_file_sha256: 41d5dc5a2c9849491f12ed5c71b3fd5b86a79ebbd0ad78aec6bfa14e17994411
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/bsv-blockchain/ts-sdk
+  - https://github.com/bsv-blockchain/ts-sdk/blob/d8cf6930028372079d977138ae9eaa03ae2f50bb/LICENSE.txt
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: buger/jsonparser
   decision: approved_for_training
   license_spdx: MIT
@@ -767,6 +811,20 @@ repositories:
   - https://github.com/buger/jsonparser
   - https://github.com/buger/jsonparser/blob/df3ea76ece10095374fd1c9a22a4fb85a44efc42/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: canonical/lxd
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: COPYING
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/canonical/lxd
+  - https://github.com/canonical/lxd/blob/5cdc9a35b9c51e981b1e70330bde0413ccacc7fd/COPYING
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: capricorn86/happy-dom
   decision: approved_for_training
@@ -964,6 +1022,20 @@ repositories:
   - https://github.com/codemirror/CodeMirror/blob/55d0333907117c9231ffdf555ae8824705993bbb/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: coderedcorp/coderedcms
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 7ba779ea42ce22a61b5841f6a5eff5006edcf5c980b67d0403983565b767b5d3
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/coderedcorp/coderedcms
+  - https://github.com/coderedcorp/coderedcms/blob/06006cec23a723bc7d76df75ce2c2d795a447902/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: cole/aiosmtplib
   decision: approved_for_training
   license_spdx: MIT
@@ -1034,6 +1106,34 @@ repositories:
   - https://github.com/containerd/imgcrypt/blob/6fdd9818a4d8142107b7ecd767d839c9707700d9/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: containers/buildah
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/containers/buildah
+  - https://github.com/containers/buildah/blob/4a8bf740e862f2438279c6feee2ea59ddf0cda0b/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: containers/common
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/containers/common
+  - https://github.com/containers/common/blob/e7db06585c32e1a782c1d9aa3b71ccd708f5e23f/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: containers/image
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -1047,6 +1147,20 @@ repositories:
   - https://github.com/containers/image
   - https://github.com/containers/image/blob/634605d06e738aec8332bcfd69162e7509ac7aaf/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cookiecutter/cookiecutter
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 88f45cff69dcb9eb095daf230383becad4726194ab8c9b041d445eef64ad1f6b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/cookiecutter/cookiecutter
+  - https://github.com/cookiecutter/cookiecutter/blob/fdffddb31fd2b46344dfa317531ff155e7999f77/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: copier-org/copier
   decision: approved_for_training
@@ -1075,6 +1189,20 @@ repositories:
   - https://github.com/coreybutler/node-windows
   - https://github.com/coreybutler/node-windows/blob/a379d31366edbd7a672a981e6c09e185ab448dd3/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cosmos/cosmos-sdk
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 2e5f34bd95a67b6f918f8282a903ed9d5af29ad0c68a0cde21e229040935995b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/cosmos/cosmos-sdk
+  - https://github.com/cosmos/cosmos-sdk/blob/c4a14fa7b6828432fdabdb8b4af68ade9403ce49/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: cri-o/cri-o
   decision: approved_for_training
@@ -1117,6 +1245,20 @@ repositories:
   - https://github.com/CybercentreCanada/assemblyline-service-client
   - https://github.com/CybercentreCanada/assemblyline-service-client/blob/351414e7e96cc1f5640ae71ae51b939e8ba30900/LICENCE.md
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: dadrus/heimdall
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/dadrus/heimdall
+  - https://github.com/dadrus/heimdall/blob/50321b3007db1ccafdc6b1cfd6bdc3689c19a502/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: danday74/git-diff
   decision: approved_for_training
@@ -1397,6 +1539,20 @@ repositories:
   - https://github.com/encode/django-rest-framework
   - https://github.com/encode/django-rest-framework/blob/3b41f0124194430da957b119712978fa2266b642/LICENSE.md
   notes: 'Garden v2 training cohort, group recommended:BSD-3-Clause; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: encode/httpx
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE.md
+  license_file_sha256: 4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/encode/httpx
+  - https://github.com/encode/httpx/blob/e3c495a32c63d8aa7f1bcf3b7b27ee1a0ff428e1/LICENSE.md
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: encode/starlette
   decision: approved_for_training
@@ -1804,6 +1960,20 @@ repositories:
   - https://github.com/firebase/superstatic/blob/e396ff62f588732989137d6c40d46b310e51ef2b/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: fleetdm/fleet
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: c52bf3a138a84e08fa87f0d82813bd20c9a4813ae99f3a39e49b6091948afa87
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/fleetdm/fleet
+  - https://github.com/fleetdm/fleet/blob/5c030e32a3a9bc512355b5e1bf19636e4e6d0317/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: flipped-aurora/gin-vue-admin
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -1986,6 +2156,20 @@ repositories:
   - https://github.com/gin-contrib/cors/blob/27b723a473efd80d5a498fa9f5933c80204c850d/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: github/github-mcp-server
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 9e48ecfa18e2b15169746a3c97beda4d1d6c6796097038498ca434ca7e0ccd44
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/github/github-mcp-server
+  - https://github.com/github/github-mcp-server/blob/c88d2ecdd3bb07f7bdd75296e3ee676febf14f58/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: github/paste-markdown
   decision: approved_for_training
   license_spdx: MIT
@@ -2013,6 +2197,20 @@ repositories:
   - https://github.com/go-chi/chi
   - https://github.com/go-chi/chi/blob/6eb35881c0e438ffb663ddbad3a61babaa5e5d8a/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: go-gitea/gitea
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: ed2f10a9d78b8c6c9ef33f1420d0eb266981891caf2f15d630553f02dc60d3ae
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/go-gitea/gitea
+  - https://github.com/go-gitea/gitea/blob/1d43b736b5a16c5f80cfdcd9a9448a9c983ddaa0/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: go-macaron/csrf
   decision: approved_for_training
@@ -2056,6 +2254,34 @@ repositories:
   - https://github.com/goadesign/goa/blob/70b5a199d0f813d74423993832c424e1fc73fb39/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: godaddy/node-config-shield
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.txt
+  license_file_sha256: cd37aae2ea96128e1bb551cd9afcf407fd6163d99f3448995d1a117cd99ad0ba
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/godaddy/node-config-shield
+  - https://github.com/godaddy/node-config-shield/blob/cdba5d3a7accd661ffbc52e208153464bd0d9da6/LICENSE.txt
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: gogs/gogs
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 4b5bc6bfd453444bdeaa95f9c7c8b280113cc3a72020818ad2578a8800b18a66
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/gogs/gogs
+  - https://github.com/gogs/gogs/blob/c5da9631dc75f692f313373ae229c4d47ba6517f/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: golang/glog
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -2084,6 +2310,20 @@ repositories:
   - https://github.com/google/exposure-notifications-verification-server/blob/eb8cf40b12dbe79304f1133c06fb73419383cd95/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: google/go-attestation
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/google/go-attestation
+  - https://github.com/google/go-attestation/blob/b6e905e7ae52937f02b5ca494dd1c6a3ac7a1003/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: google/mesop
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -2097,6 +2337,20 @@ repositories:
   - https://github.com/google/mesop
   - https://github.com/google/mesop/blob/17fb769d6a91f0a8cbccfab18f64977b158a6a31/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: google/osv-scalibr
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/google/osv-scalibr
+  - https://github.com/google/osv-scalibr/blob/e67c4e198ca099cb7c16957a80f6c5331d90a672/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: gookit/goutil
   decision: approved_for_training
@@ -2448,6 +2702,20 @@ repositories:
   - https://github.com/huandu/facebook/blob/8b34431b91b32903c8821b1d7621bf81a029d8e4/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: huggingface/smolagents
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/huggingface/smolagents
+  - https://github.com/huggingface/smolagents/blob/f570ed5e17999d4cf7d5e79c2830fbaefab8a794/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: hughsk/flat
   decision: approved_for_training
   license_spdx: BSD-3-Clause
@@ -2602,6 +2870,20 @@ repositories:
   - https://github.com/influxdata/influxdb/blob/761b557315ff9c1642cf3b0e5797cd3d983a24c0/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: internlm/lmdeploy
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 811e05b43b0d985814c7ffd0a1d0b93e9166e6f0271245d540302505734528ba
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/InternLM/lmdeploy
+  - https://github.com/InternLM/lmdeploy/blob/d86046a0e6b02ecaaf7cdb74346d0477130221c2/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: inveniosoftware/invenio-drafts-resources
   decision: approved_for_training
   license_spdx: MIT
@@ -2615,6 +2897,20 @@ repositories:
   - https://github.com/inveniosoftware/invenio-drafts-resources
   - https://github.com/inveniosoftware/invenio-drafts-resources/blob/039b0cff1ad4b952000f4d8c3a93f347108b6626/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: inventree/inventree
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 70f21a7a9bb007581b06860ad76d623c95d5c92663a2326b5fa79a198aed55e0
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/inventree/InvenTree
+  - https://github.com/inventree/InvenTree/blob/5759b60a48e7e178fb417a900ed543f29dc5dc86/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: iobroker/iobroker.js-controller
   decision: approved_for_training
@@ -2644,6 +2940,34 @@ repositories:
   - https://github.com/IonicaBizau/set-or-get.js/blob/82ede5cccb2e8d13e4f62599203a4389f6d8e936/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: ipfs/js-ipns
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 7b437fc6f1a8fca3bd1298a0c2740be45108edfb7a509fe83259c3fe07c205d5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/ipfs/js-ipns
+  - https://github.com/ipfs/js-ipns/blob/33684e356f1f2fdcd99b2fb85fcc5d52223769a0/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: istio/istio
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 9fa6e54dafda853bb3cdc01486b677a55102f0d488282a85ba6e426d9125f8c5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/istio/istio
+  - https://github.com/istio/istio/blob/692e460c342d8f308a35b6ecbdace47807da8ade/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: iterative/pydrive2
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -2671,6 +2995,20 @@ repositories:
   - https://github.com/jackc/pgx
   - https://github.com/jackc/pgx/blob/dfd198003a03dbb96e4607b0d3a0bb9a7398ccb7/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jamesturk/django-markupfield
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: bb74f1f14794b37a175d17a76a24f047355c53db7e7097e4c4bfa49ab7c20c7c
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/jamesturk/django-markupfield
+  - https://github.com/jamesturk/django-markupfield/blob/b45734ea1d206abc1ed2a90bdc779708066d49f3/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: jaredhanson/oauth2orize-fprm
   decision: approved_for_training
@@ -2713,6 +3051,20 @@ repositories:
   - https://github.com/jarofghosts/glance
   - https://github.com/jarofghosts/glance/blob/8cfd88e44ebd3f07e3a2eaf376a3e758b6c4ca19/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jasonraimondi/url-to-png
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 98ad716a296e85c3d5e92183353818cf70d265b78db06eebef8ad0f25b700667
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/jasonraimondi/url-to-png
+  - https://github.com/jasonraimondi/url-to-png/blob/e4eaeca6493b21cd515b582fd6c0af09ede54507/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: jaspernbrouwer/powerline-gitstatus
   decision: approved_for_training
@@ -2868,6 +3220,20 @@ repositories:
   - https://github.com/josdejong/typed-function/blob/6478ef4f2c3f3c2d9f2c820e2db4b4ba3425e6fe/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: josh-xt/agixt
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: fcf5b435fd5090f0281d3e03853ae92b1892e8101c7773a73bf3dbd14637a017
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/Josh-XT/AGiXT
+  - https://github.com/Josh-XT/AGiXT/blob/2079ea5a88fa671a921bf0b5eba887a5a1b73d5f/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: jpeer264/node-git-commit-info
   decision: approved_for_training
   license_spdx: MIT
@@ -2979,6 +3345,34 @@ repositories:
   - https://github.com/jupyter/notebook
   - https://github.com/jupyter/notebook/blob/979e0bd15e794ceb00cc63737fcd5fd9addc4a99/COPYING.md
   notes: 'Garden v2 training cohort, group recommended:BSD-3-Clause; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jupyterhub/binderhub
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 611f531642d5bc34d112571839babccb85b2a2ce030f01fc861131ae2efd1c61
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/jupyterhub/binderhub
+  - https://github.com/jupyterhub/binderhub/blob/195caac172690456dcdc8cc7a6ca50e05abf8182/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jupyterhub/jupyter-remote-desktop-proxy
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 55c66f930fbb2903ba8222162dcc8407da9f4496907434a71f089d1d34b52e09
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/jupyterhub/jupyter-remote-desktop-proxy
+  - https://github.com/jupyterhub/jupyter-remote-desktop-proxy/blob/7dd54c25a4253badd8ea68895437e5a66a59090d/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: jupyterhub/jupyterhub
   decision: approved_for_training
@@ -3260,6 +3654,20 @@ repositories:
   - https://github.com/kubernetes/apiextensions-apiserver/blob/b9b7d2b3f32f8edbeb47b8726710eeb868bce196/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: kubernetes/kubernetes
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/kubernetes/kubernetes
+  - https://github.com/kubernetes/kubernetes/blob/1ab06efe92d8e898ca1931471c9533ce94aba29b/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: kubevirt/kubevirt
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -3526,6 +3934,20 @@ repositories:
   - https://github.com/mafintosh/tar-fs/blob/0bd54cdf06da2b7b5b95cd4b062c9f4e0a8c4e09/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mage-ai/mage-ai
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 5d24bc582df82881f573d49e2feace525cfd60beef53ef19cfcc8f317483e791
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/mage-ai/mage-ai
+  - https://github.com/mage-ai/mage-ai/blob/f63cd00f6a3be372397d37a4c9a49bfaf50d7650/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: manuelstofer/json-pointer
   decision: approved_for_training
   license_spdx: MIT
@@ -3651,6 +4073,20 @@ repositories:
   - https://github.com/matrix-org/sydent
   - https://github.com/matrix-org/sydent/blob/1cd748307c6b168b66154e6c4db715d4b9551261/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: matrix-org/synapse
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/matrix-org/synapse
+  - https://github.com/matrix-org/synapse/blob/69b74d9330e42fc91a9c7423d00a06cd6d3732bf/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: matthewwithanm/python-markdownify
   decision: approved_for_training
@@ -3904,6 +4340,20 @@ repositories:
   - https://github.com/modelcontextprotocol/python-sdk/blob/d3a184119e4479ea6a63590bc41f01dc06e3fa99/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: modelcontextprotocol/registry
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/modelcontextprotocol/registry
+  - https://github.com/modelcontextprotocol/registry/blob/78b7bbde07948049b916d76b4769faee461ff930/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: modelcontextprotocol/servers
   decision: approved_for_training
   license_spdx: MIT
@@ -3945,6 +4395,20 @@ repositories:
   - https://github.com/modoboa/modoboa
   - https://github.com/modoboa/modoboa/blob/130257c96a2392ada795785a91178e656e27015c/LICENSE
   notes: 'Garden v2 training cohort, group recommended:ISC; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mohammed90/caddy-ssh
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/mohammed90/caddy-ssh
+  - https://github.com/mohammed90/caddy-ssh/blob/4b3e639d64c55f91152ffb51a4af35a8845c95a3/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: moment/luxon
   decision: approved_for_training
@@ -4029,6 +4493,20 @@ repositories:
   - https://github.com/mout/mout
   - https://github.com/mout/mout/blob/17ffdc2a96417a63a0147156dc045e90d0d14c64/LICENSE.md
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mozilla/bleach
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: bec2238c149a632b8fb26813f687aceabab80327f3270769c2c16157883d3130
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/mozilla/bleach
+  - https://github.com/mozilla/bleach/blob/f77e0f6392177a06e46a49abd61a4d9f035e57fd/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: mozilla/readability
   decision: approved_for_training
@@ -4128,6 +4606,20 @@ repositories:
   - https://github.com/NaturalIntelligence/fast-xml-parser/blob/4e387f61c4a5cef792f6a2f42467013290bf95dc/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: nektos/act
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: da3ece2d2daf5c812c8606d2922094f51818258d4ce0e041b4ee8409ba3b381f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/nektos/act
+  - https://github.com/nektos/act/blob/0c739c8e39c41aa5a07665f732da9cab6df0097a/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: neocotic/convert-svg
   decision: approved_for_training
   license_spdx: MIT
@@ -4183,6 +4675,20 @@ repositories:
   - https://github.com/netlify/netlify-ipx
   - https://github.com/netlify/netlify-ipx/blob/dfa7505a8d47a76fd527570dc40737a61500759b/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: neuvector/neuvector
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/neuvector/neuvector
+  - https://github.com/neuvector/neuvector/blob/955904b5762f296d209bf395a5fcc7a40a53c424/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: nextauthjs/next-auth
   decision: approved_for_training
@@ -4337,6 +4843,20 @@ repositories:
   - https://github.com/nyariv/SandboxJS
   - https://github.com/nyariv/SandboxJS/blob/826865251232611ec94078bab5a18ec875dad4a5/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: oauth2-proxy/oauth2-proxy
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/oauth2-proxy/oauth2-proxy
+  - https://github.com/oauth2-proxy/oauth2-proxy/blob/780ae4f3c99b579cb2ea9845121caebb6192f725/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: oauth2-proxy/oauth2_proxy
   decision: approved_for_training
@@ -4562,6 +5082,20 @@ repositories:
   - https://github.com/openshift/apiserver-library-go/blob/30f75d79e424ca462c6de53ee8b93f91183763e6/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openstack/ceilometer
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/openstack/ceilometer
+  - https://github.com/openstack/ceilometer/blob/8881a42af169a2d7c912b1434911f978883c83f3/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: openstack/glance
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -4575,6 +5109,20 @@ repositories:
   - https://github.com/openstack/glance
   - https://github.com/openstack/glance/blob/eb99e45829a1b4c93db5692bdbf636a86faa56c4/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openstack/heat
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/openstack/heat
+  - https://github.com/openstack/heat/blob/a49526c278e52823080c7f3fcb72785b93fd4dcb/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: openstack/manila
   decision: approved_for_training
@@ -4604,6 +5152,20 @@ repositories:
   - https://github.com/openstack/nova/blob/3eba22ff09c81a61750fbb4882e5f1f01a20fdf5/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openstack/swift
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/openstack/swift
+  - https://github.com/openstack/swift/blob/754633988931e4095530f6b13389c254096eb485/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: osrg/gobgp
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -4617,6 +5179,20 @@ repositories:
   - https://github.com/osrg/gobgp
   - https://github.com/osrg/gobgp/blob/583080a7258e22cc884162e15b078771aa2c2c80/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: owncast/owncast
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 792c6849ff3b75a7ad019ded332965b767b0ebf1c8f6188b8b00b1807eabf758
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/owncast/owncast
+  - https://github.com/owncast/owncast/blob/1b14800c7d7f54be14ed4d130bfe7f480645076e/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: paddlepaddle/paddle
   decision: approved_for_training
@@ -4967,6 +5543,20 @@ repositories:
   - https://github.com/pyca/pyopenssl
   - https://github.com/pyca/pyopenssl/blob/d41a814759a9fb49584ca8ab3f7295de49a85aa0/LICENSE
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: pyeve/eve
+  decision: approved_for_training
+  license_spdx: BSD-2-Clause
+  license_file: LICENSE
+  license_file_sha256: 17be5e69bf8a74448cfa2906faa9b79fb000a9f06ded17bb9b151ff553a1f313
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/pyeve/eve
+  - https://github.com/pyeve/eve/blob/f8f7019ffdf9b4e05faf95e1f04e204aa4c91f98/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: pytest-dev/pytest
   decision: approved_for_training
@@ -5388,6 +5978,20 @@ repositories:
   - https://github.com/sahellebusch/flattenizer/blob/3c6a6353df7c8879e931973b81a49a47f6c2b399/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: sajari/docconv
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 18801b36928d776c2ec8fe17e29f26ef3af38c18fa9be35ce11a83fd61cb990d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/sajari/docconv
+  - https://github.com/sajari/docconv/blob/b19021ade3d0b71c89d35cb00eb9e589a121faa5/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: saleor/saleor
   decision: approved_for_training
   license_spdx: BSD-3-Clause
@@ -5527,6 +6131,20 @@ repositories:
   - https://github.com/sequa-ai/sequa-mcp
   - https://github.com/sequa-ai/sequa-mcp/blob/e569815854166db5f71c2e722408f8957fb9e804/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: shakyshane/eazy-logger
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 052c0fa57a3548533c0ba995008fb4f304a605444e4b37dd5419df94a131c429
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/shakyShane/eazy-logger
+  - https://github.com/shakyShane/eazy-logger/blob/a8baa6fe441d19ffa9916eba367016b7937a28fd/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: shelljs/shelljs
   decision: approved_for_training
@@ -5892,6 +6510,20 @@ repositories:
   - https://github.com/status-board/status-board/blob/19106617865406aa6f8edec036dcb1db427d5f71/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: stephenmcd/mezzanine
+  decision: approved_for_training
+  license_spdx: BSD-2-Clause
+  license_file: LICENSE
+  license_file_sha256: 92df42953946b721c8267fa76bdd87b662d655edb3c75c971a54a37be7c128d3
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/stephenmcd/mezzanine
+  - https://github.com/stephenmcd/mezzanine/blob/898630d8df48cf3ddb8b9942f59168b93216e3f8/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: stranger6667/pyanyapi
   decision: approved_for_training
   license_spdx: MIT
@@ -6004,6 +6636,20 @@ repositories:
   - https://github.com/taoyuan/ntesseract/blob/fcbc36f381798b4362179c0cdf9961b437c7b619/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: tendermint/tendermint
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 03cbd960b0e0609fbc27f4925510c833569e857b7814084d585c9e5f10973a06
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/tendermint/tendermint
+  - https://github.com/tendermint/tendermint/blob/480b995a31727593f58b361af979054d17d84340/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: terriajs/terriajs-server
   decision: approved_for_training
   license_spdx: Apache-2.0
@@ -6017,6 +6663,20 @@ repositories:
   - https://github.com/TerriaJS/terriajs-server
   - https://github.com/TerriaJS/terriajs-server/blob/3aaa5d9717162b245ae4569232bbe7d8673c913f/LICENSE.md
   notes: 'Garden v2 training cohort, group recommended:Apache-2.0; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: theecryptochad/merge-guard
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: fb34ddc048bb91d62bfd6ac8aaba6f43067f5ac87ea9a9bc126ed91dcb6ec32f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/TheeCryptoChad/merge-guard
+  - https://github.com/TheeCryptoChad/merge-guard/blob/25e4b4f2618578a656ef3cb4946a1b475f736736/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: thgh/rollup-plugin-serve
   decision: approved_for_training
@@ -6312,6 +6972,20 @@ repositories:
   - https://github.com/usememos/memos/blob/97b434722cf0abe3cfcad5ac9e3d520233bf1536/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: v2fly/v2ray-core
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 459a5a0847255bac47f8902fbf708f461bf3b299407e1eba4b63eb4618143c9a
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/v2fly/v2ray-core
+  - https://github.com/v2fly/v2ray-core/blob/c1af2bfd7aa59a4482aa7f6ec4b9208c1d350b5c/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:registry_lists_bundled_licenses (lists_root_and_others); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: validatorjs/validator.js
   decision: approved_for_training
   license_spdx: MIT
@@ -6339,6 +7013,20 @@ repositories:
   - https://github.com/vega/vega
   - https://github.com/vega/vega/blob/694560c0aa576df8b6c5f0f7d202ac82233e6966/LICENSE
   notes: 'Garden v2 training cohort, group recommended:BSD-3-Clause; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: vemonet/libre-chat
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.txt
+  license_file_sha256: 9684d0ee41e202b6f39948837f049307287571c4413003509d9cdf7b635e6db9
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/vemonet/libre-chat
+  - https://github.com/vemonet/libre-chat/blob/dbb8e3400e5258112179783d74c9cc54310cb72b/LICENSE.txt
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: vercel/ai
   decision: approved_for_training
@@ -6494,6 +7182,20 @@ repositories:
   - https://github.com/waysact/webpack-subresource-integrity/blob/3d7090c08c333fcfb10ad9e2d6cf72e2acb7d87f/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: weaviate/weaviate
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 61fc440e31f16993a0358f2c2325618275d4487913d4ec310d6f32293fd32950
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/weaviate/weaviate
+  - https://github.com/weaviate/weaviate/blob/40f2cc32279f0f8a51016c3c6870a2c0c808e6c0/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unavailable); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: webpack/webpack
   decision: approved_for_training
   license_spdx: MIT
@@ -6563,6 +7265,20 @@ repositories:
   - https://github.com/withstudiocms/studiocms
   - https://github.com/withstudiocms/studiocms/blob/aebe8bcb3618bb07c6753e3f5c982c1fe6adea64/LICENSE
   notes: 'Garden v2 training cohort, group recommended:MIT; no NOTICE, additional license file or package-metadata conflict found at any used revision (data/garden/seed_v2/cohort/training_cohort.json).
+    Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: wooey/wooey
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: c027644ca06a97de426cf2dfb7b79e57e2ddb4b35d019afdeef1236e9471d17f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-24'
+  evidence_urls:
+  - https://github.com/wooey/Wooey
+  - https://github.com/wooey/Wooey/blob/f7846fc0c323da8325422cab32623491757f1b88/LICENSE
+  notes: 'Garden v3 tier B extension, group extension:no_registry_crosscheck (unrecognised); no NOTICE, additional license file or package-metadata conflict at any used revision (data/garden/seed_v3/cohort/training_cohort.json).
     Decision record: docs/TRAINING_AUTHORIZATION.md.'
 - repository_key: woorank/robots-txt-guard
   decision: approved_for_training

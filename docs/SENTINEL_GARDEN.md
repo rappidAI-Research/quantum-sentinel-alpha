@@ -2,7 +2,7 @@
 
 Sentinel Garden turns real, published security fixes into function-level training records for Quantum Sentinel Alpha. It is provenance-first and default-deny: the pipeline can discover, resolve, check and export data, but only a documented human review can make a record trainable.
 
-Code: `sentinel/garden/`. Configurations: `configs/garden/seed_v1.yaml` (Garden v1, the immutable reference) and `configs/garden/seed_v2.yaml` (Garden v2, the training dataset: higher repository cap and three extraction refinements, `docs/GARDEN_V2.md`). Every command takes `--config`. Governance rules: `docs/DATA_GOVERNANCE.md`.
+Code: `sentinel/garden/`. Configurations: `configs/garden/seed_v1.yaml` (Garden v1, the immutable reference) `configs/garden/seed_v2.yaml` (Garden v2: higher repository cap and three extraction refinements, `docs/GARDEN_V2.md`) and `configs/garden/seed_v3.yaml` (Garden v3, the training dataset: multi-commit advisories, `docs/GARDEN_V3.md`). `materialize` rebuilds only the training-approved records on a training machine. Every command takes `--config`. Governance rules: `docs/DATA_GOVERNANCE.md`.
 
 ## Pipeline
 

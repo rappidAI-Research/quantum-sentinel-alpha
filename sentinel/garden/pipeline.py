@@ -146,6 +146,27 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
         records = client.records(ecosystem, ordered, d["workers"])
         reasons: Counter[str] = Counter()
         accepted = 0
+        multi_commit = bool(d.get("multi_commit_fixes", False))
+        deferred: list[dict[str, Any]] = []
+
+        def admit(candidate: dict[str, Any]) -> bool:
+            nonlocal accepted
+            commits = [(candidate["repository_key"], sha) for sha in candidate.get("fix_commits") or [candidate["fix_commit"]]]
+            if any(commit in seen_commits for commit in commits):
+                reasons["duplicate_fix_commit"] += 1
+                return False
+            if per_repo[candidate["repository_key"]] >= d["max_candidates_per_repository"]:
+                reasons["repository_cap"] += 1
+                return False
+            if accepted >= d["max_candidates_per_ecosystem"]:
+                reasons["ecosystem_cap"] += 1
+                return False
+            seen_commits.update(commits)
+            per_repo[candidate["repository_key"]] += 1
+            accepted += 1
+            candidates.append(candidate)
+            return True
+
         for advisory_id, record in zip(ordered, records):
             if record is None:
                 reasons["record_missing"] += 1
@@ -157,24 +178,20 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
                 require_reviewed=d["require_github_reviewed"],
                 rejected_cwes=set(sel["rejected_cwes"]),
                 max_cwes=sel["max_cwes"],
+                allow_multiple_fix_commits=multi_commit,
             )
             if candidate is None:
                 reasons[reason] += 1
                 continue
-            commit = (candidate["repository_key"], candidate["fix_commit"])
-            if commit in seen_commits:
-                reasons["duplicate_fix_commit"] += 1
+            if candidate.get("fix_commits"):
+                deferred.append(candidate)  # second pass: never displaces a single-commit candidate
                 continue
-            if per_repo[candidate["repository_key"]] >= d["max_candidates_per_repository"]:
-                reasons["repository_cap"] += 1
-                continue
-            if accepted >= d["max_candidates_per_ecosystem"]:
-                reasons["ecosystem_cap"] += 1
-                continue
-            seen_commits.add(commit)
-            per_repo[candidate["repository_key"]] += 1
-            accepted += 1
-            candidates.append(candidate)
+            admit(candidate)
+        # Multi-commit candidates only take the cap slots single-commit candidates left free, so a
+        # dataset version that enables them is a superset of the one that does not.
+        for candidate in deferred:
+            if admit(candidate):
+                reasons["candidate_multi_commit"] += 1
         reasons["candidate"] = accepted
         stats["ecosystems"][ecosystem] = {
             "advisories_in_export": len(ids),
@@ -196,6 +213,17 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
 def build(config: GardenConfig, workdir: Path | None = None, workers: int = 6, log: Any = print) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     workdir = workdir or config.workdir
     candidates = _read_jsonl(config.committed_dir / "candidates.jsonl")
+    records, build_log = build_candidates(config, candidates, workers, log)
+    _write_jsonl(workdir / "records.raw.jsonl", records)
+    _write_jsonl(workdir / "build_log.jsonl", build_log)
+    log(f"build: {len(records)} raw records from {sum(1 for r in build_log if r['outcome'] == 'built')}/{len(candidates)} candidates")
+    return records, build_log
+
+
+def build_candidates(
+    config: GardenConfig, candidates: list[dict[str, Any]], workers: int = 6, log: Any = print
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Build the given candidates from the upstream cache (fetching what is missing); writes nothing."""
     cache = config.workdir / "cache" / "git"
     by_repo: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for candidate in candidates:
@@ -230,9 +258,6 @@ def build(config: GardenConfig, workdir: Path | None = None, workers: int = 6, l
                 log(f"build: {done}/{len(by_repo)} repositories")
     records.sort(key=lambda r: r["record_id"])
     build_log.sort(key=lambda row: row["advisory_id"])
-    _write_jsonl(workdir / "records.raw.jsonl", records)
-    _write_jsonl(workdir / "build_log.jsonl", build_log)
-    log(f"build: {len(records)} raw records from {sum(1 for r in build_log if r['outcome'] == 'built')}/{len(candidates)} candidates")
     return records, build_log
 
 
@@ -300,11 +325,20 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
             quality["status"] = "rejected"
         record["quality"] = quality
         record["split"] = assign_split(record, config.split)
+
+    # The training loader refuses every record of a repository that also has holdout or
+    # temporal-quarantine records (sentinel/train/data.py). The same rule applies here, so an
+    # approval never exports a record the loader would refuse (a new dataset version can add
+    # post-cutoff records to an approved repository).
+    held_out = {r["provenance"]["repository_key"] for r in records if r["split"] in {"holdout_reserved", "temporal_quarantine"}}
+    for record in records:
         status, blockers = gate(record, sources, approvals)
+        if status == "training_approved" and record["provenance"]["repository_key"] in held_out:
+            status, blockers = "excluded", ["repository_has_holdout_or_quarantine_records"]
         record["governance"] = {"approval_status": status, "blockers": blockers}
         errors = list(validator.iter_errors(record))
         if errors:
-            raise ValueError(f"curated record {rid} violates the schema: {errors[0].message}")
+            raise ValueError(f"curated record {record['record_id']} violates the schema: {errors[0].message}")
 
     problems = check_split_invariants(records, config.split)
     if problems:
@@ -643,14 +677,16 @@ def review_packages(config: GardenConfig, log: Any = print) -> list[dict[str, An
     committed = config.committed_dir
     audit_dir = committed / "audit"
     automated = _read_jsonl(audit_dir / "automated.jsonl") if (audit_dir / "automated.jsonl").is_file() else []
-    # With a proposed training cohort (scripts/training_cohort.py), sample only what it would train on.
+    # Sample what will be trained on: the training-approved records once approvals exist, otherwise the
+    # proposed training cohort (scripts/training_cohort.py), otherwise every exportable record.
+    records = _read_jsonl(config.workdir / "records.jsonl")
+    cohort = {r["provenance"]["repository_key"] for r in records if r["governance"]["approval_status"] == "training_approved"} or None
     cohort_path = committed / "cohort" / "training_cohort.json"
-    cohort = None
-    if cohort_path.is_file():
+    if cohort is None and cohort_path.is_file():
         document = json.loads(cohort_path.read_text(encoding="utf-8"))
         cohort = {r["repository_key"] for r in document["repositories"] if r["proposed_decision"] == "recommended_for_review"}
     index = human_review.write_packages(
-        _read_jsonl(config.workdir / "records.jsonl"),
+        records,
         config.workdir / "cache" / "osv",
         automated,
         load_manual_review(audit_dir / "manual_review.yaml"),
@@ -808,6 +844,87 @@ def reconstruct(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
         f"reconstruct: {len(rebuilt)}/{len(manifest)} records rebuilt, {len(missing)} missing, "
         f"{len(mismatched)} hash mismatches -> {config.workdir} (verify with `sha256sum -c SHA256SUMS`)"
     )
+    return report
+
+
+TRAINING_EXPORT_FILES = ("train.jsonl", "validation.jsonl", "train.chat.jsonl", "train.patch.chat.jsonl")
+
+
+def materialize(config: GardenConfig, workers: int = 6, log: Any = print) -> dict[str, Any]:
+    """Rebuild ONLY the training-approved records of the committed manifest and write the training exports.
+
+    For a training machine after a fresh checkout: it fetches the commits of the approved
+    repositories' approved advisories only (not every candidate of the dataset), checks every
+    rebuilt record against the manifest (content hash and all supervision hashes) and against the
+    governance gate with today's registry and approvals, and writes exactly the files
+    `sentinel.train` reads plus SHA256SUMS. Quality, split and approval status are taken from the
+    committed manifest, never recomputed. It does not touch records.raw.jsonl, so a later `curate`
+    in the same work directory is unaffected. Any difference is an error; nothing is repaired.
+    """
+    committed = config.committed_dir
+    manifest = {row["record_id"]: row for row in _read_jsonl(committed / "manifest.jsonl")}
+    approved = {rid: row for rid, row in manifest.items() if row["governance"]["approval_status"] == "training_approved"}
+    if not approved:
+        raise ValueError("the committed manifest has no training-approved record (approvals and curate first)")
+    registry = load_registry()
+    validate_registry(registry)
+    sources = {s["source_id"]: s for s in registry["sources"]}
+    approvals = load_approvals()
+    for rid, row in approved.items():
+        status, blockers = gate(row, sources, approvals)
+        if status != "training_approved":
+            raise ValueError(f"{rid} is training_approved in the manifest but fails the gate now: {blockers} (rerun curate)")
+
+    advisories = {row["provenance"]["advisory_id"] for row in approved.values()}
+    candidates = [c for c in _read_jsonl(committed / "candidates.jsonl") if c["advisory_id"] in advisories]
+    log(f"materialize: {len(approved)} approved records from {len(candidates)} advisories in "
+        f"{len({c['repository_key'] for c in candidates})} repositories")
+    built, _ = build_candidates(config, candidates, workers, log)
+    by_id = {r["record_id"]: r for r in built}
+    missing = sorted(set(approved) - set(by_id))
+    if missing:
+        raise ValueError(f"{len(missing)} approved records could not be rebuilt from upstream (first: {missing[:3]})")
+    # Every rebuilt record takes quality, split and governance from the manifest (siblings included,
+    # so patch eligibility sees the same pair states curate saw).
+    known = []
+    for rid, raw in by_id.items():
+        if rid not in manifest:
+            raise ValueError(f"{rid}: rebuilt but not in the committed manifest (code or config differs)")
+        row = manifest[rid]
+        if raw["provenance"]["content_sha256"] != row["provenance"]["content_sha256"]:
+            raise ValueError(f"{rid}: rebuilt code differs from the manifest content hash")
+        known.append({**raw, "quality": row["quality"], "split": row["split"], "governance": row["governance"]})
+    pairs = supervision.pairs_by_id(known)
+    records = []
+    for record in sorted(known, key=lambda r: r["record_id"]):
+        if record["record_id"] not in approved:
+            continue
+        bound = supervision.supervision(record, pairs)
+        for key in supervision.HASH_FIELDS:
+            if bound[key] != manifest[record["record_id"]]["supervision"][key]:
+                raise ValueError(f"{record['record_id']}: rebuilt {key} differs from the manifest")
+        records.append(record)
+    train = [r for r in records if r["split"] == "train"]
+    validation = [r for r in records if r["split"] == "validation"]
+    workdir = config.workdir
+    workdir.mkdir(parents=True, exist_ok=True)
+    _write_jsonl(workdir / "train.jsonl", train)
+    _write_jsonl(workdir / "validation.jsonl", validation)
+    _write_jsonl(workdir / "train.chat.jsonl", [render.to_chat_example(r) for r in train])
+    _write_jsonl(workdir / "train.patch.chat.jsonl", supervision.patch_examples(train))
+    sums = "".join(f"{file_sha256(workdir / name)}  {name}\n" for name in TRAINING_EXPORT_FILES)
+    (workdir / "SHA256SUMS").write_text(sums, encoding="utf-8")
+    report = {
+        "manifest_sha256": file_sha256(committed / "manifest.jsonl"),
+        "approved_records": len(approved),
+        "train": len(train),
+        "validation": len(validation),
+        "repositories": len({r["provenance"]["repository_key"] for r in records}),
+        "advisories_built": len(candidates),
+        "exports": sums.splitlines(),
+    }
+    _write_json(workdir / "materialize_report.json", report)
+    log(f"materialize: train {len(train)}, validation {len(validation)} -> {workdir} (verify with `sha256sum -c SHA256SUMS`)")
     return report
 
 

@@ -1,4 +1,4 @@
-"""Garden v2 training cohort: a proposal bound to the committed dataset, never an approval."""
+"""Training cohorts (Garden v2, and v3 with the tier B extension): proposals bound to the committed dataset."""
 
 from __future__ import annotations
 
@@ -18,8 +18,10 @@ from sentinel.garden.governance import load_approvals
 ROOT = Path(__file__).resolve().parents[1]
 V1 = ROOT / "configs" / "garden" / "seed_v1.yaml"
 V2 = ROOT / "configs" / "garden" / "seed_v2.yaml"
+V3 = ROOT / "configs" / "garden" / "seed_v3.yaml"
 DATA = ROOT / "data" / "garden" / "seed_v2"
 COHORT = json.loads((DATA / "cohort" / "training_cohort.json").read_text())
+DATASETS = [(V2, ROOT / "data" / "garden" / "seed_v2", False), (V3, ROOT / "data" / "garden" / "seed_v3", True)]
 TIER_A = {"MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC"}
 APPROVALS = load_approvals()  # schema-validated; empty until an authorized reviewer decides
 
@@ -35,7 +37,7 @@ def _module():
     return module
 
 
-@pytest.mark.parametrize("config", [V1, V2])
+@pytest.mark.parametrize("config", [V1, V2, V3])
 def test_committed_garden_versions_pass_the_offline_check(config) -> None:
     result = pipeline.check(pipeline.load_config(config))
     if config == V1:
@@ -48,16 +50,23 @@ def test_committed_garden_versions_pass_the_offline_check(config) -> None:
             assert result["training_approved"] == expected
 
 
-def test_garden_v1_is_a_subset_of_v2_with_identical_content_and_splits() -> None:
-    v1 = {r["record_id"]: r for r in _jsonl(ROOT / "data" / "garden" / "seed_v1" / "manifest.jsonl")}
-    v2 = {r["record_id"]: r for r in _jsonl(DATA / "manifest.jsonl")}
-    assert set(v1) <= set(v2)
-    for record_id, row in v1.items():
-        assert v2[record_id]["provenance"]["content_sha256"] == row["provenance"]["content_sha256"]
-        assert v2[record_id]["split"] == row["split"]  # no holdout/validation repository moves
+@pytest.mark.parametrize("older, newer", [("seed_v1", "seed_v2"), ("seed_v2", "seed_v3")])
+def test_each_garden_version_is_a_superset_with_identical_content_and_splits(older, newer) -> None:
+    old = {r["record_id"]: r for r in _jsonl(ROOT / "data" / "garden" / older / "manifest.jsonl")}
+    new = {r["record_id"]: r for r in _jsonl(ROOT / "data" / "garden" / newer / "manifest.jsonl")}
+    assert set(old) <= set(new)
+    for record_id, row in old.items():
+        assert new[record_id]["provenance"]["content_sha256"] == row["provenance"]["content_sha256"]
+        assert new[record_id]["split"] == row["split"]  # no holdout/validation repository moves
+    old_candidates = {c["advisory_id"]: c for c in _jsonl(ROOT / "data" / "garden" / older / "candidates.jsonl")}
+    new_candidates = {c["advisory_id"]: c for c in _jsonl(ROOT / "data" / "garden" / newer / "candidates.jsonl")}
+    assert all(new_candidates.get(k) == v for k, v in old_candidates.items())
 
 
-def test_cohort_is_bound_to_the_committed_v2_manifest() -> None:
+@pytest.mark.parametrize("config, data, extension", DATASETS)
+def test_cohort_is_bound_to_the_committed_manifest(config, data, extension) -> None:
+    COHORT = json.loads((data / "cohort" / "training_cohort.json").read_text())
+    DATA = data
     assert COHORT["manifest_sha256"] == hashlib.sha256((DATA / "manifest.jsonl").read_bytes()).hexdigest(), "rerun scripts/training_cohort.py"
     assert COHORT["review_queue_sha256"] == hashlib.sha256((DATA / "review" / "review_queue.jsonl").read_bytes()).hexdigest()
     rows = {r["record_id"]: r for r in _jsonl(DATA / "manifest.jsonl")}
@@ -86,6 +95,22 @@ def test_cohort_is_bound_to_the_committed_v2_manifest() -> None:
             assert {d["inspection"] for d in repo["evidence"]["revisions"].values()} == {"complete"}
         else:
             assert repo["open_questions"]
+    if not extension:
+        assert "extension_repositories" not in COHORT
+        return
+    tier_b = {k for k, e in queue.items() if e["tier"] == "B"}
+    assert {r["repository_key"] for r in COHORT["extension_repositories"]} == tier_b - held_out
+    for repo in COHORT["extension_repositories"]:
+        entry = queue[repo["repository_key"]]
+        records = [rows[i] for i in repo["record_ids"]]
+        expected = {"pending_review", "training_approved"} if repo["repository_key"] in APPROVALS else {"pending_review"}
+        assert all(r["governance"]["approval_status"] in expected for r in records)
+        if repo["proposed_decision"] == "recommended_for_review":
+            assert repo["open_questions"] == [] and repo["registry_finding"] != "names_other_license"
+            assert module.pilot.stale_reason(repo["evidence"], module.pilot.source_state(records)) is None
+            assert {d["inspection"] for d in repo["evidence"]["revisions"].values()} == {"complete"}
+            reviewed = {f["sha256"] for files in entry["license_files_by_revision"].values() for f in files}
+            assert set(repo["additional_license_file_sha256s"]) <= reviewed
 
 
 def test_nothing_is_approved_by_the_proposal() -> None:
@@ -100,13 +125,11 @@ def test_nothing_is_approved_by_the_proposal() -> None:
     assert all(p["reviewer"].startswith("<REQUIRED") and p["decision"].startswith("<REQUIRED") for p in proposed)
 
 
-def test_cohort_rebuilds_offline_from_committed_data() -> None:
-    rebuilt = _module().build(V2, inspect=False)
-    assert [(r["repository_key"], r["proposed_decision"]) for r in rebuilt["repositories"]] == [
-        (r["repository_key"], r["proposed_decision"]) for r in COHORT["repositories"]
-    ]
-    assert rebuilt["if_recommended_are_approved"] == COHORT["if_recommended_are_approved"]
-    assert rebuilt["decision_groups"] == COHORT["decision_groups"]
+@pytest.mark.parametrize("config, data, extension", DATASETS)
+def test_cohort_rebuilds_offline_from_committed_data(config, data, extension) -> None:
+    committed = json.loads((data / "cohort" / "training_cohort.json").read_text())
+    rebuilt = _module().build(config, inspect=False, extension=extension)
+    assert json.dumps(rebuilt, sort_keys=True) == json.dumps(committed, sort_keys=True)
 
 
 def test_inspection_reads_the_selected_datasets_own_cache() -> None:

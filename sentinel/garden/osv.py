@@ -117,8 +117,14 @@ def parse_candidate(
     require_reviewed: bool,
     rejected_cwes: set[str],
     max_cwes: int,
+    allow_multiple_fix_commits: bool = False,
 ) -> tuple[dict[str, Any] | None, str]:
-    """Return (candidate, "ok") or (None, rejection_reason). Pure: no I/O."""
+    """Return (candidate, "ok") or (None, rejection_reason). Pure: no I/O.
+
+    With `allow_multiple_fix_commits` (Garden v3), an advisory that names several full fix commits
+    in ONE repository becomes a candidate with `fix_commit: None` and the sorted `fix_commits`;
+    `build` later accepts it only if exactly one fix can be established (sentinel/garden/build.py
+    `resolve_fix_commit`). Commits in several repositories stay rejected."""
     if record.get("withdrawn"):
         return None, "withdrawn"
     database = record.get("database_specific") or {}
@@ -149,9 +155,12 @@ def parse_candidate(
     if not full:
         return None, "short_commit_reference"
     shas = {sha for _, _, sha in full}
+    fix_commits: list[str] | None = None
     if len(shas) > 1:
-        return None, "multiple_fix_commits"
-    sha = shas.pop()
+        if not allow_multiple_fix_commits or len({f"{o}/{r}".lower() for o, r, _ in full}) != 1:
+            return None, "multiple_fix_commits"
+        fix_commits = sorted(shas)
+    sha = None if fix_commits else shas.pop()
     package_repos = package_repositories(record)
     owner, repo, _ = sorted(full, key=lambda r: (f"{r[0]}/{r[1]}".lower() not in package_repos, r[0].lower(), r[1].lower()))[0]
 
@@ -176,4 +185,6 @@ def parse_candidate(
         "repository_key": f"{owner}/{repo}".lower(),
         "fix_commit": sha,
     }
+    if fix_commits:
+        candidate["fix_commits"] = fix_commits
     return candidate, "ok"

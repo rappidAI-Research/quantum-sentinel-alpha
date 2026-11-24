@@ -1,5 +1,7 @@
 # Training cohort rights review (Garden v2) - decisions for the owner
 
+> **Garden v3 (2026-11-24):** the current cohort, including the tier B extension, is `data/garden/seed_v3/cohort/` (`python scripts/training_cohort.py --config configs/garden/seed_v3.yaml --inspect --extension`); the second decision is recorded in `docs/TRAINING_AUTHORIZATION.md`. On a training machine use `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` instead of `reconstruct` + `curate`.
+>
 > **Decided 2026-11-15:** the project owner approved the three sources and the 484 recommended repositories; the 42 clarification cases are not approved. Decision record: `docs/TRAINING_AUTHORIZATION.md`. The text below is the evidence review the decision was based on.
 
 **This is an engineering evidence review, not a legal opinion, and it approves nothing.** The active

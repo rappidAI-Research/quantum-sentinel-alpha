@@ -69,21 +69,28 @@ AI_REVIEWER = ("claude", "codex", "gpt", "assistant", " ai", "ai ", "<required")
 
 def test_committed_approvals_are_documented_human_decisions() -> None:
     """Default-deny holds for everything not listed; every listed entry is a completed human decision
-    bound to the license file the rights review recorded, and only tier A cohort repositories are listed."""
+    bound to the license file the rights review recorded, for a repository a training cohort (tier A, or
+    the inspected tier B extension) recommended after a clean inspection."""
     import json
 
     approvals = load_approvals()  # schema-validated
-    data = Path(__file__).resolve().parents[1] / "data" / "garden" / "seed_v2"
-    queue = {json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()}
-    cohort = json.loads((data / "cohort" / "training_cohort.json").read_text())
-    recommended = {r["repository_key"] for r in cohort["repositories"] if r["proposed_decision"] == "recommended_for_review"}
+    root = Path(__file__).resolve().parents[1]
+    recommended: dict[str, dict] = {}
+    queue: dict[str, dict] = {}
+    for version in ("seed_v2", "seed_v3"):  # an approval rests on a clean inspection in some dataset version
+        data = root / "data" / "garden" / version
+        queue.update({json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()})
+        cohort = json.loads((data / "cohort" / "training_cohort.json").read_text())
+        for r in cohort["repositories"] + cohort.get("extension_repositories", []):
+            if r["proposed_decision"] == "recommended_for_review":
+                recommended.setdefault(r["repository_key"], r)
     for key, entry in approvals.items():
         reviewer = f" {entry['reviewer'].lower()} "
         assert not any(marker in reviewer for marker in AI_REVIEWER), f"{key}: an AI assistant cannot be the reviewer"
         assert key in recommended, f"{key}: approved without a clean cohort inspection"
-        assert queue[key]["tier"] == "A"
-        assert entry["license_file_sha256"] == queue[key]["license_files_latest"][0]["sha256"]
-        assert entry["license_spdx"] == queue[key]["license_detected"]
+        assert queue[key]["tier"] in {"A", "B"} and queue[key]["license_detected"] == entry["license_spdx"]
+        assert entry["license_file_sha256"] == recommended[key]["license_file_sha256"]
+        assert set(entry.get("additional_license_file_sha256s", [])) <= set(recommended[key].get("additional_license_file_sha256s", []))
 
 
 def test_unreviewed_repository_is_pending_not_approved() -> None:
@@ -242,3 +249,54 @@ def test_exports_are_checksummed_and_hold_no_unapproved_training_records(tmp_pat
     forged[0]["split"] = "holdout_reserved"
     with pytest.raises(AssertionError, match="gate invariant"):
         write_exports(tmp_path, forged)
+
+
+def test_additional_reviewed_license_versions_cover_records_at_other_revisions() -> None:
+    """A license file that changed between revisions (e.g. a copyright year) is covered only by versions the
+    reviewer listed; any other version keeps the record pending."""
+    record = curated_record()
+    entry = approval(record)  # reviewed the license file as it is at this record's revision
+    other = "e" * 64
+    record["provenance"]["license"]["files"] = [{"path": "LICENSE", "sha256": other}]  # another revision's version
+    assert entry["license_file_sha256"] != other
+    status, blockers = gate(record, approved_sources(), {record["provenance"]["repository_key"]: entry})
+    assert status == "pending_review" and "repository_approval_license_mismatch" in blockers
+    entry["additional_license_file_sha256s"] = [other]
+    assert gate(record, approved_sources(), {record["provenance"]["repository_key"]: entry})[0] == "training_approved"
+
+
+def test_additional_license_versions_must_be_sha256(tmp_path: Path) -> None:
+    record = curated_record()
+    entry = approval(record, additional_license_file_sha256s=["not-a-hash"])
+    path = tmp_path / "approvals.yaml"
+    path.write_text(yaml.safe_dump({"approvals_version": "1.0", "repositories": [entry]}))
+    with pytest.raises(ValidationError):
+        load_approvals(path)
+
+
+def test_approved_repository_with_quarantine_records_exports_nothing(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Curate applies the training loader's rule: a repository that also has holdout or temporal-quarantine
+    records is never exported for training, even when approved (otherwise training would refuse to start)."""
+    import sentinel.garden.pipeline as pipeline
+    from tests.garden_fixtures import GO_NEW, GO_OLD
+
+    config = load_config(DEFAULT_CONFIG_PATH)
+    repo = "example/shop"  # a train-split repository under the frozen policy
+    old = build_records(
+        candidate(repo=repo), FakeRepo({"shop/orders.py": PY_OLD}, {"shop/orders.py": PY_NEW}),
+        SETTINGS, "sentinel-garden-test", "ghsa-osv-fix-commits", ["osv", "github-advisory-db"],
+    )
+    late = build_records(
+        candidate("Go", ["CWE-532"], repo=repo, advisory="GHSA-9999-8888-7777"), FakeRepo({"auth/token.go": GO_OLD}, {"auth/token.go": GO_NEW}),
+        SETTINGS, "sentinel-garden-test", "ghsa-osv-fix-commits", ["osv", "github-advisory-db"],
+    )
+    for record in late:
+        record["provenance"]["fix_committed_at"] = "2026-09-01T00:00:00+00:00"  # after the frozen temporal cutoff
+    approvals = {old[0]["provenance"]["repository_key"]: approval(old[0])}
+    monkeypatch.setattr(pipeline, "load_registry", lambda: {"registry_version": "1.0", "sources": list(approved_sources().values())})
+    records = curate_records(config, old + late, approvals=approvals)
+    splits = {r["record_id"]: r["split"] for r in records}
+    assert "train" in splits.values() and "temporal_quarantine" in splits.values()
+    trainable = [r for r in records if r["split"] in {"train", "validation"} and r["quality"]["status"] == "accepted"]
+    assert trainable and all(r["governance"]["approval_status"] == "excluded" for r in trainable)
+    assert all(r["governance"]["blockers"] == ["repository_has_holdout_or_quarantine_records"] for r in trainable)

@@ -76,7 +76,8 @@ def gate(
         excluded.append("repository_blocked")
     else:
         recorded = {f["path"]: f["sha256"] for f in provenance["license"]["files"]}
-        if recorded.get(approval["license_file"]) != approval["license_file_sha256"]:
+        reviewed = {approval["license_file_sha256"], *approval.get("additional_license_file_sha256s", [])}
+        if recorded.get(approval["license_file"]) not in reviewed:
             pending.append("repository_approval_license_mismatch")
         # copyleft, unknown and custom licenses need an explicit written basis, never a plain approval
         if category_of(approval["license_spdx"]) != "permissive" and not approval.get("non_permissive_justification"):

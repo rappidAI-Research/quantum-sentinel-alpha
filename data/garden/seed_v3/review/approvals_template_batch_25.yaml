@@ -1,0 +1,428 @@
+# Review batch 25: approval TEMPLATES, not approvals. Each field marked <REQUIRED> must be filled by an
+# authorized reviewer after reading the license file at the linked revision; then move the entry into
+# data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
+repositories:
+  # tier B: registry_unrecognised
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:restrictedpython': ['ZPL-2.1']}
+  - repository_key: zopefoundation/restrictedpython
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE.txt
+    license_file_sha256: 3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/zopefoundation/RestrictedPython
+      - https://github.com/zopefoundation/RestrictedPython/blob/3737596ec9f28c34a073cc845bd2f4c0a80cb671/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 6 {'validation/caller_abstention': 2, 'validation/post_fix': 2, 'validation/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/containers/libpod': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman': ['Apache-2.0'], 'Go:github.com/containers/podman/v2': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v3': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v4': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v5': ['Apache-2.0', 'BSD-3-Clause'], 'Go:github.com/containers/psgo': ['Apache-2.0']}
+  - repository_key: containers/podman
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 62fb8a3a9621dc2388174caaabe9c2317b694bb9a1d46c98bcf5655b68f51be3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/containers/podman
+      - https://github.com/containers/podman/blob/571c842bd357ee626019ea97d030fb772fc654ed/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 6 {'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'Go:github.com/gofiber/fiber': ['MIT'], 'Go:github.com/gofiber/fiber/v2': ['BSD-3-Clause', 'MIT'], 'Go:github.com/gofiber/fiber/v2/middleware/session': None, 'Go:github.com/gofiber/fiber/v3': ['MIT']}
+  - repository_key: gofiber/fiber
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 5c0e1bfb8a314043331e093c78154cc7870e276ffb64ac6ace6ee0087162b1e4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/gofiber/fiber
+      - https://github.com/gofiber/fiber/blob/1403cc8292da3220e9316960b4030cc722a0f396/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 6 {'validation/caller_abstention': 2, 'validation/post_fix': 2, 'validation/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/vitessio/vitess': ['BSD-3-Clause', 'MIT'], 'Go:vitess.io/vitess': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'MIT']}
+  - repository_key: vitessio/vitess
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/vitessio/vitess
+      - https://github.com/vitessio/vitess/blob/c565cab615bc962bda061dcd645aa7506c59ca4a/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 5 {'train/caller_abstention': 2, 'train/post_fix': 1, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/concourse/concourse': ['Apache-2.0', 'BSD-3-Clause']}
+  - repository_key: concourse/concourse
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.md
+    license_file_sha256: fb843c0ea6dbcc13648368ec0bd474de0d273f8edb0b07925985b6255e91b521
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/concourse/concourse
+      - https://github.com/concourse/concourse/blob/ac60be5f0435b6592f5a4fcc089050d72ad2452c/LICENSE.md
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:flask-cors': ['MIT']}
+  - repository_key: corydolphin/flask-cors
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 134a20d852c0cf9e0f3c228767921b76f4bfc4af4a2fc7c4cc90f6b4fd407b5c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/corydolphin/flask-cors
+      - https://github.com/corydolphin/flask-cors/blob/35d875319621bd129a38b2b823abf4a2f6cda536/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:dagster': ['Apache-2.0']}
+  - repository_key: dagster-io/dagster
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: e25b0c5be442bdf543e3f179ef0ae6a5edef5f5c70524fce00a2a657f5d3ed9d
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dagster-io/dagster
+      - https://github.com/dagster-io/dagster/blob/3a3cec2b51577c4970e6fc4c199cda6418c09a9d/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:changedetection-io': ['Apache-2.0']}
+  - repository_key: dgtlmoon/changedetection.io
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 47a348e041897a91041f8c4054fe2ceacc400f079f8e08c27a7a28b31ec2e625
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dgtlmoon/changedetection.io
+      - https://github.com/dgtlmoon/changedetection.io/blob/ec7d56f85d1e9690fca7cb4711c1fb20dffec780/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions, registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/elastic/beats': ['Apache-2.0', 'BSD-3-Clause'], 'Go:github.com/elastic/beats/v7': ['BSD-3-Clause']}
+  - repository_key: elastic/beats
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE.txt
+    license_file_sha256: 7f0eb504dd0b8b090b52cff384296249be3168374f271b142ce03130c987c8e5
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/elastic/beats
+      - https://github.com/elastic/beats/blob/9bd7de84ab9c31bb4e1c0a348a7b7c26817a0996/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:@firebase/util': ['Apache-2.0'], 'npm:firebase': ['Apache-2.0']}
+  - repository_key: firebase/firebase-js-sdk
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 6bcc23f2ed5dde5b7f0de4fa8ab94ec669799f227970aea93b998d5a17d52ea8
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/firebase/firebase-js-sdk
+      - https://github.com/firebase/firebase-js-sdk/blob/245dd26e19b6c16aca7e1b7e597ed5784c2984ba/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 3, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:jsrsasign': ['MIT']}
+  - repository_key: kjur/jsrsasign
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 6a4b3171be4ff53a6b7f3661a7ba7411b49cfab2a660f2c45c7c04197dbdf44d
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/kjur/jsrsasign
+      - https://github.com/kjur/jsrsasign/blob/5ea1c32bb2aa894b4bd29849839afe4f98728195/LICENSE.txt
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:scratch-svg-renderer': ['AGPL-3.0-only']}
+  - repository_key: llk/scratch-svg-renderer
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 4d7f8fd635fa6e9b318ca895132274d2acf1ef1e7d689f9e7bc96ed53d6de862
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/LLK/scratch-svg-renderer
+      - https://github.com/LLK/scratch-svg-renderer/blob/9ebf57588aa596c4fa3bb64209e10ade395aee90/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:wsgidav': ['MIT']}
+  - repository_key: mar10/wsgidav
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: a7989e6c15aa8e9aa23630253376e4284409a6e4d9ec7f018459bf33774177cf
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mar10/wsgidav
+      - https://github.com/mar10/wsgidav/blob/f894ed8656d7bdd7438ab8148c5a02546cb15183/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:matrix-synapse': ['non-standard']}
+  - repository_key: matrix-org/synapse
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/matrix-org/synapse
+      - https://github.com/matrix-org/synapse/blob/69b74d9330e42fc91a9c7423d00a06cd6d3732bf/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:werkzeug': ['BSD-3-Clause']}
+  - repository_key: pallets/werkzeug
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE.txt
+    license_file_sha256: 3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pallets/werkzeug
+      - https://github.com/pallets/werkzeug/blob/2767bcb10a7dd1c297d812cc5e6d11a474c1f092/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'validation/caller_abstention': 1, 'validation/post_fix': 1, 'validation/vulnerable': 3}
+  # registry (deps.dev): {'npm:vm2': ['MIT']}
+  - repository_key: patriksimek/vm2
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: e325ac4bbebba34d3461267f44d85852cade58d3a53a4c21fd5880452a98f925
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/patriksimek/vm2
+      - https://github.com/patriksimek/vm2/blob/a462655009669c3124ee39498121651597529ea8/LICENSE.md
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 5 {'train/caller_abstention': 2, 'train/post_fix': 1, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:waitress': ['ZPL-2.1']}
+  - repository_key: pylons/waitress
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE.txt
+    license_file_sha256: 3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Pylons/waitress
+      - https://github.com/Pylons/waitress/blob/e4359018537af376cf24bd13616d861e2fb76f65/LICENSE.txt
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:svelte': ['MIT']}
+  - repository_key: sveltejs/svelte
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: 06257f4847b13a49a039efb17b944c141e71b12fd8d231b362d86919067d77a3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sveltejs/svelte
+      - https://github.com/sveltejs/svelte/blob/ef81048e238844b729942441541d6dcfe6c8ccca/LICENSE.md
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/tendermint/tendermint': ['Apache-2.0', 'GPL-3.0', 'GPL-3.0-or-later']}
+  - repository_key: tendermint/tendermint
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 03cbd960b0e0609fbc27f4925510c833569e857b7814084d585c9e5f10973a06
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/tendermint/tendermint
+      - https://github.com/tendermint/tendermint/blob/480b995a31727593f58b361af979054d17d84340/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:ws': ['MIT']}
+  - repository_key: websockets/ws
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 3de284c8e6fa7e8437eff6f53695471e0332129a5b42a79361e17b7637de94b3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/websockets/ws
+      - https://github.com/websockets/ws/blob/00c425ec77993773d823f018f64a5c44e17023ff/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:cai-framework': ['non-standard']}
+  - repository_key: aliasrobotics/cai
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 446b387b531149e29e46f45220ae18062c5ad31e4fe355441803e25718af99c9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/aliasrobotics/cai
+      - https://github.com/aliasrobotics/cai/blob/e22a1220f764e2d7cf9da6d6144926f53ca01cde/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 4 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:sqlparse': ['non-standard']}
+  - repository_key: andialbrecht/sqlparse
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: c1938235b80d39e93138eae89edc3af67e18ecbc40d266529fa57b2dce426310
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/andialbrecht/sqlparse
+      - https://github.com/andialbrecht/sqlparse/blob/b4a39d9850969b4e1d6940d32094ee0b42a2cf03/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:cosmossdk.io/math': ['Apache-2.0'], 'Go:cosmossdk.io/x/tx': ['Apache-2.0'], 'Go:github.com/cosmos/cosmos-sdk': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}
+  - repository_key: cosmos/cosmos-sdk
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 2e5f34bd95a67b6f918f8282a903ed9d5af29ad0c68a0cde21e229040935995b
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/cosmos/cosmos-sdk
+      - https://github.com/cosmos/cosmos-sdk/blob/c4a14fa7b6828432fdabdb8b4af68ade9403ce49/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:fastify': ['MIT']}
+  - repository_key: fastify/fastify
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 5970150ebcc7745e4f139ad9664687e1abfa8bcf99f368e4fcde76fe3495eaa5
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/fastify/fastify
+      - https://github.com/fastify/fastify/blob/f3d2bcb3963cd570a582e5d39aab01a9ae692fe4/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/fleetdm/fleet': [], 'Go:github.com/fleetdm/fleet/v4': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}
+  - repository_key: fleetdm/fleet
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: c52bf3a138a84e08fa87f0d82813bd20c9a4813ae99f3a39e49b6091948afa87
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/fleetdm/fleet
+      - https://github.com/fleetdm/fleet/blob/5c030e32a3a9bc512355b5e1bf19636e4e6d0317/LICENSE
+    notes: ""
