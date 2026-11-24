@@ -1,0 +1,315 @@
+{
+  "abstentions_checked": 523,
+  "abstentions_invalid": 2,
+  "broad_spans": 135,
+  "correspondence": {
+    "moderate": 470,
+    "strong": 1003,
+    "weak": 253
+  },
+  "correspondence_by_language": {
+    "go": {
+      "moderate": 105,
+      "strong": 285,
+      "weak": 78
+    },
+    "javascript": {
+      "moderate": 120,
+      "strong": 227,
+      "weak": 75
+    },
+    "python": {
+      "moderate": 175,
+      "strong": 337,
+      "weak": 61
+    },
+    "typescript": {
+      "moderate": 70,
+      "strong": 154,
+      "weak": 39
+    }
+  },
+  "exclusions_by_reason": {
+    "abstention_constant_arguments": 2,
+    "broad_localization_span": 135,
+    "later_fix_changes_same_function": 239,
+    "later_fix_unverifiable": 61,
+    "reported_incomplete_fix": 76,
+    "split_leakage_near_duplicate_of_temporal_quarantine": 5,
+    "split_leakage_shared_package_with_holdout_reserved": 2,
+    "split_leakage_shared_package_with_validation": 13
+  },
+  "fix_pattern_by_family": {
+    "authn_authz": "137/196",
+    "code_injection": "19/41",
+    "command_injection": "34/83",
+    "crypto_tls_integrity": "46/70",
+    "deserialization_input_validation": "88/137",
+    "information_exposure": "83/132",
+    "path_traversal": "115/173",
+    "prototype_pollution": "90/103",
+    "redirect_ssrf": "75/82",
+    "resource_limits_redos": "263/303",
+    "sql_injection": "10/21",
+    "xss_output_encoding": "96/181"
+  },
+  "fix_pattern_consistent": "1056/1522",
+  "groups": 1760,
+  "human_review": {
+    "independent_of_implementation": false,
+    "rates": {
+      "abstention_invalid": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "cwe_wrong_or_ambiguous": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "hard_negative_not_safe": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "label_wrong": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "localization_imprecise_or_wrong": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      },
+      "pair_inconsistent": {
+        "errors": 0,
+        "judged": 0,
+        "wilson95": [
+          null,
+          null
+        ]
+      }
+    },
+    "retired_decisions": [],
+    "reviewed_items": 0,
+    "reviewer": null,
+    "sample_id": "sentinel-garden-human-review-v1",
+    "sample_items": 0,
+    "stale_decisions": [],
+    "status": "not_performed"
+  },
+  "later_fix_checked": 1663,
+  "later_fix_incomplete_lookups": 22,
+  "manual": {
+    "items": 25,
+    "outside_sample": [
+      "sgg-04d53284ff0a8c2a:abstention",
+      "sgg-09a8b452421e4656:abstention",
+      "sgg-123b519ef15fb572:pair",
+      "sgg-150398c418b2726a:pair",
+      "sgg-197c0ab0d1c44038:pair",
+      "sgg-2cf2e703a76ead51:pair",
+      "sgg-2d72a3657eaed109:pair",
+      "sgg-378c9eabbade1342:pair",
+      "sgg-415984076072e28a:pair",
+      "sgg-42f7b788706518a3:pair",
+      "sgg-4b92738d3aa8e1a8:pair",
+      "sgg-574f83d51ff4eb01:abstention",
+      "sgg-5897b76eb6545eaf:pair",
+      "sgg-5c1d4ee9c47c0718:pair",
+      "sgg-61303eb81d08544d:pair",
+      "sgg-61d6829955024685:pair",
+      "sgg-6a6f6a8af2df4498:pair",
+      "sgg-6c129031942f38e7:pair",
+      "sgg-833b5d2892ae09f0:pair",
+      "sgg-8f3bada0bcb025d5:pair",
+      "sgg-94aae1b326b6db26:abstention",
+      "sgg-94aae1b326b6db26:pair",
+      "sgg-95cbaa99c47eb222:pair",
+      "sgg-9a87435a79b3349d:pair",
+      "sgg-9fdd249e6aa6c400:pair",
+      "sgg-a0ed92c4c6886c55:abstention",
+      "sgg-a5f02a80b981def2:pair",
+      "sgg-aadae65f2b8d7fca:pair",
+      "sgg-ad7e8d2a7b80113a:pair",
+      "sgg-b1445eeadda5aad5:abstention",
+      "sgg-b23679afe83a0155:pair",
+      "sgg-b47d9a3914f75c61:pair",
+      "sgg-c1a60674e227f82e:pair",
+      "sgg-c9ed921e8a719557:pair",
+      "sgg-d65e52544908013d:pair",
+      "sgg-da053d422e655ad7:abstention",
+      "sgg-e5ebc27cb1aa1f13:pair",
+      "sgg-ebb0552b053865d2:pair",
+      "sgg-f432d98ac64a89d4:pair",
+      "sgg-f54f240d90794bbd:pair",
+      "sgg-f708915d207b7600:pair",
+      "sgg-ff8062cb8b49243d:pair"
+    ],
+    "pending": [
+      "sgg-709353b82e3ad307:pair",
+      "sgg-6b34c86c76085228:pair",
+      "sgg-b4d1335a2dbe2499:pair",
+      "sgg-cd222ddd4b02b584:abstention",
+      "sgg-ed3ea8c30891872d:pair",
+      "sgg-1758c7caa88d8cb3:pair",
+      "sgg-86264a0e49b7582e:pair",
+      "sgg-98400c409e0a1894:pair",
+      "sgg-1d3f7a60b781bcc5:abstention",
+      "sgg-99b1ffe05386042b:pair",
+      "sgg-590a7a4da116e76d:pair",
+      "sgg-c95fb6bf692c1822:pair",
+      "sgg-67e2c90ae9c31bf8:pair",
+      "sgg-35694a55b6ad9b54:abstention",
+      "sgg-9dd5732fd3c54024:pair",
+      "sgg-838e26d539f56311:pair",
+      "sgg-e539567cf803fc8d:pair",
+      "sgg-32f9981c8d17f51a:pair",
+      "sgg-67f87ee6c3a53e82:abstention"
+    ],
+    "rates": {
+      "abstention_valid": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 8,
+        "uncertain_or_partial": 1,
+        "wilson95": [
+          0.0,
+          0.324
+        ]
+      },
+      "advisory_matches_code": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 17,
+        "uncertain_or_partial": 3,
+        "wilson95": [
+          0.0,
+          0.184
+        ]
+      },
+      "cwe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 17,
+        "uncertain_or_partial": 7,
+        "wilson95": [
+          0.0,
+          0.184
+        ]
+      },
+      "fix_addresses_weakness": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 17,
+        "uncertain_or_partial": 1,
+        "wilson95": [
+          0.0,
+          0.184
+        ]
+      },
+      "hard_negative_safe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 17,
+        "uncertain_or_partial": 1,
+        "wilson95": [
+          0.0,
+          0.184
+        ]
+      },
+      "localization": {
+        "error_rate": 0.235,
+        "errors": 4,
+        "judged": 17,
+        "uncertain_or_partial": 3,
+        "wilson95": [
+          0.096,
+          0.473
+        ]
+      }
+    },
+    "rates_after_automated_exclusions": {
+      "abstention_valid": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 7,
+        "wilson95": [
+          0.0,
+          0.354
+        ]
+      },
+      "advisory_matches_code": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 14,
+        "wilson95": [
+          0.0,
+          0.215
+        ]
+      },
+      "cwe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 14,
+        "wilson95": [
+          0.0,
+          0.215
+        ]
+      },
+      "fix_addresses_weakness": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 14,
+        "wilson95": [
+          0.0,
+          0.215
+        ]
+      },
+      "hard_negative_safe": {
+        "error_rate": 0.0,
+        "errors": 0,
+        "judged": 13,
+        "wilson95": [
+          0.0,
+          0.228
+        ]
+      },
+      "localization": {
+        "error_rate": 0.071,
+        "errors": 1,
+        "judged": 14,
+        "wilson95": [
+          0.013,
+          0.315
+        ]
+      }
+    },
+    "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer",
+    "sample_items": 44
+  },
+  "post_fix_invalidated": 166,
+  "span_lines_median": 2,
+  "temporal_quarantine_overlap": {
+    "package_in_train_or_validation": 4,
+    "records": 364,
+    "repository_in_train_or_validation": 156
+  }
+}
