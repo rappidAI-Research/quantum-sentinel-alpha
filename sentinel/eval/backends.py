@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from sentinel.eval.baseline import detect
+from sentinel.hf_revision import RevisionUnverified, reset_cuda_peak_memory, verify_loaded_revision
 
 QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit")
 DTYPES = ("bfloat16", "float16", "float32")
@@ -194,6 +195,7 @@ class HFBackend:
         self._tokenizer: Any = None
         self._generation_config: Any = None
         self._stop_ids: list[int] = []
+        self._revision_verification: dict[str, Any] | None = None
         self._loaded_dtype: str | None = None
         self._parameter_dtypes: dict[str, int] = {}
 
@@ -220,9 +222,8 @@ class HFBackend:
                 )
             else:
                 kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
-        if self._cuda() and torch.cuda.is_available():
-            for index in range(torch.cuda.device_count()):
-                torch.cuda.reset_peak_memory_stats(index)
+        if self._cuda():
+            reset_cuda_peak_memory(torch)  # initializes CUDA and each device's allocator before resetting
 
         self._tokenizer = AutoTokenizer.from_pretrained(self.model_id, revision=self.revision)
         model, info = AutoModelForCausalLM.from_pretrained(self.model_id, output_loading_info=True, **kwargs)
@@ -230,6 +231,12 @@ class HFBackend:
         missing = list(info.get("missing_keys") or [])
         if missing:
             raise RuntimeError(f"checkpoint is missing weights ({len(missing)}), e.g. {missing[:5]}")
+        # Prove which revision was loaded from the files themselves (config._commit_hash is None for
+        # the pinned Ornith checkpoint). Unverified stays None, which keeps the run non-reportable.
+        try:
+            self._revision_verification = verify_loaded_revision(self.model_id, self.revision) if self.revision else None
+        except RevisionUnverified as exc:
+            self._revision_verification = {"error": str(exc)}
         if self.adapter is not None:
             from peft import PeftModel
 
@@ -281,7 +288,8 @@ class HFBackend:
 
         info: dict[str, Any] = {
             "backend": self.name,
-            "resolved_revision": getattr(self._model.config, "_commit_hash", None) if self._model else None,
+            "resolved_revision": self.verified_revision(),
+            "revision_verification": self._revision_verification,
             "loaded_dtype": self._loaded_dtype,
             "parameter_dtypes": dict(sorted(self._parameter_dtypes.items())),
             "torch_version": torch.__version__,
@@ -302,6 +310,11 @@ class HFBackend:
 
             info["bitsandbytes_version"] = bitsandbytes.__version__
         return info
+
+    def verified_revision(self) -> str | None:
+        """The revision proven by file digests; never the requested revision taken on trust."""
+        verification = self._revision_verification or {}
+        return None if "error" in verification else verification.get("revision")
 
     def peak_vram_gib(self) -> float | None:
         import torch

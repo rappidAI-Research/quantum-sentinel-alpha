@@ -21,6 +21,7 @@ from safetensors.torch import load_file  # noqa: E402
 import sentinel.train.data as train_data  # noqa: E402
 from sentinel.train.config import load_train_config  # noqa: E402
 from sentinel.train.data import load_training_data  # noqa: E402
+from sentinel.train import trainer  # noqa: E402
 from sentinel.train.trainer import FoundationMismatch, TargetModuleMismatch, train  # noqa: E402
 from tests.train_fixtures import CharTokenizer, GardenWorkdir, approved_registry  # noqa: E402
 
@@ -49,8 +50,21 @@ def tiny_model(revision: str):
     }
     torch.manual_seed(0)
     model = AutoModelForCausalLM.from_config(Qwen3_5Config(text_config=text))
-    model.config._commit_hash = revision
+    model.config._commit_hash = None  # as for the real Ornith checkpoint: never used as evidence
     return model
+
+
+@pytest.fixture(autouse=True)
+def verified_files(monkeypatch: pytest.MonkeyPatch):
+    """The tiny model has no Hub snapshot; stand in for the file-digest proof (tests/test_hf_revision.py covers it)."""
+    calls = []
+
+    def verify(config):
+        calls.append(config.revision)
+        return {"revision": config.revision, "method": "test", "files_sha256": {}}
+
+    monkeypatch.setattr(trainer, "verify_foundation", verify)
+    return calls
 
 
 @pytest.fixture
@@ -91,6 +105,7 @@ def test_train_checkpoint_resume_and_adapter_only_output(setup) -> None:
     assert run["status"] == "completed"
     assert run["lora"]["target_modules"] == TINY_TARGETS
     assert run["foundation"]["loaded_revision"] == config.revision
+    assert run["foundation"]["revision_verification"]["method"] == "test"  # proven by files, not by config._commit_hash
     assert run["state"]["step"] == 4 and run["data"]["train_dropped_overlength"] == []
     assert all(e["validation_loss"] is not None for e in run["state"]["evaluations"])
 
@@ -112,16 +127,30 @@ def test_train_checkpoint_resume_and_adapter_only_output(setup) -> None:
     assert resumed["state"]["step"] == 6
 
 
-def test_wrong_foundation_revision_is_refused(setup) -> None:
+def test_wrong_foundation_revision_is_refused(setup, monkeypatch: pytest.MonkeyPatch) -> None:
+    config, data = setup
+    monkeypatch.setattr(trainer, "verify_foundation", lambda cfg: {"revision": "0" * 40, "method": "test"})
+    with pytest.raises(FoundationMismatch):
+        train(config, data, model_loader=loader, log=lambda _: None)
+    assert json.loads((config.output_dir / "run.json").read_text())["status"] == "failed"
+
+
+def test_unverifiable_revision_is_refused(setup, monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.hf_revision import RevisionUnverified
+
     config, data = setup
 
-    def wrong(cfg):
-        model = tiny_model("0" * 40)
-        return model, CharTokenizer()
+    def unverifiable(cfg):
+        try:
+            raise RevisionUnverified("model-00001-of-00004.safetensors: sha256 mismatch")
+        except RevisionUnverified as exc:
+            raise FoundationMismatch(str(exc)) from exc
 
-    with pytest.raises(FoundationMismatch):
-        train(config, data, model_loader=wrong, log=lambda _: None)
-    assert json.loads((config.output_dir / "run.json").read_text())["status"] == "failed"
+    monkeypatch.setattr(trainer, "verify_foundation", unverifiable)
+    with pytest.raises(FoundationMismatch, match="sha256 mismatch"):
+        train(config, data, model_loader=loader, log=lambda _: None)
+    run = json.loads((config.output_dir / "run.json").read_text())
+    assert run["status"] == "failed" and run["foundation"]["loaded_revision"] is None
 
 
 def test_target_module_drift_is_refused(setup) -> None:

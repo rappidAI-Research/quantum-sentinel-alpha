@@ -21,6 +21,10 @@ Dataset: **Sentinel Garden v3** (`configs/garden/seed_v3.yaml`, docs/GARDEN_V3.m
 
 The module layout was taken from the real configuration, not assumed: `configs/train/ornith15_9b_linear_modules.txt` lists every linear module of the model built from Ornith's `config.json` at the pinned revision (meta device, no weights; `scripts/inspect_foundation.py`), and every shape matches the safetensors headers. At runtime the trainer counts the modules its regex matches and stops if the count is not 200 (`TargetModuleMismatch`).
 
+## Loaded-revision proof
+
+`config._commit_hash` is `None` for the pinned Ornith checkpoint, so it is not used. After loading, `sentinel/hf_revision.py` resolves the files `from_pretrained` read from the local Hugging Face cache (config, weight index, all four weight shards, tokenizer files). All of them must lie in `snapshots/489cb97…`, and their sha256 must equal the pinned `files_sha256` in `configs/model/foundation.yaml`. The requested revision is never taken as evidence. Any mismatch or unverifiable file is a `FoundationMismatch` and training does not start. `run.json` records the verification under `foundation.revision_verification`. The evaluation path uses the same check; for a model without pinned digests it compares against the per-file digests the Hub reports for that revision. Hashing the 19.3 GB of shards takes one read of the files after loading. `torch.cuda.reset_peak_memory_stats` is called only after CUDA and each device's allocator are initialized.
+
 ## Governance (fail closed)
 
 `sentinel.train.data.load_training_data` refuses to return data unless:
