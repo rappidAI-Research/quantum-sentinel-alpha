@@ -19,7 +19,7 @@
     "schema_version": {"const": "1.0"},
     "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
     "language": {"enum": ["python", "javascript", "typescript", "go"]},
-    "source_kind": {"enum": ["synthetic", "private_holdout", "public_eval"]},
+    "source_kind": {"enum": ["synthetic", "private_holdout", "public_eval", "development"]},
     "task": {"enum": ["review", "patch"]},
     "expected_decision": {"enum": ["finding", "no_finding", "abstain"]},
     "case_type": {

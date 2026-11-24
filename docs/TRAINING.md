@@ -67,6 +67,8 @@ On `CUDA out of memory`, `run.json` records `failed_oom` with a hint: lower `mic
 
 ## Baseline and comparison
 
+After training, checkpoints are compared on the development set (the approved validation split) with a pre-registered rule, and the final independent test runs once on `holdout_reserved`: `docs/EVALUATION.md`, commands in `docs/GPU_RUNBOOK.md` § 12.
+
 Every adapter is compared with the unchanged foundation under the same evaluation contract:
 
 ```bash

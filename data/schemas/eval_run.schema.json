@@ -179,6 +179,48 @@
           "additionalProperties": {
             "type": "integer"
           }
+        },
+        "foundation_parameter_dtypes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "description": "Parameter counts per dtype of every parameter that is not a verified adapter tensor."
+        },
+        "adapter_parameter_dtypes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "description": "Parameter counts per dtype of the loaded LoRA tensors."
+        },
+        "adapter_verification": {
+          "type": "object",
+          "required": [
+            "ok",
+            "expected_tensors",
+            "loaded_tensors",
+            "expected_parameters",
+            "loaded_parameters"
+          ],
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            },
+            "expected_tensors": {
+              "type": "integer"
+            },
+            "loaded_tensors": {
+              "type": "integer"
+            },
+            "expected_parameters": {
+              "type": "integer"
+            },
+            "loaded_parameters": {
+              "type": "integer"
+            }
+          },
+          "description": "Loaded LoRA tensors compared one by one with the adapter file (name, shape, dtype)."
         }
       }
     },
