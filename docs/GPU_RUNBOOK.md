@@ -143,9 +143,10 @@ python -m sentinel.eval.compare runs/eval/ornith15-9b-baseline.json runs/eval/or
 
 `--adapter` refuses, before anything is downloaded, an adapter trained for another model, revision or prompt. Add `--skip-coding-regression` to both runs or to neither; `compare` refuses mismatched contracts.
 
-Optional patch check on the reserved holdout (offline scoring, nothing is executed), before and after:
+Optional patch check on the reserved holdout (offline scoring, nothing is executed), before and after. `materialize` writes only the training exports. The holdout patch cases come from a full reconstruction, which rebuilds all 7,751 candidates from the pinned upstream commits and takes much longer. It rewrites the training exports with identical bytes and checks every hash; run it after training, not during a run:
 
 ```bash
+python -m sentinel.garden reconstruct --config configs/garden/seed_v3.yaml   # writes artifacts/garden/seed_v3/holdout_reserved.patch_cases.jsonl
 python -m sentinel.eval.patch --model ornith-ai/Ornith-1.5-9B --revision 489cb97981b8654bcfcf30ce1f94ed1b62e07b53 \
     --cases artifacts/garden/seed_v3/holdout_reserved.patch_cases.jsonl --output runs/eval/ornith15-9b-patch-baseline.json
 python -m sentinel.eval.patch --model ornith-ai/Ornith-1.5-9B --revision 489cb97981b8654bcfcf30ce1f94ed1b62e07b53 \
