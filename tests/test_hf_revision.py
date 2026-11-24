@@ -105,6 +105,29 @@ def test_missing_shard_or_unpinned_loaded_file_is_refused(tmp_path: Path) -> Non
         verify_loaded_revision(MODEL, REVISION, expected=expected, resolve=_resolver(tmp_path / "second"), online=_offline)
 
 
+def test_single_file_checkpoint_next_to_an_index_is_verified_too(tmp_path: Path) -> None:
+    # transformers loads model.safetensors before a sharded index: it must be verified, not ignored.
+    snapshot, expected = _cache(tmp_path)
+    stray = b"other weights"
+    blob = tmp_path / "models--org--model" / "blobs" / hashlib.sha256(stray).hexdigest()
+    blob.write_bytes(stray)
+    (snapshot / "model.safetensors").symlink_to(Path("..") / ".." / "blobs" / blob.name)
+    with pytest.raises(RevisionUnverified, match="model.safetensors was loaded but has no reference digest"):
+        verify_loaded_revision(MODEL, REVISION, expected=expected, resolve=_resolver(tmp_path), online=_offline)
+    expected["model.safetensors"] = Expected(sha256="0" * 64)
+    with pytest.raises(RevisionUnverified, match="model.safetensors: sha256"):
+        verify_loaded_revision(MODEL, REVISION, expected=expected, resolve=_resolver(tmp_path), online=_offline)
+
+
+def test_local_directory_shadowing_the_repository_is_refused(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    # from_pretrained would load ./org/model instead of the verified cache snapshot.
+    _, expected = _cache(tmp_path / "cache")
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "org" / "model").mkdir(parents=True)
+    with pytest.raises(RevisionUnverified, match="local path"):
+        verify_loaded_revision(MODEL, REVISION, expected=expected, resolve=_resolver(tmp_path / "cache"), online=_offline)
+
+
 def test_hub_metadata_digests_accept_git_blob_ids(tmp_path: Path) -> None:
     snapshot, pinned = _cache(tmp_path)
     online = {}

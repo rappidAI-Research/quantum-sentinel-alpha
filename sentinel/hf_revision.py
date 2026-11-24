@@ -45,6 +45,10 @@ TOKENIZER_FILES = (
     "generation_config.json",
 )
 _CHUNK = 16 * 2**20
+# Any of these in the snapshot could be what the loader reads (model.safetensors takes precedence over
+# a sharded index, .bin is a fallback), so every one present is verified, whichever the loader picks.
+_WEIGHT_SUFFIXES = (".safetensors", ".bin", ".pt", ".pth", ".ckpt", ".gguf", ".h5", ".msgpack")
+_WEIGHT_INDEXES = ("model.safetensors.index.json", "pytorch_model.bin.index.json")
 
 
 class RevisionUnverified(RuntimeError):
@@ -108,19 +112,23 @@ def _file_digests(path: Path) -> tuple[str, str, int]:
 
 
 def _loaded_files(snapshot: Path, resolve: Callable[[str], Path]) -> list[str]:
+    """Every file the loader may read: config, all weight files and indexes present, the shards an
+    index names, and the tokenizer files present. Verifying all of them avoids depending on the
+    loader's precedence (model.safetensors before a sharded index, .bin as fallback)."""
     files = ["config.json"]
-    index = snapshot / "model.safetensors.index.json"
-    if index.is_file():
-        weight_map = json.loads(index.read_text(encoding="utf-8")).get("weight_map") or {}
+    present = {path.name for path in snapshot.iterdir()}
+    weights = sorted(name for name in present if name.endswith(_WEIGHT_SUFFIXES))
+    indexes = [name for name in _WEIGHT_INDEXES if name in present]
+    for index in indexes:
+        weight_map = json.loads((snapshot / index).read_text(encoding="utf-8")).get("weight_map") or {}
         shards = sorted(set(weight_map.values()))
         if not shards:
-            raise RevisionUnverified("model.safetensors.index.json names no weight files")
-        files += ["model.safetensors.index.json", *shards]
-    elif (snapshot / "model.safetensors").is_file():
-        files.append("model.safetensors")
-    else:
-        raise RevisionUnverified(f"no safetensors weights in the resolved snapshot {snapshot}")
-    files += [name for name in TOKENIZER_FILES if (snapshot / name).exists()]
+            raise RevisionUnverified(f"{index} names no weight files")
+        weights = sorted(set(weights) | set(shards))  # a shard the index names must exist and verify
+    if not weights:
+        raise RevisionUnverified(f"no weight files in the resolved snapshot {snapshot}")
+    files += indexes + weights
+    files += [name for name in TOKENIZER_FILES if name in present]
     for name in files:
         resolve(name)  # every file must resolve through the cache for this revision
     return files
@@ -137,6 +145,10 @@ def verify_loaded_revision(
     """Verify the cached files `from_pretrained` loaded for (model_id, revision); raise RevisionUnverified."""
     if not _SHA.match(revision or ""):
         raise RevisionUnverified(f"requested revision {revision!r} is not a 40-character commit SHA")
+    if Path(model_id).exists():
+        # from_pretrained loads a local path with this name instead of the Hub snapshot; the cache
+        # files verified below would then not be the files that were loaded.
+        raise RevisionUnverified(f"{model_id!r} is a local path that shadows the Hub repository; remove or rename it")
     started = time.monotonic()
 
     def resolved(name: str) -> Path:
