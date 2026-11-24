@@ -8,6 +8,18 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
 
 ## Completed
 
+### First QLoRA run and post-training evaluation (2026-11-24)
+
+- **First real QLoRA run** completed on AWS `g6e.xlarge`: Ornith-1.5-9B, 1,871 examples, 2 epochs, 234 optimizer steps; adapter and checkpoints backed up (not in this repository).
+- **QuickEval v1 results** reported by the GPU session: F1 0.886 → 0.914, recall 0.838 → 1.000, strict recall 0.595 → 0.811, CWE accuracy 0.710 → 0.811, abstention recall 0.400 → 0.800, decision accuracy 0.779 → 0.884, coding-v1 9/16 → 11/16. **False positive rate rose from 0.059 to 0.206** (precision 0.939 → 0.841). The adapter run is recorded as non-reportable because the evaluator counted the FP32 LoRA parameters as foundation parameters.
+- **Evaluator fix:** foundation and adapter parameters are now verified separately and by identity, and checkpoint adapters are checked against their `checksums.json`.
+- **Next evaluation (`docs/EVALUATION.md`):**
+  - development set from the approved validation split (`sentinel.eval.devset`);
+  - checkpoint comparison with a pre-registered rule (`sentinel.eval.select_checkpoint`);
+  - final independent test on `holdout_reserved`, once.
+  - QuickEval v1 has been inspected and is now a regression check only.
+  - No development or holdout result exists yet.
+
 ### Ornith-1.5-9B foundation integration (2026-11-24)
 
 - **Active training foundation: `ornith-ai/Ornith-1.5-9B` at revision `489cb97981b8654bcfcf30ce1f94ed1b62e07b53`** (MIT per model card; `Qwen3_5ForConditionalGeneration`, loaded text-only as `Qwen3_5ForCausalLM`, 8.95 B text parameters). Decision basis `expected_capability` (project owner instruction); no measured security advantage is claimed. Qwen3.5-9B stays documented in `history` and as an optional reference.

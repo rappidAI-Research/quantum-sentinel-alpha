@@ -168,3 +168,61 @@ scp ubuntu@<instance-ip>:~/quantum-sentinel-alpha/qsa-ornith15-9b-v0-results.tgz
 ```
 
 If the run is not finished, also copy `runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/` so it can be resumed elsewhere. Verify the copy (checksum) before terminating, then terminate the instance so it stops billing.
+
+## 12. Post-training evaluation: development set, checkpoint selection, final test (**GPU**)
+
+Roles and the selection rule: `docs/EVALUATION.md`. Every run below loads the bf16 foundation (`run_model` direct mode, same generation settings as the baseline config). The git tree must stay clean for runs to be reportable.
+
+Update the code and check that the training outputs are present (restore them from the backup if not):
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && git log --oneline -1 && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+python -m sentinel.foundation
+ls runs/train/qsa-qlora-ornith15-9b-v0/adapter runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/
+```
+
+Build the development set from the verified training exports (`materialize` first if `artifacts/garden/seed_v3/validation.jsonl` is missing). Expected: 133 detection cases (abstain 16, finding 63, no_finding 54), 54 patch cases, detection `cases_sha256` `397f5cb2fb6e…`:
+
+```bash
+python -m sentinel.eval.devset --config configs/garden/seed_v3.yaml --output-dir runs/devset
+```
+
+Foundation and every retained checkpoint on the development detection cases (`step-000234` holds the final weights):
+
+```bash
+REV=489cb97981b8654bcfcf30ce1f94ed1b62e07b53; RUN=runs/train/qsa-qlora-ornith15-9b-v0
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases runs/devset/dev.eval_cases.jsonl --output runs/eval/dev/foundation.json
+for ckpt in $RUN/checkpoints/step-*; do python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases runs/devset/dev.eval_cases.jsonl --adapter $ckpt/adapter --output runs/eval/dev/$(basename $ckpt).json; done
+```
+
+Patch generation on the development patch cases (information only, not part of the rule):
+
+```bash
+python -m sentinel.eval.patch --model ornith-ai/Ornith-1.5-9B --revision $REV --cases runs/devset/dev.patch_cases.jsonl --output runs/eval/dev-patch/foundation.json
+for ckpt in $RUN/checkpoints/step-*; do python -m sentinel.eval.patch --model ornith-ai/Ornith-1.5-9B --revision $REV --cases runs/devset/dev.patch_cases.jsonl --adapter $ckpt/adapter --output runs/eval/dev-patch/$(basename $ckpt).json; done
+```
+
+Apply the pre-registered rule (exit code 0: a checkpoint was selected):
+
+```bash
+python -m sentinel.eval.select_checkpoint --devset runs/devset/manifest.json runs/eval/dev/*.json --patch runs/eval/dev-patch/*.json --output runs/eval/dev/selection.json
+SEL=$(python -c "import json; print(json.load(open('runs/eval/dev/selection.json'))['selected_adapter'])"); echo $SEL
+```
+
+Regression check of the selected adapter on QuickEval v1 and `coding-v1`, the same contract as the baseline. Write to a new file: the earlier adapter artifact stays as recorded.
+
+```bash
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b --adapter $SEL --output runs/eval/quickeval/selected.json
+python -m sentinel.eval.compare runs/eval/ornith15-9b-baseline.json runs/eval/quickeval/selected.json
+```
+
+Only after the selection is fixed: the final independent test on `holdout_reserved`, once, for the foundation and the selected adapter. `reconstruct` rebuilds all candidates from upstream git to write the holdout cases; its run time has not been measured.
+
+```bash
+python -m sentinel.garden reconstruct --config configs/garden/seed_v3.yaml
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v3/holdout_reserved.eval_cases.jsonl --output runs/eval/holdout/foundation.json
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v3/holdout_reserved.eval_cases.jsonl --adapter $SEL --output runs/eval/holdout/selected.json
+python -m sentinel.eval.compare runs/eval/holdout/foundation.json runs/eval/holdout/selected.json
+```
+
+Save `runs/eval/` and `runs/devset/manifest.json` together with the training outputs (§ 11). Do not save the case files: they contain upstream code.

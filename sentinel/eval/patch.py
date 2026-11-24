@@ -337,9 +337,22 @@ def main(argv: list[str] | None = None) -> int:
 
         if not args.model or not is_immutable_revision(args.revision):
             parser.error("--model and an immutable 40-character --revision are required")
-        backend = HFBackend(args.model, args.revision, RuntimeSettings(), GenerationSettings(max_new_tokens=1024), adapter=args.adapter)
+        try:
+            backend = HFBackend(args.model, args.revision, RuntimeSettings(), GenerationSettings(max_new_tokens=1024), adapter=args.adapter)
+        except ValueError as exc:
+            parser.error(str(exc))
+        trained_with = ((backend.adapter_info or {}).get("training_run") or {}).get("patch_prompt_version")
+        if trained_with not in (None, PATCH_PROMPT_VERSION):
+            parser.error(f"adapter was trained with patch prompt {trained_with!r}, not {PATCH_PROMPT_VERSION!r}")
         backend.load()
     result = run_patch_eval(cases, backend)
+    # Identity of what was evaluated, so runs of different checkpoints can be told apart and compared.
+    from sentinel.eval.io import case_set_sha256
+
+    result["cases_identity"] = {"path": str(args.cases), "sha256": case_set_sha256(cases), "count": len(cases)}
+    if args.backend == "hf":
+        result["model"] = {"id": args.model, "revision": args.revision, "adapter": backend.adapter_info}
+        result["runtime"] = backend.describe()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(_json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {args.output}: {result['cases']} cases, applies {result['applies_rate']}, exact {result['exact_match_rate']} (security not verified)")

@@ -64,10 +64,27 @@ def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> lis
         requested, loaded = runtime["dtype"], runtime.get("loaded_dtype")
         if loaded != requested:
             blockers.append(f"loaded model dtype {loaded} differs from requested {requested}")
+        has_adapter = bool(model.get("adapter"))
+        if has_adapter:
+            # The adapter's own parameters are checked by identity against the adapter file; they never
+            # relax the foundation check below.
+            verification = runtime.get("adapter_verification")
+            if not isinstance(verification, dict):
+                blockers.append("adapter parameters were not verified against the adapter file")
+            elif not verification.get("ok"):
+                details = {
+                    key: verification.get(key)
+                    for key in ("missing", "unexpected", "shape_mismatches", "dtype_mismatches", "expected_parameters", "loaded_parameters")
+                    if verification.get(key)
+                }
+                blockers.append(f"loaded adapter parameters do not match the adapter file: {details}")
         if runtime.get("quantization") == "none":
-            parameter_dtypes = runtime.get("parameter_dtypes")
+            # Foundation parameters only: with an adapter, the combined `parameter_dtypes` is not used.
+            parameter_dtypes = runtime.get("foundation_parameter_dtypes")
+            if parameter_dtypes is None and not has_adapter:
+                parameter_dtypes = runtime.get("parameter_dtypes")  # artifacts written before the split
             if not isinstance(parameter_dtypes, dict) or not parameter_dtypes:
-                blockers.append("loaded model parameter dtypes could not be confirmed")
+                blockers.append("loaded foundation parameter dtypes could not be confirmed")
             else:
                 unexpected = sorted(
                     dtype
@@ -76,7 +93,7 @@ def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> lis
                 )
                 if unexpected:
                     blockers.append(
-                        f"loaded model has unexpected floating parameter dtypes {unexpected}; requested {requested}"
+                        f"loaded foundation has unexpected floating parameter dtypes {unexpected}; requested {requested}"
                     )
     if not full_case_set:
         blockers.append("run used a subset of the case file (--limit)")

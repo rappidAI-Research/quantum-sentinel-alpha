@@ -148,6 +148,85 @@ class BaselineBackend:
         return None
 
 
+# PEFT names a loaded LoRA tensor `<module>.lora_A.<adapter name>.weight`; the adapter file stores it
+# as `<module>.lora_A.weight`.
+_ADAPTER_PARAMETER = re.compile(r"\.(lora_(?:A|B|embedding_A|embedding_B|magnitude_vector))\.")
+_SAFETENSORS_DTYPES = {"F64": "float64", "F32": "float32", "F16": "float16", "BF16": "bfloat16"}
+
+
+def adapter_file_tensors(weights: "Path") -> dict[str, dict[str, Any]]:
+    """Tensor names, dtypes and shapes of a safetensors file, read from its header (no tensor data)."""
+    import struct
+
+    with weights.open("rb") as handle:
+        (length,) = struct.unpack("<Q", handle.read(8))
+        header = json.loads(handle.read(length))
+    return {
+        name: {"dtype": _SAFETENSORS_DTYPES.get(meta["dtype"], meta["dtype"]), "shape": list(meta["shape"])}
+        for name, meta in header.items()
+        if name != "__metadata__"
+    }
+
+
+def verify_parameters(
+    named_parameters: Any, adapter_tensors: dict[str, dict[str, Any]] | None, adapter_name: str = "default"
+) -> dict[str, Any]:
+    """Split the loaded parameters into foundation and adapter parameters by identity, not by count.
+
+    Without an adapter every parameter is a foundation parameter. With one, a parameter is an adapter
+    parameter only if its name is a LoRA tensor; each must be exactly one tensor of the adapter file
+    (same name, same shape, the file's dtype, or float32 when PEFT upcast a half-precision adapter), and
+    every tensor of the file must be loaded. Everything else is a foundation parameter.
+    """
+    foundation: dict[str, int] = {}
+    adapter: dict[str, int] = {}
+    loaded: dict[str, tuple[str, list[int], int]] = {}
+    for name, parameter in named_parameters:
+        dtype = str(parameter.dtype).removeprefix("torch.")
+        count = int(parameter.numel())
+        if adapter_tensors is not None and _ADAPTER_PARAMETER.search(name):
+            key = _ADAPTER_PARAMETER.sub(lambda m: f".{m.group(1)}.", name.replace(f".{adapter_name}.", ".", 1), count=1)
+            loaded[key] = (dtype, list(parameter.shape), count)
+            adapter[dtype] = adapter.get(dtype, 0) + count
+        else:
+            foundation[dtype] = foundation.get(dtype, 0) + count
+    result: dict[str, Any] = {"foundation_parameter_dtypes": dict(sorted(foundation.items()))}
+    if adapter_tensors is None:
+        return result
+    missing = sorted(set(adapter_tensors) - set(loaded))
+    unexpected = sorted(set(loaded) - set(adapter_tensors))
+    shape_mismatches, dtype_mismatches = [], []
+    for name in sorted(set(loaded) & set(adapter_tensors)):
+        dtype, shape, _ = loaded[name]
+        expected = adapter_tensors[name]
+        if shape != expected["shape"]:
+            shape_mismatches.append(name)
+        if dtype != expected["dtype"] and not (dtype == "float32" and expected["dtype"] in {"bfloat16", "float16"}):
+            dtype_mismatches.append(name)
+    file_dtypes: dict[str, int] = {}
+    for meta in adapter_tensors.values():
+        size = 1
+        for dimension in meta["shape"]:
+            size *= int(dimension)
+        file_dtypes[meta["dtype"]] = file_dtypes.get(meta["dtype"], 0) + size
+    expected_parameters = sum(file_dtypes.values())
+    loaded_parameters = sum(count for _, _, count in loaded.values())
+    result["adapter_parameter_dtypes"] = dict(sorted(adapter.items()))
+    result["adapter_verification"] = {
+        "ok": not (missing or unexpected or shape_mismatches or dtype_mismatches) and loaded_parameters == expected_parameters,
+        "expected_tensors": len(adapter_tensors),
+        "loaded_tensors": len(loaded),
+        "expected_parameters": expected_parameters,
+        "loaded_parameters": loaded_parameters,
+        "file_dtypes": dict(sorted(file_dtypes.items())),
+        "missing": missing[:10],
+        "unexpected": unexpected[:10],
+        "shape_mismatches": shape_mismatches[:10],
+        "dtype_mismatches": dtype_mismatches[:10],
+    }
+    return result
+
+
 def describe_adapter(path: "Path", model_id: str, revision: str | None) -> dict[str, Any]:
     """Identity of a LoRA adapter; refuses an adapter trained for another base model or revision."""
     import hashlib
@@ -161,6 +240,15 @@ def describe_adapter(path: "Path", model_id: str, revision: str | None) -> dict[
         raise ValueError(f"adapter was trained for {config.get('base_model_name_or_path')!r}, not {model_id!r}")
     if config.get("revision") != revision:
         raise ValueError(f"adapter was trained on revision {config.get('revision')!r}, not {revision!r}")
+    # A training checkpoint (`checkpoints/step-NNNNNN/adapter`) carries checksums.json one level up: the
+    # adapter files must still be exactly what the trainer wrote.
+    checksums = path.parent / "checksums.json"
+    if path.name == "adapter" and checksums.is_file():
+        recorded = json.loads(checksums.read_text(encoding="utf-8"))
+        for name in ("adapter/adapter_model.safetensors", "adapter/adapter_config.json"):
+            actual = hashlib.sha256((path.parent / name).read_bytes()).hexdigest()
+            if recorded.get(name) != actual:
+                raise ValueError(f"checkpoint file {name} does not match {checksums}")
     run_file = path / "training_run.json"
     return {
         "path": str(path),
@@ -196,6 +284,7 @@ class HFBackend:
         self._generation_config: Any = None
         self._stop_ids: list[int] = []
         self._revision_verification: dict[str, Any] | None = None
+        self._parameter_verification: dict[str, Any] = {}
         self._loaded_dtype: str | None = None
         self._parameter_dtypes: dict[str, int] = {}
 
@@ -248,6 +337,9 @@ class HFBackend:
         for parameter in model.parameters():
             name = str(parameter.dtype).removeprefix("torch.")
             self._parameter_dtypes[name] = self._parameter_dtypes.get(name, 0) + parameter.numel()
+        # Foundation and adapter parameters are verified separately, by parameter identity.
+        adapter_tensors = adapter_file_tensors(self.adapter / "adapter_model.safetensors") if self.adapter is not None else None
+        self._parameter_verification = verify_parameters(model.named_parameters(), adapter_tensors)
 
         config = copy.deepcopy(model.generation_config)
         config.max_new_tokens = self.generation.max_new_tokens
@@ -292,6 +384,7 @@ class HFBackend:
             "revision_verification": self._revision_verification,
             "loaded_dtype": self._loaded_dtype,
             "parameter_dtypes": dict(sorted(self._parameter_dtypes.items())),
+            **self._parameter_verification,
             "torch_version": torch.__version__,
             "transformers_version": transformers.__version__,
             "cuda_version": torch.version.cuda,
