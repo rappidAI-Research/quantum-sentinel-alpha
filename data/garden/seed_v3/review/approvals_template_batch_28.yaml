@@ -2,91 +2,6 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/containers/buildah': ['Apache-2.0'], 'Go:github.com/containers/podman': ['Apache-2.0'], 'Go:github.com/containers/podman/v2': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v3': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v4': ['Apache-2.0', 'MIT'], 'Go:github.com/containers/podman/v5': ['Apache-2.0', 'BSD-3-Clause']}
-  - repository_key: containers/buildah
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/containers/buildah
-      - https://github.com/containers/buildah/blob/4a8bf740e862f2438279c6feee2ea59ddf0cda0b/LICENSE
-    notes: ""
-
-  # tier B: registry_unavailable
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:cookiecutter': []}
-  - repository_key: cookiecutter/cookiecutter
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 88f45cff69dcb9eb095daf230383becad4726194ab8c9b041d445eef64ad1f6b
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cookiecutter/cookiecutter
-      - https://github.com/cookiecutter/cookiecutter/blob/fdffddb31fd2b46344dfa317531ff155e7999f77/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/cheqd/cheqd-node': ['Apache-2.0'], 'Go:github.com/cosmos/ibc-go': ['MIT'], 'Go:github.com/cosmos/ibc-go/v2': ['MIT'], 'Go:github.com/cosmos/ibc-go/v3': ['MIT'], 'Go:github.com/cosmos/ibc-go/v4': ['MIT'], 'Go:github.com/cosmos/ibc-go/v5': ['MIT'], 'Go:github.com/cosmos/ibc-go/v6': ['MIT'], 'Go:github.com/cosmos/ibc-go/v7': ['MIT'], 'Go:github.com/cosmos/ibc-go/v8': ['MIT']}
-  - repository_key: cosmos/ibc-go
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 323bbeda33e801a8cd6bdb9674969c9a9bff30131b44546481b3d61b10f059b1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cosmos/ibc-go
-      - https://github.com/cosmos/ibc-go/blob/59987d52d959dc5876ffd4f307c9b33a52a43748/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
-  # registry (deps.dev): {'npm:react': ['MIT'], 'npm:react-devtools-core': ['MIT'], 'npm:react-server-dom-parcel': ['MIT'], 'npm:react-server-dom-turbopack': ['MIT'], 'npm:react-server-dom-webpack': ['MIT']}
-  - repository_key: facebook/react
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/facebook/react
-      - https://github.com/facebook/react/blob/94a9a3e752fe089ab23f3a90c26d20d46d62ab10/LICENSE
-    notes: ""
-
-  # tier B: registry_disagrees
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:ua-parser-js': ['AGPL-3.0-or-later']}
-  - repository_key: faisalman/ua-parser-js
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: license.md
-    license_file_sha256: fb9548e36708f09ae0cc1047ebd8153928bfe5bed67e4051f0ace552bdcbf0b3
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/faisalman/ua-parser-js
-      - https://github.com/faisalman/ua-parser-js/blob/a6140a17dd0300a35cfc9cff999545f267889411/license.md
-    notes: ""
-
   # tier B: other_permissive_license:multiple:Apache-2.0|MIT
   # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
   # registry (deps.dev): {'PyPI:fonttools': ['MIT']}
@@ -425,4 +340,89 @@ repositories:
     evidence_urls:
       - https://github.com/openstack/swift
       - https://github.com/openstack/swift/blob/754633988931e4095530f6b13389c254096eb485/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:serena-agent': ['GPL-3.0-or-later']}
+  - repository_key: oraios/serena
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 16017e50562bb112006f6f32d17ca989e0e573b011bd6790b642018b1c195b0c
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/oraios/serena
+      - https://github.com/oraios/serena/blob/016ccbe1c095a3eed7967737ac1d4df2754f5d96/LICENSE
+    notes: ""
+
+  # tier B: other_permissive_license:Zlib, registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/portainer/portainer': ['MIT']}
+  - repository_key: portainer/portainer
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Zlib>"
+    license_file: LICENSE
+    license_file_sha256: c83f08165206f8a2831009fa4a469d41e452f6e086945246fe928a94a5420722
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/portainer/portainer
+      - https://github.com/portainer/portainer/blob/e02ae6b2fb69668d1cd7d07cb873dfcdd9cf1e42/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:eve': ['non-standard']}
+  - repository_key: pyeve/eve
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 17be5e69bf8a74448cfa2906faa9b79fb000a9f06ded17bb9b151ff553a1f313
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/pyeve/eve
+      - https://github.com/pyeve/eve/blob/f8f7019ffdf9b4e05faf95e1f04e204aa4c91f98/LICENSE
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:eazy-logger': []}
+  - repository_key: shakyshane/eazy-logger
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 052c0fa57a3548533c0ba995008fb4f304a605444e4b37dd5419df94a131c429
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/shakyShane/eazy-logger
+      - https://github.com/shakyShane/eazy-logger/blob/a8baa6fe441d19ffa9916eba367016b7937a28fd/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:ced': ['Apache-2.0 AND ISC']}
+  - repository_key: sonicdoe/ced
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 94ddeb0ba3b5dcf8de018d88bb85997066b3f19ecc49042cede78f3284b60e15
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/sonicdoe/ced
+      - https://github.com/sonicdoe/ced/blob/a4d9f10b6bf1cd468d1a5b9a283cdf437f8bb7b3/LICENSE
     notes: ""

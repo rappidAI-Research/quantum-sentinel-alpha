@@ -3,40 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 3 {'train/post_fix': 1, 'train/vulnerable': 2}
-  # registry (deps.dev): {'npm:tar-fs': ['MIT']}
-  - repository_key: mafintosh/tar-fs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mafintosh/tar-fs
-      - https://github.com/mafintosh/tar-fs/blob/0bd54cdf06da2b7b5b95cd4b062c9f4e0a8c4e09/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:matrix-js-sdk': ['Apache-2.0']}
-  - repository_key: matrix-org/matrix-js-sdk
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/matrix-org/matrix-js-sdk
-      - https://github.com/matrix-org/matrix-js-sdk/blob/a0efed8b881b3db6c9f2c71d6a6e74c2828978c6/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/matrix-org/pinecone': ['Apache-2.0']}
   - repository_key: matrix-org/pinecone
@@ -51,6 +17,23 @@ repositories:
     evidence_urls:
       - https://github.com/matrix-org/pinecone
       - https://github.com/matrix-org/pinecone/blob/218b2801995b174085cb1c8fafe2d3aa661f85bd/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:mermaid': ['MIT']}
+  - repository_key: mermaid-js/mermaid
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 3b7ba64afccb352e2cc9553959a14423827ca1cf336f6938d4444ac89ff7d297
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/mermaid-js/mermaid
+      - https://github.com/mermaid-js/mermaid/blob/3d22fa5d2435de5acc18de6f88474a6e8675a60e/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -374,6 +357,23 @@ repositories:
     evidence_urls:
       - https://github.com/openshift/apiserver-library-go
       - https://github.com/openshift/apiserver-library-go/blob/30f75d79e424ca462c6de53ee8b93f91183763e6/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:horizon': ['Apache-2.0']}
+  - repository_key: openstack/horizon
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/openstack/horizon
+      - https://github.com/openstack/horizon/blob/252467100f75587e18df9c43ed5802ee8f0017fa/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling

@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/containers/image': ['Apache-2.0'], 'Go:github.com/containers/image/v5': ['Apache-2.0']}
-  - repository_key: containers/image
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 716a8b80635c394681e652823e1e42e411ad2d254e1f202403422d74f4b0b106
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/containers/image
-      - https://github.com/containers/image/blob/634605d06e738aec8332bcfd69162e7509ac7aaf/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:assemblyline-service-client': ['MIT']}
   - repository_key: cybercentrecanada/assemblyline-service-client
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -102,23 +85,6 @@ repositories:
     evidence_urls:
       - https://github.com/doowb/set-getter
       - https://github.com/doowb/set-getter/blob/66eb3f0d4686a4a8c7c3d6f7ecd8e570b580edc4/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:electron': ['MIT']}
-  - repository_key: electron/electron
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: fa441a7ca6c25057936b32dec6083cc61078003c3907b4f32feabb5ccdb15371
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/electron/electron
-      - https://github.com/electron/electron/blob/ef0a6d9a1c96efc4657c6dd3a6624eba969f095b/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/gventuri/pandas-ai
       - https://github.com/gventuri/pandas-ai/blob/3aac79be8fc1d18b53d66a566adddbbdd2b38ad5/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/h44z/wg-portal': ['MIT']}
+  - repository_key: h44z/wg-portal
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 3406be57528a06168b0e79833c574ce4e23934d90edad15d36e09074c0ce4b25
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/h44z/wg-portal
+      - https://github.com/h44z/wg-portal/blob/e62db0d62ebabbec39c767b953b92fb4b4d08a81/LICENSE.txt
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/hakobe/paranoidhttp': ['MIT']}
+  - repository_key: hakobe/paranoidhttp
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 1f9943ee151f7fc31ab82e55a55eb7b4ebd03d33547975dd1a1cf11fa5b93769
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/hakobe/paranoidhttp
+      - https://github.com/hakobe/paranoidhttp/blob/07f671da14ce63a80f4e52432b32e8d178d75fd3/LICENSE
     notes: ""

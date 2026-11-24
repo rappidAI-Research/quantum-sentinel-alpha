@@ -191,23 +191,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:django-anymail': ['BSD-3-Clause']}
-  - repository_key: anymail/django-anymail
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 5d4a571868bc8b6f630595ce4ea11f29c525b09fd12df70ed6f347de489cdfb1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/anymail/django-anymail
-      - https://github.com/anymail/django-anymail/blob/db586ede1fbb41dce21310ea28ae15a1cf1286c5/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:apache-libcloud': ['Apache-2.0']}
   - repository_key: apache/libcloud
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/authelia/authelia
       - https://github.com/authelia/authelia/blob/c62dbd43d6e69ae81530e7c4f8763857f8ff1dda/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@seal-security/mongoose-fixed': ['MIT'], 'npm:mongoose': ['MIT']}
+  - repository_key: automattic/mongoose
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: b15cc7d4a0c19e709470e3057b90763b775acd82051047abe224a4ecfa90e4b3
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/Automattic/mongoose
+      - https://github.com/Automattic/mongoose/blob/f1efabf350522257364aa5c2cb36e441cf08f1a2/LICENSE.md
     notes: ""

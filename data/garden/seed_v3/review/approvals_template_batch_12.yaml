@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:codemirror': ['MIT']}
-  - repository_key: codemirror/codemirror
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: a3f2fe2ac6b471aa80c737c5d283dd049bdc903a73835ee6d4d2cac02fdd53bf
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/codemirror/CodeMirror
-      - https://github.com/codemirror/CodeMirror/blob/55d0333907117c9231ffdf555ae8824705993bbb/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'PyPI:aiosmtplib': ['MIT']}
   - repository_key: cole/aiosmtplib
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -34,23 +17,6 @@ repositories:
     evidence_urls:
       - https://github.com/cole/aiosmtplib
       - https://github.com/cole/aiosmtplib/blob/9fab7ba1361dbf7622ede1315a24be805cff09c9/LICENSE.txt
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/cometbft/cometbft': ['Apache-2.0']}
-  - repository_key: cometbft/cometbft
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/cometbft/cometbft
-      - https://github.com/cometbft/cometbft/blob/415c0da223bb7694608913f725fa45bd7a7a46bf/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -425,4 +391,38 @@ repositories:
     evidence_urls:
       - https://github.com/element-plus/element-plus
       - https://github.com/element-plus/element-plus/blob/063c56446135176971f532bd0eb2e88a0b137d43/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:emmett-core': ['BSD-3-Clause']}
+  - repository_key: emmett-framework/core
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 17e8cc1abb9b07bb2a00667e10a787694eae40dd104d8d0299584f66b7c7b0fa
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/emmett-framework/core
+      - https://github.com/emmett-framework/core/blob/c126757133e118119a280b58f3bb345b1c9a8a2a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:django-rest-framework': ['non-standard'], 'PyPI:djangorestframework': ['BSD-3-Clause']}
+  - repository_key: encode/django-rest-framework
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE.md
+    license_file_sha256: cc12b0b85368972177ebf422089419b9fe3eea5729fecb11105c640f6eeaccd4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/encode/django-rest-framework
+      - https://github.com/encode/django-rest-framework/blob/3b41f0124194430da957b119712978fa2266b642/LICENSE.md
     notes: ""

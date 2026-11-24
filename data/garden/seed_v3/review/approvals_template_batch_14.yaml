@@ -4,40 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/flyteorg/flyteadmin': ['Apache-2.0']}
-  - repository_key: flyteorg/flyteadmin
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: e3cf595de5bd1bdd2ea7a7a9f83d67fa526093d722353db2c57a458114a276d9
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/flyteorg/flyteadmin
-      - https://github.com/flyteorg/flyteadmin/blob/a1ec282d02706e074bc4986fd0412e5da3b9d00a/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/free5gc/nef': ['Apache-2.0']}
-  - repository_key: free5gc/nef
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE.txt
-    license_file_sha256: ed127da2459a21616a5b84450ed3b77a68468db5758592bdfbf5f0008f90a925
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/free5gc/nef
-      - https://github.com/free5gc/nef/blob/72a47f3fab4dffbd227f8d92c5f69dca93b610cb/LICENSE.txt
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:github.com/free5gc/nssf': ['Apache-2.0']}
   - repository_key: free5gc/nssf
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -326,6 +292,23 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:@hapi/hoek': ['BSD-3-Clause'], 'npm:hoek': ['BSD-3-Clause']}
+  - repository_key: hapijs/hoek
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/hapijs/hoek
+      - https://github.com/hapijs/hoek/blob/32ed5c9413321fbc37da5ca81a7cbab693786dee/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:nes': ['BSD-3-Clause']}
   - repository_key: hapijs/nes
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/home-assistant/core
       - https://github.com/home-assistant/core/blob/598f093bf0fecdefaa3d95d1ddae71317a05321e/LICENSE.md
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:http-proxy': ['MIT']}
+  - repository_key: http-party/node-http-proxy
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 589850dfc0a1d39a97c592d618d5772f84aec2b11c6898e020acb985299f3bab
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/http-party/node-http-proxy
+      - https://github.com/http-party/node-http-proxy/blob/4718119ffbe895aecd9be0d6430357d44b4c7fd3/LICENSE
     notes: ""

@@ -1,60 +1,60 @@
 {
-  "abstentions_checked": 523,
+  "abstentions_checked": 515,
   "abstentions_invalid": 2,
-  "broad_spans": 135,
+  "broad_spans": 132,
   "correspondence": {
-    "moderate": 470,
-    "strong": 1003,
-    "weak": 253
+    "moderate": 462,
+    "strong": 992,
+    "weak": 252
   },
   "correspondence_by_language": {
     "go": {
-      "moderate": 105,
+      "moderate": 104,
       "strong": 285,
       "weak": 78
     },
     "javascript": {
-      "moderate": 120,
-      "strong": 227,
+      "moderate": 117,
+      "strong": 222,
       "weak": 75
     },
     "python": {
-      "moderate": 175,
-      "strong": 337,
-      "weak": 61
+      "moderate": 172,
+      "strong": 333,
+      "weak": 60
     },
     "typescript": {
-      "moderate": 70,
-      "strong": 154,
+      "moderate": 69,
+      "strong": 152,
       "weak": 39
     }
   },
   "exclusions_by_reason": {
     "abstention_constant_arguments": 2,
-    "broad_localization_span": 135,
-    "later_fix_changes_same_function": 239,
+    "broad_localization_span": 132,
+    "later_fix_changes_same_function": 238,
     "later_fix_unverifiable": 61,
     "reported_incomplete_fix": 76,
-    "split_leakage_near_duplicate_of_temporal_quarantine": 5,
+    "split_leakage_near_duplicate_of_temporal_quarantine": 3,
     "split_leakage_shared_package_with_holdout_reserved": 2,
     "split_leakage_shared_package_with_validation": 13
   },
   "fix_pattern_by_family": {
-    "authn_authz": "137/196",
-    "code_injection": "19/41",
+    "authn_authz": "136/194",
+    "code_injection": "18/40",
     "command_injection": "34/83",
-    "crypto_tls_integrity": "46/70",
-    "deserialization_input_validation": "88/137",
-    "information_exposure": "83/132",
+    "crypto_tls_integrity": "46/69",
+    "deserialization_input_validation": "87/136",
+    "information_exposure": "82/129",
     "path_traversal": "115/173",
-    "prototype_pollution": "90/103",
-    "redirect_ssrf": "75/82",
-    "resource_limits_redos": "263/303",
+    "prototype_pollution": "88/101",
+    "redirect_ssrf": "74/81",
+    "resource_limits_redos": "261/300",
     "sql_injection": "10/21",
-    "xss_output_encoding": "96/181"
+    "xss_output_encoding": "92/177"
   },
-  "fix_pattern_consistent": "1056/1522",
-  "groups": 1760,
+  "fix_pattern_consistent": "1043/1504",
+  "groups": 1736,
   "human_review": {
     "independent_of_implementation": false,
     "rates": {
@@ -111,11 +111,11 @@
     "reviewed_items": 0,
     "reviewer": null,
     "sample_id": "sentinel-garden-human-review-v1",
-    "sample_items": 0,
+    "sample_items": 64,
     "stale_decisions": [],
     "status": "not_performed"
   },
-  "later_fix_checked": 1663,
+  "later_fix_checked": 1646,
   "later_fix_incomplete_lookups": 22,
   "manual": {
     "items": 25,
@@ -305,11 +305,11 @@
     "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer",
     "sample_items": 44
   },
-  "post_fix_invalidated": 166,
+  "post_fix_invalidated": 164,
   "span_lines_median": 2,
   "temporal_quarantine_overlap": {
     "package_in_train_or_validation": 4,
-    "records": 364,
-    "repository_in_train_or_validation": 156
+    "records": 355,
+    "repository_in_train_or_validation": 151
   }
 }

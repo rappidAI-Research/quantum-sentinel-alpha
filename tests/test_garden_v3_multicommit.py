@@ -42,9 +42,11 @@ class MultiRepo:
         return [("M" if p in old else "A", p) for p in sorted(new) if old.get(p) != new[p]]
 
     def file_diff(self, parent: str, sha: str, path: str) -> str:
-        return git_diff(self.trees[parent][path], self.trees[sha][path], path)
+        return git_diff(self.trees[parent].get(path, ""), self.trees[sha].get(path, ""), path)
 
     def text(self, revision: str, path: str) -> str:
+        if path not in self.trees[revision]:
+            raise GitError(f"{path} does not exist at {revision}")  # as the real repository does
         return self.trees[revision][path]
 
     def root_license_files(self, revision: str) -> list[LicenseFile]:
@@ -161,3 +163,45 @@ def test_multi_commit_candidates_never_displace_single_commit_candidates(tmp_pat
         results[flag] = [json.loads(line)["advisory_id"] for line in (tmp_path / str(flag) / "candidates.jsonl").read_text().splitlines()]
     assert results[False] == ["GHSA-0002-aaaa-bbbb", "GHSA-0003-aaaa-bbbb"]
     assert results[True] == results[False]  # the cap of 2 is taken by single-commit candidates first
+
+
+TWO_CALLS = '''import subprocess
+
+
+def run_both(user):
+    subprocess.run(user, shell=True)
+    log = "between the calls"
+    subprocess.run(user, shell=True)
+    return log
+'''
+
+
+def test_same_edit_at_two_places_in_two_commits_is_a_partial_fix_not_a_backport() -> None:
+    # review finding: identical line multisets from sequential commits must not count as one fix; the
+    # first commit's function is still vulnerable (the second call) and must never become a hard negative
+    one = TWO_CALLS.replace("subprocess.run(user, shell=True)", "subprocess.run(user, shell=False)", 1)
+    both = one.replace("subprocess.run(user, shell=True)", "subprocess.run(user, shell=False)", 1)
+    repo = MultiRepo({BASE: {"tools/runner.py": TWO_CALLS}},
+                     {A: (BASE, "2025-03-01T10:00:00+00:00", {"tools/runner.py": one}),
+                      B: (A, "2025-03-02T10:00:00+00:00", {"tools/runner.py": both})})
+    with pytest.raises(Rejected, match="multi_commit_distinct_changes"):
+        _build(repo, multi(A, B))
+
+
+def test_earliest_instant_is_chosen_across_time_zones() -> None:
+    # review finding: 2026-06-30T23:45-01:00 is after 2026-07-01T00:30+01:00 although it sorts first as text
+    backport_new = PY_NEW.replace("import sqlite3\n", "import sqlite3\nimport logging\n")
+    repo = MultiRepo({BASE: {"shop/orders.py": PY_OLD}, BASE2: {"shop/orders.py": BRANCH2_OLD}},
+                     {A: (BASE, "2026-06-30T23:45:00-01:00", {"shop/orders.py": PY_NEW}),
+                      B: (BASE2, "2026-07-01T00:30:00+01:00", {"shop/orders.py": backport_new})})
+    assert resolve_fix_commit(multi(A, B), repo, V3).sha == B
+
+
+def test_identical_backports_that_add_a_file_are_compared_not_rejected() -> None:
+    # a file the commit adds has no parent version: its hunks keep absolute positions instead of failing
+    helper = "def safe(value):\n    return str(value)\n"
+    backport_new = PY_NEW.replace("import sqlite3\n", "import sqlite3\nimport logging\n")
+    repo = MultiRepo({BASE: {"shop/orders.py": PY_OLD}, BASE2: {"shop/orders.py": BRANCH2_OLD}},
+                     {A: (BASE, "2025-03-05T10:00:00+00:00", {"shop/orders.py": PY_NEW, "shop/safe.py": helper}),
+                      B: (BASE2, "2025-03-01T10:00:00+00:00", {"shop/orders.py": backport_new, "shop/safe.py": helper})})
+    assert resolve_fix_commit(multi(A, B), repo, V3).sha == B

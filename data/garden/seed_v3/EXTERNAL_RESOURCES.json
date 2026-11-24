@@ -390,31 +390,25 @@
     },
     {
       "commits": [
-        "3240d856d942727372a705252f7c8c115394a41e",
         "3c70270c96677c0dd33585f2afe8e187113e5fb4",
-        "3e924cc8dbbb57f23b262cb8f0d7e2bd0673034c",
         "422e6893e489c8b34ccfae88c7b4333fa359c698",
         "6bde84fa8e6a5770b54040fbbc9bf10d5d0386fa",
-        "7596548e9b836a5d12e966bf296a4dbba044b78f",
         "7896e742227aa462ef6cede2ce0e100e4321567f",
-        "908b5a41a310c094fe4ba6fb53046a0faba477a8",
         "a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c",
         "af7cb63151a8c932cd7dd14dae01ef4a1f7f90a1",
-        "d7d81e189d227108c3b9d39178dbb7389f6f970d",
         "eeb03f4ea310e2e51ba5d53a421ec7b418e186cd",
-        "fc9b2d64e32bf48d9782e0a679060f36cc9a1dc2",
         "fd7c2daf4dd394170559a1ea174339a4086ed976"
       ],
-      "records": 17,
+      "records": 10,
       "repository_key": "angular/angular",
       "url": "https://github.com/angular/angular.git"
     },
     {
       "commits": [
         "16656a153113899ccdcaa28f442a690b5e0aee6b",
-        "1c9b1af61115764e0be55f5a1ed9a9967c191a74",
+        "4b8c62a8f1a1d312ef2e1e0df6b7642bf1db5c5f",
         "5271547c80662de10cb3bcb648779a83f6efedfb",
-        "70748ca8e76fe4b42798719410336119d943e755"
+        "bb72145f9ab45aee29f523236b3a25cd0813a841"
       ],
       "records": 6,
       "repository_key": "angular/angular-cli",
@@ -547,15 +541,6 @@
       "records": 2,
       "repository_key": "antrea-io/antrea",
       "url": "https://github.com/antrea-io/antrea.git"
-    },
-    {
-      "commits": [
-        "b57eb94f64a27e846760e1ac81f828b2cae41a06",
-        "db586ede1fbb41dce21310ea28ae15a1cf1286c5"
-      ],
-      "records": 2,
-      "repository_key": "anymail/django-anymail",
-      "url": "https://github.com/anymail/django-anymail.git"
     },
     {
       "commits": [
@@ -1795,11 +1780,9 @@
     {
       "commits": [
         "17d3bb66664cab6d6798c17e27198e15bbac1905",
-        "2cebfde06ae5073c0b296a9d2ca6ab4b95397ea5",
-        "415c0da223bb7694608913f725fa45bd7a7a46bf",
         "d8980f927669d62bfd3ac5a4973ef9739a30d8de"
       ],
-      "records": 5,
+      "records": 3,
       "repository_key": "cometbft/cometbft",
       "url": "https://github.com/cometbft/cometbft.git"
     },
@@ -2592,15 +2575,6 @@
     },
     {
       "commits": [
-        "4c7af6a429b6cc2173686cdc75ef1965acab4402",
-        "ef0a6d9a1c96efc4657c6dd3a6624eba969f095b"
-      ],
-      "records": 3,
-      "repository_key": "electron/electron",
-      "url": "https://github.com/electron/electron.git"
-    },
-    {
-      "commits": [
         "224cc6a28ddfcf4d1a184a25d10833cf153e3bda",
         "d421d4bd3ced889a4143c5c3ab6d95e3be249eee"
       ],
@@ -2993,15 +2967,6 @@
     },
     {
       "commits": [
-        "48af9c7bdad9c18f9349bcf3949b656da19ab56e",
-        "94a9a3e752fe089ab23f3a90c26d20d46d62ab10"
-      ],
-      "records": 2,
-      "repository_key": "facebook/react",
-      "url": "https://github.com/facebook/react.git"
-    },
-    {
-      "commits": [
         "166a5ddf88aca0d0235e48c624681eec095e9ef8",
         "ca09ae82715e33c9ac77b3fa55495cf84ba891c7"
       ],
@@ -3047,16 +3012,10 @@
     },
     {
       "commits": [
-        "0542a216860fd70c062a4730e620576f62ded057",
-        "21ea1f9d70495c931f55dff893a8fa38f4f2e6bd",
-        "28dad0a926038f66a24d3d4f31c0409025f91a09",
-        "3a877384b5848967c963e0fd2b92d50539a80af9",
         "820e8478dd7da3d09f187bfaf35d50b71f67b8b4",
-        "a9b8d67353630aab053cd727cf629023dd018d2b",
-        "bfeefafede0cc4039e6d005fd212c266827bd577",
         "e00815236bc94107e44ef1b2f5318a06bac225c0"
       ],
-      "records": 11,
+      "records": 2,
       "repository_key": "fastify/fast-uri",
       "url": "https://github.com/fastify/fast-uri.git"
     },
@@ -3517,12 +3476,12 @@
       "commits": [
         "03b6f6bc2c16e2ef75b087f9849006c5ae29de8f",
         "0c67558ae7fe08738912d4c5233b53ead048da3b",
+        "19248fb9802c252665b802aeab02fdc65ed47dc9",
+        "3b1db144d8f434201bea67abd7fd9eb3390bb631",
         "6db508f7949d117c7dff748a3c82c3a272bf7cfd",
-        "8d836eae82c5728192a76ccb78cae8b1b5621d26",
         "a837111ea0fddc0da93f5d0aed793070c0a4101c",
         "d5b34568d9f1c41362ccb62141532a0a2169512f",
-        "e217316cf76ceb6f46e7a7a27699c90fb4ef594d",
-        "ee44c6be35e5e464bc40637580f39867898acd8b"
+        "e217316cf76ceb6f46e7a7a27699c90fb4ef594d"
       ],
       "records": 10,
       "repository_key": "getsentry/sentry",
@@ -4133,12 +4092,10 @@
     },
     {
       "commits": [
-        "0ab1b4f6ff639a2478d4428c6f2986cd70115344",
         "32ed5c9413321fbc37da5ca81a7cbab693786dee",
-        "948baf98634a5c206875b67d11368f133034fa90",
         "dfadda70b192adbcdf9a33ccc3caecfeb3dbe528"
       ],
-      "records": 4,
+      "records": 2,
       "repository_key": "hapijs/hoek",
       "url": "https://github.com/hapijs/hoek.git"
     },
@@ -5286,15 +5243,11 @@
     {
       "commits": [
         "265f6cd6586383eebebbfc3c45da2eaa153d9e63",
-        "44f33b47c5c6a965d507421af43e86cf5971d711",
-        "7fd684f89fdde3549563d0a6522226a9189472a2",
-        "9ed0f18301a9ae4001d94e0dd5610db0f21fb766",
-        "a5b98a4f30d7813266b221435e1eaaf25a1b0ac5",
         "b13381281cead487cbdbfd6a69fb097ea5e456c3",
         "c0b095bdc52bc4c36dc88deddbadabc49f8371e5",
         "ec5602085a81ca7c954f6780c6a3aef0b1e200cf"
       ],
-      "records": 12,
+      "records": 6,
       "repository_key": "juliangruber/brace-expansion",
       "url": "https://github.com/juliangruber/brace-expansion.git"
     },
@@ -5981,14 +5934,12 @@
     },
     {
       "commits": [
-        "4310742efbd8c03f6495f07906b45213da0a32ec",
         "7e87a07c2c62301dd8fc2e099ac38227bc96c74c",
-        "da1eee03f599f3cdd802557874257091b3c4dac1",
         "e83d321ffafb38cf210683ac31714fce6ce1c6c6",
         "f6a7abff1f13d644db9b05fe4f2c98ada6bf8482",
         "fbc5206c25b4d1851cea683f02c10756c521d15a"
       ],
-      "records": 8,
+      "records": 5,
       "repository_key": "ljharb/qs",
       "url": "https://github.com/ljharb/qs.git"
     },
@@ -6542,14 +6493,10 @@
       "commits": [
         "26ede9b0156be0c3c2ca65261af42a0b02614608",
         "3d22fa5d2435de5acc18de6f88474a6e8675a60e",
-        "55f6e27c8643de4691247e32e720e4ecf476ae12",
         "59b22fad2b3bb04f87a476c84a8a2b24679e607e",
-        "9670f3d246b4c5e68211938affdd46b0bad93edc",
-        "99af3fc35ef0a9a9c8c6314521344d67523ddccf",
-        "e9b0f34d8d82a6260077764ee45e1d7d90957a0f",
-        "faafb5d49106dd32c367f3882505f2dd625aa30e"
+        "99af3fc35ef0a9a9c8c6314521344d67523ddccf"
       ],
-      "records": 10,
+      "records": 5,
       "repository_key": "mermaid-js/mermaid",
       "url": "https://github.com/mermaid-js/mermaid.git"
     },
@@ -6683,10 +6630,10 @@
     },
     {
       "commits": [
+        "426ea785a99b1dad4755492b923feb327d9251a6",
         "43913f2f4fbd7dcff930b8a809e709591e4dd79e",
-        "501e858f679edecd4a38a86317ce50271014a80d",
-        "833bf76c282d338e307ff7ec181b95cfc117deb2",
-        "862243b3b1e77ca9f73771fc95a7148d11cebb55"
+        "862243b3b1e77ca9f73771fc95a7148d11cebb55",
+        "f71d7d9d77d439b30a5e50900df5b1f988a50e5e"
       ],
       "records": 5,
       "repository_key": "miekg/dns",
@@ -7485,10 +7432,10 @@
     },
     {
       "commits": [
-        "35856eb148bf8d6f1ad753c5b8b337c52b4fd6b3",
+        "12b58f9d8768682611c3ad4ea4d403875129dbca",
         "3f3e3fa7b5eec8e495f4f8ce0a54813a8875a11e",
-        "545004cc350be7003dea4116ce6206d6f980b1fd",
-        "7fea9fd687f1dacbfb63db5fae5839896b017a0e"
+        "7fea9fd687f1dacbfb63db5fae5839896b017a0e",
+        "aec8129f68e9b870ca919f8f60e65a4608c8a6d8"
       ],
       "records": 4,
       "repository_key": "nuxt/nuxt",
@@ -7874,14 +7821,12 @@
       "commits": [
         "b1ac90f7914d91b25144cc4063fa994fb5019ee3",
         "c0623627b92193acab0b3594a40c45eea46ee51e",
-        "c4f97dfa6eba8893a0e50128f7d5c7b1ea8f6003",
         "cc6ce4acbc2f72ab8d3ae62f8e7effc36fd54302",
-        "e75764eee34915f8bc5b664ac18e47a556c9d3dd",
         "eb99e45829a1b4c93db5692bdbf636a86faa56c4",
         "f6e41e9c0ff3aa9ee57b8c8ed8c789f1aff019bc",
         "fd99958b333a234f01fe0dbca3b1520e076d06e0"
       ],
-      "records": 8,
+      "records": 6,
       "repository_key": "openstack/glance",
       "url": "https://github.com/openstack/glance.git"
     },
@@ -7897,11 +7842,9 @@
     {
       "commits": [
         "252467100f75587e18df9c43ed5802ee8f0017fa",
-        "28d8f49786d6df297b2574514916fa782e941e09",
-        "44e56fe6242a177b6a323bb2aa4e3aaa01283737",
         "b6b1d70d67e3d653f09cb7d457df60f39ab2aca4"
       ],
-      "records": 6,
+      "records": 3,
       "repository_key": "openstack/horizon",
       "url": "https://github.com/openstack/horizon.git"
     },
@@ -7920,7 +7863,6 @@
         "17c337dbdbfb9d548ad531c2ad0483c9bce5b98f",
         "2139639eeabc8f6941f4461fc87d609cde3118c2",
         "255b1d43500f5d98ec73a0056525b492b14fec05",
-        "38c7e46a640a94da4da89a39a5a1ea9c081f1eb5",
         "3e035ebb726167aef43c4a865c7e7f7d3b0978fb",
         "72cbaa91ffa6727f6400ec38331896f0a9e326c6",
         "86901664189c62fce6f8f81619da0896cce469a1",
@@ -7928,10 +7870,9 @@
         "ac2631ae33445877094cdae796fbcdce8833a626",
         "b803fe85ba53a9c666b9badd0923502fcb5c3b0e",
         "c4447f16da036fe878382ce4e1b05b84bdcc4d4e",
-        "ede63fbfe504cffb4b29f7394b1bf4872d093588",
         "ef868ad92c00e23a4a5e9eb71e3e0bf5ae2fff0c"
       ],
-      "records": 17,
+      "records": 15,
       "repository_key": "openstack/keystone",
       "url": "https://github.com/openstack/keystone.git"
     },
@@ -8137,12 +8078,10 @@
     },
     {
       "commits": [
-        "70f906c51ce49c485f1d355703e9cc3386b1cc2b",
         "73d6504063bfa00666a92b07a28aaf906c532f09",
-        "941efd4a36ed0f27e13758874f95e3aa1d3ee163",
-        "9532cba45d2339e90ebf04f178b1e4f2064e7328"
+        "941efd4a36ed0f27e13758874f95e3aa1d3ee163"
       ],
-      "records": 5,
+      "records": 3,
       "repository_key": "pallets/flask",
       "url": "https://github.com/pallets/flask.git"
     },
@@ -8777,11 +8716,9 @@
     {
       "commits": [
         "9b0e72545673a6badc81ace5c92aca192a805e09",
-        "ba90e23e143f76faa354287c680cb8211e04e18e",
-        "d2690201a1834005d382dbf5c47e0ed94ef8bf46",
         "fe9dbed7b7ccf7e7128b5786886e4441f6f5594f"
       ],
-      "records": 4,
+      "records": 2,
       "repository_key": "pydantic/pydantic-ai",
       "url": "https://github.com/pydantic/pydantic-ai.git"
     },
@@ -10615,7 +10552,6 @@
     },
     {
       "commits": [
-        "03945136ea9746eccf61caf88edae39642e59c93",
         "119a195e290c43ad2d63a2cf012c29d43d6ed839",
         "15798a1d6a724e6077ecdc24bfd99298ead8f0c2",
         "1ae91f6d58e6257e0ab49d295d8741ce1727bdb7",
@@ -10623,14 +10559,11 @@
         "32ad07c54e607839273b4e1819c347f5c8976b2f",
         "48fc2d43d1f48b8b3b0be5dcf6a7634c6f45b1c4",
         "771472cfdaeebc0d89a9cc46e249f8891a6b29cd",
-        "8d6363ed7b69d5f0da806efe34d256627a2191de",
-        "b798f8322a15ba8b6ef725d698d1037024139714",
-        "da284767eae8e1f0484f123b8c3225f6465b09c7",
         "de85b3f87446e323e881bbaa3d5a74f4b76e5f05",
         "e0fa53ee96db720dc7800d0248c39a4ffb8911e9",
         "ed47b431a5ec38aa61f504148afae2cb8f981332"
       ],
-      "records": 19,
+      "records": 14,
       "repository_key": "tornadoweb/tornado",
       "url": "https://github.com/tornadoweb/tornado.git"
     },
@@ -11702,11 +11635,9 @@
     {
       "commits": [
         "2abdf14620f146857dc8e3ffd2b6a754884c331d",
-        "334d59021bcee7e07c2b983448f559f735f759e3",
-        "37e4ea774acc668f6b430a45a6ab1e359710f590",
-        "d280d57ce75f75c81d859f689b27248151c5f403"
+        "334d59021bcee7e07c2b983448f559f735f759e3"
       ],
-      "records": 4,
+      "records": 2,
       "repository_key": "zopefoundation/zope",
       "url": "https://github.com/zopefoundation/Zope.git"
     },

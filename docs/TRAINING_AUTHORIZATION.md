@@ -82,7 +82,7 @@ not a reviewer.
    - **23 `registry_lists_bundled_licenses`:** deps.dev lists the root license plus licenses of
      bundled code.
 3. **Not approved** (owner's choice, default-deny):
-   - the 29 newly recommended tier A repositories;
+   - the newly recommended tier A repositories (29 at the decision; 26 after the rebuild that followed the code review);
    - the 16 `license_text_updated` repositories, including the one repository that is in both
      `license_text_updated` and `registry_lists_bundled_licenses`;
    - the 2 `other_permissive_Unlicense` repositories;
@@ -92,8 +92,9 @@ not a reviewer.
 4. **Training tasks:** detection and patch generation (`data.tasks: [detection, patch]`).
 
 Result (verified):
-- `curate` gives **1,466 training-approved records** from 533 repositories: train 1,333 and
-  validation 133, plus 541 / 54 patch examples, i.e. **1,874 / 187 training examples**.
+- `curate` gives **1,464 training-approved records** from 533 repositories: train 1,331 and
+  validation 133, plus 540 / 54 patch examples, i.e. **1,871 / 187 training examples**
+  (after the rebuild that followed the code review of the multi-commit rule).
 - Two previously approved repositories now also have temporal-quarantine records. Their 6 records are
   excluded by the loader rule; the approvals themselves are unchanged.
 - `python -m sentinel.train --dry-run` passes.

@@ -11,7 +11,7 @@ The model and the Sentinel Engine are separate layers. The model is intended to 
 
 ## Current phase
 
-Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained and no paid AWS workload has been launched. The project owner approved the three Garden data sources and 533 permissively licensed repositories for training (`docs/TRAINING_AUTHORIZATION.md`); Sentinel Garden v3 (`docs/GARDEN_V3.md`) holds 1,466 training-approved records (1,874 training examples for detection and patch generation).
+Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained and no paid AWS workload has been launched. The project owner approved the three Garden data sources and 533 permissively licensed repositories for training (`docs/TRAINING_AUTHORIZATION.md`); Sentinel Garden v3 (`docs/GARDEN_V3.md`) holds 1,464 training-approved records (1,871 training examples for detection and patch generation).
 
 See [project status](docs/STATUS.md) for the operational source of truth.
 
@@ -92,13 +92,13 @@ python -m sentinel.garden review     # network: deps.dev; rights review queue an
 python -m sentinel.garden check      # offline consistency check of the committed manifest
 ```
 
-Current training dataset (`sentinel-garden-v3`, `configs/garden/seed_v3.yaml`, frozen split policy `sentinel-garden-split-v1`): 4,259 records, 3,465 accepted (1,581 findings, 1,408 post-fix hard negatives, 476 abstentions; Go, Python, JavaScript, TypeScript; 1,376 verified pairs also serve as patch ground truth), **1,466 training-approved** (`docs/TRAINING_AUTHORIZATION.md`). Every exported training example is bound to the committed manifest by hash (`docs/TRAINING.md`). Garden v1 and v2 stay immutable references (`docs/GARDEN_V2.md`, `docs/GARDEN_V3.md`). Quality audit: `data/garden/seed_v3/AUDIT_REPORT.md`; independent human review packages prepared, not yet reviewed. Rights review: `data/garden/seed_v3/REVIEW_QUEUE.md` and `data/garden/seed_v3/cohort/COHORT_REVIEW.md`, workflow in `docs/RIGHTS_REVIEW.md`. Detection confidence is not supervised (`docs/CALIBRATION.md`); patch generation is a separate task (`docs/PATCH_SUPERVISION.md`).
+Current training dataset (`sentinel-garden-v3`, `configs/garden/seed_v3.yaml`, frozen split policy `sentinel-garden-split-v1`): 4,200 records, 3,427 accepted (1,566 findings, 1,392 post-fix hard negatives, 469 abstentions; Go, Python, JavaScript, TypeScript; 1,363 verified pairs also serve as patch ground truth), **1,464 training-approved** (`docs/TRAINING_AUTHORIZATION.md`). Every exported training example is bound to the committed manifest by hash (`docs/TRAINING.md`). Garden v1 and v2 stay immutable references (`docs/GARDEN_V2.md`, `docs/GARDEN_V3.md`). Quality audit: `data/garden/seed_v3/AUDIT_REPORT.md`; independent human review packages prepared, not yet reviewed. Rights review: `data/garden/seed_v3/REVIEW_QUEUE.md` and `data/garden/seed_v3/cohort/COHORT_REVIEW.md`, workflow in `docs/RIGHTS_REVIEW.md`. Detection confidence is not supervised (`docs/CALIBRATION.md`); patch generation is a separate task (`docs/PATCH_SUPERVISION.md`).
 
 Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v*/` hold only metadata, statistics and review evidence. See `docs/SENTINEL_GARDEN.md` and `docs/DATA_GOVERNANCE.md`.
 
 ## QLoRA training (implemented, not run)
 
-`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. Its dry run passes on the approved Garden v3 data (1,874 train / 187 validation examples); it refuses (exit code 2) whenever approvals or data hashes do not match. Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
+`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. Its dry run passes on the approved Garden v3 data (1,871 train / 187 validation examples); it refuses (exit code 2) whenever approvals or data hashes do not match. Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
 
 ```bash
 python -m sentinel.train --dry-run   # governance + data checks, no model, no GPU

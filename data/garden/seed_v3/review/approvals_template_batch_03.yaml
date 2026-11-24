@@ -3,23 +3,6 @@
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
   # tier A: no open questions found by tooling
-  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'Go:github.com/quic-go/quic-go': ['MIT']}
-  - repository_key: quic-go/quic-go
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 77d0b7b53e8abb84cf4dd3f9945a7fdf27044240d2e8023966a721a9a46fe96e
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/quic-go/quic-go
-      - https://github.com/quic-go/quic-go/blob/bc5bccf10fd02728eef150683eb4dfaa5c0e749c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 5 {'train/caller_abstention': 2, 'train/post_fix': 1, 'train/vulnerable': 2}
   # registry (deps.dev): {'PyPI:scrapy': ['BSD-3-Clause']}
   - repository_key: scrapy/scrapy
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/siemens/kas
       - https://github.com/siemens/kas/blob/1c1e861c9f241ce082b86bef6bedc7da9b676294/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'PyPI:spotipy': ['MIT']}
+  - repository_key: spotipy-dev/spotipy
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.md
+    license_file_sha256: b6c10115b32a473bb4f7bb7e11cab2f86eaec8378e144a8572b5ad42e4b723ff
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/spotipy-dev/spotipy
+      - https://github.com/spotipy-dev/spotipy/blob/880b92d7243dcf2b83bf31dc365a858d8b5e6767/LICENSE.md
     notes: ""

@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:http-proxy': ['MIT']}
-  - repository_key: http-party/node-http-proxy
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 589850dfc0a1d39a97c592d618d5772f84aec2b11c6898e020acb985299f3bab
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/http-party/node-http-proxy
-      - https://github.com/http-party/node-http-proxy/blob/4718119ffbe895aecd9be0d6430357d44b4c7fd3/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:flat': ['BSD-3-Clause']}
   - repository_key: hughsk/flat
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/josdejong/jsoneditor
       - https://github.com/josdejong/jsoneditor/blob/092e386cf49f2a1450625617da8e0137ed067c3e/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:git-commit-info': ['MIT']}
+  - repository_key: jpeer264/node-git-commit-info
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: e5c2bade6fc05f45287bb78dd55973faf3453305740bf4f3aca23f286fd7ae5f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/JPeer264/node-git-commit-info
+      - https://github.com/JPeer264/node-git-commit-info/blob/f7c491ede51f886a988af9b266797cb24591d18c/LICENSE
     notes: ""

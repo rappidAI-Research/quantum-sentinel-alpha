@@ -3,13 +3,13 @@
  "config": "configs/garden/seed_v3.yaml",
  "dataset_id": "sentinel-garden-v3",
  "decision_groups": {
-  "clarify:notice_or_additional_license_file": 37,
-  "clarify:package_metadata_names_another_license": 6,
-  "recommended:Apache-2.0": 131,
+  "clarify:notice_or_additional_license_file": 38,
+  "clarify:package_metadata_names_another_license": 7,
+  "recommended:Apache-2.0": 130,
   "recommended:BSD-2-Clause": 9,
-  "recommended:BSD-3-Clause": 32,
+  "recommended:BSD-3-Clause": 31,
   "recommended:ISC": 8,
-  "recommended:MIT": 331
+  "recommended:MIT": 330
  },
  "excluded": [
   {
@@ -64,8 +64,13 @@
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
-   "records": 5,
+   "records": 2,
    "repository_key": "ljharb/qs"
+  },
+  {
+   "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
+   "records": 3,
+   "repository_key": "mermaid-js/mermaid"
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
@@ -152,8 +157,7 @@
  "extension_decision_groups": {
   "clarify_extension:license_changed_between_revisions+notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive": 1,
   "clarify_extension:license_file_not_constant": 3,
-  "clarify_extension:license_file_not_constant+notice_or_additional_license_file+package_metadata_names_another_license": 1,
-  "clarify_extension:license_file_not_constant+package_metadata_names_another_license": 2,
+  "clarify_extension:license_file_not_constant+package_metadata_names_another_license": 1,
   "clarify_extension:notice_or_additional_license_file": 16,
   "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license": 6,
   "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive": 3,
@@ -161,7 +165,7 @@
   "clarify_extension:notice_or_additional_license_file+root_license_not_single_permissive": 2,
   "clarify_extension:package_metadata_names_another_license": 2,
   "clarify_extension:package_metadata_names_another_license+registry_names_other_license": 1,
-  "clarify_extension:registry_names_other_license": 16,
+  "clarify_extension:registry_names_other_license": 15,
   "extension:license_text_updated": 15,
   "extension:license_text_updated+registry_lists_bundled_licenses": 1,
   "extension:no_registry_crosscheck": 28,
@@ -173,11 +177,6 @@
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
    "records": 4,
    "repository_key": "andialbrecht/sqlparse"
-  },
-  {
-   "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
-   "records": 11,
-   "repository_key": "angular/angular"
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
@@ -193,11 +192,6 @@
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
    "records": 2,
    "repository_key": "kozea/weasyprint"
-  },
-  {
-   "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
-   "records": 7,
-   "repository_key": "mermaid-js/mermaid"
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
@@ -221,7 +215,7 @@
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
-   "records": 7,
+   "records": 9,
    "repository_key": "tornadoweb/tornado"
   },
   {
@@ -6986,115 +6980,6 @@
   {
    "additional_license_file_sha256s": [],
    "advisories": [
-    "GHSA-g53w-52xc-2j85"
-   ],
-   "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev): names_other_license {'npm:react': ['MIT'], 'npm:react-devtools-core': ['MIT'], 'npm:react-server-dom-parcel': ['MIT'], 'npm:react-server-dom-turbopack': ['MIT'], 'npm:react-server-dom-webpack': ['MIT']}",
-    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
-   ],
-   "cwes": [
-    "CWE-79"
-   ],
-   "decision_group": "clarify_extension:registry_names_other_license",
-   "evidence": {
-    "paths": [
-     "src/core/ReactTextComponent.js"
-    ],
-    "problems": [],
-    "revisions": {
-     "48af9c7bdad9c18f9349bcf3949b656da19ab56e": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "src/package.json",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-       }
-      }
-     },
-     "94a9a3e752fe089ab23f3a90c26d20d46d62ab10": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "src/package.json",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "3e07cc359a43d0e640cb9e89cd4a2f33335711bd5054744282bb8e86a667ee4a"
-   },
-   "languages": [
-    "javascript"
-   ],
-   "license_file": "LICENSE",
-   "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
-   "license_file_url": "https://github.com/facebook/react/blob/94a9a3e752fe089ab23f3a90c26d20d46d62ab10/LICENSE",
-   "license_spdx_detected": "Apache-2.0",
-   "obligations": [
-    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
-   ],
-   "open_questions": [
-    "the package registry names another license: {'npm:react': ['MIT'], 'npm:react-devtools-core': ['MIT'], 'npm:react-server-dom-parcel': ['MIT'], 'npm:react-server-dom-turbopack': ['MIT'], 'npm:react-server-dom-webpack': ['MIT']}"
-   ],
-   "proposed_decision": "needs_clarification",
-   "record_ids": [
-    "sg-js-post-fix-f8956309c144127c",
-    "sg-js-vulnerable-7328a32c96c99945"
-   ],
-   "records": {
-    "finding": 1,
-    "no_finding": 1
-   },
-   "registry_finding": "names_other_license",
-   "registry_licenses": {
-    "npm:react": [
-     "MIT"
-    ],
-    "npm:react-devtools-core": [
-     "MIT"
-    ],
-    "npm:react-server-dom-parcel": [
-     "MIT"
-    ],
-    "npm:react-server-dom-turbopack": [
-     "MIT"
-    ],
-    "npm:react-server-dom-webpack": [
-     "MIT"
-    ]
-   },
-   "repository_key": "facebook/react",
-   "revisions": [
-    "48af9c7bdad9c18f9349bcf3949b656da19ab56e",
-    "94a9a3e752fe089ab23f3a90c26d20d46d62ab10"
-   ],
-   "splits": [
-    "validation"
-   ],
-   "tier": "B",
-   "tier_reasons": [
-    "registry_disagrees"
-   ],
-   "url": "https://github.com/facebook/react"
-  },
-  {
-   "additional_license_file_sha256s": [],
-   "advisories": [
     "GHSA-fhg7-m89q-25r3"
    ],
    "confirmed_evidence": [
@@ -7837,7 +7722,7 @@
    "decision_group": "clarify_extension:license_file_not_constant+package_metadata_names_another_license",
    "evidence": {
     "license_variants": {
-     "problem": "LICENSE.md is missing at 8d836eae82c5"
+     "problem": "LICENSE.md is missing at 19248fb9802c"
     },
     "paths": [
      "src/sentry/api/base.py",
@@ -7918,43 +7803,7 @@
        }
       }
      },
-     "6db508f7949d117c7dff748a3c82c3a272bf7cfd": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "FSL-1.0-Apache-2.0"
-       },
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "FSL-1.0-Apache-2.0"
-       },
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "FSL-1.0-Apache-2.0"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE.md": {
-        "detected": "Apache-2.0",
-        "sha256": "1f2a39da390f36830e83d88b17f7720527a7c95f8f137b16ebb68f283cbbfabc"
-       }
-      }
-     },
-     "8d836eae82c5728192a76ccb78cae8b1b5621d26": {
+     "19248fb9802c252665b802aeab02fdc65ed47dc9": {
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
@@ -7999,6 +7848,90 @@
        "LICENSE": {
         "detected": "Apache-2.0",
         "sha256": "a77cdee6e95860490a885e19f9caf9e44b72e13c356e3dbefed9242932e6c288"
+       }
+      }
+     },
+     "3b1db144d8f434201bea67abd7fd9eb3390bb631": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "BSL-1.1"
+       },
+       {
+        "file": "setup.py",
+        "license": null
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "BSL-1.1"
+       },
+       {
+        "file": "setup.py",
+        "license": null
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "BSL-1.1"
+       },
+       {
+        "file": "setup.py",
+        "license": null
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "Apache-2.0",
+        "sha256": "a77cdee6e95860490a885e19f9caf9e44b72e13c356e3dbefed9242932e6c288"
+       }
+      }
+     },
+     "6db508f7949d117c7dff748a3c82c3a272bf7cfd": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "FSL-1.0-Apache-2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "FSL-1.0-Apache-2.0"
+       },
+       {
+        "file": "pyproject.toml",
+        "license": null
+       },
+       {
+        "file": "setup.cfg",
+        "license": "FSL-1.0-Apache-2.0"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE.md": {
+        "detected": "Apache-2.0",
+        "sha256": "1f2a39da390f36830e83d88b17f7720527a7c95f8f137b16ebb68f283cbbfabc"
        }
       }
      },
@@ -8133,57 +8066,9 @@
         "sha256": "1f2a39da390f36830e83d88b17f7720527a7c95f8f137b16ebb68f283cbbfabc"
        }
       }
-     },
-     "ee44c6be35e5e464bc40637580f39867898acd8b": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "BSL-1.1"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "BSL-1.1"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
-       {
-        "file": "pyproject.toml",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "BSL-1.1"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "a77cdee6e95860490a885e19f9caf9e44b72e13c356e3dbefed9242932e6c288"
-       }
-      }
      }
     },
-    "source_state_sha256": "123037eb6e5edb3fe4225b358dad90277bd93aa7fcf74d277b2f867302108560"
+    "source_state_sha256": "802ac62b6f78434f61a7fc61c479df758b2a87ede7c36d8b108ab3981124e749"
    },
    "languages": [
     "python"
@@ -8196,26 +8081,26 @@
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
    "open_questions": [
-    "LICENSE.md is missing at 8d836eae82c5",
+    "LICENSE.md is missing at 19248fb9802c",
     "setup.cfg at 03b6f6bc2c16 declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
     "setup.cfg at 0c67558ae7fe declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
+    "setup.cfg at 19248fb9802c declares license 'BSL-1.1', root license is Apache-2.0",
+    "setup.cfg at 3b1db144d8f4 declares license 'BSL-1.1', root license is Apache-2.0",
     "setup.cfg at 6db508f7949d declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
-    "setup.cfg at 8d836eae82c5 declares license 'BSL-1.1', root license is Apache-2.0",
     "setup.cfg at a837111ea0fd declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
     "setup.cfg at d5b34568d9f1 declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
-    "setup.cfg at e217316cf76c declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0",
-    "setup.cfg at ee44c6be35e5 declares license 'BSL-1.1', root license is Apache-2.0"
+    "setup.cfg at e217316cf76c declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
     "sg-py-caller-abstention-385265ae5fea241d",
     "sg-py-caller-abstention-c8bd161c7f822474",
     "sg-py-post-fix-4861d7c767339079",
-    "sg-py-post-fix-7e4b3b747c148d69",
     "sg-py-post-fix-8a3bae478fd41e94",
     "sg-py-post-fix-9099ff3d930bd3f9",
+    "sg-py-post-fix-c0f96290d5de8548",
+    "sg-py-vulnerable-0317842f1b8138bf",
     "sg-py-vulnerable-279a625d40e12e64",
-    "sg-py-vulnerable-b4df14908e0a1382",
     "sg-py-vulnerable-c980253d8766efa1",
     "sg-py-vulnerable-eb38f7de62814247"
    ],
@@ -8234,12 +8119,12 @@
    "revisions": [
     "03b6f6bc2c16e2ef75b087f9849006c5ae29de8f",
     "0c67558ae7fe08738912d4c5233b53ead048da3b",
+    "19248fb9802c252665b802aeab02fdc65ed47dc9",
+    "3b1db144d8f434201bea67abd7fd9eb3390bb631",
     "6db508f7949d117c7dff748a3c82c3a272bf7cfd",
-    "8d836eae82c5728192a76ccb78cae8b1b5621d26",
     "a837111ea0fddc0da93f5d0aed793070c0a4101c",
     "d5b34568d9f1c41362ccb62141532a0a2169512f",
-    "e217316cf76ceb6f46e7a7a27699c90fb4ef594d",
-    "ee44c6be35e5e464bc40637580f39867898acd8b"
+    "e217316cf76ceb6f46e7a7a27699c90fb4ef594d"
    ],
    "splits": [
     "train"
@@ -9534,166 +9419,6 @@
     "registry_disagrees"
    ],
    "url": "https://github.com/google/osv-scalibr"
-  },
-  {
-   "additional_license_file_sha256s": [],
-   "advisories": [
-    "GHSA-c429-5p7v-vgjp",
-    "GHSA-jp4x-w63m-7wgm"
-   ],
-   "confirmed_evidence": [
-    "root license file LICENSE.md detected as BSD-2-Clause in every version used (1 version(s))",
-    "package registry (deps.dev): agrees {'npm:@hapi/hoek': ['BSD-3-Clause'], 'npm:hoek': ['BSD-3-Clause']}"
-   ],
-   "cwes": [
-    "CWE-1321"
-   ],
-   "decision_group": "clarify_extension:license_file_not_constant+package_metadata_names_another_license",
-   "evidence": {
-    "license_variants": {
-     "problem": "LICENSE.md is missing at 32ed5c941332"
-    },
-    "paths": [
-     "lib/clone.js",
-     "lib/index.js"
-    ],
-    "problems": [],
-    "revisions": {
-     "0ab1b4f6ff639a2478d4428c6f2986cd70115344": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       },
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE.md": {
-        "detected": "BSD-2-Clause",
-        "sha256": "798002f736a7ad3e26518903eb0e9ace73d98d5418fe94547a4c1bdc90be54e2"
-       }
-      }
-     },
-     "32ed5c9413321fbc37da5ca81a7cbab693786dee": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       },
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "BSD-2-Clause",
-        "sha256": "33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b"
-       }
-      }
-     },
-     "948baf98634a5c206875b67d11368f133034fa90": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       },
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE.md": {
-        "detected": "BSD-2-Clause",
-        "sha256": "798002f736a7ad3e26518903eb0e9ace73d98d5418fe94547a4c1bdc90be54e2"
-       }
-      }
-     },
-     "dfadda70b192adbcdf9a33ccc3caecfeb3dbe528": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       },
-       {
-        "file": "package.json",
-        "license": "BSD-3-Clause"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "BSD-2-Clause",
-        "sha256": "33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "1008d087352d94b79219392c9e72dccc197ed2b0a4531f76f399d921fb98ed73"
-   },
-   "languages": [
-    "javascript"
-   ],
-   "license_file": "LICENSE.md",
-   "license_file_sha256": "798002f736a7ad3e26518903eb0e9ace73d98d5418fe94547a4c1bdc90be54e2",
-   "license_file_url": "https://github.com/hapijs/hoek/blob/948baf98634a5c206875b67d11368f133034fa90/LICENSE.md",
-   "license_spdx_detected": "BSD-2-Clause",
-   "obligations": [
-    "keep the copyright notice, conditions and disclaimer with any redistributed copy of the code"
-   ],
-   "open_questions": [
-    "LICENSE.md is missing at 32ed5c941332",
-    "package.json at 0ab1b4f6ff63 declares license 'BSD-3-Clause', root license is BSD-2-Clause",
-    "package.json at 32ed5c941332 declares license 'BSD-3-Clause', root license is BSD-2-Clause",
-    "package.json at 948baf98634a declares license 'BSD-3-Clause', root license is BSD-2-Clause",
-    "package.json at dfadda70b192 declares license 'BSD-3-Clause', root license is BSD-2-Clause"
-   ],
-   "proposed_decision": "needs_clarification",
-   "record_ids": [
-    "sg-js-post-fix-2f94918eb351b663",
-    "sg-js-post-fix-d012b2a00cf66796",
-    "sg-js-vulnerable-0d0cd24ba92b60f9",
-    "sg-js-vulnerable-176508a9431ced65"
-   ],
-   "records": {
-    "finding": 2,
-    "no_finding": 2
-   },
-   "registry_finding": "agrees",
-   "registry_licenses": {
-    "npm:@hapi/hoek": [
-     "BSD-3-Clause"
-    ],
-    "npm:hoek": [
-     "BSD-3-Clause"
-    ]
-   },
-   "repository_key": "hapijs/hoek",
-   "revisions": [
-    "0ab1b4f6ff639a2478d4428c6f2986cd70115344",
-    "32ed5c9413321fbc37da5ca81a7cbab693786dee",
-    "948baf98634a5c206875b67d11368f133034fa90",
-    "dfadda70b192adbcdf9a33ccc3caecfeb3dbe528"
-   ],
-   "splits": [
-    "validation"
-   ],
-   "tier": "B",
-   "tier_reasons": [
-    "license_file_changed_between_revisions"
-   ],
-   "url": "https://github.com/hapijs/hoek"
   },
   {
    "additional_license_file_sha256s": [],
@@ -11150,9 +10875,7 @@
    "additional_license_file_sha256s": [],
    "advisories": [
     "GHSA-832h-xg76-4gv6",
-    "GHSA-f886-m6hf-6m8v",
-    "GHSA-jxxr-4gwj-5jf2",
-    "GHSA-v6h2-p8h4-qcjw"
+    "GHSA-jxxr-4gwj-5jf2"
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as MIT in every version used (1 version(s))",
@@ -11191,98 +10914,6 @@
        }
       ],
       "root_notice_and_license_files": {}
-     },
-     "44f33b47c5c6a965d507421af43e86cf5971d711": {
-      "absent_directories": [
-       "src"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       },
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
-       }
-      }
-     },
-     "7fd684f89fdde3549563d0a6522226a9189472a2": {
-      "absent_directories": [
-       "src"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       },
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
-       }
-      }
-     },
-     "9ed0f18301a9ae4001d94e0dd5610db0f21fb766": {
-      "absent_directories": [
-       "src"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       },
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
-       }
-      }
-     },
-     "a5b98a4f30d7813266b221435e1eaaf25a1b0ac5": {
-      "absent_directories": [
-       "src"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       },
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
-       }
-      }
      },
      "b13381281cead487cbdbfd6a69fb097ea5e456c3": {
       "absent_directories": [
@@ -11343,7 +10974,7 @@
       }
      }
     },
-    "source_state_sha256": "7ddbbcf08e88efed96c8b717d06845eca819fef95d4c04a28307bda45adc4175"
+    "source_state_sha256": "f345d1ebd8553c2383f013be1554feedc3eb9bb3f711ca0b6ea95f61d094c9c4"
    },
    "languages": [
     "javascript",
@@ -11361,16 +10992,14 @@
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
-    "sg-js-caller-abstention-199bc35c01bdeadb",
-    "sg-js-caller-abstention-86a2e118e0a262b6",
+    "sg-js-caller-abstention-bd1a097bc63b4ada",
     "sg-js-vulnerable-0344f94b123d5a91",
-    "sg-js-vulnerable-9a1ac3449d536cfe",
     "sg-ts-caller-abstention-717cb4e6af8daa79",
     "sg-ts-vulnerable-1447cf141dfed5ac"
    ],
    "records": {
-    "abstain": 3,
-    "finding": 3
+    "abstain": 2,
+    "finding": 2
    },
    "registry_finding": "agrees",
    "registry_licenses": {
@@ -11381,10 +11010,6 @@
    "repository_key": "juliangruber/brace-expansion",
    "revisions": [
     "265f6cd6586383eebebbfc3c45da2eaa153d9e63",
-    "44f33b47c5c6a965d507421af43e86cf5971d711",
-    "7fd684f89fdde3549563d0a6522226a9189472a2",
-    "9ed0f18301a9ae4001d94e0dd5610db0f21fb766",
-    "a5b98a4f30d7813266b221435e1eaaf25a1b0ac5",
     "b13381281cead487cbdbfd6a69fb097ea5e456c3",
     "c0b095bdc52bc4c36dc88deddbadabc49f8371e5",
     "ec5602085a81ca7c954f6780c6a3aef0b1e200cf"
@@ -19917,189 +19542,28 @@
     "registry_unrecognised"
    ],
    "url": "https://github.com/zopefoundation/ZODB"
-  },
-  {
-   "additional_license_file_sha256s": [],
-   "advisories": [
-    "GHSA-5r4x-qc7q-vj27",
-    "GHSA-vh6g-786f-hxxp"
-   ],
-   "confirmed_evidence": [
-    "root license file LICENSE.txt detected as BSD-2-Clause in every version used (1 version(s))",
-    "package registry (deps.dev): unrecognised {'PyPI:zope': ['ZPL-2.1'], 'PyPI:zope2': ['ZPL-2.1']}"
-   ],
-   "cwes": [
-    "CWE-79"
-   ],
-   "decision_group": "clarify_extension:license_file_not_constant+notice_or_additional_license_file+package_metadata_names_another_license",
-   "evidence": {
-    "license_variants": {
-     "problem": "LICENSE.txt is missing at 2abdf14620f1"
-    },
-    "paths": [
-     "src/OFS/SimpleItem.py",
-     "src/Products/PageTemplates/ZRPythonExpr.py"
-    ],
-    "problems": [],
-    "revisions": {
-     "2abdf14620f146857dc8e3ffd2b6a754884c331d": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       },
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       }
-      ],
-      "root_notice_and_license_files": {}
-     },
-     "334d59021bcee7e07c2b983448f559f735f759e3": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       },
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       }
-      ],
-      "root_notice_and_license_files": {}
-     },
-     "37e4ea774acc668f6b430a45a6ab1e359710f590": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       },
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "COPYRIGHT.txt": {
-        "detected": "unknown",
-        "sha256": "2d4f82f761b0d0afb567a85b1fa8bf4164c1099e52a2370388972d144ba9cb83"
-       },
-       "LICENSE.txt": {
-        "detected": "BSD-2-Clause",
-        "sha256": "3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c"
-       }
-      }
-     },
-     "d280d57ce75f75c81d859f689b27248151c5f403": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       },
-       {
-        "file": "setup.py",
-        "license": "ZPL 2.1"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "COPYRIGHT.txt": {
-        "detected": "unknown",
-        "sha256": "2d4f82f761b0d0afb567a85b1fa8bf4164c1099e52a2370388972d144ba9cb83"
-       },
-       "LICENSE.txt": {
-        "detected": "BSD-2-Clause",
-        "sha256": "3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "c97def196554d6397e2de24e6d83234999a9f9e9ba6e98c3c7abee51a9dbbf62"
-   },
-   "languages": [
-    "python"
-   ],
-   "license_file": "LICENSE.txt",
-   "license_file_sha256": "3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c",
-   "license_file_url": "https://github.com/zopefoundation/Zope/blob/37e4ea774acc668f6b430a45a6ab1e359710f590/LICENSE.txt",
-   "license_spdx_detected": "BSD-2-Clause",
-   "obligations": [
-    "keep the copyright notice, conditions and disclaimer with any redistributed copy of the code"
-   ],
-   "open_questions": [
-    "COPYRIGHT.txt at 37e4ea774acc (detected unknown) may add terms; check which code it covers",
-    "COPYRIGHT.txt at d280d57ce75f (detected unknown) may add terms; check which code it covers",
-    "LICENSE.txt is missing at 2abdf14620f1",
-    "setup.py at 2abdf14620f1 declares license 'ZPL 2.1', root license is BSD-2-Clause",
-    "setup.py at 334d59021bce declares license 'ZPL 2.1', root license is BSD-2-Clause",
-    "setup.py at 37e4ea774acc declares license 'ZPL 2.1', root license is BSD-2-Clause",
-    "setup.py at d280d57ce75f declares license 'ZPL 2.1', root license is BSD-2-Clause"
-   ],
-   "proposed_decision": "needs_clarification",
-   "record_ids": [
-    "sg-py-post-fix-2d973c47a261fd5a",
-    "sg-py-post-fix-4d3506fd260d87e4",
-    "sg-py-vulnerable-4589d5bed7f050bb",
-    "sg-py-vulnerable-fdb42eb60e5af24b"
-   ],
-   "records": {
-    "finding": 2,
-    "no_finding": 2
-   },
-   "registry_finding": "unrecognised",
-   "registry_licenses": {
-    "PyPI:zope": [
-     "ZPL-2.1"
-    ],
-    "PyPI:zope2": [
-     "ZPL-2.1"
-    ]
-   },
-   "repository_key": "zopefoundation/zope",
-   "revisions": [
-    "2abdf14620f146857dc8e3ffd2b6a754884c331d",
-    "334d59021bcee7e07c2b983448f559f735f759e3",
-    "37e4ea774acc668f6b430a45a6ab1e359710f590",
-    "d280d57ce75f75c81d859f689b27248151c5f403"
-   ],
-   "splits": [
-    "train"
-   ],
-   "tier": "B",
-   "tier_reasons": [
-    "license_file_changed_between_revisions",
-    "registry_unrecognised"
-   ],
-   "url": "https://github.com/zopefoundation/Zope"
   }
  ],
  "if_extension_is_also_approved": {
   "by_decision": {
-   "abstain": 208,
-   "finding": 753,
-   "no_finding": 687
+   "abstain": 206,
+   "finding": 747,
+   "no_finding": 681
   },
   "by_language": {
-   "go": 440,
-   "javascript": 485,
-   "python": 484,
+   "go": 438,
+   "javascript": 482,
+   "python": 475,
    "typescript": 239
   },
   "by_split": {
-   "train": 1490,
+   "train": 1476,
    "validation": 158
   },
   "by_split_and_decision": {
-   "train/abstain": 189,
-   "train/finding": 678,
-   "train/no_finding": 623,
+   "train/abstain": 187,
+   "train/finding": 672,
+   "train/no_finding": 617,
    "validation/abstain": 19,
    "validation/finding": 75,
    "validation/no_finding": 64
@@ -20107,7 +19571,7 @@
   "cwe": {
    "CWE-116": 5,
    "CWE-117": 1,
-   "CWE-1188": 3,
+   "CWE-1188": 2,
    "CWE-119": 2,
    "CWE-120": 2,
    "CWE-1236": 1,
@@ -20135,7 +19599,7 @@
    "CWE-190": 3,
    "CWE-193": 3,
    "CWE-20": 26,
-   "CWE-200": 24,
+   "CWE-200": 22,
    "CWE-201": 2,
    "CWE-202": 1,
    "CWE-203": 5,
@@ -20161,11 +19625,10 @@
    "CWE-311": 3,
    "CWE-312": 2,
    "CWE-319": 1,
-   "CWE-324": 1,
    "CWE-327": 2,
    "CWE-330": 3,
    "CWE-338": 1,
-   "CWE-345": 3,
+   "CWE-345": 2,
    "CWE-346": 3,
    "CWE-347": 9,
    "CWE-348": 1,
@@ -20226,7 +19689,7 @@
    "CWE-770": 9,
    "CWE-78": 25,
    "CWE-787": 1,
-   "CWE-79": 71,
+   "CWE-79": 70,
    "CWE-829": 1,
    "CWE-834": 1,
    "CWE-835": 4,
@@ -20245,55 +19708,55 @@
    "CWE-96": 1
   },
   "cwe_family": {
-   "authn_authz": 84,
+   "authn_authz": 83,
    "code_injection": 23,
    "command_injection": 47,
-   "crypto_tls_integrity": 30,
+   "crypto_tls_integrity": 29,
    "deserialization_input_validation": 55,
-   "information_exposure": 48,
-   "other": 83,
+   "information_exposure": 46,
+   "other": 82,
    "path_traversal": 88,
    "prototype_pollution": 62,
    "redirect_ssrf": 34,
    "resource_limits_redos": 107,
    "sql_injection": 14,
-   "xss_output_encoding": 78
+   "xss_output_encoding": 77
   },
   "patch_examples_by_split": {
-   "train": 606,
+   "train": 600,
    "validation": 64
   },
-  "record_ids_sha256": "d9da098090d521a887025550d72c66f4a2605e18e6ef52c0ee6ada969654ce34",
-  "records": 1648,
-  "repositories": 580
+  "record_ids_sha256": "5ede296d58ceef8080715bf37822f584f6c6af2e09655a822401b4d19221ce97",
+  "records": 1634,
+  "repositories": 577
  },
  "if_recommended_are_approved": {
   "by_decision": {
-   "abstain": 173,
-   "finding": 639,
-   "no_finding": 585
+   "abstain": 171,
+   "finding": 633,
+   "no_finding": 579
   },
   "by_language": {
-   "go": 337,
-   "javascript": 438,
-   "python": 400,
+   "go": 335,
+   "javascript": 435,
+   "python": 391,
    "typescript": 222
   },
   "by_split": {
-   "train": 1270,
+   "train": 1256,
    "validation": 127
   },
   "by_split_and_decision": {
-   "train/abstain": 157,
-   "train/finding": 580,
-   "train/no_finding": 533,
+   "train/abstain": 155,
+   "train/finding": 574,
+   "train/no_finding": 527,
    "validation/abstain": 16,
    "validation/finding": 59,
    "validation/no_finding": 52
   },
   "cwe": {
    "CWE-116": 3,
-   "CWE-1188": 3,
+   "CWE-1188": 2,
    "CWE-119": 1,
    "CWE-120": 2,
    "CWE-1236": 1,
@@ -20319,7 +19782,7 @@
    "CWE-190": 2,
    "CWE-193": 2,
    "CWE-20": 23,
-   "CWE-200": 19,
+   "CWE-200": 17,
    "CWE-201": 2,
    "CWE-202": 1,
    "CWE-203": 5,
@@ -20344,11 +19807,10 @@
    "CWE-311": 3,
    "CWE-312": 1,
    "CWE-319": 1,
-   "CWE-324": 1,
    "CWE-327": 2,
    "CWE-330": 3,
    "CWE-338": 1,
-   "CWE-345": 3,
+   "CWE-345": 2,
    "CWE-346": 2,
    "CWE-347": 8,
    "CWE-352": 9,
@@ -20404,7 +19866,7 @@
    "CWE-770": 9,
    "CWE-78": 14,
    "CWE-787": 1,
-   "CWE-79": 63,
+   "CWE-79": 62,
    "CWE-829": 1,
    "CWE-834": 1,
    "CWE-835": 3,
@@ -20420,29 +19882,29 @@
    "CWE-96": 1
   },
   "cwe_family": {
-   "authn_authz": 69,
+   "authn_authz": 68,
    "code_injection": 20,
    "command_injection": 32,
-   "crypto_tls_integrity": 28,
+   "crypto_tls_integrity": 27,
    "deserialization_input_validation": 50,
-   "information_exposure": 40,
-   "other": 68,
+   "information_exposure": 38,
+   "other": 67,
    "path_traversal": 71,
    "prototype_pollution": 57,
    "redirect_ssrf": 28,
    "resource_limits_redos": 97,
    "sql_injection": 11,
-   "xss_output_encoding": 68
+   "xss_output_encoding": 67
   },
   "patch_examples_by_split": {
-   "train": 519,
+   "train": 513,
    "validation": 52
   },
-  "record_ids_sha256": "3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9437077c",
-  "records": 1397,
-  "repositories": 511
+  "record_ids_sha256": "73bb616053e8a04e87237c228ea7cd26fb73c1cc38741e23757b2b795ae11eaa",
+  "records": 1383,
+  "repositories": 508
  },
- "manifest_sha256": "d7925995704710dcbe1cc45b8771626bdd3d9f01c29c3786f85b0a317455bfac",
+ "manifest_sha256": "4b08c5e66349f04b573d86b01b34e7fc63a2de1b1877f1c9e01451217324685c",
  "repositories": [
   {
    "advisories": [
@@ -22625,6 +22087,373 @@
   },
   {
    "advisories": [
+    "GHSA-48r7-hpm6-gfxm",
+    "GHSA-58w9-8g37-x9v5",
+    "GHSA-jhpw-976m-542j",
+    "GHSA-rgjc-h3x7-9mwg"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as MIT, identical at all 8 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@angular/common': ['MIT'], 'npm:@angular/compiler': ['MIT'], 'npm:@angular/core': ['MIT'], 'npm:@angular/platform-server': ['MIT'], 'npm:@angular/router': ['MIT'], 'npm:@angular/service-worker': ['MIT']}"
+   ],
+   "cwes": [
+    "CWE-1333",
+    "CWE-345",
+    "CWE-471",
+    "CWE-79"
+   ],
+   "decision_group": "clarify:notice_or_additional_license_file",
+   "evidence": {
+    "paths": [
+     "packages/common/http/src/transfer_cache.ts",
+     "packages/common/src/i18n/format_date.ts",
+     "packages/compiler/src/template/pipeline/src/phases/resolve_sanitizers.ts",
+     "packages/core/src/transfer_state.ts"
+    ],
+    "problems": [],
+    "revisions": {
+     "3c70270c96677c0dd33585f2afe8e187113e5fb4": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "422e6893e489c8b34ccfae88c7b4333fa359c698": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "6bde84fa8e6a5770b54040fbbc9bf10d5d0386fa": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "7896e742227aa462ef6cede2ce0e100e4321567f": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "af7cb63151a8c932cd7dd14dae01ef4a1f7f90a1": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "eeb03f4ea310e2e51ba5d53a421ec7b418e186cd": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     },
+     "fd7c2daf4dd394170559a1ea174339a4086ed976": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {
+       "packages/license-banner.txt": {
+        "detected": "unknown",
+        "sha256": "192fa0a49b8229c5b466943b7c26e9191ab71dd08fff536adc799930a013a471"
+       }
+      },
+      "package_metadata": [
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/common/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/compiler/package.json",
+        "license": "MIT"
+       },
+       {
+        "file": "packages/core/package.json",
+        "license": "MIT"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "MIT",
+        "sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "a033e2e5b40091c8773fe5563ec36f020ca54dff9761293d6a919d4d54a0a0d0"
+   },
+   "languages": [
+    "typescript"
+   ],
+   "license_file": "LICENSE",
+   "license_file_sha256": "15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7",
+   "license_file_url": "https://github.com/angular/angular/blob/a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c/LICENSE",
+   "license_spdx_detected": "MIT",
+   "obligations": [
+    "keep the copyright and permission notice with any redistributed copy of the code"
+   ],
+   "open_questions": [
+    "packages/license-banner.txt at 3c70270c9667 (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at 422e6893e489 (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at 6bde84fa8e6a (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at 7896e742227a (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at a6c7fc5c13e6 (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at af7cb63151a8 (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at eeb03f4ea310 (detected unknown) may add terms; check which code it covers",
+    "packages/license-banner.txt at fd7c2daf4dd3 (detected unknown) may add terms; check which code it covers"
+   ],
+   "proposed_decision": "needs_clarification",
+   "record_ids": [
+    "sg-ts-caller-abstention-26601f35bc5ec898",
+    "sg-ts-caller-abstention-d591154846def48d",
+    "sg-ts-post-fix-2eba0d238b2fa725",
+    "sg-ts-post-fix-61adf9860294fc17",
+    "sg-ts-post-fix-91beb493f1b27567",
+    "sg-ts-vulnerable-29a7a93b990b11f9",
+    "sg-ts-vulnerable-57f107c6ecbc5ef7",
+    "sg-ts-vulnerable-9f2663975123f2c4",
+    "sg-ts-vulnerable-e82c1a54502ef9c3"
+   ],
+   "records": {
+    "abstain": 2,
+    "finding": 4,
+    "no_finding": 3
+   },
+   "registry_licenses": {
+    "npm:@angular/common": [
+     "MIT"
+    ],
+    "npm:@angular/compiler": [
+     "MIT"
+    ],
+    "npm:@angular/core": [
+     "MIT"
+    ],
+    "npm:@angular/platform-server": [
+     "MIT"
+    ],
+    "npm:@angular/router": [
+     "MIT"
+    ],
+    "npm:@angular/service-worker": [
+     "MIT"
+    ]
+   },
+   "repository_key": "angular/angular",
+   "revisions": [
+    "3c70270c96677c0dd33585f2afe8e187113e5fb4",
+    "422e6893e489c8b34ccfae88c7b4333fa359c698",
+    "6bde84fa8e6a5770b54040fbbc9bf10d5d0386fa",
+    "7896e742227aa462ef6cede2ce0e100e4321567f",
+    "a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c",
+    "af7cb63151a8c932cd7dd14dae01ef4a1f7f90a1",
+    "eeb03f4ea310e2e51ba5d53a421ec7b418e186cd",
+    "fd7c2daf4dd394170559a1ea174339a4086ed976"
+   ],
+   "splits": [
+    "train"
+   ],
+   "url": "https://github.com/angular/angular"
+  },
+  {
+   "advisories": [
     "GHSA-v26w-gcxh-v4r7"
    ],
    "confirmed_evidence": [
@@ -23358,95 +23187,6 @@
     "train"
    ],
    "url": "https://github.com/antrea-io/antrea"
-  },
-  {
-   "advisories": [
-    "GHSA-hxf9-7h4c-f5jv"
-   ],
-   "confirmed_evidence": [
-    "root license file(s) LICENSE detected as BSD-3-Clause, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:django-anymail': ['BSD-3-Clause']}",
-    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
-   ],
-   "cwes": [
-    "CWE-200"
-   ],
-   "decision_group": "recommended:BSD-3-Clause",
-   "evidence": {
-    "paths": [
-     "anymail/webhooks/base.py"
-    ],
-    "problems": [],
-    "revisions": {
-     "b57eb94f64a27e846760e1ac81f828b2cae41a06": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "BSD License"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "BSD-3-Clause",
-        "sha256": "5d4a571868bc8b6f630595ce4ea11f29c525b09fd12df70ed6f347de489cdfb1"
-       }
-      }
-     },
-     "db586ede1fbb41dce21310ea28ae15a1cf1286c5": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.py",
-        "license": "BSD License"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "BSD-3-Clause",
-        "sha256": "5d4a571868bc8b6f630595ce4ea11f29c525b09fd12df70ed6f347de489cdfb1"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "94144d95f3bc786373d6237ec0decb325eedc065196ac493e94dc02147aea951"
-   },
-   "languages": [
-    "python"
-   ],
-   "license_file": "LICENSE",
-   "license_file_sha256": "5d4a571868bc8b6f630595ce4ea11f29c525b09fd12df70ed6f347de489cdfb1",
-   "license_file_url": "https://github.com/anymail/django-anymail/blob/db586ede1fbb41dce21310ea28ae15a1cf1286c5/LICENSE",
-   "license_spdx_detected": "BSD-3-Clause",
-   "obligations": [
-    "keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names"
-   ],
-   "open_questions": [],
-   "proposed_decision": "recommended_for_review",
-   "record_ids": [
-    "sg-py-post-fix-24c0135c7feb711d",
-    "sg-py-vulnerable-1b3b16cdef9c9ac5"
-   ],
-   "records": {
-    "finding": 1,
-    "no_finding": 1
-   },
-   "registry_licenses": {
-    "PyPI:django-anymail": [
-     "BSD-3-Clause"
-    ]
-   },
-   "repository_key": "anymail/django-anymail",
-   "revisions": [
-    "b57eb94f64a27e846760e1ac81f828b2cae41a06",
-    "db586ede1fbb41dce21310ea28ae15a1cf1286c5"
-   ],
-   "splits": [
-    "train"
-   ],
-   "url": "https://github.com/anymail/django-anymail"
   },
   {
    "advisories": [
@@ -29025,85 +28765,6 @@
   },
   {
    "advisories": [
-    "GHSA-r3r4-g7hq-pq4f"
-   ],
-   "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'Go:github.com/cometbft/cometbft': ['Apache-2.0']}",
-    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
-   ],
-   "cwes": [
-    "CWE-345"
-   ],
-   "decision_group": "recommended:Apache-2.0",
-   "evidence": {
-    "paths": [
-     "types/part_set.go"
-    ],
-    "problems": [],
-    "revisions": {
-     "2cebfde06ae5073c0b296a9d2ca6ab4b95397ea5": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-       }
-      }
-     },
-     "415c0da223bb7694608913f725fa45bd7a7a46bf": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "0625facb0b49940ed2bc878db77c82e1ccb23c19ad01a65f9431554aa193a550"
-   },
-   "languages": [
-    "go"
-   ],
-   "license_file": "LICENSE",
-   "license_file_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-   "license_file_url": "https://github.com/cometbft/cometbft/blob/415c0da223bb7694608913f725fa45bd7a7a46bf/LICENSE",
-   "license_spdx_detected": "Apache-2.0",
-   "obligations": [
-    "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
-   ],
-   "open_questions": [],
-   "proposed_decision": "recommended_for_review",
-   "record_ids": [
-    "sg-go-post-fix-9bc26a0d3f3b5992",
-    "sg-go-vulnerable-d57909c6c9799764"
-   ],
-   "records": {
-    "finding": 1,
-    "no_finding": 1
-   },
-   "registry_licenses": {
-    "Go:github.com/cometbft/cometbft": [
-     "Apache-2.0"
-    ]
-   },
-   "repository_key": "cometbft/cometbft",
-   "revisions": [
-    "2cebfde06ae5073c0b296a9d2ca6ab4b95397ea5",
-    "415c0da223bb7694608913f725fa45bd7a7a46bf"
-   ],
-   "splits": [
-    "train"
-   ],
-   "url": "https://github.com/cometbft/cometbft"
-  },
-  {
-   "advisories": [
     "GHSA-hgch-jjmr-gp7w"
    ],
    "confirmed_evidence": [
@@ -32182,97 +31843,6 @@
     "train"
    ],
    "url": "https://github.com/eladnava/mailgen"
-  },
-  {
-   "advisories": [
-    "GHSA-hv9c-qwqg-qj3v"
-   ],
-   "confirmed_evidence": [
-    "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'npm:electron': ['MIT']}",
-    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
-   ],
-   "cwes": [
-    "CWE-1188"
-   ],
-   "decision_group": "recommended:MIT",
-   "evidence": {
-    "paths": [
-     "lib/browser/guest-window-manager.js"
-    ],
-    "problems": [],
-    "revisions": {
-     "4c7af6a429b6cc2173686cdc75ef1965acab4402": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "fa441a7ca6c25057936b32dec6083cc61078003c3907b4f32feabb5ccdb15371"
-       }
-      }
-     },
-     "ef0a6d9a1c96efc4657c6dd3a6624eba969f095b": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "package.json",
-        "license": "MIT"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "MIT",
-        "sha256": "fa441a7ca6c25057936b32dec6083cc61078003c3907b4f32feabb5ccdb15371"
-       }
-      }
-     }
-    },
-    "source_state_sha256": "d029811508f837d0a518a76cc71f17763595b5887260c0b2efeb82bab90b25cc"
-   },
-   "languages": [
-    "javascript"
-   ],
-   "license_file": "LICENSE",
-   "license_file_sha256": "fa441a7ca6c25057936b32dec6083cc61078003c3907b4f32feabb5ccdb15371",
-   "license_file_url": "https://github.com/electron/electron/blob/ef0a6d9a1c96efc4657c6dd3a6624eba969f095b/LICENSE",
-   "license_spdx_detected": "MIT",
-   "obligations": [
-    "keep the copyright and permission notice with any redistributed copy of the code"
-   ],
-   "open_questions": [],
-   "proposed_decision": "recommended_for_review",
-   "record_ids": [
-    "sg-js-caller-abstention-c26b369cad66f327",
-    "sg-js-post-fix-0d2d57d0e60aa0ef",
-    "sg-js-vulnerable-0a2a3b9ad8c87bbb"
-   ],
-   "records": {
-    "abstain": 1,
-    "finding": 1,
-    "no_finding": 1
-   },
-   "registry_licenses": {
-    "npm:electron": [
-     "MIT"
-    ]
-   },
-   "repository_key": "electron/electron",
-   "revisions": [
-    "4c7af6a429b6cc2173686cdc75ef1965acab4402",
-    "ef0a6d9a1c96efc4657c6dd3a6624eba969f095b"
-   ],
-   "splits": [
-    "train"
-   ],
-   "url": "https://github.com/electron/electron"
   },
   {
    "advisories": [
@@ -39791,6 +39361,100 @@
     "train"
    ],
    "url": "https://github.com/handlebars-lang/handlebars.js"
+  },
+  {
+   "advisories": [
+    "GHSA-jp4x-w63m-7wgm"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as BSD-2-Clause, identical at all 2 used revisions",
+    "package registry (deps.dev) agrees: {'npm:@hapi/hoek': ['BSD-3-Clause'], 'npm:hoek': ['BSD-3-Clause']}"
+   ],
+   "cwes": [
+    "CWE-1321"
+   ],
+   "decision_group": "clarify:package_metadata_names_another_license",
+   "evidence": {
+    "paths": [
+     "lib/index.js"
+    ],
+    "problems": [],
+    "revisions": {
+     "32ed5c9413321fbc37da5ca81a7cbab693786dee": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "BSD-3-Clause"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-2-Clause",
+        "sha256": "33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b"
+       }
+      }
+     },
+     "dfadda70b192adbcdf9a33ccc3caecfeb3dbe528": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [
+       {
+        "file": "package.json",
+        "license": "BSD-3-Clause"
+       }
+      ],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "BSD-2-Clause",
+        "sha256": "33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "8e6df5ef32e67e5593fea1a4724c12c47c34a1592e892a4a5f31c3ec45c3ec07"
+   },
+   "languages": [
+    "javascript"
+   ],
+   "license_file": "LICENSE",
+   "license_file_sha256": "33958af332f9555a5f54cf655bcefe32cab7f236414fe010c9fcc6b97013613b",
+   "license_file_url": "https://github.com/hapijs/hoek/blob/32ed5c9413321fbc37da5ca81a7cbab693786dee/LICENSE",
+   "license_spdx_detected": "BSD-2-Clause",
+   "obligations": [
+    "keep the copyright notice, conditions and disclaimer with any redistributed copy of the code"
+   ],
+   "open_questions": [
+    "package.json at 32ed5c941332 declares license 'BSD-3-Clause', root license is BSD-2-Clause",
+    "package.json at dfadda70b192 declares license 'BSD-3-Clause', root license is BSD-2-Clause"
+   ],
+   "proposed_decision": "needs_clarification",
+   "record_ids": [
+    "sg-js-post-fix-d012b2a00cf66796",
+    "sg-js-vulnerable-176508a9431ced65"
+   ],
+   "records": {
+    "finding": 1,
+    "no_finding": 1
+   },
+   "registry_licenses": {
+    "npm:@hapi/hoek": [
+     "BSD-3-Clause"
+    ],
+    "npm:hoek": [
+     "BSD-3-Clause"
+    ]
+   },
+   "repository_key": "hapijs/hoek",
+   "revisions": [
+    "32ed5c9413321fbc37da5ca81a7cbab693786dee",
+    "dfadda70b192adbcdf9a33ccc3caecfeb3dbe528"
+   ],
+   "splits": [
+    "validation"
+   ],
+   "url": "https://github.com/hapijs/hoek"
   },
   {
    "advisories": [
@@ -53058,37 +52722,22 @@
     ],
     "problems": [],
     "revisions": {
+     "426ea785a99b1dad4755492b923feb327d9251a6": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "COPYRIGHT": {
+        "detected": "unknown",
+        "sha256": "66550c0ad5ca7ec1e08683e5f872cc45c741f311eee3b8ee484206ecbf9c740d"
+       },
+       "LICENSE": {
+        "detected": "BSD-3-Clause",
+        "sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901"
+       }
+      }
+     },
      "43913f2f4fbd7dcff930b8a809e709591e4dd79e": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "COPYRIGHT": {
-        "detected": "unknown",
-        "sha256": "66550c0ad5ca7ec1e08683e5f872cc45c741f311eee3b8ee484206ecbf9c740d"
-       },
-       "LICENSE": {
-        "detected": "BSD-3-Clause",
-        "sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901"
-       }
-      }
-     },
-     "501e858f679edecd4a38a86317ce50271014a80d": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "COPYRIGHT": {
-        "detected": "unknown",
-        "sha256": "66550c0ad5ca7ec1e08683e5f872cc45c741f311eee3b8ee484206ecbf9c740d"
-       },
-       "LICENSE": {
-        "detected": "BSD-3-Clause",
-        "sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901"
-       }
-      }
-     },
-     "833bf76c282d338e307ff7ec181b95cfc117deb2": {
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [],
@@ -53117,33 +52766,48 @@
         "sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901"
        }
       }
+     },
+     "f71d7d9d77d439b30a5e50900df5b1f988a50e5e": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "COPYRIGHT": {
+        "detected": "unknown",
+        "sha256": "66550c0ad5ca7ec1e08683e5f872cc45c741f311eee3b8ee484206ecbf9c740d"
+       },
+       "LICENSE": {
+        "detected": "BSD-3-Clause",
+        "sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901"
+       }
+      }
      }
     },
-    "source_state_sha256": "271a5fc7b7276ef85978881a990577845ff6e04fe1f4bf1622ca02df69843816"
+    "source_state_sha256": "4d9e587cfc0a0a5dd048e76ef790641faad4bb0359700ced63c64b2541a8b876"
    },
    "languages": [
     "go"
    ],
    "license_file": "LICENSE",
    "license_file_sha256": "e803b4a863454ad503c61e5ac8592ea000d7ee90734b55239d0e6c3d9b53f901",
-   "license_file_url": "https://github.com/miekg/dns/blob/501e858f679edecd4a38a86317ce50271014a80d/LICENSE",
+   "license_file_url": "https://github.com/miekg/dns/blob/f71d7d9d77d439b30a5e50900df5b1f988a50e5e/LICENSE",
    "license_spdx_detected": "BSD-3-Clause",
    "obligations": [
     "keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names"
    ],
    "open_questions": [
+    "COPYRIGHT at 426ea785a99b (detected unknown) may add terms; check which code it covers",
     "COPYRIGHT at 43913f2f4fbd (detected unknown) may add terms; check which code it covers",
-    "COPYRIGHT at 501e858f679e (detected unknown) may add terms; check which code it covers",
-    "COPYRIGHT at 833bf76c282d (detected unknown) may add terms; check which code it covers",
-    "COPYRIGHT at 862243b3b1e7 (detected unknown) may add terms; check which code it covers"
+    "COPYRIGHT at 862243b3b1e7 (detected unknown) may add terms; check which code it covers",
+    "COPYRIGHT at f71d7d9d77d4 (detected unknown) may add terms; check which code it covers"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
     "sg-go-caller-abstention-8495aaf65c87bc16",
     "sg-go-post-fix-0513528511216cbb",
-    "sg-go-post-fix-7ce5cca1025e1d70",
+    "sg-go-post-fix-850e51e8cb37ff11",
     "sg-go-vulnerable-5a079ad247a55bb9",
-    "sg-go-vulnerable-7806e52dc5be2a57"
+    "sg-go-vulnerable-923608b5586cc414"
    ],
    "records": {
     "abstain": 1,
@@ -53157,10 +52821,10 @@
    },
    "repository_key": "miekg/dns",
    "revisions": [
+    "426ea785a99b1dad4755492b923feb327d9251a6",
     "43913f2f4fbd7dcff930b8a809e709591e4dd79e",
-    "501e858f679edecd4a38a86317ce50271014a80d",
-    "833bf76c282d338e307ff7ec181b95cfc117deb2",
-    "862243b3b1e77ca9f73771fc95a7148d11cebb55"
+    "862243b3b1e77ca9f73771fc95a7148d11cebb55",
+    "f71d7d9d77d439b30a5e50900df5b1f988a50e5e"
    ],
    "splits": [
     "train"
@@ -59978,12 +59642,11 @@
   {
    "advisories": [
     "GHSA-4xw6-hj5p-4j79",
-    "GHSA-c8w9-83vg-r8vv",
     "GHSA-j6mr-cm6x-h6jg",
     "GHSA-q73f-vjc2-3gqf"
    ],
    "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 8 used revisions",
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 6 used revisions",
     "package registry (deps.dev) agrees: {'PyPI:glance': ['Apache-2.0']}",
     "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
@@ -59995,7 +59658,6 @@
    "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
-     "glance/api/middleware/cache.py",
      "glance/api/v1/images.py",
      "glance/async/flows/base_import.py",
      "glance/store/__init__.py"
@@ -60010,14 +59672,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
        {
         "file": "setup.cfg",
         "license": null
@@ -60080,62 +59734,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "c4f97dfa6eba8893a0e50128f7d5c7b1ea8f6003": {
-      "absent_directories": [
-       "glance/async",
-       "glance/async/flows"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
        }
       ],
       "root_notice_and_license_files": {
@@ -60176,62 +59774,6 @@
        {
         "file": "setup.py",
         "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "e75764eee34915f8bc5b664ac18e47a556c9d3dd": {
-      "absent_directories": [
-       "glance/async",
-       "glance/async/flows"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
        }
       ],
       "root_notice_and_license_files": {
@@ -60248,14 +59790,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -60319,14 +59853,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -60367,14 +59893,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -60385,7 +59903,7 @@
       }
      }
     },
-    "source_state_sha256": "db0a88073107b2ddab7f3e1718d385698b9ac589167961458309fd0420e0fffb"
+    "source_state_sha256": "8e5fbab708f173d3df0e47879a3c197cec70f8aa5741bf283ad65cf585041d0b"
    },
    "languages": [
     "python"
@@ -60401,16 +59919,14 @@
    "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-post-fix-8d34b7b50cb11339",
-    "sg-py-post-fix-9cc09c82c905f4b5",
     "sg-py-post-fix-ba6138be4dd118f7",
     "sg-py-vulnerable-723e364fd37bddcd",
-    "sg-py-vulnerable-c464efec806b83b0",
     "sg-py-vulnerable-da8d7e0b866c9560",
     "sg-py-vulnerable-ed14e6b60b0f995d"
    ],
    "records": {
-    "finding": 4,
-    "no_finding": 3
+    "finding": 3,
+    "no_finding": 2
    },
    "registry_licenses": {
     "PyPI:glance": [
@@ -60421,9 +59937,7 @@
    "revisions": [
     "b1ac90f7914d91b25144cc4063fa994fb5019ee3",
     "c0623627b92193acab0b3594a40c45eea46ee51e",
-    "c4f97dfa6eba8893a0e50128f7d5c7b1ea8f6003",
     "cc6ce4acbc2f72ab8d3ae62f8e7effc36fd54302",
-    "e75764eee34915f8bc5b664ac18e47a556c9d3dd",
     "eb99e45829a1b4c93db5692bdbf636a86faa56c4",
     "f6e41e9c0ff3aa9ee57b8c8ed8c789f1aff019bc",
     "fd99958b333a234f01fe0dbca3b1520e076d06e0"
@@ -60435,97 +59949,27 @@
   },
   {
    "advisories": [
-    "GHSA-f8fh-xp28-q59m",
-    "GHSA-rhjj-f6gq-6gx2"
+    "GHSA-f8fh-xp28-q59m"
    ],
    "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
     "package registry (deps.dev) agrees: {'PyPI:horizon': ['Apache-2.0']}",
     "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
-    "CWE-601",
-    "CWE-79"
+    "CWE-601"
    ],
    "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
-     "horizon/workflows/views.py",
-     "openstack_dashboard/dashboards/project/stacks/forms.py"
+     "horizon/workflows/views.py"
     ],
     "problems": [],
     "revisions": {
      "252467100f75587e18df9c43ed5802ee8f0017fa": {
-      "absent_directories": [
-       "openstack_dashboard/dashboards/project/stacks"
-      ],
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "28d8f49786d6df297b2574514916fa782e941e09": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "44e56fe6242a177b6a323bb2aa4e3aaa01283737": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -60543,20 +59987,9 @@
       }
      },
      "b6b1d70d67e3d653f09cb7d457df60f39ab2aca4": {
-      "absent_directories": [
-       "openstack_dashboard/dashboards/project/stacks"
-      ],
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -60574,7 +60007,7 @@
       }
      }
     },
-    "source_state_sha256": "1de2269e8bae090ebae48d1fe5d1f8b10c178fbb5750e985a5611125056da27d"
+    "source_state_sha256": "c20cc0b7dc962a357b03ca5c0221f0e28374f43a13ca4af2fd6d383b16c1e021"
    },
    "languages": [
     "python"
@@ -60589,17 +60022,14 @@
    "open_questions": [],
    "proposed_decision": "recommended_for_review",
    "record_ids": [
-    "sg-py-caller-abstention-397d15aa3a13e514",
     "sg-py-caller-abstention-ad3b2994091dcd58",
     "sg-py-post-fix-40f115b8e7607b66",
-    "sg-py-post-fix-4744ac303936abdc",
-    "sg-py-vulnerable-5cc2ba9c301acfc3",
     "sg-py-vulnerable-656bb04edefeacc6"
    ],
    "records": {
-    "abstain": 2,
-    "finding": 2,
-    "no_finding": 2
+    "abstain": 1,
+    "finding": 1,
+    "no_finding": 1
    },
    "registry_licenses": {
     "PyPI:horizon": [
@@ -60609,8 +60039,6 @@
    "repository_key": "openstack/horizon",
    "revisions": [
     "252467100f75587e18df9c43ed5802ee8f0017fa",
-    "28d8f49786d6df297b2574514916fa782e941e09",
-    "44e56fe6242a177b6a323bb2aa4e3aaa01283737",
     "b6b1d70d67e3d653f09cb7d457df60f39ab2aca4"
    ],
    "splits": [
@@ -60721,18 +60149,16 @@
     "GHSA-4225-97pr-rr52",
     "GHSA-6mv3-p2gr-wgqf",
     "GHSA-77w8-qv8m-386h",
-    "GHSA-j36m-hv43-7w7m",
-    "GHSA-w66p-78g4-mr7g"
+    "GHSA-j36m-hv43-7w7m"
    ],
    "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 12 used revisions",
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 10 used revisions",
     "package registry (deps.dev) agrees: {'PyPI:keystone': ['Apache-2.0']}",
     "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-287",
     "CWE-307",
-    "CWE-324",
     "CWE-522",
     "CWE-613",
     "CWE-863"
@@ -60744,8 +60170,7 @@
      "keystone/assignment/core.py",
      "keystone/auth/controllers.py",
      "keystone/contrib/revoke/model.py",
-     "keystone/notifications.py",
-     "keystone/service.py"
+     "keystone/notifications.py"
     ],
     "problems": [],
     "revisions": {
@@ -60757,14 +60182,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -60860,14 +60277,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -60924,80 +60333,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "38c7e46a640a94da4da89a39a5a1ea9c081f1eb5": {
-      "absent_directories": [
-       "keystone/api",
-       "keystone/assignment",
-       "keystone/auth",
-       "keystone/contrib/revoke"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
        }
       ],
       "root_notice_and_license_files": {
@@ -61014,14 +60349,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -61117,14 +60444,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -61142,14 +60461,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -61245,14 +60556,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -61269,14 +60572,6 @@
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       },
        {
         "file": "setup.cfg",
         "license": "Apache Software License"
@@ -61371,80 +60666,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
-       }
-      ],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320"
-       }
-      }
-     },
-     "ede63fbfe504cffb4b29f7394b1bf4872d093588": {
-      "absent_directories": [
-       "keystone/api",
-       "keystone/assignment",
-       "keystone/auth",
-       "keystone/contrib/revoke"
-      ],
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
-       },
-       {
-        "file": "setup.cfg",
-        "license": null
-       },
-       {
-        "file": "setup.py",
-        "license": "Apache License (2.0)"
        }
       ],
       "root_notice_and_license_files": {
@@ -61500,14 +60721,6 @@
        {
         "file": "setup.py",
         "license": null
-       },
-       {
-        "file": "setup.cfg",
-        "license": "Apache Software License"
-       },
-       {
-        "file": "setup.py",
-        "license": null
        }
       ],
       "root_notice_and_license_files": {
@@ -61518,7 +60731,7 @@
       }
      }
     },
-    "source_state_sha256": "587779680fad6742a3c19810a4c676cd087ad690097d8285bd2e762ed969797b"
+    "source_state_sha256": "cde9791b336ae2fb0e08b30ec68b4b7267870a5ec7c2d4de1c4df8b43c3a71ca"
    },
    "languages": [
     "python"
@@ -61535,7 +60748,6 @@
    "record_ids": [
     "sg-py-caller-abstention-30217c71ce99982a",
     "sg-py-caller-abstention-76f5b82422b2f1d2",
-    "sg-py-post-fix-360b497bdde8b0b6",
     "sg-py-post-fix-5f5d4e205dcc3672",
     "sg-py-post-fix-df46559f7c7dadeb",
     "sg-py-post-fix-e3ab58f2581518da",
@@ -61544,13 +60756,12 @@
     "sg-py-vulnerable-3bd14a9e84cb33d1",
     "sg-py-vulnerable-47d96af94d126623",
     "sg-py-vulnerable-4c462377e38d821a",
-    "sg-py-vulnerable-c9a1e0a296069e5a",
     "sg-py-vulnerable-cd72fb9180e5cc6f"
    ],
    "records": {
     "abstain": 2,
-    "finding": 6,
-    "no_finding": 5
+    "finding": 5,
+    "no_finding": 4
    },
    "registry_licenses": {
     "PyPI:keystone": [
@@ -61562,14 +60773,12 @@
     "10057702ac361213e74472ec1d0d4e4c4a041f09",
     "17c337dbdbfb9d548ad531c2ad0483c9bce5b98f",
     "2139639eeabc8f6941f4461fc87d609cde3118c2",
-    "38c7e46a640a94da4da89a39a5a1ea9c081f1eb5",
     "3e035ebb726167aef43c4a865c7e7f7d3b0978fb",
     "72cbaa91ffa6727f6400ec38331896f0a9e326c6",
     "a4315a813f43d0aeb2c41baf125305cbba931abe",
     "ac2631ae33445877094cdae796fbcdce8833a626",
     "b803fe85ba53a9c666b9badd0923502fcb5c3b0e",
     "c4447f16da036fe878382ce4e1b05b84bdcc4d4e",
-    "ede63fbfe504cffb4b29f7394b1bf4872d093588",
     "ef868ad92c00e23a4a5e9eb71e3e0bf5ae2fff0c"
    ],
    "splits": [
@@ -80893,7 +80102,7 @@
    "url": "https://github.com/ZJONSSON/node-unzipper"
   }
  ],
- "review_queue_sha256": "bb639894e61ab87f39334ee0978fc1210aac4f5c9a0930d4fe99229067b97dbf",
+ "review_queue_sha256": "46e67a12229b657f00c0adbd499e1e87f457bd2e1b56977175807e1918198242",
  "selection": "every tier A repository of the review queue with accepted train/validation records",
  "status": "PROPOSAL - not an approval; see COHORT_REVIEW.md"
 }

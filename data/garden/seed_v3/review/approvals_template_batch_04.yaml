@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'PyPI:spotipy': ['MIT']}
-  - repository_key: spotipy-dev/spotipy
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE.md
-    license_file_sha256: b6c10115b32a473bb4f7bb7e11cab2f86eaec8378e144a8572b5ad42e4b723ff
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/spotipy-dev/spotipy
-      - https://github.com/spotipy-dev/spotipy/blob/880b92d7243dcf2b83bf31dc365a858d8b5e6767/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'Go:github.com/usememos/memos': ['MIT']}
   - repository_key: usememos/memos
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/containerd/imgcrypt
       - https://github.com/containerd/imgcrypt/blob/6fdd9818a4d8142107b7ecd767d839c9707700d9/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/containers/image': ['Apache-2.0'], 'Go:github.com/containers/image/v5': ['Apache-2.0']}
+  - repository_key: containers/image
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 716a8b80635c394681e652823e1e42e411ad2d254e1f202403422d74f4b0b106
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/containers/image
+      - https://github.com/containers/image/blob/634605d06e738aec8332bcfd69162e7509ac7aaf/LICENSE
     notes: ""

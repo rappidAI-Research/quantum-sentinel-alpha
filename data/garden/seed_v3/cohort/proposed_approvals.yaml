@@ -328,19 +328,6 @@ repositories:
   - https://github.com/antrea-io/antrea
   - https://github.com/antrea-io/antrea/blob/738bad662b20a5d358d19466936176ef580a9b07/LICENSE
   notes: ''
-- repository_key: anymail/django-anymail
-  decision: '<REQUIRED: approved_for_training | blocked>'
-  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>'
-  license_file: LICENSE
-  license_file_sha256: 5d4a571868bc8b6f630595ce4ea11f29c525b09fd12df70ed6f347de489cdfb1
-  terms_status: '<REQUIRED: approved_for_project | blocked>'
-  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
-  reviewer: '<REQUIRED: name of the authorized reviewer>'
-  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
-  evidence_urls:
-  - https://github.com/anymail/django-anymail
-  - https://github.com/anymail/django-anymail/blob/db586ede1fbb41dce21310ea28ae15a1cf1286c5/LICENSE
-  notes: ''
 - repository_key: apidevtools/json-schema-ref-parser
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -978,19 +965,6 @@ repositories:
   - https://github.com/collerek/ormar
   - https://github.com/collerek/ormar/blob/a03bae14fe01358d3eaf7e319fcd5db2e4956b16/LICENSE.md
   notes: ''
-- repository_key: cometbft/cometbft
-  decision: '<REQUIRED: approved_for_training | blocked>'
-  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
-  license_file: LICENSE
-  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
-  terms_status: '<REQUIRED: approved_for_project | blocked>'
-  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
-  reviewer: '<REQUIRED: name of the authorized reviewer>'
-  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
-  evidence_urls:
-  - https://github.com/cometbft/cometbft
-  - https://github.com/cometbft/cometbft/blob/415c0da223bb7694608913f725fa45bd7a7a46bf/LICENSE
-  notes: ''
 - repository_key: commenthol/safer-eval
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -1328,19 +1302,6 @@ repositories:
   evidence_urls:
   - https://github.com/eladnava/mailgen
   - https://github.com/eladnava/mailgen/blob/741a0190ddae0f408b22ae3b5f0f4c3f5cf4f11d/LICENSE
-  notes: ''
-- repository_key: electron/electron
-  decision: '<REQUIRED: approved_for_training | blocked>'
-  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
-  license_file: LICENSE
-  license_file_sha256: fa441a7ca6c25057936b32dec6083cc61078003c3907b4f32feabb5ccdb15371
-  terms_status: '<REQUIRED: approved_for_project | blocked>'
-  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
-  reviewer: '<REQUIRED: name of the authorized reviewer>'
-  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
-  evidence_urls:
-  - https://github.com/electron/electron
-  - https://github.com/electron/electron/blob/ef0a6d9a1c96efc4657c6dd3a6624eba969f095b/LICENSE
   notes: ''
 - repository_key: electron/packager
   decision: '<REQUIRED: approved_for_training | blocked>'

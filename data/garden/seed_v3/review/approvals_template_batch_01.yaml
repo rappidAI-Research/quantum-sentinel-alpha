@@ -37,23 +37,6 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
-  # records: 13 {'train/caller_abstention': 2, 'train/post_fix': 5, 'train/vulnerable': 6}
-  # registry (deps.dev): {'PyPI:keystone': ['Apache-2.0']}
-  - repository_key: openstack/keystone
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/openstack/keystone
-      - https://github.com/openstack/keystone/blob/ac2631ae33445877094cdae796fbcdce8833a626/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 13 {'train/caller_abstention': 1, 'train/post_fix': 6, 'train/vulnerable': 6}
   # registry (deps.dev): {'PyPI:llama-index': ['MIT'], 'PyPI:llama-index-cli': ['MIT'], 'PyPI:llama-index-core': ['MIT'], 'PyPI:llama-index-llms-rungpt': ['MIT'], 'PyPI:llama-index-packs-finchat': ['MIT'], 'PyPI:llama-index-readers-docugami': ['MIT'], 'PyPI:llama-index-readers-obsidian': ['MIT'], 'PyPI:llama-index-readers-papers': ['MIT'], 'PyPI:llama-index-retrievers-duckdb-retriever': ['MIT'], 'PyPI:llama-index-vector-stores-duckdb': ['MIT']}
   - repository_key: run-llama/llama_index
@@ -190,6 +173,23 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
+  # records: 11 {'train/caller_abstention': 2, 'train/post_fix': 4, 'train/vulnerable': 5}
+  # registry (deps.dev): {'PyPI:keystone': ['Apache-2.0']}
+  - repository_key: openstack/keystone
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/openstack/keystone
+      - https://github.com/openstack/keystone/blob/ac2631ae33445877094cdae796fbcdce8833a626/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
   # records: 10 {'train/caller_abstention': 2, 'train/post_fix': 4, 'train/vulnerable': 4}
   # registry (deps.dev): {'PyPI:flask-appbuilder': ['BSD-3-Clause']}
   - repository_key: dpgaspar/flask-appbuilder
@@ -255,6 +255,23 @@ repositories:
     evidence_urls:
       - https://github.com/wagtail/wagtail
       - https://github.com/wagtail/wagtail/blob/5fe901e5d86ed02dbbb63039a897582951266afd/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 9 {'train/caller_abstention': 2, 'train/post_fix': 3, 'train/vulnerable': 4}
+  # registry (deps.dev): {'npm:@angular/common': ['MIT'], 'npm:@angular/compiler': ['MIT'], 'npm:@angular/core': ['MIT'], 'npm:@angular/platform-server': ['MIT'], 'npm:@angular/router': ['MIT'], 'npm:@angular/service-worker': ['MIT']}
+  - repository_key: angular/angular
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/angular/angular
+      - https://github.com/angular/angular/blob/a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -391,23 +408,6 @@ repositories:
     evidence_urls:
       - https://github.com/harttle/liquidjs
       - https://github.com/harttle/liquidjs/blob/5c3522f33928aae66f0fe85c36e1d9015c768fe2/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 7 {'train/post_fix': 3, 'train/vulnerable': 4}
-  # registry (deps.dev): {'PyPI:glance': ['Apache-2.0']}
-  - repository_key: openstack/glance
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/openstack/glance
-      - https://github.com/openstack/glance/blob/eb99e45829a1b4c93db5692bdbf636a86faa56c4/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling

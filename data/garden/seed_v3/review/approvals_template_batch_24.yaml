@@ -121,23 +121,6 @@ repositories:
       - https://github.com/apache/airflow/blob/a929d142d667f71dea29c565a7167216a9c30378/LICENSE
     notes: ""
 
-  # tier B: license_file_changed_between_revisions
-  # records: 11 {'train/caller_abstention': 3, 'train/post_fix': 3, 'train/vulnerable': 5}
-  # registry (deps.dev): {'npm:@angular/common': ['MIT'], 'npm:@angular/compiler': ['MIT'], 'npm:@angular/core': ['MIT'], 'npm:@angular/platform-server': ['MIT'], 'npm:@angular/router': ['MIT'], 'npm:@angular/service-worker': ['MIT']}
-  - repository_key: angular/angular
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 15e77c4692114f87c2020353626c868472c23954a4ed37ecc4c1522d14be1eb7
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/angular/angular
-      - https://github.com/angular/angular/blob/a6c7fc5c13e6e494a4c9bd8e773b8d4b2a99b20c/LICENSE
-    notes: ""
-
   # tier B: registry_disagrees
   # records: 11 {'train/caller_abstention': 3, 'train/post_fix': 4, 'train/vulnerable': 4}
   # registry (deps.dev): {'Go:code.gitea.io/gitea': ['MIT', 'Unlicense'], 'Go:gitea.dev': ['MIT', 'Unlicense'], 'Go:github.com/go-gitea/gitea': ['Apache-2.0', 'MIT', 'Unlicense', 'Zlib']}
@@ -291,6 +274,23 @@ repositories:
       - https://github.com/pyca/cryptography/blob/f09c261ca10a31fe41b1262306db7f8f1da0e48a/LICENSE
     notes: ""
 
+  # tier B: license_file_changed_between_revisions
+  # records: 9 {'train/caller_abstention': 3, 'train/post_fix': 2, 'train/vulnerable': 4}
+  # registry (deps.dev): {'PyPI:tornado': ['Apache-2.0']}
+  - repository_key: tornadoweb/tornado
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/tornadoweb/tornado
+      - https://github.com/tornadoweb/tornado/blob/24a2d96ea115f663b223887deb0060f13974c104/LICENSE
+    notes: ""
+
   # tier B: license_file_changed_between_revisions, registry_unrecognised
   # records: 8 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 4}
   # registry (deps.dev): {'PyPI:jupyter-server': ['non-standard']}
@@ -377,23 +377,6 @@ repositories:
     notes: ""
 
   # tier B: license_file_changed_between_revisions
-  # records: 7 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 3}
-  # registry (deps.dev): {'npm:mermaid': ['MIT']}
-  - repository_key: mermaid-js/mermaid
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/mermaid-js/mermaid
-      - https://github.com/mermaid-js/mermaid/blob/e9b0f34d8d82a6260077764ee45e1d7d90957a0f/LICENSE
-    notes: ""
-
-  # tier B: license_file_changed_between_revisions
   # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
   # registry (deps.dev): {'npm:sequelize': ['MIT']}
   - repository_key: sequelize/sequelize
@@ -411,18 +394,35 @@ repositories:
     notes: ""
 
   # tier B: license_file_changed_between_revisions
-  # records: 7 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 3}
-  # registry (deps.dev): {'PyPI:tornado': ['Apache-2.0']}
-  - repository_key: tornadoweb/tornado
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:twisted': ['MIT']}
+  - repository_key: twisted/twisted
     decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
     license_file: LICENSE
-    license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    license_file_sha256: 78d059391dddba18a695c1998ac9dde68160a1df1635f34adcfb3ecba4564802
     terms_status: "<REQUIRED: approved_for_project | blocked>"
     redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
     reviewer: "<REQUIRED: name of the authorized reviewer>"
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
-      - https://github.com/tornadoweb/tornado
-      - https://github.com/tornadoweb/tornado/blob/771472cfdaeebc0d89a9cc46e249f8891a6b29cd/LICENSE
+      - https://github.com/twisted/twisted
+      - https://github.com/twisted/twisted/blob/046a164f89a0f08d3239ecebd750360f8914df33/LICENSE
+    notes: ""
+
+  # tier B: license_file_changed_between_revisions
+  # records: 7 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 3}
+  # registry (deps.dev): {'npm:next': ['MIT']}
+  - repository_key: vercel/next.js
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: license.md
+    license_file_sha256: ee765244e2d59f5234d474f62e0766fa0c8b99af967fdd4c0cb8dcb0c76ea224
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/vercel/next.js
+      - https://github.com/vercel/next.js/blob/6b12c60c61ee80cb0443ccd20de82ca9b4422ddd/license.md
     notes: ""

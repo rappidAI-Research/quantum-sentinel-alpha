@@ -4,23 +4,6 @@
 repositories:
   # tier A: no open questions found by tooling
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'npm:git-commit-info': ['MIT']}
-  - repository_key: jpeer264/node-git-commit-info
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: e5c2bade6fc05f45287bb78dd55973faf3453305740bf4f3aca23f286fd7ae5f
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/JPeer264/node-git-commit-info
-      - https://github.com/JPeer264/node-git-commit-info/blob/f7c491ede51f886a988af9b266797cb24591d18c/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:jquery-ui': ['MIT']}
   - repository_key: jquery/jquery-ui
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -374,6 +357,23 @@ repositories:
     evidence_urls:
       - https://github.com/ljharb/npm-lockfile
       - https://github.com/ljharb/npm-lockfile/blob/bfdb84813260f0edbf759f2fde1e8c816c1478b8/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 2 {'validation/caller_abstention': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:qs': ['BSD-3-Clause']}
+  - repository_key: ljharb/qs
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE.md
+    license_file_sha256: e7dc37bf662d7f786efcb46c545615e70c1daf458a38385521c63cf6607cdfe1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/ljharb/qs
+      - https://github.com/ljharb/qs/blob/f6a7abff1f13d644db9b05fe4f2c98ada6bf8482/LICENSE.md
     notes: ""
 
   # tier A: no open questions found by tooling

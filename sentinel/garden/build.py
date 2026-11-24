@@ -25,6 +25,7 @@ from sentinel.garden import code
 from sentinel.garden.diff import Hunk, parse_unified_diff
 from sentinel.garden.gitsource import CommitInfo, GitError, LicenseFile
 from sentinel.garden.licenses import detect
+from sentinel.garden.split import parse_time
 
 
 class Repo(Protocol):
@@ -93,14 +94,33 @@ def _companion_only(path: str, allowed_languages: set[str], settings: Extraction
 
 
 def _change_signature(repo: "Repo", parent: str, sha: str, paths: list[str]) -> tuple[Any, ...]:
-    """What a commit changes in runtime source: per file, the sorted non-blank removed and added lines."""
+    """What a commit changes in runtime source, position included: per hunk, the file, the enclosing
+    function of the parent version and the hunk's line offset inside it (the absolute line outside any
+    function), and the non-blank removed and added lines.
+
+    The position matters: two commits that make the same textual edit at different places of one
+    function (fixing one of two identical calls each) are a fix in two steps, not a backport."""
     signature = []
     for path in sorted(paths):
-        hunks = parse_unified_diff(repo.file_diff(parent, sha, path))
-        removed = sorted(t.strip() for h in hunks for _, t in h.removed if t.strip())
-        added = sorted(t.strip() for h in hunks for _, t in h.added if t.strip())
-        signature.append((path, tuple(removed), tuple(added)))
-    return tuple(signature)
+        language = code.language_of(path)
+        try:
+            functions = code.find_functions(language, repo.text(parent, path)) if language else []
+        except GitError:
+            functions = []  # the commit adds the file (or it is not UTF-8): positions are absolute lines
+        for hunk in parse_unified_diff(repo.file_diff(parent, sha, path)):
+            anchor = hunk.old_start
+            owner = (
+                min((f for f in functions if f.start <= anchor < f.end), key=lambda f: f.length, default=None)
+                if hunk.is_insertion
+                else code.innermost(functions, anchor, anchor + max(hunk.old_count, 1) - 1)
+            )
+            removed = tuple(t.strip() for _, t in hunk.removed if t.strip())
+            added = tuple(t.strip() for _, t in hunk.added if t.strip())
+            if not removed and not added:
+                continue
+            position = (owner.name, anchor - owner.start) if owner else (None, anchor)
+            signature.append((path, *position, removed, added))
+    return tuple(sorted(signature, key=repr))
 
 
 def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: ExtractionSettings) -> CommitInfo:
@@ -134,7 +154,8 @@ def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: Extrac
         signatures = {_change_signature(repo, info.parents[0], info.sha, paths) for info, paths in code_commits}
         if len(signatures) != 1:
             raise Rejected("multi_commit_distinct_changes", str(len(code_commits)))
-    return min((info for info, _ in code_commits), key=lambda info: (info.committed_at, info.sha))
+    # instants, not strings: offsets differ between commits (2026-06-30T23:45-01:00 is after 2026-07-01T00:30+01:00)
+    return min((info for info, _ in code_commits), key=lambda info: (parse_time(info.committed_at), info.sha))
 
 
 def is_runtime_source(path: str, settings: ExtractionSettings) -> bool:

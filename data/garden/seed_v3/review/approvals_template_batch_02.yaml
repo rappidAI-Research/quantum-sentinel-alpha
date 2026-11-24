@@ -157,23 +157,6 @@ repositories:
 
   # tier A: no open questions found by tooling
   # records: 6 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 2}
-  # registry (deps.dev): {'PyPI:horizon': ['Apache-2.0']}
-  - repository_key: openstack/horizon
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/openstack/horizon
-      - https://github.com/openstack/horizon/blob/252467100f75587e18df9c43ed5802ee8f0017fa/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
-  # records: 6 {'train/caller_abstention': 2, 'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'PyPI:pytorch-lightning': ['Apache-2.0']}
   - repository_key: pytorchlightning/pytorch-lightning
     decision: "<REQUIRED: approved_for_training | blocked>"
@@ -360,23 +343,6 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
-  # records: 5 {'validation/caller_abstention': 2, 'validation/post_fix': 1, 'validation/vulnerable': 2}
-  # registry (deps.dev): {'npm:qs': ['BSD-3-Clause']}
-  - repository_key: ljharb/qs
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
-    license_file: LICENSE.md
-    license_file_sha256: e7dc37bf662d7f786efcb46c545615e70c1daf458a38385521c63cf6607cdfe1
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/ljharb/qs
-      - https://github.com/ljharb/qs/blob/f6a7abff1f13d644db9b05fe4f2c98ada6bf8482/LICENSE.md
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'PyPI:marimo': ['Apache-2.0']}
   - repository_key: marimo-team/marimo
@@ -407,7 +373,24 @@ repositories:
     reviewed_at: "<REQUIRED: YYYY-MM-DD>"
     evidence_urls:
       - https://github.com/miekg/dns
-      - https://github.com/miekg/dns/blob/501e858f679edecd4a38a86317ce50271014a80d/LICENSE
+      - https://github.com/miekg/dns/blob/f71d7d9d77d439b30a5e50900df5b1f988a50e5e/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 5 {'train/post_fix': 2, 'train/vulnerable': 3}
+  # registry (deps.dev): {'PyPI:glance': ['Apache-2.0']}
+  - repository_key: openstack/glance
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/openstack/glance
+      - https://github.com/openstack/glance/blob/eb99e45829a1b4c93db5692bdbf636a86faa56c4/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling
@@ -425,4 +408,21 @@ repositories:
     evidence_urls:
       - https://github.com/openstack/nova
       - https://github.com/openstack/nova/blob/3eba22ff09c81a61750fbb4882e5f1f01a20fdf5/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 5 {'train/caller_abstention': 1, 'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'Go:github.com/quic-go/quic-go': ['MIT']}
+  - repository_key: quic-go/quic-go
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 77d0b7b53e8abb84cf4dd3f9945a7fdf27044240d2e8023966a721a9a46fe96e
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/quic-go/quic-go
+      - https://github.com/quic-go/quic-go/blob/bc5bccf10fd02728eef150683eb4dfaa5c0e749c/LICENSE
     notes: ""

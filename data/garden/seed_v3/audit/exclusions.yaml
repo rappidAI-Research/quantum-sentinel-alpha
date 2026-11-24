@@ -299,14 +299,20 @@ automated:
   reason: later_fix_changes_same_function:GHSA-qvfw-j98x-7q72
 - record_id: sg-js-post-fix-29f11b8a25332b8c
   reason: later_fix_changes_same_function:GHSA-hgjh-723h-mx2j
+- record_id: sg-js-post-fix-301f2a1cc2e5444e
+  reason: later_fix_changes_same_function:GHSA-3jxr-9vmj-r5cp
+- record_id: sg-js-post-fix-301f2a1cc2e5444e
+  reason: later_fix_changes_same_function:GHSA-f886-m6hf-6m8v
+- record_id: sg-js-post-fix-301f2a1cc2e5444e
+  reason: later_fix_changes_same_function:GHSA-mh99-v99m-4gvg
+- record_id: sg-js-post-fix-301f2a1cc2e5444e
+  reason: later_fix_changes_same_function:GHSA-rgw5-rvv9-x895
+- record_id: sg-js-post-fix-301f2a1cc2e5444e
+  reason: later_fix_changes_same_function:GHSA-v6h2-p8h4-qcjw
 - record_id: sg-js-post-fix-41a82aeb2b47651f
   reason: later_fix_changes_same_function:GHSA-jmr7-xgp7-cmfj
 - record_id: sg-js-post-fix-4bb000045d9312f4
   reason: later_fix_changes_same_function:GHSA-p5g4-v748-6fh8
-- record_id: sg-js-post-fix-4cff7c8cb1d833a4
-  reason: later_fix_changes_same_function:GHSA-w74x-v6f9-j3xg
-- record_id: sg-js-post-fix-4cff7c8cb1d833a4
-  reason: later_fix_changes_same_function:GHSA-xhq7-xmqj-769h
 - record_id: sg-js-post-fix-51bac28f6b1f5edc
   reason: later_fix_changes_same_function:GHSA-2p2x-p7wj-j5h2
 - record_id: sg-js-post-fix-51bac28f6b1f5edc
@@ -379,12 +385,6 @@ automated:
   reason: later_fix_changes_same_function:GHSA-jff2-qjw8-5476
 - record_id: sg-js-post-fix-ccac1b215ea10325
   reason: later_fix_unverifiable:977a1fb169441e35996a1d2465b512322de500ad
-- record_id: sg-js-post-fix-cd20bd3e7430a907
-  reason: later_fix_changes_same_function:GHSA-f886-m6hf-6m8v
-- record_id: sg-js-post-fix-cd20bd3e7430a907
-  reason: later_fix_changes_same_function:GHSA-mh99-v99m-4gvg
-- record_id: sg-js-post-fix-cd20bd3e7430a907
-  reason: later_fix_changes_same_function:GHSA-rgw5-rvv9-x895
 - record_id: sg-js-post-fix-d09d228efabc39e7
   reason: reported_incomplete_fix:GHSA-5h3f-q97h-ccvc
 - record_id: sg-js-post-fix-d1edcd4cd1fe3ce4
@@ -441,12 +441,8 @@ automated:
   reason: broad_localization_span
 - record_id: sg-js-vulnerable-5be8689cd43dfe66
   reason: broad_localization_span
-- record_id: sg-js-vulnerable-6590f6b562eb32b2
-  reason: broad_localization_span
 - record_id: sg-js-vulnerable-7472852a1d818165
   reason: broad_localization_span
-- record_id: sg-js-vulnerable-77df1b86a62b6a0a
-  reason: split_leakage_near_duplicate_of_temporal_quarantine
 - record_id: sg-js-vulnerable-788a4ae974305525
   reason: broad_localization_span
 - record_id: sg-js-vulnerable-8c64436647ab3f89
@@ -735,6 +731,8 @@ automated:
   reason: later_fix_changes_same_function:GHSA-mh74-4m5g-fcjx
 - record_id: sg-py-post-fix-e49cdd4b20c3290a
   reason: later_fix_changes_same_function:PYSEC-2021-23
+- record_id: sg-py-post-fix-e79e1d3f24f1ff42
+  reason: reported_incomplete_fix:GHSA-wwv5-g3v4-889x
 - record_id: sg-py-post-fix-e8f1b7a384887568
   reason: later_fix_changes_same_function:GHSA-8wjv-2p76-3863
 - record_id: sg-py-post-fix-e8f1b7a384887568
@@ -855,14 +853,10 @@ automated:
   reason: broad_localization_span
 - record_id: sg-py-vulnerable-acb3a71803ee7397
   reason: broad_localization_span
-- record_id: sg-py-vulnerable-ae196c15b908bc86
-  reason: broad_localization_span
 - record_id: sg-py-vulnerable-b5edb2e58fc8bd56
   reason: broad_localization_span
 - record_id: sg-py-vulnerable-b89d3cc40bd11be5
   reason: broad_localization_span
-- record_id: sg-py-vulnerable-bc2922a6adb9ae8c
-  reason: split_leakage_near_duplicate_of_temporal_quarantine
 - record_id: sg-py-vulnerable-bc2a5bc0d647ddaa
   reason: broad_localization_span
 - record_id: sg-py-vulnerable-c9a668ca3cb96622
@@ -887,8 +881,6 @@ automated:
   reason: later_fix_changes_same_function:GHSA-3jxr-9vmj-r5cp
 - record_id: sg-ts-post-fix-0bc31e12bc9c2d84
   reason: later_fix_changes_same_function:GHSA-mh99-v99m-4gvg
-- record_id: sg-ts-post-fix-143b6a6a8e938701
-  reason: reported_incomplete_fix:GHSA-jfgx-762w-99vr
 - record_id: sg-ts-post-fix-22493f977045b650
   reason: later_fix_changes_same_function:GHSA-58jh-xv4v-pcx4
 - record_id: sg-ts-post-fix-22493f977045b650
@@ -957,8 +949,6 @@ automated:
   reason: later_fix_changes_same_function:GHSA-w8wr-v893-vjvp
 - record_id: sg-ts-post-fix-747943aedb97b7ba
   reason: later_fix_changes_same_function:GHSA-qcpr-679q-rhm2
-- record_id: sg-ts-post-fix-7856d220138ac26f
-  reason: later_fix_changes_same_function:GHSA-ghcm-xqfw-q4vr
 - record_id: sg-ts-post-fix-79560a678652a8a5
   reason: reported_incomplete_fix:GHSA-4ffr-jq9g-5ffx
 - record_id: sg-ts-post-fix-836b16186cd1c8a1
@@ -1050,8 +1040,6 @@ automated:
 - record_id: sg-ts-vulnerable-c41581633c635855
   reason: broad_localization_span
 - record_id: sg-ts-vulnerable-c5a5762808ee9f0c
-  reason: broad_localization_span
-- record_id: sg-ts-vulnerable-c9fccc8b63d3c0f5
   reason: broad_localization_span
 - record_id: sg-ts-vulnerable-e14c46ba36ca21ce
   reason: broad_localization_span

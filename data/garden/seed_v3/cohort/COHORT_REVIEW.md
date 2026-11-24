@@ -5,21 +5,21 @@ approval templates (not loadable) in `proposed_approvals.yaml`. This is an engin
 summary, not a legal opinion. The method and the open legal questions are in
 `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`.
 
-Manifest sha256 `d7925995704710dcbe1cc45b8771626bdd3d9f01c29c3786f85b0a317455bfac`; review queue sha256 `bb639894e61ab87f39334ee0978fc1210aac4f5c9a0930d4fe99229067b97dbf`.
+Manifest sha256 `4b08c5e66349f04b573d86b01b34e7fc63a2de1b1877f1c9e01451217324685c`; review queue sha256 `46e67a12229b657f00c0adbd499e1e87f457bd2e1b56977175807e1918198242`.
 
 ## Decision groups
 
 | Group | Repositories | Records (train/validation) | What the reviewer decides |
 | --- | ---: | ---: | --- |
-| `recommended:MIT` | 331 | 810 | confirm MIT for training use; obligation if code is redistributed: keep the copyright and permission notice with any redistributed copy of the code |
-| `recommended:Apache-2.0` | 131 | 449 | confirm Apache-2.0 for training use; obligation if code is redistributed: keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 §4) |
-| `recommended:BSD-3-Clause` | 32 | 93 | confirm BSD-3-Clause for training use; obligation if code is redistributed: keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names |
+| `recommended:MIT` | 330 | 807 | confirm MIT for training use; obligation if code is redistributed: keep the copyright and permission notice with any redistributed copy of the code |
+| `recommended:Apache-2.0` | 130 | 440 | confirm Apache-2.0 for training use; obligation if code is redistributed: keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 §4) |
+| `recommended:BSD-3-Clause` | 31 | 91 | confirm BSD-3-Clause for training use; obligation if code is redistributed: keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names |
 | `recommended:BSD-2-Clause` | 9 | 21 | confirm BSD-2-Clause for training use; obligation if code is redistributed: keep the copyright notice, conditions and disclaimer with any redistributed copy of the code |
 | `recommended:ISC` | 8 | 24 | confirm ISC for training use; obligation if code is redistributed: keep the copyright and permission notice with any redistributed copy of the code |
-| `clarify:notice_or_additional_license_file` | 37 | 110 | resolve the listed question per repository (table below) or leave it out |
-| `clarify:package_metadata_names_another_license` | 6 | 13 | resolve the listed question per repository (table below) or leave it out |
+| `clarify:notice_or_additional_license_file` | 38 | 119 | resolve the listed question per repository (table below) or leave it out |
+| `clarify:package_metadata_names_another_license` | 7 | 15 | resolve the listed question per repository (table below) or leave it out |
 
-Recommended for review: **511 repositories**; needing clarification: **43**. Not in the cohort: 27 tier A repositories (120 records) that also have holdout or temporal-quarantine records, because the training loader refuses every record of such a repository.
+Recommended for review: **508 repositories**; needing clarification: **45**. Not in the cohort: 28 tier A repositories (120 records) that also have holdout or temporal-quarantine records, because the training loader refuses every record of such a repository.
 
 ## Volume if the three sources and every recommended repository were approved
 
@@ -28,38 +28,38 @@ written and nothing is approved. Holdout and temporal-quarantine records stay bl
 
 | | train | validation | total |
 | --- | ---: | ---: | ---: |
-| finding | 580 | 59 | 639 |
-| no_finding | 533 | 52 | 585 |
-| abstain | 157 | 16 | 173 |
-| **detection examples** | **1270** | **127** | **1397** |
-| patch examples | 519 | 52 | 571 |
+| finding | 574 | 59 | 633 |
+| no_finding | 527 | 52 | 579 |
+| abstain | 155 | 16 | 171 |
+| **detection examples** | **1256** | **127** | **1383** |
+| patch examples | 513 | 52 | 565 |
 
-Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9437077c`.
+Record-ID set sha256: `73bb616053e8a04e87237c228ea7cd26fb73c1cc38741e23757b2b795ae11eaa`.
 
 ### By language
 
 | Language | Records |
 | --- | ---: |
-| go | 337 |
-| javascript | 438 |
-| python | 400 |
+| go | 335 |
+| javascript | 435 |
+| python | 391 |
 | typescript | 222 |
 
-### CWE families of the findings (126 CWEs)
+### CWE families of the findings (125 CWEs)
 
 | Family | Findings |
 | --- | ---: |
 | resource_limits_redos | 97 |
 | path_traversal | 71 |
-| authn_authz | 69 |
-| other | 68 |
-| xss_output_encoding | 68 |
+| authn_authz | 68 |
+| other | 67 |
+| xss_output_encoding | 67 |
 | prototype_pollution | 57 |
 | deserialization_input_validation | 50 |
-| information_exposure | 40 |
+| information_exposure | 38 |
 | command_injection | 32 |
-| crypto_tls_integrity | 28 |
 | redirect_ssrf | 28 |
+| crypto_tls_integrity | 27 |
 | code_injection | 20 |
 | sql_injection | 11 |
 
@@ -70,6 +70,7 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [aimhubio/aim](https://github.com/aimhubio/aim) | Apache-2.0 | 2 | setup.py at 0b99c6ca08e0 declares license 'MIT License', root license is Apache-2.0; setup.py at b9e53df5e32d declares license 'MIT License', root license is Apache-2.0 |
 | [aio-libs/aiosmtpd](https://github.com/aio-libs/aiosmtpd) | Apache-2.0 | 2 | NOTICE at 6e148d7f8742 (detected unknown) may add terms; check which code it covers; NOTICE at b3a4a2c6ecfd (detected unknown) may add terms; check which code it covers |
 | [amazon-q-developer/language-servers](https://github.com/Amazon-Q-Developer/language-servers) | Apache-2.0 | 2 | NOTICE at 31e352852564 (detected unknown) may add terms; check which code it covers; NOTICE at 6c279b083cc1 (detected unknown) may add terms; check which code it covers |
+| [angular/angular](https://github.com/angular/angular) | MIT | 9 | packages/license-banner.txt at 3c70270c9667 (detected unknown) may add terms; check which code it covers; packages/license-banner.txt at 422e6893e489 (detected unknown) may add terms; check which code it covers; packages/license-banner.txt at 6bde84fa8e6a (detected unknown) may add terms; check which code it covers; ... (8 total) |
 | [apache/libcloud](https://github.com/apache/libcloud) | Apache-2.0 | 2 | NOTICE at 4449e165a007 (detected unknown) may add terms; check which code it covers; NOTICE at df38b3b70b48 (detected unknown) may add terms; check which code it covers |
 | [apache/superset](https://github.com/apache/superset) | Apache-2.0 | 2 | NOTICE at 2bd89d170534 (detected unknown) may add terms; check which code it covers; NOTICE at 94d417904581 (detected unknown) may add terms; check which code it covers |
 | [aquasecurity/trivy](https://github.com/aquasecurity/trivy) | Apache-2.0 | 2 | NOTICE at 28d44d3af5e7 (detected unknown) may add terms; check which code it covers; NOTICE at 39e0b132260c (detected unknown) may add terms; check which code it covers |
@@ -87,6 +88,7 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [flyteorg/flyteadmin](https://github.com/flyteorg/flyteadmin) | Apache-2.0 | 2 | NOTICE at a1ec282d0270 (detected unknown) may add terms; check which code it covers; NOTICE at f18839d61860 (detected unknown) may add terms; check which code it covers |
 | [go-vela/compiler](https://github.com/go-vela/compiler) | Apache-2.0 | 2 | NOTICE at adf85cc6f434 (detected Apache-2.0) may add terms; check which code it covers; NOTICE at f1ace5f8a05c (detected Apache-2.0) may add terms; check which code it covers |
 | [golang/net](https://github.com/golang/net) | BSD-3-Clause | 3 | PATENTS at 37e1c6afe023 (detected unknown) may add terms; check which code it covers; PATENTS at 4163338589ed (detected unknown) may add terms; check which code it covers |
+| [hapijs/hoek](https://github.com/hapijs/hoek) | BSD-2-Clause | 2 | package.json at 32ed5c941332 declares license 'BSD-3-Clause', root license is BSD-2-Clause; package.json at dfadda70b192 declares license 'BSD-3-Clause', root license is BSD-2-Clause |
 | [hapijs/nes](https://github.com/hapijs/nes) | BSD-2-Clause | 2 | package.json at 249ba1755ed6 declares license 'BSD-3-Clause', root license is BSD-2-Clause; package.json at 71e9232bb84a declares license 'BSD-3-Clause', root license is BSD-2-Clause |
 | [heartexlabs/label-studio](https://github.com/heartexlabs/label-studio) | Apache-2.0 | 2 | NOTICE at 501142cb815a (detected Apache-2.0) may add terms; check which code it covers; NOTICE at ad2980473121 (detected Apache-2.0) may add terms; check which code it covers |
 | [horovod/horovod](https://github.com/horovod/horovod) | Apache-2.0 | 3 | NOTICE at 655353fc345b (detected Apache-2.0) may add terms; check which code it covers; NOTICE at b96ecae4dc69 (detected Apache-2.0) may add terms; check which code it covers |
@@ -99,7 +101,7 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [marimo-team/marimo](https://github.com/marimo-team/marimo) | Apache-2.0 | 5 | marimo/third_party.txt at 78489d4621dc (detected unknown) may add terms; check which code it covers; marimo/third_party.txt at c24d4806398f (detected unknown) may add terms; check which code it covers; marimo/third_party.txt at dc35cdfecf4f (detected unknown) may add terms; check which code it covers; ... (8 total) |
 | [mat-sz/lettersanitizer](https://github.com/mat-sz/lettersanitizer) | BSD-3-Clause | 2 | package.json at 96d3dfe2ef04 declares license 'BSD-3-Clause-Clear', root license is BSD-3-Clause; package.json at f2c9e136ed10 declares license 'BSD-3-Clause-Clear', root license is BSD-3-Clause |
 | [matrix-org/pinecone](https://github.com/matrix-org/pinecone) | Apache-2.0 | 3 | NOTICE at 218b2801995b (detected unknown) may add terms; check which code it covers; NOTICE at ea4c33717fd7 (detected unknown) may add terms; check which code it covers |
-| [miekg/dns](https://github.com/miekg/dns) | BSD-3-Clause | 5 | COPYRIGHT at 43913f2f4fbd (detected unknown) may add terms; check which code it covers; COPYRIGHT at 501e858f679e (detected unknown) may add terms; check which code it covers; COPYRIGHT at 833bf76c282d (detected unknown) may add terms; check which code it covers; ... (4 total) |
+| [miekg/dns](https://github.com/miekg/dns) | BSD-3-Clause | 5 | COPYRIGHT at 426ea785a99b (detected unknown) may add terms; check which code it covers; COPYRIGHT at 43913f2f4fbd (detected unknown) may add terms; check which code it covers; COPYRIGHT at 862243b3b1e7 (detected unknown) may add terms; check which code it covers; ... (4 total) |
 | [nautobot/nautobot](https://github.com/nautobot/nautobot) | Apache-2.0 | 2 | NOTICE at 589f7caf5412 (detected unknown) may add terms; check which code it covers; NOTICE at 8cec6c0ddf8c (detected unknown) may add terms; check which code it covers |
 | [open-telemetry/opentelemetry-collector-contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) | Apache-2.0 | 3 | NOTICE at 234eadd91ae4 (detected Apache-2.0) may add terms; check which code it covers; NOTICE at 371bf6afbd7c (detected Apache-2.0) may add terms; check which code it covers |
 | [openfga/openfga](https://github.com/openfga/openfga) | Apache-2.0 | 12 | NOTICE at 1486ac4db41d (detected GPL-2.0) may add terms; check which code it covers; NOTICE at 1a7e0e37fc47 (detected GPL-2.0) may add terms; check which code it covers; NOTICE at 1bb5eddf4a3d (detected GPL-2.0) may add terms; check which code it covers; ... (8 total) |
@@ -131,7 +133,6 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [chainguard-dev/melange](https://github.com/chainguard-dev/melange) | [Apache-2.0](https://github.com/chainguard-dev/melange/blob/84f3b450ce6e472c4abb8dc4c26d0ce8ac1259ac/LICENSE) (`c71d239df917`) | go | 2/2/0 | CWE-22 |
 | [clearml/clearml](https://github.com/clearml/clearml) | [Apache-2.0](https://github.com/clearml/clearml/blob/64fb2bcbdbb87a74af90dd723d5ef4a99fceeb73/LICENSE) (`438496d1ac6c`) | python | 1/1/0 | CWE-22 |
 | [cloudevents/sdk-go](https://github.com/cloudevents/sdk-go) | [Apache-2.0](https://github.com/cloudevents/sdk-go/blob/de2f28370b0d2a0f64f92c0c6139fa4b8a7c3851/LICENSE) (`c71d239df917`) | go | 1/1/0 | CWE-522 |
-| [cometbft/cometbft](https://github.com/cometbft/cometbft) | [Apache-2.0](https://github.com/cometbft/cometbft/blob/415c0da223bb7694608913f725fa45bd7a7a46bf/LICENSE) (`cfc7749b96f6`) | go | 1/1/0 | CWE-345 |
 | [containerd/imgcrypt](https://github.com/containerd/imgcrypt) | [Apache-2.0](https://github.com/containerd/imgcrypt/blob/6fdd9818a4d8142107b7ecd767d839c9707700d9/LICENSE) (`4bbe3b885e8c`) | go | 1/1/1 | CWE-863 |
 | [containers/image](https://github.com/containers/image) | [Apache-2.0](https://github.com/containers/image/blob/634605d06e738aec8332bcfd69162e7509ac7aaf/LICENSE) (`716a8b80635c`) | go | 1/1/1 | CWE-522 |
 | [cri-o/cri-o](https://github.com/cri-o/cri-o) | [Apache-2.0](https://github.com/cri-o/cri-o/blob/75effcb1a25851a736e82dba1f7d8cee93ee159e/LICENSE) (`b40930bbcf80`) | go | 1/1/0 | CWE-400 |
@@ -203,10 +204,10 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [opencloud-eu/reva](https://github.com/opencloud-eu/reva) | [Apache-2.0](https://github.com/opencloud-eu/reva/blob/95aa2bc5d980eaf6cc134d75782b4f5ac7b36ae1/LICENSE) (`5df2a0d87d6c`) | go | 1/1/1 | CWE-22 |
 | [openmeterio/openmeter](https://github.com/openmeterio/openmeter) | [Apache-2.0](https://github.com/openmeterio/openmeter/blob/6ce29e743165890c10346f4c71d5bf79f1ecaf6f/LICENSE) (`cfc7749b96f6`) | go | 1/1/0 | CWE-89 |
 | [openshift/apiserver-library-go](https://github.com/openshift/apiserver-library-go) | [Apache-2.0](https://github.com/openshift/apiserver-library-go/blob/30f75d79e424ca462c6de53ee8b93f91183763e6/LICENSE) (`c71d239df917`) | go | 1/1/1 | CWE-20 |
-| [openstack/glance](https://github.com/openstack/glance) | [Apache-2.0](https://github.com/openstack/glance/blob/eb99e45829a1b4c93db5692bdbf636a86faa56c4/LICENSE) (`5df2a0d87d6c`) | python | 4/3/0 | CWE-200, CWE-532, CWE-918 |
-| [openstack/horizon](https://github.com/openstack/horizon) | [Apache-2.0](https://github.com/openstack/horizon/blob/252467100f75587e18df9c43ed5802ee8f0017fa/LICENSE) (`5df2a0d87d6c`) | python | 2/2/2 | CWE-601, CWE-79 |
+| [openstack/glance](https://github.com/openstack/glance) | [Apache-2.0](https://github.com/openstack/glance/blob/eb99e45829a1b4c93db5692bdbf636a86faa56c4/LICENSE) (`5df2a0d87d6c`) | python | 3/2/0 | CWE-200, CWE-532, CWE-918 |
+| [openstack/horizon](https://github.com/openstack/horizon) | [Apache-2.0](https://github.com/openstack/horizon/blob/252467100f75587e18df9c43ed5802ee8f0017fa/LICENSE) (`5df2a0d87d6c`) | python | 1/1/1 | CWE-601 |
 | [openstack/ironic-inspector](https://github.com/openstack/ironic-inspector) | [Apache-2.0](https://github.com/openstack/ironic-inspector/blob/9d107900b2e0b599397b84409580d46e0ed16291/LICENSE) (`cfc7749b96f6`) | python | 1/1/0 | CWE-89 |
-| [openstack/keystone](https://github.com/openstack/keystone) | [Apache-2.0](https://github.com/openstack/keystone/blob/ac2631ae33445877094cdae796fbcdce8833a626/LICENSE) (`5df2a0d87d6c`) | python | 6/5/2 | CWE-287, CWE-307, CWE-324, CWE-522, CWE-613, CWE-863 |
+| [openstack/keystone](https://github.com/openstack/keystone) | [Apache-2.0](https://github.com/openstack/keystone/blob/ac2631ae33445877094cdae796fbcdce8833a626/LICENSE) (`5df2a0d87d6c`) | python | 5/4/2 | CWE-287, CWE-307, CWE-522, CWE-613, CWE-863 |
 | [openstack/magnum](https://github.com/openstack/magnum) | [Apache-2.0](https://github.com/openstack/magnum/blob/272fd686d8c8bf5954e9e7d3bc991ff27e46184d/LICENSE) (`5df2a0d87d6c`) | python | 1/1/0 | CWE-367 |
 | [openstack/manila](https://github.com/openstack/manila) | [Apache-2.0](https://github.com/openstack/manila/blob/947315f0903c823b0fdd9d99c60078814587272c/LICENSE) (`5df2a0d87d6c`) | python | 1/1/1 | CWE-276 |
 | [openstack/mistral](https://github.com/openstack/mistral) | [Apache-2.0](https://github.com/openstack/mistral/blob/c93b45a61f49d4633f76d8e117cd89063e7759c4/LICENSE) (`09e8a9bcec80`) | python | 1/1/0 | CWE-200 |
@@ -258,7 +259,6 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [aaugustin/websockets](https://github.com/aaugustin/websockets) | [BSD-3-Clause](https://github.com/aaugustin/websockets/blob/547a26b685d08cac0aa64e5e65f7867ac0ea9bc0/LICENSE) (`daeca11bf360`) | python | 1/1/0 | CWE-203 |
 | [aedart/ion](https://github.com/aedart/ion) | [BSD-3-Clause](https://github.com/aedart/ion/blob/c3e2ee08710d4164d796ecb66ed291335dae9291/LICENSE) (`c6915452ae07`) | typescript | 1/1/1 | CWE-1321 |
 | [alex/rply](https://github.com/alex/rply) | [BSD-3-Clause](https://github.com/alex/rply/blob/fc9bbcd25b0b4f09bbd6339f710ad24c129d5d7c/LICENSE) (`aa19e7ffb50b`) | python | 1/0/0 | CWE-377 |
-| [anymail/django-anymail](https://github.com/anymail/django-anymail) | [BSD-3-Clause](https://github.com/anymail/django-anymail/blob/db586ede1fbb41dce21310ea28ae15a1cf1286c5/LICENSE) (`5d4a571868bc`) | python | 1/1/0 | CWE-200 |
 | [astropy/astropy](https://github.com/astropy/astropy) | [BSD-3-Clause](https://github.com/astropy/astropy/blob/22057d37b1313f5f5a9b5783df0a091d978dccb5/LICENSE.rst) (`a86d75ead6df`) | python | 1/1/0 | CWE-74 |
 | [bokeh/bokeh](https://github.com/bokeh/bokeh) | [BSD-3-Clause](https://github.com/bokeh/bokeh/blob/cedd113b0e271b439dce768671685cf5f861812e/LICENSE.txt) (`3aecbc527e6f`) | python | 1/1/1 | CWE-1385 |
 | [celery/celery](https://github.com/celery/celery) | [BSD-3-Clause](https://github.com/celery/celery/blob/53514b158b743678d8993638be5920cd09ccc35c/LICENSE) (`2307cb4611fc`) | python | 1/1/0 | CWE-269 |
@@ -359,7 +359,6 @@ Record-ID set sha256: `3059aeadea535e511d47479ff5e47b88ffb1f0fce1dce23512a4d8de9
 | [doowb/set-getter](https://github.com/doowb/set-getter) | [MIT](https://github.com/doowb/set-getter/blob/66eb3f0d4686a4a8c7c3d6f7ecd8e570b580edc4/LICENSE) (`b12128c781c1`) | javascript | 1/1/1 | CWE-1321 |
 | [dylanpiercey/local-devices](https://github.com/DylanPiercey/local-devices) | [MIT](https://github.com/DylanPiercey/local-devices/blob/57b9a933c9d23d34bd5a055536db824de66db553/LICENCE) (`211b4dde7595`) | javascript | 1/1/0 | CWE-77 |
 | [ekoopmans/html2pdf.js](https://github.com/eKoopmans/html2pdf.js) | [MIT](https://github.com/eKoopmans/html2pdf.js/blob/988826e336035b39a8608182d7b73c0e3cd78c7b/LICENSE) (`8ad8643de802`) | javascript | 1/1/0 | CWE-79 |
-| [electron/electron](https://github.com/electron/electron) | [MIT](https://github.com/electron/electron/blob/ef0a6d9a1c96efc4657c6dd3a6624eba969f095b/LICENSE) (`fa441a7ca6c2`) | javascript | 1/1/1 | CWE-1188 |
 | [element-plus/element-plus](https://github.com/element-plus/element-plus) | [MIT](https://github.com/element-plus/element-plus/blob/063c56446135176971f532bd0eb2e88a0b137d43/LICENSE) (`0790118bb4d6`) | typescript | 1/1/0 | CWE-79 |
 | [elwerene/libreoffice-convert](https://github.com/elwerene/libreoffice-convert) | [MIT](https://github.com/elwerene/libreoffice-convert/blob/b78f17df9b9183bd503fc4635fc8b3df6705047b/LICENSE) (`ee9c098940a0`) | javascript | 1/1/1 | CWE-22 |
 | [elysiajs/elysia-cors](https://github.com/elysiajs/elysia-cors) | [MIT](https://github.com/elysiajs/elysia-cors/blob/9b9eb92e32a7a4b43b6d5108668941701c33e221/LICENSE) (`139c2b5b5370`) | typescript | 1/1/1 | CWE-178 |
@@ -640,19 +639,18 @@ Tier B repositories whose open questions are formal, inspected exactly like tier
 | `extension:other_permissive_Unlicense` | 2 | 5 | other permissive Unlicense |
 | `extension:license_text_updated+registry_lists_bundled_licenses` | 1 | 6 | the license file text changed between the used revisions (e.g. a copyright year) but every version is the same license; the approval lists every version; deps.dev lists the root license plus further licenses (typically of bundled/vendored code in the module); the used files carry no other license |
 | `clarify_extension:notice_or_additional_license_file` | 16 | 83 | not recommended: see the open questions |
-| `clarify_extension:registry_names_other_license` | 16 | 45 | not recommended: see the open questions |
+| `clarify_extension:registry_names_other_license` | 15 | 43 | not recommended: see the open questions |
 | `clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license` | 6 | 24 | not recommended: see the open questions |
-| `clarify_extension:license_file_not_constant` | 3 | 15 | not recommended: see the open questions |
+| `clarify_extension:license_file_not_constant` | 3 | 13 | not recommended: see the open questions |
 | `clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive` | 3 | 7 | not recommended: see the open questions |
-| `clarify_extension:license_file_not_constant+package_metadata_names_another_license` | 2 | 14 | not recommended: see the open questions |
 | `clarify_extension:notice_or_additional_license_file+registry_names_other_license` | 2 | 7 | not recommended: see the open questions |
 | `clarify_extension:notice_or_additional_license_file+root_license_not_single_permissive` | 2 | 6 | not recommended: see the open questions |
 | `clarify_extension:package_metadata_names_another_license` | 2 | 4 | not recommended: see the open questions |
 | `clarify_extension:license_changed_between_revisions+notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive` | 1 | 9 | not recommended: see the open questions |
-| `clarify_extension:license_file_not_constant+notice_or_additional_license_file+package_metadata_names_another_license` | 1 | 4 | not recommended: see the open questions |
+| `clarify_extension:license_file_not_constant+package_metadata_names_another_license` | 1 | 10 | not recommended: see the open questions |
 | `clarify_extension:package_metadata_names_another_license+registry_names_other_license` | 1 | 2 | not recommended: see the open questions |
 
-Recommended in the extension: **69 repositories**. If they were approved as well as the tier A recommendation: **1648 records** (train 1490, validation 158), 670 patch examples, 138 CWEs, from 580 repositories (record-ID set sha256 `d9da098090d5`).
+Recommended in the extension: **69 repositories**. If they were approved as well as the tier A recommendation: **1634 records** (train 1476, validation 158), 664 patch examples, 137 CWEs, from 577 repositories (record-ID set sha256 `5ede296d58ce`).
 
 | Repository | License | Group | Records F/N/A | Open questions |
 | --- | --- | --- | --- | --- |
@@ -727,11 +725,9 @@ Recommended in the extension: **69 repositories**. If they were approved as well
 | [v2fly/v2ray-core](https://github.com/v2fly/v2ray-core) | [MIT](https://github.com/v2fly/v2ray-core/blob/c1af2bfd7aa59a4482aa7f6ec4b9208c1d350b5c/LICENSE) | `extension:registry_lists_bundled_licenses` | 1/1/0 |  |
 | [pyca/cryptography](https://github.com/pyca/cryptography) | [multiple:Apache-2.0|BSD-3-Clause](https://github.com/pyca/cryptography/blob/f09c261ca10a31fe41b1262306db7f8f1da0e48a/LICENSE) | `clarify_extension:license_changed_between_revisions+notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive` | 3/3/3 | LICENSE at 138da90c8450 (detected unknown) may add terms; check which code it covers; LICENSE at 21ac453a1afe (detected unknown) may add terms; check which code it covers |
 | [honojs/node-server](https://github.com/honojs/node-server) | [MIT](https://github.com/honojs/node-server/blob/025c30f55d589ddbe6048b151d77e904f67a8cc2/LICENSE) | `clarify_extension:license_file_not_constant` | 2/2/0 | LICENSE is missing at 8cea466fd05e |
-| [juliangruber/brace-expansion](https://github.com/juliangruber/brace-expansion) | [MIT](https://github.com/juliangruber/brace-expansion/blob/c0b095bdc52bc4c36dc88deddbadabc49f8371e5/LICENSE) | `clarify_extension:license_file_not_constant` | 3/0/3 | LICENSE is missing at 265f6cd65863 |
+| [juliangruber/brace-expansion](https://github.com/juliangruber/brace-expansion) | [MIT](https://github.com/juliangruber/brace-expansion/blob/c0b095bdc52bc4c36dc88deddbadabc49f8371e5/LICENSE) | `clarify_extension:license_file_not_constant` | 2/0/2 | LICENSE is missing at 265f6cd65863 |
 | [websockets/ws](https://github.com/websockets/ws) | [MIT](https://github.com/websockets/ws/blob/00c425ec77993773d823f018f64a5c44e17023ff/LICENSE) | `clarify_extension:license_file_not_constant` | 2/2/1 | LICENSE is missing at 29293ed11b67 |
-| [zopefoundation/zope](https://github.com/zopefoundation/Zope) | [BSD-2-Clause](https://github.com/zopefoundation/Zope/blob/37e4ea774acc668f6b430a45a6ab1e359710f590/LICENSE.txt) | `clarify_extension:license_file_not_constant+notice_or_additional_license_file+package_metadata_names_another_license` | 2/2/0 | COPYRIGHT.txt at 37e4ea774acc (detected unknown) may add terms; check which code it covers; COPYRIGHT.txt at d280d57ce75f (detected unknown) may add terms; check which code it covers |
-| [getsentry/sentry](https://github.com/getsentry/sentry) | [Apache-2.0](https://github.com/getsentry/sentry/blob/0c67558ae7fe08738912d4c5233b53ead048da3b/LICENSE.md) | `clarify_extension:license_file_not_constant+package_metadata_names_another_license` | 4/4/2 | LICENSE.md is missing at 8d836eae82c5; setup.cfg at 03b6f6bc2c16 declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0 |
-| [hapijs/hoek](https://github.com/hapijs/hoek) | [BSD-2-Clause](https://github.com/hapijs/hoek/blob/948baf98634a5c206875b67d11368f133034fa90/LICENSE.md) | `clarify_extension:license_file_not_constant+package_metadata_names_another_license` | 2/2/0 | LICENSE.md is missing at 32ed5c941332; package.json at 0ab1b4f6ff63 declares license 'BSD-3-Clause', root license is BSD-2-Clause |
+| [getsentry/sentry](https://github.com/getsentry/sentry) | [Apache-2.0](https://github.com/getsentry/sentry/blob/0c67558ae7fe08738912d4c5233b53ead048da3b/LICENSE.md) | `clarify_extension:license_file_not_constant+package_metadata_names_another_license` | 4/4/2 | LICENSE.md is missing at 19248fb9802c; setup.cfg at 03b6f6bc2c16 declares license 'FSL-1.0-Apache-2.0', root license is Apache-2.0 |
 | [apache/airflow](https://github.com/apache/airflow) | [Apache-2.0](https://github.com/apache/airflow/blob/a929d142d667f71dea29c565a7167216a9c30378/LICENSE) | `clarify_extension:notice_or_additional_license_file` | 10/4/4 | NOTICE at 1d4fd5c6eaca (detected unknown) may add terms; check which code it covers; NOTICE at 26768d94085e (detected unknown) may add terms; check which code it covers |
 | [apache/thrift](https://github.com/apache/thrift) | [Apache-2.0](https://github.com/apache/thrift/blob/264a3f318ed3e9e51573f67f963c8509786bcec2/LICENSE) | `clarify_extension:notice_or_additional_license_file` | 1/1/1 | NOTICE at 264a3f318ed3 (detected unknown) may add terms; check which code it covers; NOTICE at 6e5c0f6e315e (detected unknown) may add terms; check which code it covers |
 | [apache/trafficcontrol](https://github.com/apache/trafficcontrol) | [Apache-2.0](https://github.com/apache/trafficcontrol/blob/f780aff77a52d52a37b4d1cc3e8e801c0b557356/LICENSE) | `clarify_extension:notice_or_additional_license_file` | 1/1/0 | NOTICE at 85596a08bb12 (detected unknown) may add terms; check which code it covers; NOTICE at f780aff77a52 (detected unknown) may add terms; check which code it covers |
@@ -767,7 +763,6 @@ Recommended in the extension: **69 repositories**. If they were approved as well
 | [anthropics/anthropic-sdk-python](https://github.com/anthropics/anthropic-sdk-python) | [MIT](https://github.com/anthropics/anthropic-sdk-python/blob/6599043eee6e86dce16953fcd1fd828052052be6/LICENSE) | `clarify_extension:registry_names_other_license` | 1/1/1 | the package registry names another license: {'PyPI:anthropic': ['Apache-2.0']} |
 | [caronc/apprise](https://github.com/caronc/apprise) | [MIT](https://github.com/caronc/apprise/blob/e20fce630d55e4ca9b0a1e325a5fea6997489831/LICENSE) | `clarify_extension:registry_names_other_license` | 1/1/0 | the package registry names another license: {'PyPI:apprise': ['BSD-2-Clause']} |
 | [cosmos/ibc-go](https://github.com/cosmos/ibc-go) | [MIT](https://github.com/cosmos/ibc-go/blob/59987d52d959dc5876ffd4f307c9b33a52a43748/LICENSE) | `clarify_extension:registry_names_other_license` | 1/1/0 | the package registry names another license: {'Go:github.com/cheqd/cheqd-node': ['Apache-2.0'], 'Go:github.com/cosmos/ibc-go': ['MIT'], 'Go:github.com/cosmos/ibc-go/v2': ['MIT'], 'Go:github.com/cosmos/ibc-go/v3': ['MIT'], 'Go:github.com/cosmos/ibc-go/v4': ['MIT'], 'Go:github.com/cosmos/ibc-go/v5': ['MIT'], 'Go:github.com/cosmos/ibc-go/v6': ['MIT'], 'Go:github.com/cosmos/ibc-go/v7': ['MIT'], 'Go:github.com/cosmos/ibc-go/v8': ['MIT']} |
-| [facebook/react](https://github.com/facebook/react) | [Apache-2.0](https://github.com/facebook/react/blob/94a9a3e752fe089ab23f3a90c26d20d46d62ab10/LICENSE) | `clarify_extension:registry_names_other_license` | 1/1/0 | the package registry names another license: {'npm:react': ['MIT'], 'npm:react-devtools-core': ['MIT'], 'npm:react-server-dom-parcel': ['MIT'], 'npm:react-server-dom-turbopack': ['MIT'], 'npm:react-server-dom-webpack': ['MIT']} |
 | [faisalman/ua-parser-js](https://github.com/faisalman/ua-parser-js) | [MIT](https://github.com/faisalman/ua-parser-js/blob/a6140a17dd0300a35cfc9cff999545f267889411/license.md) | `clarify_extension:registry_names_other_license` | 1/1/0 | the package registry names another license: {'npm:ua-parser-js': ['AGPL-3.0-or-later']} |
 | [gen2brain/go-unarr](https://github.com/gen2brain/go-unarr) | [Zlib](https://github.com/gen2brain/go-unarr/blob/239ec404d348280b50bbf671327709e8857fc5f4/LICENSE) | `clarify_extension:registry_names_other_license` | 1/1/0 | the package registry names another license: {'Go:github.com/gen2brain/go-unarr': ['LGPL-3.0', 'Zlib', 'bzip2-1.0.6']} |
 | [llk/scratch-svg-renderer](https://github.com/LLK/scratch-svg-renderer) | [BSD-3-Clause](https://github.com/LLK/scratch-svg-renderer/blob/9ebf57588aa596c4fa3bb64209e10ade395aee90/LICENSE) | `clarify_extension:registry_names_other_license` | 2/2/1 | the package registry names another license: {'npm:scratch-svg-renderer': ['AGPL-3.0-only']} |

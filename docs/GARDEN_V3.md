@@ -15,8 +15,11 @@ fix is unambiguous, in one of two cases:
 - exactly one commit changes runtime source in the ecosystem's language, and every other commit
   changes only tests, documentation, changelogs or CI files;
 - every commit that changes runtime source makes the identical change: same files, same removed and
-  added lines. This covers a backport, or a merge commit and the commit it merges. The earliest such
-  commit is used, which is the date the fix existed.
+  added lines, at the same position (enclosing function and line offset in it). This covers a backport,
+  or a merge commit and the commit it merges. The same edit at two places of a function in two commits
+  is a fix in two steps and is rejected; otherwise the first commit's still-vulnerable function would
+  become a hard negative. The earliest such commit (by instant, not by timestamp text) is used, which
+  is the date the fix existed.
 
 Everything else is rejected and never guessed:
 - a fix split over different commits (`multi_commit_distinct_changes`);
@@ -28,8 +31,8 @@ v3 candidate list is a strict superset of v2's: all 6,623 v2 candidates are byte
 are added. Tests: `tests/test_garden_v3_multicommit.py`.
 
 Result:
-- **124 of the 1,128 multi-commit advisories** yield records.
-- 693 are rejected as distinct changes. In a sample of 120:
+- **100 of the 1,128 multi-commit advisories** yield records.
+- 778 are rejected as distinct changes. In a sample of 120 (taken before positions were part of the comparison):
   - a third change different files;
   - a third are file subsets (a fix in several steps);
   - a third change the same files with different lines (partial fixes, or backports to diverged
@@ -51,22 +54,21 @@ under the rule. Test: `test_approved_repository_with_quarantine_records_exports_
 | | v2 | v3 |
 | --- | ---: | ---: |
 | Candidates | 6,623 | 7,751 |
-| Fix commits turned into records | 1,725 | 1,849 |
-| Records built / accepted | 3,971 / 3,226 | 4,259 / **3,465** |
-| finding / no_finding / abstain | 1,476 / 1,307 / 443 | 1,581 / 1,408 / 476 |
-| verified vulnerable/fixed pairs | 1,278 | 1,376 |
-| train / validation / holdout / quarantine | 2,276 / 252 / 376 / 322 | 2,427 / 275 / 399 / 364 |
-| finding CWEs | 192 | 195 |
+| Fix commits turned into records | 1,725 | 1,825 |
+| Records built / accepted | 3,971 / 3,226 | 4,200 / **3,427** |
+| finding / no_finding / abstain | 1,476 / 1,307 / 443 | 1,566 / 1,392 / 469 |
+| verified vulnerable/fixed pairs | 1,278 | 1,363 |
+| train / validation / holdout / quarantine | 2,276 / 252 / 376 / 322 | 2,405 / 268 / 399 / 355 |
+| finding CWEs | 192 | 194 |
 
 New records:
-- 243 of the 288 new records were accepted. The rest were rejected by the unchanged quality checks and
-  audit.
-- 4 v2-accepted records are now rejected: duplicates, label conflicts, or an audit leakage finding
-  against the new records.
+- 202 of the 229 new records were accepted; the other 27 (11.8 %) were rejected by the unchanged quality
+  checks and audit.
+- 1 v2-accepted record (a post-fix hard negative) is now rejected as a near label conflict with a new record.
 - No v2 training-approved record was lost.
 
 Integrity:
-- `garden verify` rebuilt all 4,259 records from the pinned revisions with 0 differences.
+- `garden verify` rebuilt all 4,200 records from the pinned revisions with 0 differences.
 - The second and third audit rounds were byte-identical: the dataset is at a fixed point.
 
 ## Training data (after the 2026-11-24 decision, `docs/TRAINING_AUTHORIZATION.md`)
@@ -76,24 +78,24 @@ Integrity:
 | finding | 606 | 63 |
 | no_finding (verified post-fix) | 556 | 54 |
 | abstain | 171 | 16 |
-| **detection examples** | **1,333** | **133** |
-| patch examples | 541 | 54 |
-| **training examples (detection + patch)** | **1,874** | **187** |
+| **detection examples** | **1,331** | **133** |
+| patch examples | 540 | 54 |
+| **training examples (detection + patch)** | **1,871** | **187** |
 
-- **Coverage:** 533 repositories. By language: JavaScript 428, Go 412, Python 404, TypeScript 222.
-- **Findings:** 669 across 131 CWEs.
+- **Coverage:** 533 repositories. By language: JavaScript 428, Go 412, Python 402, TypeScript 222.
+- **Findings:** 668 across 131 CWEs.
 - **Findings by family:** resource limits/ReDoS 94, path traversal 78, authn/authz 73, other 70, XSS 67,
-  prototype pollution 58, deserialization/input validation 53, information exposure 45, command
+  prototype pollution 58, deserialization/input validation 53, information exposure 44, command
   injection 38, redirect/SSRF 32, crypto/TLS 29, code injection 22, SQL injection 10.
 - **Token budget:** with the trainer's own encoding and the pinned Qwen3.5-9B tokenizer, 0 examples
-  are dropped at 4,096 tokens. Training examples have a median of 763 and a maximum of 2,918 tokens,
+  are dropped at 4,096 tokens. Training examples have a median of 764 and a maximum of 2,918 tokens,
   1.73 M tokens per epoch.
 
 ## Training machine: `materialize`
 
 `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` rebuilds only the
 training-approved records of the committed manifest and writes exactly the files `sentinel.train`
-reads, plus `SHA256SUMS`. It builds 685 advisories in 533 repositories instead of all 7,751 candidates.
+reads, plus `SHA256SUMS`. It builds 684 advisories in 533 repositories instead of all 7,751 candidates.
 
 It refuses on any of these:
 - a record that cannot be rebuilt;
