@@ -1,10 +1,10 @@
 # Quantum Sentinel Alpha Status
 
-Last updated: 2026-11-15
+Last updated: 2026-11-24
 
 ## Current phase
 
-Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9) and **Sentinel Garden v2 with the training-cohort rights review** (this milestone). The data work for the first training run is complete and **authorized**: on 2026-11-15 the project owner approved the three Garden sources and 484 repositories (`docs/TRAINING_AUTHORIZATION.md`), so Garden v2 holds 1,297 training-approved records and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained.
+Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,466 training-approved records from 533 repositories, i.e. 1,874 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained.
 
 ## Completed
 
@@ -138,6 +138,16 @@ Integrated on top of the coding sandbox (PR #7, merged as `13dae45`): one evalua
 
 22.7 % of the 1,198 new records were rejected by the unchanged quality checks and audit; audit + curate is a byte-identical fixed point; `garden verify` rebuilt all 3,971 v2 records with 0 hash differences. **Training cohort** (`scripts/training_cohort.py`, hardened inspection from PR #9 plus precise package-metadata parsing and confirmed-absence handling): all 550 tier A repositories; 24 excluded because the training loader refuses repositories that also have holdout/quarantine records; of the other 526, inspected at every used revision (0 failed reads), **484 are recommended for review** (MIT 318, Apache-2.0 120, BSD-3-Clause 30, BSD-2-Clause 9, ISC 7) and 42 need clarification (36 NOTICE/additional license files, 6 package-metadata conflicts). If the three sources and the 484 repositories were approved: **1,297 detection examples (train 1,177, validation 120) and 528 patch examples (479/49)**, 123 CWEs - verified end to end with the real `curate` export and training loader on a scratch copy with simulated approvals (`scripts/authorization_preflight.py`); every example fits 4,096 tokens with the real Qwen3.5-9B tokenizer (max 2,919). The 64 independent-review packages are now drawn from that cohort. **Decision 2026-11-15** (`docs/TRAINING_AUTHORIZATION.md`): the three sources and the 484 recommended repositories are approved by the project owner; `curate` produced exactly the projected 1,297 training-approved records (train 1,177, validation 120; patch 479/49), and only governance fields of the manifest changed. The 42 clarification cases and all other repositories stay default-deny.
 
+### Garden v3 and the extended training data (November 2026)
+
+`docs/GARDEN_V3.md`. **Sentinel Garden v3** (`configs/garden/seed_v3.yaml`, `data/garden/seed_v3/`) is the training dataset; v1 and v2 stay immutable (every v2 record and candidate is in v3 unchanged; `garden verify` rebuilt all 4,259 v3 records with 0 differences; audit + curate at a fixed point).
+
+- **Multi-commit advisories:** advisories naming several fix commits in one repository are used when exactly one fix can be established (one code commit plus tests/docs commits, or identical backports/merge commits); 124 of 1,128 yield records, the others are rejected as distinct or unexplained changes (sampled: genuine). Accepted records 3,226 -> 3,465, verified pairs 1,278 -> 1,376.
+- **Loader-consistent curation:** records of a repository that also has holdout/quarantine records are never exported (the loader would refuse them); this prevented a training failure in v3 (2 approved repositories, 6 records).
+- **Tier B extension of the rights review** (`scripts/training_cohort.py --extension`): tier B repositories whose questions are formal (no registry cross-check, registry lists bundled licenses, license text updated with the same license, other permissive license) are inspected like tier A; approvals can list further reviewed versions of a license file (`additional_license_file_sha256s`, schema + gate). Package-metadata parsing for setup.cfg/pyproject/setup.py and license spellings made precise.
+- **`materialize`:** a training machine rebuilds only the approved records (685 advisories in 533 repositories instead of 7,751), byte-identical to the full `curate` export, checked against every manifest hash.
+- **Decision 2026-11-24:** sources extended to v3, 51 tier B repositories approved, training tasks detection + patch. Training data: detection 1,333 / 133, patch 541 / 54; 669 findings over 131 CWEs; every example within 4,096 tokens with the real tokenizer (1.73 M tokens per epoch). Not approved (prepared, default-deny): 29 new tier A repositories, 16 with updated license text, 2 Unlicense, all clarification cases.
+
 ## QuickEval state
 
 | Group | Python | JS/TS | Go | Total |
@@ -166,8 +176,8 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 ## Blockers and open decisions
 
 1. **Approval of paid GPU time** (foundation baseline and the first QLoRA run). Training data is authorized (`docs/TRAINING_AUTHORIZATION.md`).
-2. Recommended before reporting results: an independent human reviewer for the 64 evidence packages of the approved cohort (`data/garden/seed_v2/audit/human_review_sample.jsonl`). The existing manual review is AI-assisted and not independent; exclusions would change the dataset.
-3. Optional later: the 42 clarification cases and tier B repositories (`docs/TRAINING_COHORT_RIGHTS_REVIEW.md`).
+2. Recommended before reporting results: an independent human reviewer for the 64 evidence packages of the approved cohort (`data/garden/seed_v3/audit/human_review_sample.jsonl`, drawn from the training-approved repositories). The existing manual review is AI-assisted and not independent; exclusions would change the dataset.
+3. Optional later: 29 further tier A repositories, 16 tier B repositories with an updated license text, 2 Unlicense repositories and the clarification cases, all prepared in `data/garden/seed_v3/cohort/` (`COHORT_REVIEW.md`).
 4. Final LoRA rank/LR/sequence length after one short L40S calibration run of the existing pipeline.
 5. Release thresholds after the foundation baseline; the open legal questions on weights as redistribution and GitHub AUP §7 before any non-open or commercial release.
 6. Masterplan v1.2 itself is not in this repository; this milestone follows the task brief that summarizes it.
@@ -175,5 +185,5 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 ## Next action (toward the first QLoRA run)
 
 1. Approve GPU time (target `g6e.xlarge`, 1x L40S 48 GB; verify quota, credits and Spot price first).
-2. On the GPU machine: `python -m sentinel.garden reconstruct --config configs/garden/seed_v2.yaml` (rebuilds the Git-ignored exports from the pinned revisions and checks every hash), then `python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run`.
-3. Foundation baseline (`python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`), a short calibration run (`max_steps: 20`), then the first QLoRA run (`python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml`), evaluated with `run_model --adapter` on QuickEval v1, `coding-v1` and the Garden v2 validation split against the baseline (`docs/TRAINING.md`). To also train patch generation, add `patch` to `data.tasks`.
+2. On the GPU machine: `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` (rebuilds only the approved records from the pinned revisions and checks every hash), then `python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run`.
+3. Foundation baseline (`python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`), a short calibration run (`max_steps: 20`), then the first QLoRA run (`python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml`), evaluated with `run_model --adapter` on QuickEval v1, `coding-v1` and the Garden v2 validation split against the baseline (`docs/TRAINING.md`). The configuration trains detection and patch generation (`data.tasks`).

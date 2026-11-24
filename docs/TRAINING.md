@@ -1,10 +1,10 @@
 # QLoRA Training
 
-Status: **implemented, not run.** No GPU training has happened and no model weights were downloaded. Training data is authorized (`docs/TRAINING_AUTHORIZATION.md`): Garden v2 holds 1,297 training-approved records and `--dry-run` passes; the trainer refuses to start whenever approvals or data hashes do not match.
+Status: **implemented, not run.** No GPU training has happened and no model weights were downloaded. Training data is authorized (`docs/TRAINING_AUTHORIZATION.md`): Garden v3 holds 1,466 training-approved records (1,874 training / 187 validation examples, detection + patch) and `--dry-run` passes; the trainer refuses to start whenever approvals or data hashes do not match.
 
 Code: `sentinel/train/`. Configuration: `configs/train/qlora_qwen35_9b.yaml`.
 
-Dataset: **Sentinel Garden v2** (`configs/garden/seed_v2.yaml`, docs/GARDEN_V2.md). The proposed first training cohort and the exact post-authorization commands are in `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`. `scripts/authorization_preflight.py` runs the real `curate` export and this loader on a Git-ignored scratch copy with in-memory hypothetical approvals (and optionally the pinned tokenizer), to check before any decision that the proposed cohort would load: currently 1,297 detection and 528 patch examples, all within 4,096 tokens.
+Dataset: **Sentinel Garden v3** (`configs/garden/seed_v3.yaml`, docs/GARDEN_V3.md), tasks detection and patch. On a training machine, `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` rebuilds exactly the approved records and the export files this loader verifies. Rights review and decisions: `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`, `docs/TRAINING_AUTHORIZATION.md`. `scripts/authorization_preflight.py` runs the real `curate` export and this loader on a Git-ignored scratch copy with in-memory hypothetical approvals (and optionally the pinned tokenizer), to check before any decision that a proposed cohort would load (`--extension` includes the tier B extension).
 
 ## What gets trained
 

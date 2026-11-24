@@ -1,4 +1,4 @@
-# Training authorization - Sentinel Garden v2 (decision record)
+# Training authorization - Sentinel Garden (decision record)
 
 | | |
 | --- | --- |
@@ -64,3 +64,37 @@ validation 120 approved examples from 484 repositories", every supervision hash 
 3. OSV service terms beyond the per-source data licenses.
 4. Independent human review of the 64 evidence packages (`data/garden/seed_v2/audit/human_review_sample.jsonl`).
    This is recommended before results are reported; it is not a precondition of this decision.
+
+## Decision of 2026-11-24 (Garden v3)
+
+Decided by Jonas Cikemgil (project owner), on the evidence in `docs/GARDEN_V3.md` and
+`data/garden/seed_v3/cohort/COHORT_REVIEW.md`; entries prepared by the AI engineering assistant, which is
+not a reviewer.
+
+1. **Sources** (`data/registry.yaml`): the approval of the three sources is extended to the Garden v3
+   candidate list (same OSV snapshot; candidates sha256 `535494cb…`). Revision and notes are updated, every
+   other field is unchanged.
+2. **Repositories** (`data/garden/approvals.yaml`): **51 tier B repositories** of the v3 extension,
+   inspected exactly like tier A (no NOTICE, additional license file or package-metadata conflict at
+   any used revision):
+   - **28 `no_registry_crosscheck`:** deps.dev has no usable license for the package; the decision
+     rests on the root license file;
+   - **23 `registry_lists_bundled_licenses`:** deps.dev lists the root license plus licenses of
+     bundled code.
+3. **Not approved** (owner's choice, default-deny):
+   - the 29 newly recommended tier A repositories;
+   - the 16 `license_text_updated` repositories, including the one repository that is in both
+     `license_text_updated` and `registry_lists_bundled_licenses`;
+   - the 2 `other_permissive_Unlicense` repositories;
+   - all clarification cases.
+
+   Each can be decided later with the prepared templates (`data/garden/seed_v3/cohort/`).
+4. **Training tasks:** detection and patch generation (`data.tasks: [detection, patch]`).
+
+Result (verified):
+- `curate` gives **1,466 training-approved records** from 533 repositories: train 1,333 and
+  validation 133, plus 541 / 54 patch examples, i.e. **1,874 / 187 training examples**.
+- Two previously approved repositories now also have temporal-quarantine records. Their 6 records are
+  excluded by the loader rule; the approvals themselves are unchanged.
+- `python -m sentinel.train --dry-run` passes.
+- Every approved repository's records were re-inspected at the new v3 revisions; all remain clean.

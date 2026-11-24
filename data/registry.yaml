@@ -2,7 +2,7 @@ registry_version: "1.0"
 sources:
   - source_id: github-advisory-db
     role: metadata
-    revision: "sentinel-garden-v2 OSV snapshot published-before 2026-11-01, candidates sha256 9773f76d425db6aa9e8ff3a4c6a01208531f0dd9e6862520a6b924932f03635b"
+    revision: "sentinel-garden-v3 OSV snapshot published-before 2026-11-01, candidates sha256 535494cb12bb20a54ff2e3b1bffbcd51a5f9f557b3f2827fdcc735f8f5927061"
     license: CC-BY-4.0
     license_status: reviewed
     terms_status: approved_for_project
@@ -15,13 +15,13 @@ sources:
     evidence_urls:
       - https://github.com/github/advisory-database
     notes: >-
-      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
+      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; extended by him on 2026-11-24 to the Garden v3 candidate list (same OSV snapshot); decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
       Metadata anchor only. Vulnerable source code must be resolved to the upstream
       repository and reviewed under that repository's own license and terms.
 
   - source_id: osv
     role: metadata
-    revision: "sentinel-garden-v2 OSV snapshot published-before 2026-11-01, candidates sha256 9773f76d425db6aa9e8ff3a4c6a01208531f0dd9e6862520a6b924932f03635b"
+    revision: "sentinel-garden-v3 OSV snapshot published-before 2026-11-01, candidates sha256 535494cb12bb20a54ff2e3b1bffbcd51a5f9f557b3f2827fdcc735f8f5927061"
     license: upstream-specific / aggregator metadata
     license_status: reviewed
     terms_status: approved_for_project
@@ -34,7 +34,7 @@ sources:
     evidence_urls:
       - https://osv.dev/
     notes: >-
-      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
+      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; extended by him on 2026-11-24 to the Garden v3 candidate list (same OSV snapshot); decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
       Aggregation and version-resolution candidate. Upstream dataset and repository
       rights remain separate gates.
 
@@ -141,7 +141,7 @@ sources:
 
   - source_id: ghsa-osv-fix-commits
     role: train_candidate
-    revision: "sentinel-garden-v2 OSV snapshot published-before 2026-11-01, candidates sha256 9773f76d425db6aa9e8ff3a4c6a01208531f0dd9e6862520a6b924932f03635b"
+    revision: "sentinel-garden-v3 OSV snapshot published-before 2026-11-01, candidates sha256 535494cb12bb20a54ff2e3b1bffbcd51a5f9f557b3f2827fdcc735f8f5927061"
     license: upstream repository license, per repository (recorded per record by Sentinel Garden)
     license_status: reviewed
     terms_status: approved_for_project
@@ -154,7 +154,7 @@ sources:
     evidence_urls:
       - https://github.com/rappidAI-Research/quantum-sentinel-alpha/blob/main/docs/SENTINEL_GARDEN.md
     notes: >-
-      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
+      Approved for training on 2026-11-15 by Jonas Cikemgil (project owner) for the Sentinel Garden v2 training cohort; extended by him on 2026-11-24 to the Garden v3 candidate list (same OSV snapshot); decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and advisory text are not republished by this project.
       Function-level vulnerable/fixed code resolved by Sentinel Garden from upstream fix commits
       referenced by GitHub-reviewed advisories (discovered via osv / github-advisory-db metadata).
       Code is fetched by immutable commit SHA and is not committed to this repository. Training use
