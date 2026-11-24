@@ -1,6 +1,6 @@
-# Linear modules of Qwen/Qwen3.5-9B@c202236235762e1c871ad0ccb60c8ee5ba337b9a as built by AutoModelForCausalLM
-# (Qwen3_5ForCausalLM, transformers 5.22.1), instantiated on the meta device from config.json
-# (sha256 d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05). No weights were downloaded.
+# Linear modules of ornith-ai/Ornith-1.5-9B@489cb97981b8654bcfcf30ce1f94ed1b62e07b53 as built by AutoModelForCausalLM
+# (Qwen3_5ForCausalLM, transformers 5.24.0), instantiated on the meta device from config.json
+# (sha256 1f1b3751c38f16a63340df90a55e870bef0f0b2968d833825a605b7cf930a313). No weights were downloaded. Regenerate: scripts/inspect_foundation.py --write
 # Format: <module name> <in_features> <out_features>
 model.layers.0.linear_attn.out_proj 4096 4096
 model.layers.0.linear_attn.in_proj_qkv 4096 8192

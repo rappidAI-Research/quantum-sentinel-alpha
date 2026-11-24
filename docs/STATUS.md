@@ -4,9 +4,18 @@ Last updated: 2026-11-24
 
 ## Current phase
 
-Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,464 training-approved records from 533 repositories, i.e. 1,871 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained.
+Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (PR #13) and the **Ornith-1.5-9B foundation integration** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,464 training-approved records from 533 repositories, i.e. 1,871 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained. The training foundation is now **`ornith-ai/Ornith-1.5-9B@489cb97…`** (docs/FOUNDATION.md), integrated and checked offline against its real files; the GPU procedure is docs/GPU_RUNBOOK.md.
 
 ## Completed
+
+### Ornith-1.5-9B foundation integration (2026-11-24)
+
+- **Active training foundation: `ornith-ai/Ornith-1.5-9B` at revision `489cb97981b8654bcfcf30ce1f94ed1b62e07b53`** (MIT per model card; `Qwen3_5ForConditionalGeneration`, loaded text-only as `Qwen3_5ForCausalLM`, 8.95 B text parameters). Decision basis `expected_capability` (project owner instruction); no measured security advantage is claimed. Qwen3.5-9B stays documented in `history` and as an optional reference.
+- Verified offline against the real files (no weights): same config dimensions, tensor names and shapes as Qwen3.5-9B; byte-identical tokenizer; the chat template's non-thinking generation prompt is identical, so training prompt = evaluation prompt and only the JSON reply plus `<|im_end|>` is supervised. LoRA: 200 targets, 40,108,032 parameters, module list regenerated from Ornith's config (`scripts/inspect_foundation.py`). Garden v3 re-encoded with the Ornith tokenizer: 0 of 2,058 examples dropped at 4,096 tokens (max 2,918). Data hashes unchanged.
+- Fixed: the evaluation backend now stops generation at `<|im_end|>` and decodes nothing after the first end of turn. The checkpoint has no `generation_config.json`, so the default EOS would have been `<|endoftext|>` (latent for Qwen3.5-9B too). The trainer refuses a chat template that ignores `enable_thinking=False`. New: `python -m sentinel.train --dry-run --check-tokens`.
+- Baseline config `configs/model/baseline_ornith15.yaml` (candidate `ornith15-9b`, checked against the foundation pin). The Qwen3.5 4B vs 9B bake-off is archived.
+- Caveat: Ornith was published on 2026-08-18, after the frozen temporal cutoff (2026-07-01). 183 of the 355 quarantine records were fixed before that date and are reported separately in evaluations. The split policy is unchanged.
+- Not verified without a GPU: JSON-contract reliability of the untuned model, NF4 load and peak memory, throughput.
 
 ### Foundation and evaluation (earlier milestones)
 
@@ -102,7 +111,7 @@ Upstream code is **not committed** (redistribution unreviewed, repository licens
 
 ### Milestone 4 - QLoRA training pipeline (PR #5, not run)
 
-`python -m sentinel.train` (config `configs/train/qlora_qwen35_9b.yaml`, docs `docs/TRAINING.md`): 4-bit NF4 QLoRA with bf16 compute on the pinned foundation, LoRA r16/α32 on the 200 linear modules of the real architecture (24 Gated DeltaNet + 8 full-attention layers; 40.1 M trainable parameters). It loads only governance-approved `train.chat.jsonl` (labels and content hashes checked against the manifest, fail closed), trains the assistant reply only, checkpoints atomically with provenance (resume refuses a checkpoint trained on other data or config), writes adapter-only output and a `run.json` in every outcome (including CUDA OOM). CPU smoke tests train a tiny randomly initialised `Qwen3_5ForCausalLM` through the real loop. Nothing was trained; no weights were downloaded.
+`python -m sentinel.train` (config then `configs/train/qlora_qwen35_9b.yaml`, now `configs/train/qlora_ornith15_9b.yaml`; docs `docs/TRAINING.md`): 4-bit NF4 QLoRA with bf16 compute on the pinned foundation, LoRA r16/α32 on the 200 linear modules of the real architecture (24 Gated DeltaNet + 8 full-attention layers; 40.1 M trainable parameters). It loads only governance-approved `train.chat.jsonl` (labels and content hashes checked against the manifest, fail closed), trains the assistant reply only, checkpoints atomically with provenance (resume refuses a checkpoint trained on other data or config), writes adapter-only output and a `run.json` in every outcome (including CUDA OOM). CPU smoke tests train a tiny randomly initialised `Qwen3_5ForCausalLM` through the real loop. Nothing was trained; no weights were downloaded.
 
 ### Coding-regression sandbox (runner version 3)
 
@@ -167,11 +176,11 @@ No model has been evaluated. The only QuickEval v1 results are from the regex en
 
 ## Model state
 
-Foundation **selected**: `Qwen/Qwen3.5-9B@c202236235762e1c871ad0ccb60c8ee5ba337b9a`. Not downloaded, not run, not modified. The QLoRA pipeline exists (Milestone 4) but has not been run: no adapter or training run exists.
+Foundation **selected**: `ornith-ai/Ornith-1.5-9B@489cb97981b8654bcfcf30ce1f94ed1b62e07b53` (until 2026-11-24: `Qwen/Qwen3.5-9B@c202236…`). Not downloaded, not run, not modified. The QLoRA pipeline is ready and its dry run passes on the approved data, but no adapter or training run exists.
 
 ## AWS state
 
-No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/VT Spot quota of 4 vCPUs, target `g6e.xlarge` (1× L40S 48 GB), roughly USD 1,160 of promotional credits. Quota, credits, Spot capacity and price must be verified right before any paid run. A paid run requires explicit approval.
+No AWS resource was started. Target `g6e.xlarge` (1× L40S 48 GB, 4 vCPUs, 32 GiB) On-Demand in `us-east-1`; On-Demand GPU quota of 4 vCPUs approved; about USD 1,160 of credits last reported. Verify credits and price right before the run. A paid run requires explicit approval. Procedure: `docs/GPU_RUNBOOK.md`.
 
 ## Blockers and open decisions
 
@@ -181,9 +190,14 @@ No AWS resource was started. Planning assumptions are unchanged: `us-east-1`, G/
 4. Final LoRA rank/LR/sequence length after one short L40S calibration run of the existing pipeline.
 5. Release thresholds after the foundation baseline; the open legal questions on weights as redistribution and GitHub AUP §7 before any non-open or commercial release.
 6. Masterplan v1.2 itself is not in this repository; this milestone follows the task brief that summarizes it.
+7. Before any weight release: the Ornith model card links a `LICENSE` file that is absent at the pinned revision (license MIT per metadata; Qwen3.5 base under Apache-2.0).
 
 ## Next action (toward the first QLoRA run)
 
-1. Approve GPU time (target `g6e.xlarge`, 1x L40S 48 GB; verify quota, credits and Spot price first).
-2. On the GPU machine: `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` (rebuilds only the approved records from the pinned revisions and checks every hash), then `python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml --dry-run`.
-3. Foundation baseline (`python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b --output runs/qwen35-9b-baseline.json`), a short calibration run (`max_steps: 20`), then the first QLoRA run (`python -m sentinel.train --config configs/train/qlora_qwen35_9b.yaml`), evaluated with `run_model --adapter` on QuickEval v1, `coding-v1` and the Garden v2 validation split against the baseline (`docs/TRAINING.md`). The configuration trains detection and patch generation (`data.tasks`).
+Follow `docs/GPU_RUNBOOK.md` on `g6e.xlarge`:
+
+1. Approve GPU time; check credits and price.
+2. `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml`, then `python -m sentinel.train --dry-run --check-tokens`.
+3. Foundation baseline: `python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b --output runs/eval/ornith15-9b-baseline.json`.
+4. Optional 20-step calibration, then the first QLoRA run (`python -m sentinel.train`), detection and patch generation.
+5. Adapter evaluation with `run_model --adapter` on the same config and `sentinel.eval.compare` against the baseline; save adapter, `run.json` and evaluation artifacts before terminating the instance.

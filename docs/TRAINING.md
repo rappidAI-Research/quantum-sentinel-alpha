@@ -2,7 +2,7 @@
 
 Status: **implemented, not run.** No GPU training has happened and no model weights were downloaded. Training data is authorized (`docs/TRAINING_AUTHORIZATION.md`): Garden v3 holds 1,464 training-approved records (1,871 training / 187 validation examples, detection + patch) and `--dry-run` passes; the trainer refuses to start whenever approvals or data hashes do not match.
 
-Code: `sentinel/train/`. Configuration: `configs/train/qlora_qwen35_9b.yaml`.
+Code: `sentinel/train/`. Configuration: `configs/train/qlora_ornith15_9b.yaml`. Foundation: `ornith-ai/Ornith-1.5-9B` (docs/FOUNDATION.md). GPU procedure: `docs/GPU_RUNBOOK.md`.
 
 Dataset: **Sentinel Garden v3** (`configs/garden/seed_v3.yaml`, docs/GARDEN_V3.md), tasks detection and patch. On a training machine, `python -m sentinel.garden materialize --config configs/garden/seed_v3.yaml` rebuilds exactly the approved records and the export files this loader verifies. Rights review and decisions: `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`, `docs/TRAINING_AUTHORIZATION.md`. `scripts/authorization_preflight.py` runs the real `curate` export and this loader on a Git-ignored scratch copy with in-memory hypothetical approvals (and optionally the pinned tokenizer), to check before any decision that a proposed cohort would load (`--extension` includes the tier B extension).
 
@@ -10,16 +10,16 @@ Dataset: **Sentinel Garden v3** (`configs/garden/seed_v3.yaml`, docs/GARDEN_V3.m
 
 | Item | Value |
 | --- | --- |
-| Base | `Qwen/Qwen3.5-9B` at `c202236235762e1c871ad0ccb60c8ee5ba337b9a` (read from `configs/model/foundation.yaml`; the training config cannot name another model) |
+| Base | `ornith-ai/Ornith-1.5-9B` at `489cb97981b8654bcfcf30ce1f94ed1b62e07b53` (read from `configs/model/foundation.yaml`; the training config cannot name another model) |
 | Loaded class | `Qwen3_5ForCausalLM` via `AutoModelForCausalLM` (text-only; the vision tower and MTP head are not instantiated), 8.95 B parameters |
 | Quantization | 4-bit NF4 with double quantization, bf16 compute (bitsandbytes, CUDA). `mode: none` = bf16 LoRA |
 | LoRA | rank 16, alpha 32, dropout 0.05, on 200 modules: `q/k/v/o_proj` of the 8 full-attention layers, `in_proj_qkv/in_proj_z/out_proj` of the 24 Gated DeltaNet layers, `gate/up/down_proj` of all 32 MLPs. 40,108,032 trainable parameters (0.45 %) |
 | Excluded modules | `linear_attn.in_proj_a/in_proj_b` (4096 → 32 gating projections, too narrow for rank-16 updates), `lm_head`, embeddings, norms, `conv1d`, `A_log`, `dt_bias` |
-| Data | `train.chat.jsonl` = Garden `train` split, governance-approved only; validation loss on the Garden `validation` split. `data.tasks: [detection]` by default; adding `patch` also trains patch generation on verified upstream fixes (`train.patch.chat.jsonl`, docs/PATCH_SUPERVISION.md) |
-| Format | exactly the evaluation prompt (`quickeval-review-v2`, chat template with `enable_thinking=False`, generation prompt on); loss only on the assistant JSON reply plus `<|im_end|>`. Replies carry no `confidence` (docs/CALIBRATION.md) |
+| Data | `train.chat.jsonl` = Garden `train` split, governance-approved only; validation loss on the Garden `validation` split. `data.tasks: [detection, patch]`: detection plus patch generation on verified upstream fixes (`train.patch.chat.jsonl`, docs/PATCH_SUPERVISION.md) in the same run: 1,331 + 540 training and 133 + 54 validation examples |
+| Format | exactly the evaluation prompt (`quickeval-review-v2`, the foundation's chat template with `enable_thinking=False`, generation prompt on, so the prompt ends in an empty, closed `<think>\n\n</think>\n\n` block); loss only on the assistant JSON reply plus `<|im_end|>`. No reasoning text is ever a target, and a template that ignores `enable_thinking=False` is refused. Replies carry no `confidence` (docs/CALIBRATION.md) |
 | Defaults | lr 1e-4 (cosine, 3 % warmup), 2 epochs, micro-batch 1 × 16 accumulation, max_seq_len 4096, gradient checkpointing, grad-norm clip 1.0, seed 1234 |
 
-The module layout was taken from the real configuration, not assumed: `configs/train/qwen35_9b_linear_modules.txt` lists every linear module of the model built from `config.json` at the pinned revision (meta device, no weights). At runtime the trainer counts the modules its regex matches and stops if the count is not 200 (`TargetModuleMismatch`).
+The module layout was taken from the real configuration, not assumed: `configs/train/ornith15_9b_linear_modules.txt` lists every linear module of the model built from Ornith's `config.json` at the pinned revision (meta device, no weights; `scripts/inspect_foundation.py`), and every shape matches the safetensors headers. At runtime the trainer counts the modules its regex matches and stops if the count is not 200 (`TargetModuleMismatch`).
 
 ## Governance (fail closed)
 
@@ -40,6 +40,7 @@ Examples longer than `max_seq_len` are dropped and listed in `run.json`, never t
 ```bash
 pip install -e '.[train]'                       # CUDA host
 python -m sentinel.train --dry-run              # config + governance + data checks, no model
+python -m sentinel.train --dry-run --check-tokens   # + encode every example with the pinned tokenizer (small files only)
 python -m sentinel.train                        # train; refuses a dirty Git tree unless --allow-dirty
 python -m sentinel.train --resume               # continue from the latest checkpoint
 ```
@@ -66,27 +67,40 @@ Every adapter is compared with the unchanged foundation under the same evaluatio
 
 ```bash
 # 1. foundation baseline (once)
-python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b \
-    --output runs/eval/qwen35-9b-baseline.json
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b \
+    --output runs/eval/ornith15-9b-baseline.json
 # 2. adapter on the same base, same cases, prompt and generation settings
-python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b \
-    --adapter runs/train/qsa-qlora-qwen35-9b-v0/adapter --output runs/eval/qwen35-9b-qlora-v0.json
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b \
+    --adapter runs/train/qsa-qlora-ornith15-9b-v0/adapter --output runs/eval/ornith15-9b-qlora-v0.json
 # 3. side by side (refuses if the evaluation contract differs)
-python -m sentinel.eval.compare runs/eval/qwen35-9b-baseline.json runs/eval/qwen35-9b-qlora-v0.json
+python -m sentinel.eval.compare runs/eval/ornith15-9b-baseline.json runs/eval/ornith15-9b-qlora-v0.json
 ```
 
-`--adapter` refuses an adapter trained for another base model or revision before anything is downloaded, and an adapter trained with another review prompt than the run uses; the run artifact records the adapter's weight and config hashes. The bake-off config uses `quickeval-review-v2`, so the baseline and every adapter share one prompt. It also includes `coding-v1`, whose generated code runs only in the container sandbox (docs/CODING_SANDBOX.md); without a sandbox the run stops before the model is loaded, and `--skip-coding-regression` gives a security-only run (both runs must then skip it, or `compare` refuses them). Order of checks before any model is loaded: adapter base model, revision and prompt, then the sandbox preflight. The Garden holdout reservation (`holdout_reserved.eval_cases.jsonl`) can be evaluated with `--model ... --cases ...` for a temporal/generalization check.
+`--adapter` refuses an adapter trained for another base model or revision before anything is downloaded, and an adapter trained with another review prompt than the run uses; the run artifact records the adapter's weight and config hashes. The baseline config uses `quickeval-review-v2`, greedy decoding and the non-thinking prompt, so the baseline and every adapter share one contract. Generation stops at `<|im_end|>`, nothing after the end of the turn is decoded, and any `<think>` block is stripped before parsing; malformed output stays `invalid`. It also includes `coding-v1`, whose generated code runs only in the container sandbox (docs/CODING_SANDBOX.md); without a sandbox the run stops before the model is loaded, and `--skip-coding-regression` gives a security-only run (both runs must then skip it, or `compare` refuses them). Order of checks before any model is loaded: adapter base model, revision and prompt, then the sandbox preflight. The Garden holdout reservation (`holdout_reserved.eval_cases.jsonl`) can be evaluated with `--model ... --cases ...` for a temporal/generalization check.
 
 ## Tests
 
 - `tests/test_train_contracts.py` (runs in CI, no torch): config binding to the foundation, LoRA targets against the recorded module layout, config validation, every governance refusal, prompt masking, drop-not-truncate, deterministic batching, adapter identity checks.
 - `tests/test_train_integrity.py` (CI): target-integrity attacks on the exports.
 - `tests/test_train_smoke.py` (needs `torch`, `transformers`, `peft`; skipped in CI): trains a tiny randomly initialised `Qwen3_5ForCausalLM` with Gated DeltaNet and full-attention layers on CPU through the real loop, and checks checkpoints, resume, adapter-only output, foundation-revision refusal, target-count refusal, OOM recording, tampered checkpoints and planted pickles, the logged step loss and the patch task.
-- `tests/test_qwen_compat.py` (needs `transformers` and `SENTINEL_QWEN_DIR` with the pinned revision's tokenizer, chat template, config and weight index, about 23 MB; no weights): with the real tokenizer the training prompt is token-for-token the evaluation prompt, prompt and reply do not merge across the boundary, only the reply plus `<|im_end|>` is supervised; every text weight of `Qwen3_5ForCausalLM` is present in the checkpoint index after transformers' `model.language_model.` → `model.` prefix mapping (vision and MTP weights are ignored).
+- `tests/test_foundation_compat.py` (needs `transformers` and `SENTINEL_FOUNDATION_DIR` with the pinned Ornith revision's tokenizer, chat template, config and weight index, about 23 MB; no weights): the files match the pinned hashes; with the real tokenizer the training prompt is token-for-token the evaluation prompt and ends in the non-thinking block, prompt and reply do not merge, only the reply plus `<|im_end|>` is supervised; `<think>` survives decoding for the parser, generation output is cut at `<|im_end|>`; every text weight of `Qwen3_5ForCausalLM` is in the checkpoint index; the committed module list equals the model built from the pinned config.
+- `tests/test_generation_stop.py` (CI): end-of-turn stop ids and truncation.
+
+## Ornith-1.5-9B integration (24 November 2026)
+
+Checked without weights or GPU, against the real Ornith files at the pinned revision (details: docs/FOUNDATION.md):
+
+| Area | Result |
+| --- | --- |
+| Architecture, weights, LoRA targets | unchanged from Qwen3.5-9B: same config dimensions, same 775 tensor names, same text-model shapes; 200 targets, 40,108,032 parameters |
+| Tokenizer and token budget | byte-identical tokenizer; Garden v3 re-encoded: 0 of 2,058 examples dropped at 4,096 tokens |
+| Chat template and reasoning | non-thinking generation prompt verified; training never supervises reasoning tokens; a template that ignored `enable_thinking=False` would now be refused |
+| Generation stop | fixed: stop at `<|im_end|>` (the checkpoint ships no generation config, so the default EOS would have been `<|endoftext|>`) |
+| Data integrity | unchanged: rendering is model-independent, so manifest supervision hashes, exports and `SHA256SUMS` are untouched (data sha256 `c47e36167f2d…`) |
 
 ## Reliability review (November 2026)
 
-Checked without weights or GPU, against the real Qwen3.5-9B tokenizer and weight index at the pinned revision:
+Checked without weights or GPU, against the real Qwen3.5-9B tokenizer and weight index at the then pinned revision (the same tokenizer and layout as Ornith-1.5-9B):
 
 | Area | Result |
 | --- | --- |
@@ -100,6 +114,8 @@ Checked without weights or GPU, against the real Qwen3.5-9B tokenizer and weight
 
 ## Before the first real run
 
-1. Training-approved records exist (`python -m sentinel.train --dry-run` passes).
+1. Training-approved records exist (`python -m sentinel.train --dry-run --check-tokens` passes).
 2. Approved GPU time; foundation baseline run completed.
-3. A short calibration run (`training.max_steps: 20`) on the target GPU to confirm memory and throughput at `max_seq_len 4096`; adjust micro-batch/accumulation from `run.json`.
+3. Optional short calibration run (`training.max_steps: 20`, separate config and output directory) to confirm memory and throughput at `max_seq_len 4096`.
+
+The exact sequence on AWS `g6e.xlarge` is in `docs/GPU_RUNBOOK.md`.

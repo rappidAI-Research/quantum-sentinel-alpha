@@ -1,8 +1,7 @@
 # Identical QuickEval security bake-off: Qwen3.5-4B vs Qwen3.5-9B.
-# Status: OPTIONAL, not run. Qwen3.5-9B is the selected training foundation
-# (configs/model/foundation.yaml); this bake-off is no longer a selection gate. The `qwen35-9b`
-# candidate doubles as the foundation baseline run and must keep the foundation's exact revision
-# (checked by `python -m sentinel.foundation`).
+# Status: ARCHIVED, optional, not run. Since 2026-11-24 the training foundation is
+# ornith-ai/Ornith-1.5-9B and its baseline runs from configs/model/baseline_ornith15.yaml.
+# This file is kept so the earlier comparison stays reproducible; it is not a training prerequisite.
 #
 # Everything except `runtime_overrides` is shared by both candidates. Generation settings,
 # cases, prompt, parser and scorer can never differ per candidate. A runtime override

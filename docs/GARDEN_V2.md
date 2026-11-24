@@ -1,7 +1,7 @@
 # Sentinel Garden v2
 
 `sentinel-garden-v2` (`configs/garden/seed_v2.yaml`, committed metadata in `data/garden/seed_v2/`) is the
-dataset the first QLoRA run will train on (`configs/train/qlora_qwen35_9b.yaml`). Garden v1
+dataset the first QLoRA run was planned to train on (superseded by Garden v3, `configs/train/qlora_ornith15_9b.yaml`). Garden v1
 (`configs/garden/seed_v1.yaml`, `data/garden/seed_v1/`) stays the immutable reference. The current code
 rebuilds all 2,773 v1 records with identical content hashes (`garden verify`: 0 problems), and v1's
 committed files are unchanged.

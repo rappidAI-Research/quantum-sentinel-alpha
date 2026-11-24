@@ -11,7 +11,7 @@ The model and the Sentinel Engine are separate layers. The model is intended to 
 
 ## Current phase
 
-Phase 0 → 1: the training foundation is selected (`Qwen/Qwen3.5-9B` at revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a`, see `docs/FOUNDATION.md`) and Sentinel Garden produces a first real dataset seed. No model has been trained and no paid AWS workload has been launched. The project owner approved the three Garden data sources and 533 permissively licensed repositories for training (`docs/TRAINING_AUTHORIZATION.md`); Sentinel Garden v3 (`docs/GARDEN_V3.md`) holds 1,464 training-approved records (1,871 training examples for detection and patch generation).
+Phase 0 → 1, ready for the first training run: the training foundation is `ornith-ai/Ornith-1.5-9B` at revision `489cb97981b8654bcfcf30ce1f94ed1b62e07b53` (a Qwen3.5-architecture model, see `docs/FOUNDATION.md`; Qwen3.5-9B was the foundation until 2026-11-24). No model has been trained and no paid AWS workload has been launched; the GPU procedure is `docs/GPU_RUNBOOK.md`. The project owner approved the three Garden data sources and 535 permissively licensed repositories for training (`docs/TRAINING_AUTHORIZATION.md`); Sentinel Garden v3 (`docs/GARDEN_V3.md`) holds 1,464 training-approved records (1,871 training examples for detection and patch generation).
 
 See [project status](docs/STATUS.md) for the operational source of truth.
 
@@ -71,14 +71,14 @@ python -m sentinel.eval.run_model --backend baseline \
   --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/baseline.json
 
 # Real model (Linux/CUDA, pip install -e '.[model]'); --revision must be a 40-char commit SHA
-python -m sentinel.eval.run_model --model Qwen/Qwen3.5-4B --revision <sha> \
-  --cases eval/sentinelbench/quickeval_v1.jsonl --output runs/qwen35-4b.json
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b \
+  --output runs/eval/ornith15-9b-baseline.json
 
 # Side-by-side comparison of two runs (no automatic winner)
-python -m sentinel.eval.compare runs/qwen35-4b.json runs/qwen35-9b.json
+python -m sentinel.eval.compare runs/eval/ornith15-9b-baseline.json runs/eval/ornith15-9b-qlora-v0.json
 ```
 
-The optional 4B vs 9B bake-off is configured in `configs/model/bakeoff_qwen35.yaml` (`docs/BAKEOFF.md`); its `qwen35-9b` candidate is also the foundation baseline run.
+The foundation baseline is configured in `configs/model/baseline_ornith15.yaml` (Qwen3.5-9B as an optional reference). The earlier Qwen3.5 4B vs 9B bake-off is archived (`configs/model/bakeoff_qwen35.yaml`, `docs/BAKEOFF.md`).
 
 ## Sentinel Garden (training data)
 
@@ -98,8 +98,8 @@ Upstream code stays in the Git-ignored `artifacts/garden/`; `data/garden/seed_v*
 
 ## QLoRA training (implemented, not run)
 
-`python -m sentinel.train` fine-tunes the pinned `Qwen/Qwen3.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only. Its dry run passes on the approved Garden v3 data (1,871 train / 187 validation examples); it refuses (exit code 2) whenever approvals or data hashes do not match. Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
+`python -m sentinel.train` fine-tunes the pinned `ornith-ai/Ornith-1.5-9B` with 4-bit QLoRA on governance-approved Sentinel Garden records only, in the official non-thinking chat format (no reasoning text is trained). Its dry run passes on the approved Garden v3 data (1,871 train / 187 validation examples); it refuses (exit code 2) whenever approvals or data hashes do not match. Adapters are evaluated against the unchanged foundation with `run_model --adapter` and `sentinel.eval.compare`. See `docs/TRAINING.md`.
 
 ```bash
-python -m sentinel.train --dry-run   # governance + data checks, no model, no GPU
+python -m sentinel.train --dry-run --check-tokens   # governance + data checks + token budget with the pinned tokenizer; no model, no GPU
 ```

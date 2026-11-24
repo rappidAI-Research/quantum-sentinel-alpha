@@ -74,8 +74,8 @@ with `runtime: podman` in the policy.
 To evaluate security only (no container needed, nothing executed):
 
 ```bash
-python -m sentinel.eval.run_model --bakeoff configs/model/bakeoff_qwen35.yaml --candidate qwen35-9b \
-    --skip-coding-regression --output runs/qwen35-9b-security-only.json
+python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml --candidate ornith15-9b \
+    --skip-coding-regression --output runs/eval/ornith15-9b-security-only.json
 ```
 
 The artifact records `coding_regression: {"status": "not_run", "reason": "coding-v1 skipped with

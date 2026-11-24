@@ -1,7 +1,7 @@
 # Sentinel Garden v3
 
 `sentinel-garden-v3` (`configs/garden/seed_v3.yaml`, committed metadata in `data/garden/seed_v3/`) is the
-dataset the first QLoRA run trains on (`configs/train/qlora_qwen35_9b.yaml`). v1 and v2 stay immutable
+dataset the first QLoRA run trains on (`configs/train/qlora_ornith15_9b.yaml`). v1 and v2 stay immutable
 references: their committed files are unchanged, and every v1 and v2 record is in v3 with the same
 content hash and split.
 
@@ -75,8 +75,8 @@ Integrity:
 
 | | train | validation |
 | --- | ---: | ---: |
-| finding | 606 | 63 |
-| no_finding (verified post-fix) | 556 | 54 |
+| finding | 605 | 63 |
+| no_finding (verified post-fix) | 555 | 54 |
 | abstain | 171 | 16 |
 | **detection examples** | **1,331** | **133** |
 | patch examples | 540 | 54 |
@@ -87,7 +87,7 @@ Integrity:
 - **Findings by family:** resource limits/ReDoS 94, path traversal 78, authn/authz 73, other 70, XSS 67,
   prototype pollution 58, deserialization/input validation 53, information exposure 44, command
   injection 38, redirect/SSRF 32, crypto/TLS 29, code injection 22, SQL injection 10.
-- **Token budget:** with the trainer's own encoding and the pinned Qwen3.5-9B tokenizer, 0 examples
+- **Token budget:** with the trainer's own encoding and the pinned foundation tokenizer (Qwen3.5-9B, re-checked with the byte-identical Ornith-1.5-9B tokenizer on 2026-11-24), 0 examples
   are dropped at 4,096 tokens. Training examples have a median of 764 and a maximum of 2,918 tokens,
   1.73 M tokens per epoch.
 

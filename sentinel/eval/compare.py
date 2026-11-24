@@ -1,6 +1,6 @@
 """Side-by-side comparison of two QuickEval run artifacts.
 
-    python -m sentinel.eval.compare runs/qwen35-4b.json runs/qwen35-9b.json
+    python -m sentinel.eval.compare runs/eval/ornith15-9b-baseline.json runs/eval/ornith15-9b-qlora-v0.json
 
 Deliberately produces no combined score or winner: the foundation decision weighs security
 precision, false positives, recall, localization, CWE quality, abstention, coding regression,

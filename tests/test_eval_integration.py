@@ -14,7 +14,7 @@ from sentinel.eval.coding_regression import CodingV1
 from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.eval.sandbox import IsolationUnavailable, LocalProcessExecutor
 
-BAKEOFF = "configs/model/bakeoff_qwen35.yaml"
+BAKEOFF = "configs/model/baseline_ornith15.yaml"
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def test_wrong_adapter_gets_its_own_error_even_without_a_sandbox(tmp_path, no_sa
     # integration defect: the sandbox preflight ran first, so a mismatched adapter exited 3
     adapter = _adapter(tmp_path, "Qwen/Qwen3.5-4B", "1" * 40, None)
     with pytest.raises(SystemExit) as excinfo:
-        run_model.main(["--bakeoff", BAKEOFF, "--candidate", "qwen35-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")])
+        run_model.main(["--bakeoff", BAKEOFF, "--candidate", "ornith15-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")])
     assert excinfo.value.code == 2 and "trained for" in capsys.readouterr().err
 
 
@@ -49,25 +49,25 @@ def test_adapter_trained_on_another_prompt_is_refused_before_the_sandbox(tmp_pat
     foundation = load_foundation()
     adapter = _adapter(tmp_path, foundation.model_id, foundation.revision, "quickeval-review-v1")
     with pytest.raises(SystemExit) as excinfo:
-        run_model.main(["--bakeoff", BAKEOFF, "--candidate", "qwen35-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")])
+        run_model.main(["--bakeoff", BAKEOFF, "--candidate", "ornith15-9b", "--adapter", str(adapter), "--output", str(tmp_path / "r.json")])
     assert excinfo.value.code == 2 and "trained with prompt" in capsys.readouterr().err
 
 
-def test_9b_baseline_security_only_without_docker_uses_the_v2_prompt(tmp_path, no_sandbox, monkeypatch) -> None:
+def test_foundation_baseline_security_only_without_docker_uses_the_v2_prompt(tmp_path, no_sandbox, monkeypatch) -> None:
     monkeypatch.setattr(run_model, "HFBackend", lambda *a, **kw: BaselineBackend())
     out = tmp_path / "run.json"
-    assert run_model.main(["--bakeoff", BAKEOFF, "--candidate", "qwen35-9b", "--skip-coding-regression", "--output", str(out)]) == 0
+    assert run_model.main(["--bakeoff", BAKEOFF, "--candidate", "ornith15-9b", "--skip-coding-regression", "--output", str(out)]) == 0
     artifact = json.loads(out.read_text())
     assert artifact["contract"]["prompt_version"] == PROMPT_VERSION == "quickeval-review-v2"
     assert artifact["contract"]["parser_version"] == "3"
     assert artifact["coding_regression"]["status"] == "not_run"
-    assert artifact["bakeoff"]["candidate"] == "qwen35-9b"
+    assert artifact["bakeoff"]["candidate"] == "ornith15-9b"
 
 
-def test_without_skip_the_9b_baseline_refuses_to_run_unsandboxed(tmp_path, no_sandbox, monkeypatch) -> None:
+def test_without_skip_the_foundation_baseline_refuses_to_run_unsandboxed(tmp_path, no_sandbox, monkeypatch) -> None:
     monkeypatch.setattr(run_model, "HFBackend", lambda *a, **kw: BaselineBackend())
     out = tmp_path / "run.json"
-    assert run_model.main(["--bakeoff", BAKEOFF, "--candidate", "qwen35-9b", "--output", str(out)]) == 3
+    assert run_model.main(["--bakeoff", BAKEOFF, "--candidate", "ornith15-9b", "--output", str(out)]) == 3
     assert not out.exists()
 
 

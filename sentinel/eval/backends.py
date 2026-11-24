@@ -19,6 +19,32 @@ from sentinel.eval.baseline import detect
 QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit")
 DTYPES = ("bfloat16", "float16", "float32")
 MIN_TRANSFORMERS = "5.12"  # keep in sync with the [model] extra in pyproject.toml
+# The chat template ends an assistant turn with this token. The pinned foundations ship no
+# generation_config.json, so the config-derived EOS is <|endoftext|>: without an explicit stop the
+# model would continue into a new turn after its answer.
+END_OF_TURN = "<|im_end|>"
+
+
+def stop_token_ids(tokenizer: Any, configured: Any) -> list[int]:
+    """End-of-turn first, then whatever EOS the model config defines (deduplicated, in order)."""
+    eot = tokenizer.convert_tokens_to_ids(END_OF_TURN)
+    if not isinstance(eot, int) or eot < 0 or eot == getattr(tokenizer, "unk_token_id", None):
+        raise RuntimeError(f"tokenizer has no single {END_OF_TURN} token; the chat template contract does not hold")
+    extra = configured if isinstance(configured, list) else ([] if configured is None else [configured])
+    ids: list[int] = []
+    for token_id in [eot, *extra]:
+        if isinstance(token_id, int) and token_id not in ids:
+            ids.append(token_id)
+    return ids
+
+
+def truncate_at_stop(token_ids: list[int], stop_ids: list[int]) -> list[int]:
+    """Generated tokens up to (not including) the first stop token: nothing after the turn is kept."""
+    stops = set(stop_ids)
+    for index, token_id in enumerate(token_ids):
+        if token_id in stops:
+            return token_ids[:index]
+    return token_ids
 
 
 @dataclass(frozen=True)
@@ -145,7 +171,7 @@ def describe_adapter(path: "Path", model_id: str, revision: str | None) -> dict[
 
 
 class HFBackend:
-    """Hugging Face transformers backend for Qwen3.5 text generation (and compatible causal LMs)."""
+    """Hugging Face transformers backend for the Qwen3.5-architecture foundation (Ornith-1.5-9B) and compatible causal LMs."""
 
     name = "hf"
 
@@ -167,6 +193,7 @@ class HFBackend:
         self._model: Any = None
         self._tokenizer: Any = None
         self._generation_config: Any = None
+        self._stop_ids: list[int] = []
         self._loaded_dtype: str | None = None
         self._parameter_dtypes: dict[str, int] = {}
 
@@ -221,8 +248,10 @@ class HFBackend:
         config.temperature = self.generation.temperature
         config.top_p = self.generation.top_p
         config.top_k = self.generation.top_k
+        self._stop_ids = stop_token_ids(self._tokenizer, config.eos_token_id)
+        config.eos_token_id = list(self._stop_ids)
         if config.pad_token_id is None:
-            config.pad_token_id = self._tokenizer.pad_token_id or self._tokenizer.eos_token_id
+            config.pad_token_id = self._tokenizer.pad_token_id if self._tokenizer.pad_token_id is not None else self._stop_ids[0]
         self._generation_config = config
 
     def generate(self, messages: list[dict[str, str]]) -> GenerationResult:
@@ -237,7 +266,10 @@ class HFBackend:
         new_tokens = output[0, prompt_tokens:]
         if self._cuda() and torch.cuda.is_available():
             torch.cuda.synchronize()
-        text = self._tokenizer.decode(new_tokens, skip_special_tokens=True)
+        # <think>/</think> are ordinary tokens and stay in the text for the parser to strip;
+        # special tokens are dropped, and nothing after the end of the turn is decoded.
+        answer = truncate_at_stop([int(t) for t in new_tokens.tolist()], self._stop_ids)
+        text = self._tokenizer.decode(answer, skip_special_tokens=True)
         if rendered.rstrip().endswith("<think>"):
             # The template opened a reasoning block; restore the tag so the parser can strip it.
             text = "<think>" + text
@@ -263,7 +295,7 @@ class HFBackend:
         if self._generation_config is not None:
             info["effective_generation_config"] = {
                 key: getattr(self._generation_config, key, None)
-                for key in ("max_new_tokens", "do_sample", "temperature", "top_p", "top_k", "repetition_penalty")
+                for key in ("max_new_tokens", "do_sample", "temperature", "top_p", "top_k", "repetition_penalty", "eos_token_id")
             }
         if self.runtime.quantization != "none":
             import bitsandbytes

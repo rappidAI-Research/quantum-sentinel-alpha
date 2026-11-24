@@ -237,7 +237,7 @@ def test_run_model_stops_before_loading_the_model_without_isolation(monkeypatch,
     monkeypatch.setattr(run_model, "HFBackend", NeverLoaded)
     out = tmp_path / "run.json"
     code = run_model.main(
-        ["--bakeoff", "configs/model/bakeoff_qwen35.yaml", "--candidate", "qwen35-9b", "--output", str(out)]
+        ["--bakeoff", "configs/model/baseline_ornith15.yaml", "--candidate", "ornith15-9b", "--output", str(out)]
     )
     assert code == 3 and not out.exists()
     assert "--skip-coding-regression" in capsys.readouterr().err
@@ -262,7 +262,7 @@ def test_bakeoff_skip_records_the_reason(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr(run_model, "HFBackend", lambda *a, **kw: BaselineBackend())
     out = tmp_path / "run.json"
     code = run_model.main(
-        ["--bakeoff", "configs/model/bakeoff_qwen35.yaml", "--candidate", "qwen35-9b", "--skip-coding-regression", "--output", str(out)]
+        ["--bakeoff", "configs/model/baseline_ornith15.yaml", "--candidate", "ornith15-9b", "--skip-coding-regression", "--output", str(out)]
     )
     assert code == 0
     coding = json.loads(out.read_text())["coding_regression"]
