@@ -59,24 +59,29 @@ def hypothetical_registry() -> dict[str, Any]:
     return registry
 
 
-def hypothetical_approvals(cohort: dict[str, Any]) -> dict[str, Any]:
-    return {
-        r["repository_key"]: {
+def hypothetical_approvals(cohort: dict[str, Any], extension: bool = False) -> dict[str, Any]:
+    """In-memory approvals for the recommended repositories (and the recommended tier B extension)."""
+    entries = list(cohort["repositories"]) + (list(cohort.get("extension_repositories", [])) if extension else [])
+    approvals = {}
+    for r in entries:
+        if r["proposed_decision"] != "recommended_for_review":
+            continue
+        approvals[r["repository_key"]] = {
             "repository_key": r["repository_key"],
             "decision": "approved_for_training",
             "license_spdx": r["license_spdx_detected"],
             "license_file": r["license_file"],
             "license_file_sha256": r["license_file_sha256"],
         }
-        for r in cohort["repositories"]
-        if r["proposed_decision"] == "recommended_for_review"
-    }
+        if r.get("additional_license_file_sha256s"):
+            approvals[r["repository_key"]]["additional_license_file_sha256s"] = r["additional_license_file_sha256s"]
+    return approvals
 
 
-def run(config_path: Path, cohort_path: Path, tokenizer: Path | None) -> dict[str, Any]:
+def run(config_path: Path, cohort_path: Path, tokenizer: Path | None, extension: bool = False) -> dict[str, Any]:
     config = pipeline.load_config(config_path)
     cohort = json.loads(cohort_path.read_text(encoding="utf-8"))
-    approvals = hypothetical_approvals(cohort)
+    approvals = hypothetical_approvals(cohort, extension)
     if SCRATCH.exists():
         shutil.rmtree(SCRATCH)
     (SCRATCH / "committed").mkdir(parents=True)
@@ -104,7 +109,7 @@ def run(config_path: Path, cohort_path: Path, tokenizer: Path | None) -> dict[st
     result: dict[str, Any] = {
         "approved_repositories": len(approvals),
         "training_approved_records": len(approved_ids),
-        "matches_cohort_projection": len(approved_ids) == cohort["if_recommended_are_approved"]["records"],
+        "matches_cohort_projection": len(approved_ids) == cohort["if_extension_is_also_approved" if extension else "if_recommended_are_approved"]["records"],
         "quality_or_split_drift_vs_committed_manifest": len(drift),
         "loader": {"train_examples": len(loaded.train), "validation_examples": len(loaded.validation),
                    "examples_by_task": loaded.examples_by_task, "repositories": loaded.repositories, "data_sha256": loaded.sha256},
@@ -126,11 +131,12 @@ def run(config_path: Path, cohort_path: Path, tokenizer: Path | None) -> dict[st
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--config", type=Path, default=ROOT / "configs" / "garden" / "seed_v2.yaml")
-    parser.add_argument("--cohort", type=Path, default=ROOT / "data" / "garden" / "seed_v2" / "cohort" / "training_cohort.json")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs" / "garden" / "seed_v3.yaml")
+    parser.add_argument("--cohort", type=Path, default=ROOT / "data" / "garden" / "seed_v3" / "cohort" / "training_cohort.json")
     parser.add_argument("--tokenizer", type=Path, help="directory with the pinned foundation's tokenizer files (no weights)")
+    parser.add_argument("--extension", action="store_true", help="also approve the recommended tier B extension (simulation)")
     args = parser.parse_args(argv)
-    print(json.dumps(run(args.config, args.cohort, args.tokenizer), indent=1, sort_keys=True))
+    print(json.dumps(run(args.config, args.cohort, args.tokenizer, args.extension), indent=1, sort_keys=True))
     return 0
 
 

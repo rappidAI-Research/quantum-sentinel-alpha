@@ -109,6 +109,8 @@ def normalize_license(value: Any) -> str | None:
         return None
     if text in SPDX_ALIASES:
         return SPDX_ALIASES[text]
+    if text in {"unlicense", "the unlicense"}:  # before "license" is stripped from the words below
+        return "Unlicense"
     words = re.sub(r"[()]", " ", text).replace("licence", "license").replace("license", " ").replace(" version ", " ").split()
     joined = " ".join(words)
     if joined in {"apache 2", "apache 2.0", "apache v2", "apache-2", "asl 2", "asl 2.0", "apache software 2.0", "apache software 2", "apache-2.0"}:
@@ -125,6 +127,10 @@ def normalize_license(value: Any) -> str | None:
         return "BSD-2-Clause"
     if joined == "bsd":
         return "BSD"
+    if joined in {"zlib", "zlib/libpng"}:
+        return "Zlib"
+    if joined == "0bsd":
+        return "0BSD"
     return raw
 
 

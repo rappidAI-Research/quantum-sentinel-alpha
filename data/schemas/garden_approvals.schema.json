@@ -90,6 +90,16 @@
             "description": "Required when the reviewer-confirmed license is not permissive (copyleft, unknown, custom): the written policy or legal basis for training on it.",
             "type": "string",
             "minLength": 20
+          },
+          "additional_license_file_sha256s": {
+            "description": "Further reviewed versions of the same license file (e.g. a copyright-year update between the revisions the records use). Every listed version was read by the reviewer and carries the same license; a record whose license file matches none of the hashes is not covered.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "uniqueItems": true,
+            "minItems": 1
           }
         }
       }
