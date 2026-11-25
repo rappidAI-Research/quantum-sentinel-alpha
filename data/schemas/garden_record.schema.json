@@ -9,10 +9,10 @@
   "properties": {
     "schema_version": {"const": "1.0"},
     "dataset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
-    "record_id": {"type": "string", "pattern": "^sg-(py|js|ts|go)-(vulnerable|post-fix|caller-abstention|defended-sibling)-[0-9a-f]{16}$"},
+    "record_id": {"type": "string", "pattern": "^sg-(py|js|ts|go)-(vulnerable|post-fix|caller-abstention|defended-sibling|query-test-finding|query-test-negative)-[0-9a-f]{16}$"},
     "group_id": {"type": "string", "pattern": "^sgg-[0-9a-f]{16}$"},
     "pair_id": {"type": ["string", "null"], "pattern": "^sgp-[0-9a-f]{16}$"},
-    "kind": {"enum": ["vulnerable", "post_fix", "caller_abstention", "defended_sibling"]},
+    "kind": {"enum": ["vulnerable", "post_fix", "caller_abstention", "defended_sibling", "query_test_finding", "query_test_negative"]},
     "input": {
       "type": "object",
       "additionalProperties": false,
@@ -35,7 +35,7 @@
         "start_line": {"type": ["integer", "null"], "minimum": 1},
         "end_line": {"type": ["integer", "null"], "minimum": 1},
         "evidence": {"type": "string", "minLength": 1, "maxLength": 1000},
-        "evidence_source": {"enum": ["advisory_summary", "derived_template"]},
+        "evidence_source": {"enum": ["advisory_summary", "derived_template", "query_message"]},
         "patch": {"type": ["string", "null"]},
         "label_scope": {"type": "string", "minLength": 1}
       }
@@ -44,7 +44,7 @@
       "type": "object",
       "required": ["method"],
       "properties": {
-        "method": {"enum": ["upstream_fix_diff", "not_applicable"]},
+        "method": {"enum": ["upstream_fix_diff", "query_test_expectation", "not_applicable"]},
         "span_kind": {"enum": ["changed_lines", "insertion_point", "mixed"]},
         "file_span": {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 2, "maxItems": 2},
         "changed_lines": {"type": "integer", "minimum": 1},
@@ -66,9 +66,9 @@
       "properties": {
         "code_source_id": {"type": "string"},
         "metadata_source_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
-        "advisory_id": {"type": "string", "pattern": "^GHSA-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}$"},
+        "advisory_id": {"type": "string", "pattern": "^(GHSA-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}|CVE-[0-9]{4}-[0-9]{4,}|codeql:[a-z]+/[a-z0-9/-]+)$"},
         "aliases": {"type": "array", "items": {"type": "string"}},
-        "ecosystem": {"enum": ["PyPI", "npm", "Go"]},
+        "ecosystem": {"enum": ["PyPI", "npm", "Go", "GIT"]},
         "packages": {"type": "array", "items": {"type": "string"}},
         "published": {"type": "string", "minLength": 10},
         "osv_modified": {"type": "string"},
@@ -114,12 +114,23 @@
         "fix_commit_chain": {
           "description": "Garden v4: consecutive fix commits (first to last) whose combined diff is the fix; vulnerable_revision is the first commit's parent, fixed_revision the last commit.",
           "type": "array", "minItems": 2, "items": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
-        }
+        },
+        "source_kind": {
+          "description": "Garden v6: real_world (an upstream fix of a published vulnerability) or tool_test (a security-rule test fixture). Absent = real_world.",
+          "enum": ["real_world", "tool_test"]
+        },
+        "fix_evidence": {
+          "description": "Garden v6: how the fix commit is tied to the advisory. osv_reference: the GitHub-reviewed advisory names it; nvd_reference: the CVE's NVD references name it; ghsa_reference: MoreFixes records that a GitHub Advisory Database record names it; commit_message_reference: the commit message names the advisory.",
+          "enum": ["osv_reference", "nvd_reference", "ghsa_reference", "commit_message_reference"]
+        },
+        "test_unit": {"description": "Garden v6 tool tests: the test directory (the deduplication and review unit).", "type": "string", "minLength": 1},
+        "query_id": {"description": "Garden v6 tool tests: the rule whose expectations label the excerpt.", "type": "string", "minLength": 1},
+        "negative_basis": {"description": "Garden v6 tool-test negatives: why the test marks the function safe for the rule.", "enum": ["query_false_positive", "source_reaches_no_sink", "marked_safe"]}
       }
     },
     "evaluation_role": {
       "description": "Garden v4: what the record may be used for, given the frozen split and the evaluation sets earlier versions already used (docs/GARDEN_V4.md).",
-      "enum": ["training", "retired_development", "development", "previous_holdout", "final_test", "temporal_quarantine"]
+      "enum": ["training", "retired_development", "development", "previous_holdout", "final_test", "temporal_quarantine", "external_benchmark"]
     },
     "split": {"enum": ["train", "validation", "holdout_reserved", "temporal_quarantine"]},
     "quality": {

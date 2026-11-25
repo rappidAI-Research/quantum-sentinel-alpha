@@ -38,6 +38,7 @@ ECOSYSTEM_LANGUAGES = {
     "PyPI": {"python"},
     "npm": {"javascript", "typescript"},
     "Go": {"go"},
+    "GIT": {"python", "javascript", "typescript", "go"},  # Garden v6: a repository without a package ecosystem
 }
 
 _TEST_DIRS = {"test", "tests", "__tests__", "testing", "testdata", "spec", "specs", "e2e", "fixtures", "__mocks__", "mocks"}

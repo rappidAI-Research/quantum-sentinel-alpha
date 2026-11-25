@@ -208,6 +208,82 @@ def discover_extension(config: GardenConfig, log: Any = print, resolver: Any = N
     return {"added": len(added), "outcomes": dict(sorted(outcomes.items()))}
 
 
+def morefixes_index_dir(config: GardenConfig) -> Path:
+    return PROJECT_ROOT / config.raw["discovery"]["morefixes"]["index_dir"]
+
+
+def morefixes_index(config: GardenConfig, log: Any = print) -> dict[str, Any]:
+    """Garden v6: check the pinned MoreFixes dump (md5 from Zenodo) and stream its metadata tables into the index."""
+    import hashlib as _hashlib
+
+    from sentinel.garden import morefixes
+
+    m = config.raw["discovery"]["morefixes"]
+    dump = PROJECT_ROOT / m["dump"]
+    digest = _hashlib.md5(usedforsecurity=False)
+    with dump.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 24), b""):
+            digest.update(chunk)
+    if digest.hexdigest() != m["dump_md5"]:
+        raise ValueError(f"{dump} does not match dump_md5 (download it again from Zenodo record {morefixes.ZENODO_RECORD})")
+    return morefixes.extract_index(dump, morefixes_index_dir(config), log)
+
+
+def discover_morefixes(config: GardenConfig, log: Any = print) -> dict[str, Any]:
+    """Garden v6: CVE fix commits from the MoreFixes index, appended after the frozen candidate rows.
+
+    Only fix commits the CVE's own NVD references name are candidates (`morefixes.discover_candidates`);
+    a CVE already covered by a frozen candidate (alias or same fix commit) is written to
+    `morefixes_corroborations.jsonl` instead. The CVE records are cached OSV-shaped for the audit."""
+    from sentinel.garden import morefixes
+
+    d, sel = config.raw["discovery"], config.raw["selection"]
+    m = d["morefixes"]
+    index = morefixes.load_index(morefixes_index_dir(config))
+    path = config.committed_dir / "candidates.jsonl"
+    frozen = [c for c in _read_jsonl(path) if c.get("candidate_set") != morefixes.CANDIDATE_SET]
+    settings = {
+        "published_before": d["published_before"],
+        "max_candidates_per_repository": m["max_candidates_per_repository"],
+        "max_fix_commits": m.get("max_fix_commits", 3),
+    }
+    added, outcomes, cve_records, corroborations = morefixes.discover_candidates(
+        index, frozen, settings, set(sel["rejected_cwes"]), sel["max_cwes"], d["sample_salt"]
+    )
+    write_morefixes_records(config, cve_records)
+    _write_jsonl(path, frozen + added)
+    _write_jsonl(config.committed_dir / "morefixes_corroborations.jsonl", sorted(corroborations, key=lambda r: (r["cve_id"], r["advisory_id"])))
+    log(f"discover: {len(added)} MoreFixes candidates {outcomes}")
+    return {"added": len(added), "cves_with_fixes": len(index["fixes"]), "outcomes": outcomes, "corroborations": len(corroborations)}
+
+
+def write_morefixes_records(config: GardenConfig, cve_records: dict[str, dict[str, Any]]) -> None:
+    directory = config.workdir / "cache" / "osv" / "GIT"
+    directory.mkdir(parents=True, exist_ok=True)
+    for cve_id, record in cve_records.items():
+        (directory / f"{cve_id}.json").write_text(json.dumps(record, sort_keys=True), encoding="utf-8")
+
+
+def candidate_sources(config: GardenConfig, candidate: dict[str, Any]) -> tuple[str, list[str]]:
+    """Registry source ids of a candidate: Garden v6 MoreFixes candidates have their own (pending) sources."""
+    m = (config.raw.get("discovery") or {}).get("morefixes")
+    if m and candidate.get("candidate_set") == "garden-v6-morefixes":
+        return m["code_source_id"], list(m["metadata_source_ids"])
+    return config.code_source_id, config.metadata_source_ids
+
+
+def build_query_tests(config: GardenConfig, log: Any = print) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Garden v6: rule-scoped records from the pinned CodeQL security query tests (sentinel/garden/querytests.py)."""
+    from sentinel.garden import querytests
+
+    q = config.raw["query_tests"]
+    checkout = querytests.ensure_checkout(config.workdir / "cache", q["revision"], log)
+    sel = config.raw["selection"]
+    records, rows = querytests.build_records(checkout, q["revision"], config.extraction, config.dataset_id, set(sel["rejected_cwes"]), sel["max_cwes"], log)
+    log(f"build: {len(records)} query-test records from {len(rows)} test units")
+    return records, rows
+
+
 def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> dict[str, Any]:
     d, sel = config.raw["discovery"], config.raw["selection"]
     if d.get("frozen_candidates"):
@@ -224,6 +300,9 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
         log(f"discover: frozen candidate list {d['frozen_candidates']} copied unchanged")
         if d.get("extension"):
             stats["extension"] = discover_extension(config, log)
+            _write_json(config.committed_dir / "discovery_stats.json", stats)
+        if d.get("morefixes"):
+            stats["morefixes"] = discover_morefixes(config, log)
             _write_json(config.committed_dir / "discovery_stats.json", stats)
         return stats
     client = OsvClient(d["osv_bucket"], config.workdir / "cache" / "osv")
@@ -308,6 +387,10 @@ def build(
     workdir = workdir or config.workdir
     candidates = _read_jsonl(config.committed_dir / "candidates.jsonl")
     records, build_log = build_candidates(config, candidates, workers, log, processes=processes)
+    if config.raw.get("query_tests"):
+        tool_records, tool_log = build_query_tests(config, log)
+        records = sorted(records + tool_records, key=lambda r: r["record_id"])
+        build_log = build_log + tool_log
     _write_jsonl(workdir / "records.raw.jsonl", records)
     _write_jsonl(workdir / "build_log.jsonl", build_log)
     log(f"build: {len(records)} raw records from {sum(1 for r in build_log if r['outcome'] == 'built')}/{len(candidates)} candidates")
@@ -320,9 +403,8 @@ def _build_repository(config: GardenConfig, repo_key: str, group: list[dict[str,
     repo = UpstreamRepo(config.workdir / "cache" / "git", group[0]["repository"], repo_key)
     for candidate in group:
         try:
-            records = build_module.build_records(
-                candidate, repo, config.extraction, config.dataset_id, config.code_source_id, config.metadata_source_ids
-            )
+            code_source_id, metadata_source_ids = candidate_sources(config, candidate)
+            records = build_module.build_records(candidate, repo, config.extraction, config.dataset_id, code_source_id, metadata_source_ids)
             results.append((candidate, records, "built"))
         except Rejected as exc:
             results.append((candidate, [], exc.reason))
@@ -421,7 +503,10 @@ def unvalidated_negative_kinds(config: GardenConfig) -> set[str]:
     """Garden v5: negative kinds whose labels rest on a heuristic stay pending until an independent
     review of their sample validates the kind and the owner lists it in `governance.validated_negative_kinds`."""
     governance = config.raw.get("governance") or {}
-    return {"defended_sibling"} - set(governance.get("validated_negative_kinds") or [])
+    kinds = {"defended_sibling"}
+    if config.raw.get("query_tests"):  # Garden v6: tool-test negatives are rule-scoped, a heuristic negative kind as well
+        kinds.add("query_test_negative")
+    return kinds - set(governance.get("validated_negative_kinds") or [])
 
 
 def apply_negative_validation(record: dict[str, Any], unvalidated: set[str]) -> None:
@@ -467,6 +552,82 @@ def apply_evaluation_role(record: dict[str, Any], history: tuple[set[str], set[s
         governance = record["governance"]
         blockers = ["evaluation_role:development"] + [b for b in governance["blockers"] if b != "evaluation_role:development"]
         record["governance"] = {"approval_status": "excluded", "blockers": blockers}
+
+
+def external_benchmarks(config: GardenConfig) -> dict[str, Any] | None:
+    """Garden v6: vulnerabilities of external benchmarks we evaluate on (`evaluation.external_benchmarks`).
+
+    Each file lists `{benchmark, id, aliases, repository_key, commits}` rows. A record of any of them
+    (same advisory or alias, or same repository and fix/vulnerable commit) is never trained on."""
+    entries = ((config.raw.get("evaluation") or {}).get("external_benchmarks")) or []
+    if not entries:
+        return None
+    ids: dict[str, str] = {}
+    commits: dict[tuple[str, str], str] = {}
+    for entry in entries:
+        path = PROJECT_ROOT / entry["path"]
+        if file_sha256(path) != entry["sha256"]:
+            raise ValueError(f"{path} does not match its sha256 in evaluation.external_benchmarks")
+        for row in _read_jsonl(path):
+            label = f"{row['benchmark']}:{row['id']}"
+            for i in [row["id"], *row.get("aliases", [])]:
+                ids[i] = label
+            for sha in row.get("commits", []):
+                commits[(row["repository_key"], sha)] = label
+    return {"ids": ids, "commits": commits}
+
+
+def apply_external_benchmark(record: dict[str, Any], benchmarks: dict[str, Any]) -> None:
+    provenance = record["provenance"]
+    label = next((benchmarks["ids"][i] for i in [provenance["advisory_id"], *provenance["aliases"]] if i in benchmarks["ids"]), None)
+    if label is None:
+        key = provenance["repository_key"]
+        label = next(
+            (benchmarks["commits"][(key, sha)] for sha in [provenance["vulnerable_revision"], provenance["fixed_revision"], *provenance.get("fix_commit_chain", [])] if (key, sha) in benchmarks["commits"]),
+            None,
+        )
+    if label is None:
+        return
+    record["evaluation_role"] = "external_benchmark"
+    blocker = f"external_benchmark:{label}"
+    governance = record["governance"]
+    record["governance"] = {"approval_status": "excluded", "blockers": [blocker] + [b for b in governance["blockers"] if b != blocker]}
+
+
+def apply_governance(
+    config: GardenConfig,
+    records: list[dict[str, Any]],
+    sources: dict[str, dict[str, Any]],
+    approvals: dict[str, Any],
+    validated_negative_kinds: set[str] | None = None,
+) -> None:
+    """Set every record's governance (and evaluation role) from its quality, split, the registry sources and
+    the repository approvals. `validated_negative_kinds` overrides the config's list (approval scenarios only)."""
+    # The training loader refuses every record of a repository that also has holdout or
+    # temporal-quarantine records (sentinel/train/data.py). The same rule applies here, so an
+    # approval never exports a record the loader would refuse (a new dataset version can add
+    # post-cutoff records to an approved repository).
+    held_out = {r["provenance"]["repository_key"] for r in records if r["split"] in {"holdout_reserved", "temporal_quarantine"}}
+    history = evaluation_history(config)
+    covered = source_approved_advisories(config)
+    benchmarks = external_benchmarks(config)
+    unvalidated = unvalidated_negative_kinds(config)
+    if validated_negative_kinds is not None:
+        unvalidated -= validated_negative_kinds
+    for record in records:
+        status, blockers = gate(record, sources, approvals)
+        if status == "training_approved" and record["provenance"]["repository_key"] in held_out:
+            status, blockers = "excluded", ["repository_has_holdout_or_quarantine_records"]
+        record["governance"] = {"approval_status": status, "blockers": blockers}
+        if covered is not None and record["provenance"]["code_source_id"] == config.code_source_id:
+            # the source-approval list covers the GHSA/OSV source; other sources have their own registry entries
+            apply_source_coverage(record, covered)
+        if "governance" in config.raw:
+            apply_negative_validation(record, unvalidated)
+        if history is not None:
+            apply_evaluation_role(record, history)
+        if benchmarks:
+            apply_external_benchmark(record, benchmarks)
 
 
 def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: dict[str, Any] | None = None) -> list[dict[str, Any]]:
@@ -529,24 +690,8 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
         record["quality"] = quality
         record["split"] = assign_split(record, config.split)
 
-    # The training loader refuses every record of a repository that also has holdout or
-    # temporal-quarantine records (sentinel/train/data.py). The same rule applies here, so an
-    # approval never exports a record the loader would refuse (a new dataset version can add
-    # post-cutoff records to an approved repository).
-    held_out = {r["provenance"]["repository_key"] for r in records if r["split"] in {"holdout_reserved", "temporal_quarantine"}}
-    history = evaluation_history(config)
-    covered = source_approved_advisories(config)
+    apply_governance(config, records, sources, approvals)
     for record in records:
-        status, blockers = gate(record, sources, approvals)
-        if status == "training_approved" and record["provenance"]["repository_key"] in held_out:
-            status, blockers = "excluded", ["repository_has_holdout_or_quarantine_records"]
-        record["governance"] = {"approval_status": status, "blockers": blockers}
-        if covered is not None:
-            apply_source_coverage(record, covered)
-        if "governance" in config.raw:
-            apply_negative_validation(record, unvalidated_negative_kinds(config))
-        if history is not None:
-            apply_evaluation_role(record, history)
         errors = list(validator.iter_errors(record))
         if errors:
             raise ValueError(f"curated record {record['record_id']} violates the schema: {errors[0].message}")
@@ -624,7 +769,7 @@ def statistics(config: GardenConfig, records: list[dict[str, Any]], build_log: l
             "by_split_and_decision": count(accepted, lambda r: f"{r['split']}/{r['target']['decision']}"),
             "repositories_by_split": {k: len(v) for k, v in sorted(repos_by_split.items())},
             "finding_cwes": count(accepted_findings, lambda r: r["target"]["cwe"]),
-            "finding_span_kind": count(accepted_findings, lambda r: r["localization"]["span_kind"]),
+            "finding_span_kind": count(accepted_findings, lambda r: r["localization"].get("span_kind") or r["localization"]["method"]),
             "complete_pairs": sum(
                 1 for pair, kinds in _pairs(accepted).items() if kinds == {"vulnerable", "post_fix"}
             ),
@@ -639,7 +784,42 @@ def statistics(config: GardenConfig, records: list[dict[str, Any]], build_log: l
             "accepted_blockers": dict(sorted(blockers.items())),
             "training_approved": sum(1 for r in records if r["governance"]["approval_status"] == "training_approved"),
         },
+        **({"by_source": source_funnel(records, build_log)} if config.raw.get("query_tests") or (config.raw.get("discovery") or {}).get("morefixes") else {}),
     }
+
+
+def source_funnel(records: list[dict[str, Any]], build_log: list[dict[str, Any]]) -> dict[str, Any]:
+    """Garden v6: the funnel of each label source, from built candidates to exported training examples."""
+    from sentinel.garden.analysis import source_of
+
+    by_advisory: dict[str, str] = {}
+    for record in records:
+        by_advisory.setdefault(record["provenance"]["advisory_id"], source_of(record))
+    funnel: dict[str, Any] = {}
+    sources = sorted({source_of(r) for r in records} | {"ghsa_osv"})
+    for source in sources:
+        rows = [r for r in records if source_of(r) == source]
+        accepted = [r for r in rows if r["quality"]["status"] == "accepted"]
+        approved = [r for r in accepted if r["governance"]["approval_status"] == "training_approved"]
+        train = [r for r in approved if r["split"] == "train"]
+        if source == "codeql_tool_test":
+            log_rows = [row for row in build_log if row.get("test_unit")]
+        else:
+            log_rows = [row for row in build_log if not row.get("test_unit") and by_advisory.get(row["advisory_id"], "") == source]
+        funnel[source] = {
+            "candidates_with_records": len({row["advisory_id"] for row in log_rows if row["records"]}),
+            "records": len(rows),
+            "accepted": len(accepted),
+            "accepted_by_decision": dict(sorted(Counter(r["target"]["decision"] for r in accepted).items())),
+            "accepted_unique_vulnerabilities": len({r["provenance"]["advisory_id"] for r in accepted if r["target"]["decision"] == "finding"}),
+            "rejected_top_checks": dict(Counter(c.split(":")[0] for r in rows if r["quality"]["status"] == "rejected" for c in r["quality"]["failed_checks"]).most_common(8)),
+            "by_approval_status": dict(sorted(Counter(r["governance"]["approval_status"] for r in accepted).items())),
+            "pending_blockers": dict(Counter(b.split(":")[0] for r in accepted if r["governance"]["approval_status"] == "pending_review" for b in r["governance"]["blockers"]).most_common(6)),
+            "training_approved": len(approved),
+            "train_detection_examples": len(train),
+            "train_patch_examples": len(supervision.patch_examples(train)),
+        }
+    return funnel
 
 
 def supervision_statistics(records: list[dict[str, Any]]) -> dict[str, Any]:
@@ -984,6 +1164,25 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     committed = config.committed_dir
     records = _read_jsonl(config.workdir / "records.jsonl")
     candidates = _read_jsonl(committed / "candidates.jsonl")
+    repository_vulns, repository_packages = None, None
+    if (config.raw.get("audit") or {}).get("cross_source_later_fixes"):
+        # Garden v6: a post-fix or defended-sibling negative is refuted by a later fix of ANY known advisory
+        # of its repository (all packages, and every CVE MoreFixes links to a fix commit there), not only
+        # by advisories of the record's own packages
+        from sentinel.garden import morefixes
+
+        index = morefixes.load_index(morefixes_index_dir(config))
+        cache: dict[str, list[dict[str, Any]]] = {}
+
+        def repository_vulns(key: str) -> list[dict[str, Any]]:
+            if key not in cache:
+                cache[key] = morefixes.repository_vulns(index, key)
+            return cache[key]
+
+        repository_packages = defaultdict(set)
+        for c in candidates:
+            for package in c["packages"]:
+                repository_packages[c["repository_key"]].add((c["ecosystem"], package))
     result = run_audit(
         records,
         candidates,
@@ -991,6 +1190,8 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
         config.workdir / "cache" / "osv",
         OsvQuery(config.workdir / "cache" / "osv_query"),
         containment=config.quality.cross_split_containment,
+        repository_vulns=repository_vulns,
+        repository_packages=repository_packages,
     )
     audit_dir = committed / "audit"
     audit_dir.mkdir(parents=True, exist_ok=True)
@@ -1147,6 +1348,8 @@ def _rebuild_verified(config: GardenConfig, wanted: dict[str, dict[str, Any]], m
     candidates = [c for c in _read_jsonl(config.committed_dir / "candidates.jsonl") if c["advisory_id"] in advisories]
     log(f"materialize: {len(wanted)} records from {len(candidates)} advisories in {len({c['repository_key'] for c in candidates})} repositories")
     built, _ = build_candidates(config, candidates, workers, log)
+    if config.raw.get("query_tests") and any(row["provenance"].get("source_kind") == "tool_test" for row in wanted.values()):
+        built += build_query_tests(config, log)[0]  # Garden v6: tool tests come from the pinned CodeQL checkout
     by_id = {r["record_id"]: r for r in built}
     missing = sorted(set(wanted) - set(by_id))
     if missing:

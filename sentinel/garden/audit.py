@@ -560,6 +560,8 @@ def run_audit(
     osv_query: OsvQuery,
     workers: int = 8,
     containment: float | None = None,
+    repository_vulns: Callable[[str], list[dict[str, Any]]] | None = None,
+    repository_packages: dict[str, set[tuple[str, str]]] | None = None,
 ) -> dict[str, Any]:
     accepted = audit_population(records)
     groups: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
@@ -573,6 +575,27 @@ def run_audit(
             record = json.loads(path.read_text(encoding="utf-8"))
             return f"{record.get('summary', '')}\n{record.get('details', '')}"
         return by_advisory.get(advisory_id, {}).get("summary", "")
+
+    def known_vulns(provenance: dict[str, Any]) -> tuple[list[dict[str, Any]], bool]:
+        """Advisories that may show the post-fix code is still vulnerable, and whether a lookup failed.
+
+        The OSV advisories of the record's packages; Garden v6 adds (`repository_vulns`) every advisory of
+        the repository's other packages and every CVE another source links to a fix commit of the repository."""
+        packages = [(provenance["ecosystem"], p) for p in by_advisory.get(provenance["advisory_id"], {}).get("packages", provenance["packages"])]
+        if repository_packages is not None:
+            packages = sorted(set(packages) | repository_packages.get(provenance["repository_key"], set()))
+        vulns: list[dict[str, Any]] = []
+        unavailable = False
+        for ecosystem, package in packages:
+            found = osv_query.package_vulns(ecosystem, package)
+            if found is None:
+                unavailable = True
+            else:
+                vulns.extend(found)
+        if repository_vulns is not None:
+            seen = {v.get("id") for v in vulns}
+            vulns.extend(v for v in repository_vulns(provenance["repository_key"]) if v.get("id") not in seen)
+        return vulns, unavailable
 
     def audit_group(group_id: str) -> dict[str, Any]:
         group = groups[group_id]
@@ -598,15 +621,7 @@ def run_audit(
             result["fix_pattern"] = fix_pattern(vulnerable)
             result["span"] = span_precision(vulnerable)
             if "post_fix" in group:
-                packages = by_advisory.get(provenance["advisory_id"], {}).get("packages", provenance["packages"])
-                vulns: list[dict[str, Any]] = []
-                unavailable = False
-                for package in packages:
-                    found = osv_query.package_vulns(provenance["ecosystem"], package)
-                    if found is None:
-                        unavailable = True
-                    else:
-                        vulns.extend(found)
+                vulns, unavailable = known_vulns(provenance)
                 unreadable: list[str] = []
                 result["later_fixes"] = [vars(f) for f in later_fixes(group, vulns, repo, unreadable)]
                 result["later_fix_check"] = "incomplete" if unavailable or unreadable else "done"
@@ -617,15 +632,7 @@ def run_audit(
         if "defended_sibling" in group:
             # Garden v5: a defended sibling is a hard negative too - a later fix of that function refutes it
             sibling = group["defended_sibling"]
-            packages = by_advisory.get(provenance["advisory_id"], {}).get("packages", provenance["packages"])
-            vulns: list[dict[str, Any]] = []
-            unavailable = False
-            for package in packages:
-                found = osv_query.package_vulns(provenance["ecosystem"], package)
-                if found is None:
-                    unavailable = True
-                else:
-                    vulns.extend(found)
+            vulns, unavailable = known_vulns(provenance)
             unreadable_sibling: list[str] = []
             as_group = {"vulnerable": {**sibling, "provenance": {**sibling["provenance"]}}, "post_fix": sibling}
             result["sibling_later_fixes"] = [vars(f) for f in later_fixes(as_group, vulns, repo, unreadable_sibling)]

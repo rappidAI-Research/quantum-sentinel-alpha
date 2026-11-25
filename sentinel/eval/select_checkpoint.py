@@ -24,12 +24,33 @@ from typing import Any
 
 from sentinel.eval.runner import load_artifact
 
-SELECTION_RULE_VERSION = "1"
-SELECTION_RULE = (
-    "eligible: reportable adapter runs on the development set with invalid_rate <= 0.02; "
-    "select the highest decision_accuracy; ties: lower false_positive_rate, then higher strict_recall, "
-    "then the earlier training step"
-)
+SELECTION_RULE_VERSION = "2"
+# Rule v1 (Garden v3/v4/v5 runs): decision accuracy alone among valid runs. Rule v2 (fixed on 2026-11-25,
+# before any Garden v6 result): decision accuracy may not hide a recall or false-positive failure, so a
+# checkpoint is eligible only above a recall floor and below a false-positive ceiling. The floors are the
+# first adapter's development results rounded against it (recall 0.349 -> 0.30, FPR 0.148 -> 0.20): a new
+# adapter worse than both is not selected, whatever its accuracy.
+SELECTION_RULES = {
+    "1": {
+        "text": (
+            "eligible: reportable adapter runs on the development set with invalid_rate <= 0.02; "
+            "select the highest decision_accuracy; ties: lower false_positive_rate, then higher strict_recall, "
+            "then the earlier training step"
+        ),
+        "min_recall": None,
+        "max_false_positive_rate": None,
+    },
+    "2": {
+        "text": (
+            "eligible: reportable adapter runs on the development set with invalid_rate <= 0.02, recall >= 0.30 and "
+            "false_positive_rate <= 0.20; select the highest decision_accuracy; ties: lower false_positive_rate, then higher "
+            "strict_recall, then the earlier training step; no eligible run: nothing is selected"
+        ),
+        "min_recall": 0.30,
+        "max_false_positive_rate": 0.20,
+    },
+}
+SELECTION_RULE = SELECTION_RULES[SELECTION_RULE_VERSION]["text"]
 MAX_INVALID_RATE = 0.02
 SHARED = (("model", "id"), ("model", "revision"), ("contract",), ("generation",), ("cases", "sha256"))
 _STEP = re.compile(r"step-(\d{6})")
@@ -99,7 +120,22 @@ def false_positive_analysis(artifact: dict[str, Any], language: dict[str, str]) 
     return {"false_positives": sorted(fps), "findings_on_abstention_cases": sorted(on_abstain), "false_positives_by_language": by_language}
 
 
-def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: dict[str, str] | None = None) -> dict[str, Any]:
+def _eligible(metrics: dict[str, Any], rule: dict[str, Any]) -> list[str]:
+    """The rule's conditions a run fails (empty = eligible)."""
+    failed = []
+    if metrics["invalid_rate"] > MAX_INVALID_RATE:
+        failed.append("invalid_rate")
+    if rule["min_recall"] is not None and (metrics["recall"] is None or metrics["recall"] < rule["min_recall"]):
+        failed.append("recall_below_floor")
+    if rule["max_false_positive_rate"] is not None and (metrics["false_positive_rate"] is None or metrics["false_positive_rate"] > rule["max_false_positive_rate"]):
+        failed.append("false_positive_rate_above_ceiling")
+    return failed
+
+
+def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: dict[str, str] | None = None, rule_version: str = SELECTION_RULE_VERSION) -> dict[str, Any]:
+    if rule_version not in SELECTION_RULES:
+        raise Refused(f"unknown selection rule {rule_version!r}; known: {sorted(SELECTION_RULES)}")
+    rule = SELECTION_RULES[rule_version]
     if not artifacts:
         raise Refused("no run artifacts given")
     expected_cases = devset["detection"]["cases_sha256"]
@@ -126,7 +162,8 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
             raise Refused(f"two runs for {name}")
         seen.add(name)
         metrics = artifact["metrics"]
-        eligible = name != "foundation" and artifact["reportable"] and metrics["invalid_rate"] <= MAX_INVALID_RATE
+        failed = _eligible(metrics, rule)
+        eligible = name != "foundation" and artifact["reportable"] and not failed
         runs.append(
             {
                 "label": name,
@@ -136,6 +173,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 "reportable": artifact["reportable"],
                 "reportable_blockers": artifact["reportable_blockers"],
                 "eligible": eligible,
+                "failed_conditions": failed if name != "foundation" else [],
                 "metrics": {key: metrics[key] for _, key in COLUMNS},
                 "counts": {key: metrics[key] for key in ("true_positive", "false_positive", "false_negative", "true_negative", "negative_cases", "positive_cases", "abstain_cases")},
                 **false_positive_analysis(artifact, language or {}),
@@ -167,8 +205,8 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
     for run in runs:
         del run["_correct"]
     return {
-        "selection_rule_version": SELECTION_RULE_VERSION,
-        "selection_rule": SELECTION_RULE,
+        "selection_rule_version": rule_version,
+        "selection_rule": rule["text"],
         "devset": {"cases_sha256": expected_cases, **{k: devset["detection"][k] for k in ("count", "by_expected_decision")}},
         "model": {"id": reference["model"]["id"], "revision": reference["model"]["revision"]},
         "runs": runs,
@@ -202,6 +240,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("runs", nargs="+", type=Path, help="run_model artifacts on the development detection cases")
     parser.add_argument("--patch", nargs="*", type=Path, default=[], help="sentinel.eval.patch results on the development patch cases")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--rule", default=SELECTION_RULE_VERSION, choices=sorted(SELECTION_RULES), help="selection rule version (default: the current one; 1 reproduces earlier selections)")
     args = parser.parse_args(argv)
     devset = json.loads(args.devset.read_text(encoding="utf-8"))
     try:
@@ -210,7 +249,7 @@ def main(argv: list[str] | None = None) -> int:
         if cases_file.is_file():
             rows = [json.loads(line) for line in cases_file.read_text(encoding="utf-8").splitlines() if line.strip()]
             language = {row["case_id"]: row["language"] for row in rows}
-        result = select(devset, [load_artifact(path) for path in args.runs], language)
+        result = select(devset, [load_artifact(path) for path in args.runs], language, args.rule)
         result["patch"] = _patch_rows(args.patch, devset)
     except Refused as exc:
         print(f"refused: {exc}", file=sys.stderr)
@@ -228,7 +267,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     for row in result["patch"]:
         print(f"patch {row['label']}: " + ", ".join(f"{k} {_fmt(v)}" for k, v in row.items() if k != "label"))
-    print(f"rule v{SELECTION_RULE_VERSION}: {SELECTION_RULE}")
+    print(f"rule v{result['selection_rule_version']}: {result['selection_rule']}")
     print(f"selected: {result['selected']} ({result['selected_adapter']})")
     if result["discordant_cases_vs_final"]:
         print(f"case-level vs final adapter: {result['discordant_cases_vs_final']}")

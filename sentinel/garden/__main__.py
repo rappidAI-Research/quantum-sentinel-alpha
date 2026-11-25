@@ -1,5 +1,6 @@
 """Sentinel Garden CLI.
 
+    python -m sentinel.garden morefixes-index --config configs/garden/seed_v6.yaml # v6: MoreFixes dump -> metadata index (offline)
     python -m sentinel.garden discover --config configs/garden/seed_v1.yaml   # OSV metadata (network)
     python -m sentinel.garden build    --config configs/garden/seed_v1.yaml   # upstream git (network)
     python -m sentinel.garden curate   --config configs/garden/seed_v1.yaml   # offline
@@ -28,7 +29,7 @@ DEFAULT_CONFIG = pipeline.DEFAULT_CONFIG_PATH
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m sentinel.garden", description=__doc__.splitlines()[0])
-    parser.add_argument("stage", choices=["discover", "build", "curate", "run", "audit", "review", "review-packages", "verify", "reconstruct", "materialize", "materialize-eval", "check", "analyze"])
+    parser.add_argument("stage", choices=["morefixes-index", "discover", "build", "curate", "run", "audit", "review", "review-packages", "verify", "reconstruct", "materialize", "materialize-eval", "check", "analyze"])
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--refresh", action="store_true", help="discover: re-download the OSV advisory index")
     parser.add_argument("--workers", type=int, default=6, help="build: parallel repositories")
@@ -39,7 +40,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     config = pipeline.load_config(args.config)
-    if args.stage == "discover":
+    if args.stage == "morefixes-index":
+        pipeline.morefixes_index(config)
+    elif args.stage == "discover":
         pipeline.discover(config, refresh=args.refresh)
     elif args.stage == "build":
         pipeline.build(config, workers=args.workers, processes=args.processes)

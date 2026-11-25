@@ -87,8 +87,23 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         "allowed": {"yes", "no", "unclear"},
         "ask": "Garden v5 defended sibling: is this unchanged function safe with respect to the advisory's weakness - does the named defence really protect the relevant data flow here (expected decision `no_finding`)?",
     },
+    "rule_finding_valid": {
+        "items": {"tool_finding"},
+        "allowed": {"yes", "no", "unclear"},
+        "ask": "Garden v6 CodeQL tool test: does the excerpt itself show the weakness the rule reports, at the marked lines, and does the CWE fit?",
+    },
+    "rule_negative_safe": {
+        "items": {"tool_negative"},
+        "allowed": {"yes", "no", "unclear"},
+        "ask": "Garden v6 CodeQL tool test: is the excerpt free of the weakness named in the label scope (expected decision `no_finding`)? Note any other weakness you see.",
+    },
+    "input_reveals_label": {
+        "items": {"tool_finding", "tool_negative"},
+        "allowed": {"no", "yes"},
+        "ask": "Does anything in the excerpt or context give the label away (test markers, telling names or strings, comments)?",
+    },
     "leakage_or_duplicate": {
-        "items": {"pair", "abstention", "negative"},
+        "items": {"pair", "abstention", "negative", "tool_finding", "tool_negative"},
         "allowed": {"none_seen", "suspected"},
         "ask": "Do you recognise this code as copied from another project or as part of a public benchmark? (Optional search.)",
     },
@@ -102,6 +117,13 @@ def _order(key: str) -> str:
 
 NEW_EXTRACTION_PAIRS_PER_LANGUAGE = 4
 NEGATIVES_PER_LANGUAGE = 6  # Garden v5: the defended-sibling kind is trained only after its sample is validated
+NEW_SOURCE_PAIRS_PER_LANGUAGE = 6  # Garden v6: pairs from a source other than GHSA/OSV (MoreFixes / NVD references)
+TOOL_TESTS_PER_LANGUAGE = 4  # Garden v6: CodeQL tool-test findings and negatives, each
+NEW_SOURCE_EVIDENCE = {
+    "nvd_reference": "the CVE's NVD references name it",
+    "ghsa_reference": "MoreFixes records that a GitHub Advisory Database record names it",
+    "commit_message_reference": "the commit message names the advisory",
+}
 
 
 def _new_extraction(vulnerable: dict[str, Any]) -> bool:
@@ -142,11 +164,29 @@ def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = N
             (g for g in complete if g not in chosen and _new_extraction(groups[g]["vulnerable"])), key=_order
         )[:NEW_EXTRACTION_PAIRS_PER_LANGUAGE]
         negatives = sorted((g for g in by_language[language] if "defended_sibling" in groups[g] and "vulnerable" in groups[g]), key=_order)[:NEGATIVES_PER_LANGUAGE]
-        for item, group_ids in (("pair", chosen), ("pair", new_extraction), ("abstention", abstentions), ("negative", negatives)):
+        # Garden v6 strata (absent from earlier versions, whose samples are unchanged): pairs of the new
+        # real-world source, and CodeQL tool-test findings and negatives
+        taken = set(chosen) | set(new_extraction)
+        new_source = sorted(
+            (g for g in complete if g not in taken and groups[g]["vulnerable"]["provenance"].get("fix_evidence") in NEW_SOURCE_EVIDENCE), key=_order
+        )[:NEW_SOURCE_PAIRS_PER_LANGUAGE]
+        tool_findings = sorted((g for g in by_language[language] if "query_test_finding" in groups[g]), key=_order)[:TOOL_TESTS_PER_LANGUAGE]
+        tool_negatives = sorted((g for g in by_language[language] if "query_test_negative" in groups[g]), key=_order)[:TOOL_TESTS_PER_LANGUAGE]
+        strata = (
+            ("pair", chosen), ("pair", new_extraction), ("pair", new_source), ("abstention", abstentions), ("negative", negatives),
+            ("tool_finding", tool_findings), ("tool_negative", tool_negatives),
+        )
+        for item, group_ids in strata:
             for group_id in group_ids:
                 group = groups[group_id]
-                kinds = {"pair": ("vulnerable", "post_fix"), "abstention": ("caller_abstention",), "negative": ("defended_sibling", "vulnerable")}[item]
-                anchor = group.get("vulnerable") or group["caller_abstention"]
+                kinds = {
+                    "pair": ("vulnerable", "post_fix"),
+                    "abstention": ("caller_abstention",),
+                    "negative": ("defended_sibling", "vulnerable"),
+                    "tool_finding": ("query_test_finding",),
+                    "tool_negative": ("query_test_negative",),
+                }[item]
+                anchor = group.get("vulnerable") or group.get("caller_abstention") or next(iter(group.values()))
                 sample.append(
                     {
                         "item_id": f"{item}-{group_id}",
@@ -154,7 +194,7 @@ def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = N
                         "item": item,
                         "language": language,
                         "split": anchor["split"],
-                        "cwe_family": family_of(anchor["target"]["cwe"]) if item in {"pair", "negative"} else None,
+                        "cwe_family": family_of(anchor["target"]["cwe"]) if item in {"pair", "negative", "tool_finding"} else None,
                         "advisory_id": anchor["provenance"]["advisory_id"],
                         "record_ids": [group[k]["record_id"] for k in kinds],
                     }
@@ -197,6 +237,13 @@ def build_package(
     provenance = first["provenance"]
     repository = provenance["repository"]
     advisory_id = provenance["advisory_id"]
+    if item["item"].startswith("tool_"):
+        return _tool_test_package(item, first, decisions_path)
+    link = (
+        f"[{advisory_id}](https://nvd.nist.gov/vuln/detail/{advisory_id}) ([OSV](https://osv.dev/vulnerability/{advisory_id}))"
+        if advisory_id.startswith("CVE-")
+        else f"[{advisory_id}](https://github.com/advisories/{advisory_id}) ([OSV](https://osv.dev/vulnerability/{advisory_id}))"
+    )
     lines = [
         f"# Review item `{item['item_id']}`",
         "",
@@ -205,7 +252,7 @@ def build_package(
         "",
         "## Advisory",
         "",
-        f"- ID: [{advisory_id}](https://github.com/advisories/{advisory_id}) ([OSV](https://osv.dev/vulnerability/{advisory_id}))",
+        f"- ID: {link}" + (f" - Garden v6 MoreFixes candidate; the fix commit is tied to it by `{provenance['fix_evidence']}` ({NEW_SOURCE_EVIDENCE[provenance['fix_evidence']]})" if provenance.get("fix_evidence") in NEW_SOURCE_EVIDENCE else ""),
         f"- Aliases: {', '.join(provenance['aliases']) or 'none'}",
         f"- Ecosystem / packages: {provenance['ecosystem']} / {', '.join(provenance['packages'])}",
         f"- Published: {provenance.get('published') or 'unknown'}",
@@ -313,6 +360,56 @@ def build_package(
         "",
     ]
     return "\n".join(lines)
+
+
+def _checklist(item: dict[str, Any], decisions_path: str) -> list[str]:
+    lines = ["## Checklist", ""]
+    for key, question in QUESTIONS.items():
+        if item["item"] in question["items"]:
+            lines.append(f"- `{key}` ({' / '.join(sorted(question['allowed']))}): {question['ask']}")
+    return lines + [
+        "",
+        f"Record the answers in `{decisions_path}` under this `item_id`, together with the",
+        "`package_sha256` from `audit/human_review_sample.jsonl`. List records that should not be trained on under",
+        "`exclude_records` with a reason; labels are never edited.",
+        "",
+    ]
+
+
+def _tool_test_package(item: dict[str, Any], record: dict[str, Any], decisions_path: str) -> str:
+    """Garden v6: a CodeQL tool-test item (the rule's test expectation is the label)."""
+    provenance, target = record["provenance"], record["target"]
+    repository, revision = provenance["repository"], provenance["fixed_revision"]
+    finding = target["decision"] == "finding"
+    span = (target["start_line"], target["end_line"]) if finding else None
+    lines = [
+        f"# Review item `{item['item_id']}`",
+        "",
+        f"Sample `{SAMPLE_ID}` - {item['item']} - {item['language']} - split `{item['split']}`.",
+        "Decide every question from the evidence below before opening `signals.json`. Do not run the code.",
+        "",
+        "## Source",
+        "",
+        f"- CodeQL rule `{provenance['query_id']}`, test `{provenance['test_unit']}` at [{revision[:12]}]({_commit_url(repository, revision)})",
+        f"- Original test file: [{provenance['file_path']}]({_blob_url(repository, revision, provenance['file_path'], provenance['excerpt_file_lines'])}) (its test markers and comments are removed from the model input; the model sees the file name `{record['input']['file']}`)",
+        "",
+        "## Expected label",
+        "",
+        (
+            f"- `finding`, {target['cwe']}" + (f" (alternates {', '.join(target['alternate_cwes'])})" if target["alternate_cwes"] else "")
+            + f", lines {span[0]}-{span[1]} (the rule's expected alert lines). Evidence text: {target['evidence']!r}."
+            if finding
+            else f"- `no_finding` ({provenance.get('negative_basis')}). Label scope: {target.get('label_scope')}"
+        ),
+        "",
+        "## Excerpt and the context given to the model" + (" (`>>` marks the labelled span)" if finding else ""),
+        "",
+        _fence(record["input"]["context"]),
+        "",
+        _fence(_numbered(record["input"]["code"], span)),
+        "",
+    ]
+    return "\n".join(lines + _checklist(item, decisions_path))
 
 
 def automated_signals(item: dict[str, Any], automated: dict[str, dict[str, Any]], manual: dict[str, Any]) -> dict[str, Any]:
@@ -453,6 +550,10 @@ def summarize_human(review: dict[str, Any], index: list[dict[str, Any]]) -> dict
     }
     if any(i.get("item") == "negative" for i in index):  # Garden v5 defended siblings (decides whether the kind is validated)
         errors["defended_sibling_not_safe"] = ("negative_safe", {"no", "unclear"})
+    if any(i.get("item", "").startswith("tool_") for i in index):  # Garden v6 CodeQL tool tests
+        errors["tool_finding_invalid"] = ("rule_finding_valid", {"no", "unclear"})
+        errors["tool_negative_not_safe"] = ("rule_negative_safe", {"no", "unclear"})
+        errors["tool_input_reveals_label"] = ("input_reveals_label", {"yes"})
     rates = {}
     for name, (key, bad) in errors.items():
         judged = [i for i in review["items"] if key in i and i[key] in QUESTIONS[key]["allowed"]]

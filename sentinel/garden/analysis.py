@@ -218,6 +218,45 @@ def surface_features(record: dict[str, Any]) -> list[str]:
     ]
 
 
+def source_of(record: dict[str, Any]) -> str:
+    """Garden v6: where a record's label comes from (GHSA/OSV advisory, CVE via MoreFixes, CodeQL tool test)."""
+    provenance = record["provenance"]
+    if provenance.get("source_kind") == "tool_test":
+        return "codeql_tool_test"
+    return {"nvd_reference": "morefixes_nvd", "ghsa_reference": "morefixes_ghsa", "commit_message_reference": "morefixes_commit_message"}.get(
+        provenance.get("fix_evidence") or "", "ghsa_osv"
+    )
+
+
+def source_probe(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Can surface features tell a tool test from real-world code (two folds by record id)? If they can and the
+    sources' decision rates differ, the source identity is a label cue."""
+    tool = [r for r in records if source_of(r) == "codeql_tool_test"]
+    if not tool:
+        return {}
+    labelled = [(r, "tool" if source_of(r) == "codeql_tool_test" else "real") for r in records]
+    folds = ([x for x in labelled if x[0]["record_id"] < "sg-m"], [x for x in labelled if x[0]["record_id"] >= "sg-m"])
+    correct = total = 0
+    for fit, score in (folds, folds[::-1]):
+        if not fit or not score:
+            continue
+        model = NaiveBayes([(surface_features(r) + [f"lang:{r['input']['language']}"], y) for r, y in fit])
+        correct += sum(1 for r, y in score if model.predict(surface_features(r) + [f"lang:{r['input']['language']}"]) == y)
+        total += len(score)
+    rates = {
+        source: round(sum(1 for r in group if r["target"]["decision"] == "finding") / len(group), 3)
+        for source, group in sorted(_group(records, source_of).items())
+    }
+    return {"tool_vs_real_accuracy": round(correct / total, 3) if total else None, "tool_share": round(len(tool) / len(records), 3), "finding_rate_by_source": rates}
+
+
+def _group(records: list[dict[str, Any]], key: Any) -> dict[str, list[dict[str, Any]]]:
+    out: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for record in records:
+        out[key(record)].append(record)
+    return out
+
+
 def surface_probe(fit: list[dict[str, Any]], score: list[dict[str, Any]]) -> dict[str, Any]:
     if not fit or not score:
         return {}
@@ -294,6 +333,10 @@ def analyze(records: list[dict[str, Any]], runs: list[dict[str, Any]] | None = N
         "shortcut_probes": shortcut_probes(train, validation),
         "rejections": dict(Counter(c.split(":")[0] for r in records if r["quality"]["status"] == "rejected" for c in r["quality"]["failed_checks"]).most_common(25)),
     }
+    sources = _group(accepted, source_of)
+    if set(sources) - {"ghsa_osv"}:  # Garden v6: several label sources
+        result["by_source"] = {source: composition(group) for source, group in sorted(sources.items())}
+        result["source_probe"] = source_probe(train)
     if roles:
         result["by_evaluation_role"] = {role: composition([r for r in accepted if r.get("evaluation_role") == role]) for role in roles}
     if runs:

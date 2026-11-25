@@ -796,6 +796,8 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     }
     if isinstance(info, CommitChain):
         base_provenance["fix_commit_chain"] = list(info.commits)
+    if candidate.get("fix_evidence"):  # Garden v6: candidates of other sources say how the fix is tied to the advisory
+        base_provenance["fix_evidence"] = candidate["fix_evidence"]
 
     def record(
         kind: str,

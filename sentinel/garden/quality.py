@@ -27,7 +27,15 @@ RECORD_SCHEMA_PATH = PROJECT_ROOT / "data" / "schemas" / "garden_record.schema.j
 CONTAINMENT_THRESHOLD = 0.8
 CONTAINMENT_MIN_SHINGLES = 20
 
-KIND_DECISION = {"vulnerable": "finding", "post_fix": "no_finding", "caller_abstention": "abstain", "defended_sibling": "no_finding"}
+KIND_DECISION = {
+    "vulnerable": "finding",
+    "post_fix": "no_finding",
+    "caller_abstention": "abstain",
+    "defended_sibling": "no_finding",
+    "query_test_finding": "finding",  # Garden v6 tool tests (sentinel/garden/querytests.py)
+    "query_test_negative": "no_finding",
+}
+TOOL_TEST_KINDS = {"query_test_finding", "query_test_negative"}
 
 # High-confidence secret patterns only; a hit rejects the record (it is never redacted in place).
 SECRET_PATTERNS = {
@@ -137,10 +145,14 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
         failed.append("normalized_hash")
     if language not in code.ECOSYSTEM_LANGUAGES[prov["ecosystem"]]:
         failed.append("language_matches_ecosystem")
-    if code.language_of(inp["file"]) != language or inp["file"] != prov["file_path"]:
+    tool_test = record["kind"] in TOOL_TEST_KINDS
+    # a tool-test fixture's input file is a neutral name (the test file's name can give the answer away)
+    if code.language_of(inp["file"]) != language or (inp["file"] != prov["file_path"] and not tool_test):
         failed.append("file_language")
     if code.path_role(inp["file"]) != "source":
         failed.append("non_test_source_file")
+    if tool_test and (prov.get("source_kind") != "tool_test" or not prov.get("query_id") or not prov.get("test_unit")):
+        failed.append("tool_test_provenance")
     if len(lines) < min_lines:
         failed.append("context_complete:min_lines")
     if not inp["context"].strip() or len(inp["context"]) > max_context_chars:
@@ -152,7 +164,8 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
             failed.append(f"no_secrets:{name}")
 
     evidence_fields = [prov["advisory_id"], prov["vulnerable_revision"], prov["fixed_revision"], prov["fix_committed_at"], target["evidence"]]
-    if not all(evidence_fields) or prov["vulnerable_revision"] == prov["fixed_revision"]:
+    # a tool test is one revision of the rule's test suite, not a fix: both revisions are that revision
+    if not all(evidence_fields) or (prov["vulnerable_revision"] == prov["fixed_revision"]) != tool_test:
         failed.append("evidence_complete")
     if not prov["license"]["files"]:
         flags.append("no_root_license_file")
@@ -172,12 +185,16 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
             failed.append("localization_valid:span")
         elif set(range(start, end + 1)) <= code.trivial_lines(language, _parseable(language, excerpt)):
             failed.append("localization_valid:trivial_span")
-        if loc.get("method") != "upstream_fix_diff" or not loc.get("diff_consistent"):
-            failed.append("localization_valid:diff_consistent")
+        if tool_test:
+            if loc.get("method") != "query_test_expectation" or target["patch"] is not None:
+                failed.append("localization_valid:query_expectation")
+        else:
+            if loc.get("method") != "upstream_fix_diff" or not loc.get("diff_consistent"):
+                failed.append("localization_valid:diff_consistent")
+            if not target["patch"]:
+                failed.append("remediation_present")
         if prov["excerpt_revision"] != prov["vulnerable_revision"]:
             failed.append("revision_consistent")
-        if not target["patch"]:
-            failed.append("remediation_present")
         if len(target["alternate_cwes"]) > 1:
             flags.append("multi_cwe")
     else:
