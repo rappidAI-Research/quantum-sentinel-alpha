@@ -160,3 +160,193 @@ sources:
       Code is fetched by immutable commit SHA and is not committed to this repository. Training use
       additionally requires a per-repository approval in data/garden/approvals.yaml. A source-level
       approval here does not approve any repository.
+
+  # ---- Garden v6 (2026-11-25): new sources. morefixes, nvd-cve, morefixes-cve-fix-commits and codeql-query-tests approved by
+  # Jonas Cikemgil on 2026-11-25 (docs/TRAINING_AUTHORIZATION.md); the eval-only and research-reference entries stay as they are.
+  - source_id: morefixes
+    role: metadata
+    revision: "Zenodo record 20776007, dump-2026-06-20.sql.gz (md5 bdff6120f1e65626c77d42656162316e), CVEs up to 2026-06-02"
+    license: CC-BY-4.0
+    license_status: reviewed
+    terms_status: approved_for_project
+    redistribution_status: not_redistributed
+    removal_status: ready
+    pii_risk: low
+    production_approved: true
+    owner: rappidAI Research
+    reviewer: Jonas Cikemgil
+    evidence_urls:
+      - https://zenodo.org/records/20776007
+      - https://github.com/JafarAkhondali/Morefixes
+    notes: >-
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Discovery index only (CVE -> repository -> fix commit, CWE classification). Only the metadata tables are
+      read; MoreFixes' code, diffs and method tables are never used, the code comes from the pinned upstream commit.
+      Fix commits that only MoreFixes' mining links to a CVE (Prospector score) are not used; a candidate needs a fix
+      commit named by the CVE's own NVD references. CC-BY-4.0 requires attribution (docs/GARDEN_V6.md). Commit
+      author names and e-mail addresses in its commits table are never copied into committed files.
+
+  - source_id: nvd-cve
+    role: metadata
+    revision: "CVE records as contained in MoreFixes dump-2026-06-20 (NVD data up to 2026-06-02)"
+    license: NVD data (U.S. government work); CVE content under the CVE Program terms of use
+    license_status: reviewed
+    terms_status: approved_for_project
+    redistribution_status: not_redistributed
+    removal_status: ready
+    pii_risk: low
+    production_approved: true
+    owner: rappidAI Research
+    reviewer: Jonas Cikemgil
+    evidence_urls:
+      - https://nvd.nist.gov/general/FAQ-Sections/General-FAQs
+      - https://www.cve.org/Legal/TermsOfUse
+    notes: >-
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. CVE description (evidence text of a finding), CWE classification, publication date and references (the
+      evidence that ties the fix commit to the CVE) of MoreFixes candidates.
+
+  - source_id: morefixes-cve-fix-commits
+    role: train_candidate
+    revision: "sentinel-garden-v6 MoreFixes candidates (candidate_set garden-v6-morefixes in data/garden/seed_v6/candidates.jsonl)"
+    license: upstream repository license, per repository (recorded per record by Sentinel Garden)
+    license_status: reviewed
+    terms_status: approved_for_project
+    redistribution_status: not_redistributed
+    removal_status: ready
+    pii_risk: low
+    production_approved: true
+    owner: rappidAI Research
+    reviewer: Jonas Cikemgil
+    evidence_urls:
+      - https://github.com/rappidAI-Research/quantum-sentinel-alpha/blob/main/docs/GARDEN_V6.md
+    notes: >-
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Function-level vulnerable/fixed code resolved by Sentinel Garden from upstream fix commits named by a CVE's
+      NVD references (discovered via the morefixes index). Same build, quality checks and audit as
+      ghsa-osv-fix-commits; training use additionally requires a per-repository approval.
+
+  - source_id: codeql-query-tests
+    role: train_candidate
+    revision: "github/codeql@4136c26154e3de8f8a301858bafd369ce09e07f9, <lang>/ql/test/query-tests/Security (inline-expectation tests)"
+    license: MIT
+    license_status: reviewed
+    terms_status: approved_for_project
+    redistribution_status: not_redistributed
+    removal_status: ready
+    pii_risk: low
+    production_approved: true
+    owner: rappidAI Research
+    reviewer: Jonas Cikemgil
+    evidence_urls:
+      - https://github.com/github/codeql/blob/main/LICENSE
+    notes: >-
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Rule-scoped tool-test records: a query expectation states what one rule reports, not that code is secure.
+      Only the repository's MIT-licensed test and query files are read; the CodeQL CLI (separate terms) is never
+      run or redistributed. Test markers, comments and docstrings are removed from the model input.
+
+  - source_id: ossf-cve-benchmark
+    role: eval_only
+    revision: "github.com/ossf-cve-benchmark/ossf-cve-benchmark@91c59fd54b2b768c0f310bb0027d2ac59cdf74d4"
+    license: MIT
+    license_status: reviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/ossf-cve-benchmark/ossf-cve-benchmark
+    notes: >-
+      223 JavaScript/TypeScript CVEs with annotated weakness locations. External benchmark: its vulnerabilities are
+      excluded from Garden training (data/garden/benchmarks/ossf_cve_benchmark.jsonl, role external_benchmark).
+
+  - source_id: owasp-benchmark-python
+    role: eval_only
+    revision: null
+    license: GPL-3.0
+    license_status: reviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/OWASP-Benchmark/BenchmarkPython
+    notes: >-
+      Synthetic Python web test cases with expected results (expectedresults-0.1.csv). GPL-3.0: evaluation only,
+      never training. Not yet wired into the evaluation harness (docs/GARDEN_V6.md, external benchmarks).
+
+  - source_id: jsvul
+    role: research_reference
+    revision: "Zenodo record 18195839 v1.0.0 (js_vul.zip md5 087fb7cfa213bde26135bae7874efe7f)"
+    license: CC-BY-4.0 (dataset); GPL-3.0 (tooling)
+    license_status: reviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/jsvul/jsvul
+    notes: >-
+      Investigated for Garden v6, not integrated: an aggregate of NVD, OSV, CVEfixes, CrossVul, OSSF and SecBench.js
+      (all covered by GHSA/OSV and MoreFixes), heuristic function labels and no CWE in the function export; used
+      for overlap measurement only (docs/GARDEN_V6.md).
+
+  - source_id: pyvul
+    role: research_reference
+    revision: "github.com/billquan/PyVul (no license file)"
+    license: none stated
+    license_status: reviewed
+    terms_status: blocked
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://github.com/billquan/PyVul
+    notes: >-
+      Investigated for Garden v6, not integrated: no license, LLM-assisted label cleansing, and its commit index
+      (GHSA, huntr, Snyk) is largely covered by GHSA/OSV and MoreFixes; used for overlap measurement only.
+
+  - source_id: cvefixes
+    role: research_reference
+    revision: "Zenodo record 13118970 v1.0.8 (CVEs up to 2024-07-23)"
+    license: CC-BY-4.0
+    license_status: reviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://zenodo.org/records/13118970
+    notes: >-
+      Not downloaded (12.7 GB): MoreFixes uses the same NVD-reference method on CVEs up to 2026-06 and is a superset
+      for this purpose.
+
+  - source_id: secllm-dataset
+    role: research_reference
+    revision: "huggingface.co/datasets/sparrow-co-ltd/SecLLM-Dataset"
+    license: CC-BY-4.0 (records); source files under The Stack terms and their own licenses
+    license_status: reviewed
+    terms_status: review_required
+    redistribution_status: not_redistributed
+    removal_status: not_applicable
+    pii_risk: low
+    production_approved: false
+    owner: rappidAI Research
+    reviewer: null
+    evidence_urls:
+      - https://huggingface.co/datasets/sparrow-co-ltd/SecLLM-Dataset
+    notes: >-
+      Investigated for Garden v6, not integrated: every record is one finding of a single SAST tool (Sparrow) with no
+      independent confirmation and no fix (1,593 records in Python/JS/TS/Go).

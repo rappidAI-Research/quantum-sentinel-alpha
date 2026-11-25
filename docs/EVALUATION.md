@@ -63,6 +63,15 @@ The foundation run is the reference, not a candidate. The tool also reports:
 
 With 54 hard negatives, one false positive moves the FPR by 1.9 points. Differences of a few cases are within noise, and the case-level counts show how many cases a difference rests on. If the rule selects an earlier checkpoint, it reduces false positives only if that is visible on the development set. Whether it also does so on unseen code is answered by the holdout run, once.
 
+### Rule v2 (Garden v6, fixed on 2026-11-25 before any v6 result)
+
+Rule v1 can select a checkpoint whose accuracy comes from one side only: a model that rarely reports findings scores well on a set with many negatives. Rule v2 (`select_checkpoint --rule 2`, the default from Garden v6 on) adds two floors before accuracy decides:
+
+> **Eligible:** reportable adapter runs with `invalid_rate ≤ 0.02`, `recall ≥ 0.30` and `false_positive_rate ≤ 0.20`.
+> **Select:** the highest `decision_accuracy`; ties as in rule v1. **No eligible run:** nothing is selected (exit code 1).
+
+The floors are the first adapter's development results rounded against it (recall 0.349, FPR 0.148). Every run's `failed_conditions` are reported. `--rule 1` reproduces the earlier selections.
+
 ## Adapter evaluation integrity
 
 An adapter evaluation records three separate checks:
@@ -114,3 +123,19 @@ The roles are unchanged and are recomputed for v5.
 **Final test.** `final_test` is too small for a conclusion: v4's 45 cases came mostly from combined excerpts that v5 rejects for lack of evidence. If the Garden v3 holdout was never evaluated, `previous_holdout` is the final test (all four languages, 12 CWE families, abstentions, patch cases). Until that is confirmed, report both separately.
 
 **Difficult negatives.** v5's defended siblings are split like every record. They are training data only after their kind is validated; evaluation-role siblings are evaluation cases either way.
+
+## Garden v6 (2026-11-25)
+
+Roles are recomputed for v6 from the same frozen split; new sources only add repositories.
+
+| Role | Cases | Change against v5 |
+| --- | --- | --- |
+| development (selection, rule v2) | 239 (63 repositories; finding 113, no_finding 99, abstain 27) | +87 from MoreFixes repositories; −11 GHSA cases (stricter later-fix check, OpenSSF reservation) |
+| `final_test` (untouched) | 91 (30 repositories; finding 42, no_finding 40, abstain 9) | +82 from MoreFixes repositories; mostly Python (45) and JavaScript (38), Go only 2 |
+| `previous_holdout` | 452 (107 repositories) | unchanged reservation |
+| `external_benchmark` | 99 | new: vulnerabilities of the OpenSSF CVE Benchmark, never trained on |
+| `temporal_quarantine` | 440 | |
+
+- **Final test.** `final_test` (91) is now large enough for a first reading of recall and false positives, but Go is barely represented, so report per language. `previous_holdout` (452) stays reported separately: whether the v3 holdout was ever evaluated is still not confirmed, and the repository holds no record of such a run.
+- **External benchmarks.** Repository-level (VLoc Bench, file F1) and synthetic (OWASP Benchmark Python, GPL-3.0) benchmarks are never combined with Garden's function-level scores. The OpenSSF CVE Benchmark's vulnerabilities are excluded from Garden training (`data/garden/benchmarks/ossf_cve_benchmark.jsonl`), so a function-level OpenSSF set can be derived later without contamination.
+- **Tool tests** (CodeQL) are training data only; they never enter an evaluation set.

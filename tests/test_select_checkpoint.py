@@ -41,7 +41,7 @@ def foundation_run(default: str) -> dict:
 def test_the_rule_selects_on_decision_accuracy_and_never_the_foundation() -> None:
     always_finding = adapter_run("runs/train/r/checkpoints/step-000234/adapter", FINDING)
     never_finding = adapter_run("runs/train/r/checkpoints/step-000150/adapter", '{"decision": "no_finding"}')
-    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), always_finding, never_finding])
+    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), always_finding, never_finding], rule_version="1")
     accuracy = {r["label"]: r["metrics"]["decision_accuracy"] for r in result["runs"]}
     best = max(("step-000150", "step-000234"), key=lambda name: accuracy[name])
     assert result["selected"] == best
@@ -56,7 +56,7 @@ def test_the_rule_selects_on_decision_accuracy_and_never_the_foundation() -> Non
 def test_ties_prefer_fewer_false_positives_then_the_earlier_step() -> None:
     early = adapter_run("runs/train/r/checkpoints/step-000150/adapter", '{"decision": "no_finding"}')
     late = adapter_run("runs/train/r/checkpoints/step-000200/adapter", '{"decision": "no_finding"}')
-    assert select(DEVSET, [late, early])["selected"] == "step-000150"
+    assert select(DEVSET, [late, early], rule_version="1")["selected"] == "step-000150"
 
 
 def test_unreportable_or_unverified_runs_are_not_eligible() -> None:
@@ -132,7 +132,21 @@ def test_a_modified_checkpoint_adapter_is_refused(tmp_path: Path) -> None:
 def test_checkpoints_of_two_runs_are_compared_under_one_rule() -> None:
     a = adapter_run("runs/train/qsa-v4-continue/checkpoints/step-000050/adapter", '{"decision": "no_finding"}')
     b = adapter_run("runs/train/qsa-v4-fresh/checkpoints/step-000050/adapter", FINDING)
-    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), a, b])
+    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), a, b], rule_version="1")
     labels = {r["label"] for r in result["runs"]}
     assert {"qsa-v4-continue/step-000050", "qsa-v4-fresh/step-000050", "foundation"} == labels
     assert result["selected"] in labels - {"foundation"}
+
+
+def test_rule_v2_never_selects_a_checkpoint_below_the_recall_floor_or_above_the_fpr_ceiling() -> None:
+    """Decision accuracy may not hide a recall or false-positive failure (rule v2, fixed before Garden v6 results)."""
+    never_finding = adapter_run("runs/train/r/checkpoints/step-000150/adapter", '{"decision": "no_finding"}')  # recall 0
+    always_finding = adapter_run("runs/train/r/checkpoints/step-000200/adapter", FINDING)  # every negative flagged
+    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), never_finding, always_finding])
+    assert result["selection_rule_version"] == "2" and "recall >= 0.30" in result["selection_rule"]
+    by_label = {r["label"]: r for r in result["runs"]}
+    assert "recall_below_floor" in by_label["step-000150"]["failed_conditions"]
+    assert "false_positive_rate_above_ceiling" in by_label["step-000200"]["failed_conditions"]
+    assert result["selected"] is None and result["selected_adapter"] is None
+    # under rule v1 (earlier selections stay reproducible) one of them is chosen
+    assert select(DEVSET, [never_finding, always_finding], rule_version="1")["selected"] is not None

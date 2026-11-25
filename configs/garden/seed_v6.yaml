@@ -1,0 +1,142 @@
+# Sentinel Garden v6. Run: python -m sentinel.garden run --config configs/garden/seed_v6.yaml --processes 4
+# Garden v5 (configs/garden/seed_v5.yaml) plus two sources beyond GHSA/OSV, documented in docs/GARDEN_V6.md:
+# - MoreFixes (CVE fix commits from NVD and the GitHub Advisory Database): a discovery index only. A CVE
+#   becomes a candidate when its own NVD references name the fix commit; the code comes from upstream git
+#   and goes through the unchanged build, quality checks and audit (sentinel/garden/morefixes.py);
+# - CodeQL security query tests: rule-scoped tool-test findings and negatives (sentinel/garden/querytests.py).
+# The v5 candidate list stays the first, byte-identical part of the candidate list. v1-v5 stay unchanged.
+schema_version: "1.0"
+dataset_id: sentinel-garden-v6
+# The GHSA/OSV source approvals cover the Garden v5 candidate list (decision of 2026-11-25,
+# docs/TRAINING_AUTHORIZATION.md). v6 records of the new sources depend on their own registry entries
+# (morefixes, nvd-cve, morefixes-cve-fix-commits, codeql-query-tests), approved by the owner later on
+# 2026-11-25; their repositories still need their own approvals (data/garden/approvals.yaml).
+governance:
+  # heuristic negative kinds stay pending until their independent review sample validates them
+  # (defended_sibling: v5; query_test_negative: v6, rule-scoped)
+  validated_negative_kinds: []
+  source_approval_covers:
+    path: data/garden/seed_v5/candidates.jsonl
+    sha256: af72c35dfc220aa1406aac7571156bcd7262234bb541951d81bd8962f8d479bf
+
+# Registry entries this dataset depends on (data/registry.yaml). A record is training-eligible
+# only if every one of them is production_approved AND its repository is approved.
+sources:
+  code_source: ghsa-osv-fix-commits   # upstream fix commits resolved from advisories
+  metadata_sources: [osv, github-advisory-db]
+
+workdir: artifacts/garden/seed_v6        # Git-ignored: caches, full records with code
+committed_dir: data/garden/seed_v6       # metadata-only manifest, frozen candidates, statistics
+
+discovery:
+  # v6 starts from the frozen v5 list (byte-identical; the GHSA/OSV approvals are bound to it) and appends
+  # MoreFixes candidates (pipeline.discover_morefixes)
+  frozen_candidates: data/garden/seed_v5/candidates.jsonl
+  frozen_candidates_sha256: af72c35dfc220aa1406aac7571156bcd7262234bb541951d81bd8962f8d479bf
+  morefixes:
+    # Zenodo record 20776007 (CC-BY-4.0), dump of 2026-06-20 (CVEs up to 2026-06-02); md5 from Zenodo.
+    # `python -m sentinel.garden morefixes-index --config ...` streams its metadata tables into index_dir.
+    dump: artifacts/sources/morefixes/dump-2026-06-20.sql.gz
+    dump_md5: bdff6120f1e65626c77d42656162316e
+    index_dir: artifacts/sources/morefixes/index
+    max_candidates_per_repository: 40       # shared with the frozen rows (v5 extension cap)
+    max_fix_commits: 3                      # NVD-referenced fix commits of one CVE in one repository
+    code_source_id: morefixes-cve-fix-commits
+    metadata_source_ids: [morefixes, nvd-cve]
+  osv_bucket: https://osv-vulnerabilities.storage.googleapis.com
+  ecosystems: [PyPI, npm, Go]
+  advisory_prefix: GHSA-
+  require_github_reviewed: true
+  published_before: "2026-11-01T00:00:00Z"   # snapshot bound; later advisories are ignored
+  # Advisories are visited in sha256(salt + id) order - a deterministic, date-independent sample.
+  sample_salt: sentinel-garden-seed-v1
+  inspect_per_ecosystem: 100000             # advisory records inspected per ecosystem (all of them)
+  max_candidates_per_ecosystem: 5000        # cap on usable candidates per ecosystem
+  max_candidates_per_repository: 20         # v1: 4. Limits one project dominating the dataset; the split is
+                                            # per repository, so more advisories of one project never cross splits
+  multi_commit_fixes: true                  # v3: one-repository multi-commit advisories, resolved in build
+  workers: 8
+
+selection:
+  # CWEs that do not describe a localizable code weakness, or MITRE pillars (discouraged for mapping)
+  rejected_cwes: [CWE-1035, CWE-1104, CWE-1357, CWE-1395, CWE-937,
+                  CWE-284, CWE-435, CWE-664, CWE-682, CWE-691, CWE-693, CWE-697, CWE-703, CWE-707, CWE-710]
+  # Accepted but flagged as coarse labels in the statistics
+  coarse_cwes: [CWE-20, CWE-74, CWE-116, CWE-200, CWE-400, CWE-668, CWE-669, CWE-913]
+  max_cwes: 2                               # primary + one alternate; more is ambiguous
+
+extraction:
+  max_source_files_changed: 4               # non-test target-language files (only one may change logic)
+  max_changed_functions: 1                  # function-level label must be unambiguous
+  max_changed_lines: 40                     # within the changed function (removed + added)
+  max_function_lines: 150
+  min_function_lines: 3
+  max_excerpt_chars: 12000
+  max_import_lines: 12
+  max_context_chars: 1000                   # same bound as eval cases
+  abstention_min_callee_name_length: 6
+  # v2 refinements (each rejects anything it cannot localize; see sentinel/garden/build.py)
+  member_additions: true                    # new complete helper methods in a class/object body belong to the fix
+  version_hunks_as_noise: true              # module-level version-string bumps are not logic changes
+  tooling_files_excluded: true              # *.config.js, gulpfile, setup.py, root test.js/tests.py are not runtime source
+  # v4 refinements (sentinel/garden/build.py; docs/GARDEN_V4.md)
+  multi_function_fixes: true                # 2..3 changed functions in ONE file -> one combined excerpt
+  max_multi_functions: 3
+  max_multi_changed_lines: 60               # all changed functions together (single function: max_changed_lines)
+  commit_chains: true                       # several fix commits forming one contiguous first-parent chain
+  context_callee_notes: true                # every context lists same-file functions called but not shown
+  max_context_callees: 8
+  # v5 refinements (sentinel/garden/build.py; docs/GARDEN_V5.md)
+  multi_function_primary_evidence: true     # the labelled site of a combined excerpt needs evidence, else rejected
+  context_caller_notes: true                # contexts also name the same-file callers of the excerpt
+  max_context_callers: 5
+  defended_siblings: true                   # unchanged functions that already apply the fix's defence (scoped no_finding)
+  strip_fix_security_comments: true         # comment lines the fix added that talk about security are left out (label cue)
+
+quality:
+  near_duplicate_jaccard: 0.85              # within the dataset, same decision
+  label_conflict_jaccard: 0.92              # different pairs, different decision -> conflict
+  contamination_jaccard: 0.5                # against every evaluation case / coding task
+  shingle_size: 5
+  cross_split_containment: 0.8              # v4 audit: held-out excerpt contained in a training excerpt; shared patches / revisions
+
+split:
+  policy: configs/garden/split_policy.yaml   # frozen; shared by all Garden dataset versions
+
+contamination:
+  eval_case_dirs: [eval/sentinelbench]      # includes the Git-ignored private/ directory when present
+  coding_suites: [eval/coding/coding_v1.jsonl]
+
+# v4 evaluation roles (sentinel/garden/pipeline.py `evaluation_role`; docs/GARDEN_V4.md). The frozen split
+# policy decides train / validation / holdout_reserved; the role excludes what earlier versions already
+# used for evaluation, so v4 selects and finally tests on repositories no model of ours was evaluated on.
+evaluation:
+  # The v3 development set (accepted, training-approved v3 validation records): the first QLoRA run's
+  # checkpoints were selected on it. Its repositories stay validation-only (validation loss), never v4 selection.
+  retired_development_manifest: data/garden/seed_v3/manifest.jsonl
+  # Holdout repositories whose evaluation cases an earlier version exported (public; possibly evaluated).
+  previous_holdout_manifests:
+    - data/garden/seed_v1/manifest.jsonl
+    - data/garden/seed_v2/manifest.jsonl
+    - data/garden/seed_v3/manifest.jsonl
+  # Garden v6: external benchmarks we evaluate on separately. Their vulnerabilities (advisory ids and
+  # aliases, or repository + vulnerable/fixed commit) get role external_benchmark and are never trained on.
+  external_benchmarks:
+    - path: data/garden/benchmarks/ossf_cve_benchmark.jsonl   # github.com/ossf-cve-benchmark/ossf-cve-benchmark@91c59fd (MIT), 223 JS/TS CVEs
+      sha256: e4e949f515251c859ca9ade23cc03eca486e39b77b40ba39c2dfc4823d3e59bd
+
+
+# Garden v6: CodeQL's security query tests at one pinned revision (MIT), sparse checkout under
+# <workdir>/cache/codeql. Rule-scoped tool-test records; never evaluation data (github/codeql is a train
+# repository under the frozen split policy, and tool tests are exempt from the temporal cutoff only).
+query_tests:
+  revision: 4136c26154e3de8f8a301858bafd369ce09e07f9
+  # A test file is one template family (its alert functions are variants of one rule pattern): one finding
+  # per file, every negative. Without the cap 548 findings came from 200 files and the source was 83.5 %
+  # findings against 44 % in real-world records, while surface features recognise a tool test 94 % of the time.
+  max_findings_per_file: 1
+
+# Garden v6: the later-fix check of post-fix and defended-sibling negatives uses every known advisory of the
+# repository (all its packages' OSV advisories and every CVE MoreFixes links to a fix commit there).
+audit:
+  cross_source_later_fixes: true

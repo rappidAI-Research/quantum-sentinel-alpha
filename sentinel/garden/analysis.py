@@ -87,7 +87,7 @@ def composition(records: list[dict[str, Any]]) -> dict[str, Any]:
             for decision in ("finding", "no_finding", "abstain")
         },
         "span_lines": _quantiles([r["target"]["end_line"] - r["target"]["start_line"] + 1 for r in findings]),
-        "span_kind": dict(sorted(Counter(r["localization"].get("span_kind") for r in findings).items())),
+        "span_kind": dict(sorted(Counter(r["localization"].get("span_kind") or r["localization"]["method"] for r in findings).items())),
         "multi_function_findings": sum(1 for r in findings if r["provenance"].get("excerpt_functions")),
         "commit_chain_findings": sum(1 for r in findings if r["provenance"].get("fix_commit_chain")),
         "coarse_or_multi_cwe_findings": sum(1 for r in findings if "coarse_cwe" in r.get("quality", {}).get("flags", []) or r["target"]["alternate_cwes"]),
@@ -218,6 +218,51 @@ def surface_features(record: dict[str, Any]) -> list[str]:
     ]
 
 
+def source_of(record: dict[str, Any]) -> str:
+    """Garden v6: where a record's label comes from (GHSA/OSV advisory, CVE via MoreFixes, CodeQL tool test)."""
+    provenance = record["provenance"]
+    if provenance.get("source_kind") == "tool_test":
+        return "codeql_tool_test"
+    return {"nvd_reference": "morefixes_nvd", "ghsa_reference": "morefixes_ghsa", "commit_message_reference": "morefixes_commit_message"}.get(
+        provenance.get("fix_evidence") or "", "ghsa_osv"
+    )
+
+
+def source_probe(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Can surface features tell a tool test from real-world code (two folds by record id)? If they can and the
+    sources' decision rates differ, the source identity is a label cue."""
+    tool = [r for r in records if source_of(r) == "codeql_tool_test"]
+    if not tool:
+        return {}
+    labelled = [(r, "tool" if source_of(r) == "codeql_tool_test" else "real") for r in records]
+    folds = ([x for x in labelled if x[0]["record_id"] < "sg-m"], [x for x in labelled if x[0]["record_id"] >= "sg-m"])
+    hits: Counter[str] = Counter()
+    seen: Counter[str] = Counter()
+    for fit, score in (folds, folds[::-1]):
+        if not fit or not score:
+            continue
+        model = NaiveBayes([(surface_features(r) + [f"lang:{r['input']['language']}"], y) for r, y in fit])
+        for r, y in score:
+            seen[y] += 1
+            hits[y] += model.predict(surface_features(r) + [f"lang:{r['input']['language']}"]) == y
+    rates = {
+        source: round(sum(1 for r in group if r["target"]["decision"] == "finding") / len(group), 3)
+        for source, group in sorted(_group(records, source_of).items())
+    }
+    return {
+        "recall_by_source_kind": {y: round(hits[y] / seen[y], 3) for y in sorted(seen)},  # per class: the tool share is small
+        "tool_share": round(len(tool) / len(records), 3),
+        "finding_rate_by_source": rates,
+    }
+
+
+def _group(records: list[dict[str, Any]], key: Any) -> dict[str, list[dict[str, Any]]]:
+    out: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for record in records:
+        out[key(record)].append(record)
+    return out
+
+
 def surface_probe(fit: list[dict[str, Any]], score: list[dict[str, Any]]) -> dict[str, Any]:
     if not fit or not score:
         return {}
@@ -294,6 +339,10 @@ def analyze(records: list[dict[str, Any]], runs: list[dict[str, Any]] | None = N
         "shortcut_probes": shortcut_probes(train, validation),
         "rejections": dict(Counter(c.split(":")[0] for r in records if r["quality"]["status"] == "rejected" for c in r["quality"]["failed_checks"]).most_common(25)),
     }
+    sources = _group(accepted, source_of)
+    if set(sources) - {"ghsa_osv"}:  # Garden v6: several label sources
+        result["by_source"] = {source: composition(group) for source, group in sorted(sources.items())}
+        result["source_probe"] = source_probe(train)
     if roles:
         result["by_evaluation_role"] = {role: composition([r for r in accepted if r.get("evaluation_role") == role]) for role in roles}
     if runs:

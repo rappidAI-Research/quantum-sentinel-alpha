@@ -42,7 +42,7 @@ sys.path.insert(0, str(ROOT))
 from sentinel.data.registry import load_registry  # noqa: E402
 from sentinel.garden.audit import family_of  # noqa: E402
 from sentinel.garden.governance import gate  # noqa: E402
-from sentinel.garden.licenses import LICENSE_FILE, detect_license_text  # noqa: E402
+from sentinel.garden.licenses import LICENSE_FILE, category_of, detect_license_text  # noqa: E402
 
 SEED = ROOT / "data" / "garden" / "seed_v1"
 OUT = SEED / "pilot"
@@ -440,6 +440,11 @@ def _parents(file_path: str) -> list[str]:
     return out
 
 
+# Garden v6 (set by scripts/training_cohort.py for configs with the v6 sources): an additional license file whose own
+# license is permissive is a confirmed fact, not an open question. Earlier cohorts keep treating it as a question.
+PERMISSIVE_ADDITIONAL_LICENSES_OK = False
+
+
 def assess(entry: dict[str, Any], evidence: dict[str, Any] | None, state: dict[str, Any] | None = None) -> tuple[str, list[str], list[str]]:
     """recommended_for_review | needs_clarification | exclude, with confirmed facts and open questions."""
     confirmed = [
@@ -461,6 +466,11 @@ def assess(entry: dict[str, Any], evidence: dict[str, Any] | None, state: dict[s
                 continue  # the root license again (or an identical-license copy)
             if re.search(r"\.(py|go|js|ts|tsx|hcl|json|ya?ml)$", name):
                 continue  # source/config files whose names only resemble a license file
+            if PERMISSIVE_ADDITIONAL_LICENSES_OK and category_of(info["detected"]) == "permissive":
+                # Garden v6: a further permissive license (an Apache NOTICE, a vendored MIT file, CPython's PSF license
+                # for derived test code) adds attribution duties on redistribution only, which this project does not do
+                confirmed.append(f"{name} at {revision[:12]} is an additional {info['detected']} license file (permissive; obligations on redistribution only)")
+                continue
             questions.append(f"{name} at {revision[:12]} (detected {info['detected']}) may add terms; check which code it covers")
         for meta in data["package_metadata"]:
             value = meta["license"]

@@ -338,3 +338,77 @@ done
 ```
 
 Save `runs/eval/`, the run's `run.json` and the checkpoints' `provenance.json` (§ 11); never the case files.
+
+## 15. Garden v6: fresh training, selection (rule v2), final test, backup (**GPU**)
+
+Data: `docs/GARDEN_V6.md`. Settings: `docs/TRAINING_V6.md`. Instance: AWS EC2 `g6e.xlarge` (1 × NVIDIA L40S 48 GB, 4 vCPU, 32 GB RAM); at least 200 GB of gp3 storage for the foundation, the Git cache and 20 checkpoints (about 0.5 GB each). Train only after the owner decisions in `data/garden/seed_v6/cohort/OWNER_DECISION.md`; without them the authorized data is the Garden v5 set.
+
+**1. Code, environment, foundation pin.**
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && git log --oneline -1 && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+nvidia-smi --query-gpu=name,memory.total --format=csv
+python -m sentinel.foundation
+```
+
+**2. Materialize the authorized records only and check their integrity.** `materialize` rebuilds every training-approved record from its pinned upstream commit (and, if approved, the CodeQL tests from the pinned revision) and refuses any content or supervision hash that differs from the committed manifest.
+
+```bash
+python -m sentinel.garden check --config configs/garden/seed_v6.yaml
+python -m sentinel.garden materialize --config configs/garden/seed_v6.yaml
+cd artifacts/garden/seed_v6 && sha256sum -c SHA256SUMS && cd ~/quantum-sentinel-alpha
+python -m sentinel.garden materialize-eval --config configs/garden/seed_v6.yaml
+cd artifacts/garden/seed_v6 && sha256sum -c SHA256SUMS.evaluation && cd ~/quantum-sentinel-alpha
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6.yaml --dry-run --check-tokens
+```
+
+The dry run must report the example and token counts of `docs/TRAINING_V6.md` (or the counts after the owner's decisions). Stop if it refuses a record.
+
+**3. Baseline evaluation of the foundation** (before training, on the development set and the regression suite):
+
+```bash
+REV=489cb97981b8654bcfcf30ce1f94ed1b62e07b53; DEV=artifacts/garden/seed_v6/development; RUN=runs/train/qsa-qlora-ornith15-9b-v6
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --output runs/eval/dev-v6/runs/foundation.json
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/step-000200/adapter --output runs/eval/dev-v6/runs/v0-step-000200.json
+```
+
+**4. Fresh training** (new LoRA on the pinned foundation; never `init_adapter`):
+
+```bash
+nohup python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6.yaml > runs/train-v6.log 2>&1 &
+tail -f runs/train-v6.log
+```
+
+**5. Checkpoint selection, rule v2** (fixed on 2026-11-25, before any v6 result; `docs/EVALUATION.md`): eligible only with invalid rate ≤ 0.02, recall ≥ 0.30 and false-positive rate ≤ 0.20; then the highest decision accuracy. If no checkpoint is eligible, nothing is selected: report that, do not relax the rule.
+
+```bash
+for ckpt in $RUN/checkpoints/step-*; do python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter $ckpt/adapter --output runs/eval/dev-v6/runs/v6-$(basename $ckpt).json; done
+python -m sentinel.eval.select_checkpoint --rule 2 --devset $DEV/manifest.json runs/eval/dev-v6/runs/*.json --output runs/eval/dev-v6/selection.json
+SEL=$(python -c "import json; print(json.load(open('runs/eval/dev-v6/selection.json'))['selected_adapter'])"); echo $SEL
+python -m sentinel.garden analyze --config configs/garden/seed_v6.yaml --output runs/eval/dev-v6/analysis.json --runs runs/eval/dev-v6/runs/*.json --cases $DEV/dev.eval_cases.jsonl
+```
+
+Regression check of `$SEL` as in § 12. Then, once, the final test; `final_test` and the previous holdout are reported separately (the previous holdout is untouched only if § 12's holdout runs were never made):
+
+```bash
+for SET in final_test holdout_reserved; do
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v6/$SET.eval_cases.jsonl --output runs/eval/$SET-v6/foundation.json
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v6/$SET.eval_cases.jsonl --adapter $SEL --output runs/eval/$SET-v6/selected.json
+  python -m sentinel.eval.compare runs/eval/$SET-v6/foundation.json runs/eval/$SET-v6/selected.json
+done
+```
+
+Function-level results only: never combine them with a repository-level benchmark score (`docs/GARDEN_V6.md` § Evaluation).
+
+**6. Backup before terminating the instance** (§ 11): adapters and metadata only, never case files, model weights of the foundation or Garden exports with code.
+
+```bash
+STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+tar czf ~/qsa-v6-results-$STAMP.tgz runs/eval/dev-v6 runs/eval/final_test-v6 runs/eval/holdout_reserved-v6 \
+  $RUN/run.json $RUN/checkpoints/*/provenance.json $RUN/checkpoints/*/checksums.json runs/train-v6.log
+tar czf ~/qsa-v6-adapters-$STAMP.tgz $RUN/checkpoints/*/adapter $RUN/adapter 2>/dev/null
+sha256sum ~/qsa-v6-*-$STAMP.tgz > ~/qsa-v6-$STAMP.SHA256SUMS
+aws s3 cp ~/qsa-v6-results-$STAMP.tgz s3://<private-bucket>/qsa/v6/ && aws s3 cp ~/qsa-v6-adapters-$STAMP.tgz s3://<private-bucket>/qsa/v6/ && aws s3 cp ~/qsa-v6-$STAMP.SHA256SUMS s3://<private-bucket>/qsa/v6/
+```
+
+The adapters stay private (no publication of weights). Verify both archives against the checksum file on the destination before terminating the instance (§ 11); `runs/` is Git-ignored and nothing from it is committed.

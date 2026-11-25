@@ -67,6 +67,10 @@ def repository_bucket(repository_key: str, settings: SplitSettings) -> str:
 
 def assign_split(record: dict[str, Any], settings: SplitSettings) -> str:
     bucket = repository_bucket(record["provenance"]["repository_key"], settings)
+    if record["provenance"].get("source_kind") == "tool_test":
+        # Garden v6: a rule's test fixture is no real-world vulnerability; its date is the pinned test-suite
+        # revision, not a fix date, so the temporal cutoff does not apply (the repository bucket still does)
+        return bucket
     after_cutoff = parse_time(record["provenance"]["fix_committed_at"]) >= parse_time(settings.temporal_cutoff)
     if after_cutoff and bucket in {"train", "validation"}:
         return "temporal_quarantine"
@@ -82,7 +86,8 @@ def check_split_invariants(records: list[dict[str, Any]], settings: SplitSetting
         split = record["split"]
         if split in {"train", "validation", "holdout_reserved"}:
             repos.setdefault(record["provenance"]["repository_key"], set()).add(split)
-        if split in {"train", "validation"} and parse_time(record["provenance"]["fix_committed_at"]) >= cutoff:
+        tool_test = record["provenance"].get("source_kind") == "tool_test"
+        if split in {"train", "validation"} and not tool_test and parse_time(record["provenance"]["fix_committed_at"]) >= cutoff:
             problems.append(f"{record['record_id']}: {split} record after temporal cutoff")
     for repo, splits in sorted(repos.items()):
         if len(splits) > 1:
