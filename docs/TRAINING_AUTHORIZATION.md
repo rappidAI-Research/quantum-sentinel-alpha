@@ -99,3 +99,30 @@ Result (verified):
   excluded by the loader rule; the approvals themselves are unchanged.
 - `python -m sentinel.train --dry-run` passes.
 - Every approved repository's records were re-inspected at the new v3 revisions; all remain clean.
+
+## Decision of 2026-11-25 (Garden v5)
+
+Decided by Jonas Cikemgil (project owner), who gave all approvals the Garden v5 report asked for (`docs/GARDEN_V5.md`, `data/garden/seed_v5/cohort/OWNER_DECISION.md`). The AI engineering assistant prepared the entries; it is not a reviewer.
+
+1. **Sources** (`data/registry.yaml`): the approval of the three sources is extended from the Garden v3 candidate list to the **Garden v5 candidate list** (candidates sha256 `af72c35d…`). That list is the v3 list (byte-identical) plus 377 pull-request fixes resolved to their merge commit and 599 advisories over the former repository cap. `configs/garden/seed_v5.yaml` → `governance.source_approval_covers` names this list.
+2. **Repositories** (`data/garden/approvals.yaml`): **85 repositories**, inspected at every used revision like the earlier cohorts:
+   - 62 tier A `recommended` (MIT, Apache-2.0, BSD, ISC);
+   - 23 tier B `extension` (formal questions only, including 3 Unlicense).
+
+   Each approval is bound to the sha256 of the recorded license file.
+3. **Not covered by this decision:**
+   - **The defended-sibling negative kind** (`governance.validated_negative_kinds` stays empty). It needs an independent human review of its sample: a permission cannot establish that a label is correct. That review is the owner's own quality requirement for these examples.
+   - **The independent human review** of the 80 packages, which can only be done by a person.
+   - Repositories that were not recommended:
+     - clarification cases;
+     - tier B with substantive questions;
+     - copyleft, no license or unknown license;
+     - license files that differ from the approved one at some revision (9 records).
+
+Result (verified):
+- `curate` gives **1,741 training-approved records** from 605 repositories.
+- That is **2,249 training examples** (1,600 detection + 649 patch) and 198 validation examples.
+- 192,708 supervised tokens per epoch; 0 examples dropped at 4,096 tokens.
+- `python -m sentinel.train --config configs/train/qlora_ornith15_9b_v5.yaml --dry-run --check-tokens` passes.
+- `materialize` rebuilds exactly these records.
+- Holdout, temporal-quarantine and development records stay excluded by the gate and the evaluation roles.

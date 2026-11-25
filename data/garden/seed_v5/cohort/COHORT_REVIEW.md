@@ -5,7 +5,7 @@ approval templates (not loadable) in `proposed_approvals.yaml`. This is an engin
 summary, not a legal opinion. The method and the open legal questions are in
 `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`.
 
-Manifest sha256 `55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2`; review queue sha256 `7c06498caf8967263f42321dad46d9a3495cb8de37e00f3213b3bb84727485f4`.
+Manifest sha256 `407f32b0c585f3534cc5b0c273f4c7353c492b745b5a5670e95dddf1f9473716`; review queue sha256 `7c06498caf8967263f42321dad46d9a3495cb8de37e00f3213b3bb84727485f4`.
 
 ## Decision groups
 

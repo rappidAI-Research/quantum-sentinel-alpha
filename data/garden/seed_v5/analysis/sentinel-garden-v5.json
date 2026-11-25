@@ -2037,199 +2037,199 @@
   },
   "training_approved": {
     "by_decision": {
-      "abstain": 185,
-      "finding": 672,
-      "no_finding": 610
+      "abstain": 211,
+      "finding": 804,
+      "no_finding": 726
     },
     "by_language": {
-      "go": 414,
-      "javascript": 428,
-      "python": 399,
-      "typescript": 226
+      "go": 475,
+      "javascript": 504,
+      "python": 510,
+      "typescript": 252
     },
-    "coarse_or_multi_cwe_findings": 195,
-    "commit_chain_findings": 1,
+    "coarse_or_multi_cwe_findings": 220,
+    "commit_chain_findings": 5,
     "context_mentions_unshown_callee": {
       "abstain": 1.0,
-      "finding": 0.354,
-      "no_finding": 0.348
+      "finding": 0.362,
+      "no_finding": 0.361
     },
-    "distinct_finding_cwes": 132,
+    "distinct_finding_cwes": 145,
     "excerpt_lines": {
       "abstain": {
         "max": 149,
-        "median": 22,
-        "n": 185,
-        "p90": 88
+        "median": 21,
+        "n": 211,
+        "p90": 81
       },
       "finding": {
-        "max": 146,
-        "median": 25.0,
-        "n": 672,
-        "p90": 88
+        "max": 165,
+        "median": 27.0,
+        "n": 804,
+        "p90": 87
       },
       "no_finding": {
         "max": 155,
-        "median": 29.0,
-        "n": 610,
-        "p90": 95
+        "median": 30.0,
+        "n": 726,
+        "p90": 89
       }
     },
     "findings_by_family": {
-      "authn_authz": 73,
-      "code_injection": 23,
-      "command_injection": 37,
-      "crypto_tls_integrity": 29,
-      "deserialization_input_validation": 52,
-      "information_exposure": 45,
-      "other": 70,
-      "path_traversal": 79,
-      "prototype_pollution": 58,
-      "redirect_ssrf": 32,
-      "resource_limits_redos": 96,
-      "sql_injection": 10,
-      "xss_output_encoding": 68
+      "authn_authz": 88,
+      "code_injection": 25,
+      "command_injection": 51,
+      "crypto_tls_integrity": 31,
+      "deserialization_input_validation": 57,
+      "information_exposure": 49,
+      "other": 91,
+      "path_traversal": 95,
+      "prototype_pollution": 65,
+      "redirect_ssrf": 37,
+      "resource_limits_redos": 116,
+      "sql_injection": 14,
+      "xss_output_encoding": 85
     },
     "findings_by_language_and_family": {
       "go": {
-        "authn_authz": 34,
+        "authn_authz": 41,
         "code_injection": 2,
-        "command_injection": 6,
+        "command_injection": 7,
         "crypto_tls_integrity": 13,
         "deserialization_input_validation": 10,
-        "information_exposure": 16,
-        "other": 23,
-        "path_traversal": 24,
-        "redirect_ssrf": 10,
-        "resource_limits_redos": 30,
+        "information_exposure": 17,
+        "other": 26,
+        "path_traversal": 28,
+        "redirect_ssrf": 11,
+        "resource_limits_redos": 36,
         "sql_injection": 4,
-        "xss_output_encoding": 8
+        "xss_output_encoding": 12
       },
       "javascript": {
-        "authn_authz": 12,
-        "code_injection": 10,
-        "command_injection": 14,
-        "crypto_tls_integrity": 4,
-        "deserialization_input_validation": 16,
-        "information_exposure": 6,
-        "other": 9,
-        "path_traversal": 14,
-        "prototype_pollution": 40,
+        "authn_authz": 13,
+        "code_injection": 11,
+        "command_injection": 22,
+        "crypto_tls_integrity": 5,
+        "deserialization_input_validation": 17,
+        "information_exposure": 7,
+        "other": 11,
+        "path_traversal": 15,
+        "prototype_pollution": 45,
         "redirect_ssrf": 8,
-        "resource_limits_redos": 36,
-        "sql_injection": 2,
-        "xss_output_encoding": 35
+        "resource_limits_redos": 44,
+        "sql_injection": 5,
+        "xss_output_encoding": 41
       },
       "python": {
-        "authn_authz": 18,
+        "authn_authz": 25,
         "code_injection": 8,
-        "command_injection": 11,
-        "crypto_tls_integrity": 10,
-        "deserialization_input_validation": 17,
-        "information_exposure": 20,
-        "other": 30,
-        "path_traversal": 32,
+        "command_injection": 15,
+        "crypto_tls_integrity": 11,
+        "deserialization_input_validation": 19,
+        "information_exposure": 22,
+        "other": 45,
+        "path_traversal": 42,
         "prototype_pollution": 1,
-        "redirect_ssrf": 7,
-        "resource_limits_redos": 17,
-        "sql_injection": 2,
-        "xss_output_encoding": 10
+        "redirect_ssrf": 10,
+        "resource_limits_redos": 21,
+        "sql_injection": 3,
+        "xss_output_encoding": 14
       },
       "typescript": {
         "authn_authz": 9,
-        "code_injection": 3,
-        "command_injection": 6,
+        "code_injection": 4,
+        "command_injection": 7,
         "crypto_tls_integrity": 2,
-        "deserialization_input_validation": 9,
+        "deserialization_input_validation": 11,
         "information_exposure": 3,
-        "other": 8,
-        "path_traversal": 9,
-        "prototype_pollution": 17,
-        "redirect_ssrf": 7,
-        "resource_limits_redos": 13,
+        "other": 9,
+        "path_traversal": 10,
+        "prototype_pollution": 19,
+        "redirect_ssrf": 8,
+        "resource_limits_redos": 15,
         "sql_injection": 2,
-        "xss_output_encoding": 15
+        "xss_output_encoding": 18
       }
     },
     "findings_top_cwes": {
-      "CWE-1321": 57,
-      "CWE-1333": 23,
-      "CWE-20": 24,
-      "CWE-200": 22,
-      "CWE-22": 69,
-      "CWE-287": 18,
-      "CWE-352": 10,
-      "CWE-400": 30,
-      "CWE-601": 23,
-      "CWE-77": 17,
-      "CWE-770": 10,
-      "CWE-78": 17,
-      "CWE-79": 61,
-      "CWE-89": 10,
-      "CWE-94": 19
+      "CWE-1321": 64,
+      "CWE-1333": 26,
+      "CWE-20": 27,
+      "CWE-200": 25,
+      "CWE-22": 83,
+      "CWE-287": 23,
+      "CWE-400": 35,
+      "CWE-601": 25,
+      "CWE-77": 24,
+      "CWE-770": 15,
+      "CWE-78": 24,
+      "CWE-79": 76,
+      "CWE-89": 14,
+      "CWE-918": 11,
+      "CWE-94": 21
     },
     "frameworks_in_imports": {
       "go": {
-        "crypto": 87,
-        "encoding/json": 101,
+        "crypto": 101,
+        "encoding/json": 105,
         "gin-gonic": 14,
-        "html/template": 15,
-        "k8s.io": 51,
-        "net/http": 162,
-        "os/exec": 19,
-        "path/filepath": 75
+        "html/template": 17,
+        "k8s.io": 57,
+        "net/http": 182,
+        "os/exec": 23,
+        "path/filepath": 89
       },
       "javascript": {
-        "child_process": 30,
-        "crypto": 7,
-        "express": 8,
-        "fs": 55,
+        "child_process": 44,
+        "crypto": 19,
+        "express": 10,
+        "fs": 72,
         "jsonwebtoken": 7,
-        "lodash": 25,
-        "path": 69,
-        "url": 26
+        "lodash": 27,
+        "path": 76,
+        "url": 30
       },
       "python": {
-        "django": 41,
-        "flask": 23,
-        "requests": 19,
-        "sqlalchemy": 19,
-        "subprocess": 39,
+        "django": 46,
+        "flask": 35,
+        "requests": 28,
+        "sqlalchemy": 23,
+        "subprocess": 47,
         "tornado": 18,
-        "urllib": 62,
-        "werkzeug": 15
+        "urllib": 80,
+        "werkzeug": 19
       },
       "typescript": {
-        "child_process": 8,
-        "crypto": 13,
+        "child_process": 13,
+        "crypto": 15,
         "express": 11,
-        "fs": 26,
+        "fs": 31,
         "lodash": 4,
-        "path": 34,
+        "path": 39,
         "react": 4,
-        "url": 12
+        "url": 16
       }
     },
-    "multi_function_findings": 8,
-    "records": 1467,
+    "multi_function_findings": 31,
+    "records": 1741,
     "records_per_repository": {
-      "max": 13,
-      "median": 2.0,
-      "n": 530,
+      "max": 24,
+      "median": 2,
+      "n": 605,
       "p90": 4
     },
-    "repositories": 530,
+    "repositories": 605,
     "span_kind": {
-      "changed_lines": 421,
-      "insertion_point": 189,
-      "mixed": 62
+      "changed_lines": 507,
+      "insertion_point": 221,
+      "mixed": 76
     },
     "span_lines": {
       "max": 39,
       "median": 2.0,
-      "n": 672,
+      "n": 804,
       "p90": 8
     },
-    "top10_repository_share": 0.08
+    "top10_repository_share": 0.086
   }
 }

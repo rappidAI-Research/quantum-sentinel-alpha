@@ -357,7 +357,7 @@
     }
   },
   "candidates_sha256": "af72c35dfc220aa1406aac7571156bcd7262234bb541951d81bd8962f8d479bf",
-  "config_sha256": "da045c3fb45a928182a22274d1dc5f7e9c27c26c29d9035dbc44e858cc866355",
+  "config_sha256": "57d4553ff2b50a4063ac1da2bc9dc7223618829ae6b778389316051bfaee5fff",
   "dataset_id": "sentinel-garden-v5",
   "discovery": {
     "ecosystems": {
@@ -439,19 +439,18 @@
       "negative_kind_not_validated:defended_sibling": 30,
       "repository_approval_license_mismatch": 9,
       "repository_has_holdout_or_quarantine_records": 11,
-      "repository_not_reviewed": 2339,
-      "source_approval_not_extended": 310,
+      "repository_not_reviewed": 2082,
       "split:holdout_reserved": 462,
       "split:temporal_quarantine": 441
     },
     "by_approval_status": {
       "excluded": 2010,
-      "pending_review": 1354,
-      "training_approved": 1467
+      "pending_review": 1080,
+      "training_approved": 1741
     },
-    "training_approved": 1467
+    "training_approved": 1741
   },
-  "manifest_sha256": "55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2",
+  "manifest_sha256": "407f32b0c585f3534cc5b0c273f4c7353c492b745b5a5670e95dddf1f9473716",
   "pipeline_version": "3",
   "records": {
     "accepted": 3898,
