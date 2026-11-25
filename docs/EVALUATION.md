@@ -99,3 +99,18 @@ That set has now been used for a choice, and its failures inform Garden v4. It i
 - With 45 cases, `final_test` is small: one case moves a rate by 2 to 5 points.
 - If the v3 holdout was never evaluated, it is the stronger final test (431 cases). Please confirm whether § 12's holdout runs were made.
 - Both sets are public reservations like every Garden split. Their upstream fixes may predate the foundation's training data.
+
+## Garden v5 (2026-11-25)
+
+The roles are unchanged and are recomputed for v5.
+
+| Role | Cases |
+| --- | --- |
+| development (selection) | 163 (47 repositories; finding 78, no_finding 62, abstain 23; no SQL injection finding) |
+| `final_test` | 13 (6 repositories) |
+| `previous_holdout` | 453 (109 repositories) |
+| `temporal_quarantine` | 441 |
+
+**Final test.** `final_test` is too small for a conclusion: v4's 45 cases came mostly from combined excerpts that v5 rejects for lack of evidence. If the Garden v3 holdout was never evaluated, `previous_holdout` is the final test (all four languages, 12 CWE families, abstentions, patch cases). Until that is confirmed, report both separately.
+
+**Difficult negatives.** v5's defended siblings are split like every record. They are training data only after their kind is validated; evaluation-role siblings are evaluation cases either way.

@@ -495,7 +495,7 @@ def owner_decision(cohort: dict[str, Any]) -> str:
         (group, repo)
         for group, repos in (("A", cohort["repositories"]), ("B", cohort.get("extension_repositories", [])))
         for repo in repos
-        if str(repo.get("decision_group", "")).startswith("recommended") and repo["repository_key"] not in approved
+        if str(repo.get("decision_group", "")).startswith(("recommended", "extension:")) and repo["repository_key"] not in approved
     ]
     records = sum(len(repo["record_ids"]) for _, repo in rows)
     lines = [
