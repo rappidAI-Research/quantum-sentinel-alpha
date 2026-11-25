@@ -1,12 +1,37 @@
 # Quantum Sentinel Alpha Status
 
-Last updated: 2026-11-24
+Last updated: 2026-11-25
 
 ## Current phase
 
 Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (PR #13) and the **Ornith-1.5-9B foundation integration** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,464 training-approved records from 533 repositories, i.e. 1,871 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained. The training foundation is now **`ornith-ai/Ornith-1.5-9B@489cb97…`** (docs/FOUNDATION.md), integrated and checked offline against its real files; the GPU procedure is docs/GPU_RUNBOOK.md.
 
 ## Completed
+
+### Sentinel Garden v4 and second training phase readiness (2026-11-25)
+
+- **Development result of the first run:** rule v1 selected `step-000200` (decision accuracy 63.2 %, recall 34.9 %, strict recall 12.7 %, FPR 14.8 %, abstention recall 100 %). Alpha is not ready for release.
+- **Measured v3 weaknesses** (`docs/GARDEN_V4.md` § 1):
+  - an abstention-only context sentence (100 % / 0 %) that a rule can match;
+  - multi-block excerpts that were always hard negatives;
+  - hard negatives that are only post-fix twins;
+  - thin CWE families.
+  - The per-case development artifacts are on the GPU machine; they are requested for the error analysis.
+- **Garden v4** (`docs/GARDEN_V4.md`):
+  - same frozen candidate list, so no new source authorization;
+  - 346 recovered fix groups (multi-function fixes in one file, contiguous commit chains);
+  - context notes on every record kind;
+  - stricter cross-split leakage checks (forks, copied fixes, contained excerpts);
+  - evaluation roles: the v3 development set is retired; a fresh development set (176 cases, 59 repositories); a final test set no version exported before (45 cases).
+  - Contamination audit against every evaluation set of v1–v4: 0 shared identities or near-duplicates; 10 records share a package with the temporal quarantine, by design.
+  - **Training-approved: 1,524 records (v3: 1,464)**, i.e. 1,943 train / 200 validation examples.
+  - Rights review queue: 1,417 accepted records wait for the owner; 128 repositories with 342 records are decision-ready (2,440 train examples if approved).
+  - Independent human review package: 80 items, decisions pending.
+- **Training (not run)** (`docs/TRAINING_V4.md`):
+  - A continues from `step-000200` with a new optimizer and schedule (1 epoch, LR 5e-5);
+  - B is a fresh adapter on v4 (2 epochs, LR 1e-4).
+  - Both are bound and checked offline. Selection: rule v1 across both runs on the v4 development set.
+  - GPU commands: `docs/GPU_RUNBOOK.md` § 13.
 
 ### First QLoRA run and post-training evaluation (2026-11-24)
 

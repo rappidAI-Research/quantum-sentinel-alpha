@@ -25,7 +25,7 @@ from typing import Any, Callable
 from sentinel.eval.patch import PATCH_PROMPT_VERSION
 from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.hf_revision import reset_cuda_peak_memory
-from sentinel.train.config import TrainConfig, matching_modules
+from sentinel.train.config import PROJECT_ROOT, TrainConfig, matching_modules
 from sentinel.train.data import EncodedExample, TrainingData, batches, encode_all, pad_batch
 
 RUN_VERSION = "2"  # 2: checksummed checkpoints loaded with weights_only, window-mean loss, task mix recorded
@@ -185,15 +185,18 @@ def accumulation_window(index: int, micro_batches: int, accumulation_steps: int)
     return min(accumulation_steps, micro_batches - start)
 
 
-def checkpoint_provenance(config: TrainConfig, data: TrainingData) -> dict[str, Any]:
+def checkpoint_provenance(config: TrainConfig, data: TrainingData, init_adapter: dict[str, Any] | None = None) -> dict[str, Any]:
     """What a checkpoint was trained on. Resuming is only allowed with exactly the same inputs."""
-    return {
+    provenance = {
         "base_model": config.model_id,
         "base_revision": config.revision,
         "config_sha256": config.sha256,
         "data_sha256": data.sha256,
         "record_ids_sha256": hashlib.sha256("\n".join(data.record_ids).encode("utf-8")).hexdigest(),
     }
+    if init_adapter is not None:  # a continued run: its checkpoints descend from this adapter
+        provenance["init_adapter_weights_sha256"] = init_adapter["weights_sha256"]
+    return provenance
 
 
 CHECKSUMS = "checksums.json"
@@ -230,6 +233,81 @@ def check_resume_provenance(path: Path, expected: dict[str, Any]) -> None:
             f"cannot resume from {path}: it was trained with different {', '.join(changed)} "
             "(the training data or configuration changed; start a new run in a new output directory)"
         )
+
+
+class InitAdapterMismatch(RuntimeError):
+    pass
+
+
+def check_init_adapter(config: TrainConfig, project_root: Path) -> dict[str, Any]:
+    """Pure checks of the configured initial adapter (no torch); raises InitAdapterMismatch.
+
+    The checkpoint must be unmodified (its checksums.json), written by the run the config names
+    (provenance: pinned foundation, `source_config_sha256`, `source_data_sha256`), at `step`, and its
+    LoRA shape must equal this config's, so the new LoRA modules receive every tensor unchanged."""
+    settings = config.init_adapter
+    assert settings is not None
+    path = project_root / settings.checkpoint
+    if not path.is_dir():
+        raise InitAdapterMismatch(f"initial adapter checkpoint {path} does not exist")
+    try:
+        verify_checkpoint_files(path)
+    except RuntimeError as exc:
+        raise InitAdapterMismatch(str(exc)) from exc
+    provenance = json.loads((path / "provenance.json").read_text(encoding="utf-8"))
+    expected = {
+        "base_model": config.model_id,
+        "base_revision": config.revision,
+        "config_sha256": settings.source_config_sha256,
+        "data_sha256": settings.source_data_sha256,
+    }
+    changed = sorted(k for k, v in expected.items() if provenance.get(k) != v)
+    if changed:
+        raise InitAdapterMismatch(f"{path} was not written by the configured source run ({', '.join(changed)} differ)")
+    step = json.loads((path / "state.json").read_text(encoding="utf-8")).get("step")
+    if step != settings.step:
+        raise InitAdapterMismatch(f"{path} is at step {step}, expected {settings.step}")
+    adapter_config = json.loads((path / "adapter" / "adapter_config.json").read_text(encoding="utf-8"))
+    shape = {
+        "base_model_name_or_path": config.model_id,
+        "revision": config.revision,
+        "r": config.lora.rank,
+        "lora_alpha": config.lora.alpha,
+        "target_modules": config.lora.target_modules,
+    }
+    differs = sorted(k for k, v in shape.items() if adapter_config.get(k) != v)
+    if differs:
+        raise InitAdapterMismatch(f"initial adapter LoRA settings differ from this config: {', '.join(differs)}")
+    weights = path / "adapter" / "adapter_model.safetensors"
+    return {
+        "checkpoint": settings.checkpoint,
+        "step": step,
+        "weights_sha256": hashlib.sha256(weights.read_bytes()).hexdigest(),
+        "adapter_config_sha256": hashlib.sha256((path / "adapter" / "adapter_config.json").read_bytes()).hexdigest(),
+        "source_run": provenance,
+    }
+
+
+def load_init_adapter(model: Any, config: TrainConfig, project_root: Path) -> dict[str, Any]:
+    """Load the checked initial adapter into the fresh LoRA modules and prove every tensor arrived.
+
+    Only adapter weights are taken: the optimizer, scheduler and RNG state of the source checkpoint
+    are not loaded, so training continues with the new run's optimizer and learning-rate schedule."""
+    import torch
+    from peft import get_peft_model_state_dict, set_peft_model_state_dict
+    from safetensors.torch import load_file
+
+    info = check_init_adapter(config, project_root)
+    weights = load_file(str(project_root / config.init_adapter.checkpoint / "adapter" / "adapter_model.safetensors"))  # type: ignore[union-attr]
+    set_peft_model_state_dict(model, weights)
+    loaded = get_peft_model_state_dict(model)
+    if set(loaded) != set(weights):
+        missing, extra = sorted(set(weights) - set(loaded)), sorted(set(loaded) - set(weights))
+        raise InitAdapterMismatch(f"initial adapter tensors do not match the LoRA modules (missing {missing[:3]}, extra {extra[:3]})")
+    different = [k for k in weights if not torch.equal(loaded[k].detach().to("cpu", weights[k].dtype), weights[k])]
+    if different:
+        raise InitAdapterMismatch(f"{len(different)} initial adapter tensors were not loaded exactly (first: {different[0]})")
+    return {**info, "tensors": len(weights), "parameters": sum(t.numel() for t in weights.values())}
 
 
 def save_checkpoint(model: Any, optimizer: Any, scheduler: Any, state: RunState, output_dir: Path, keep: int, provenance: dict[str, Any]) -> Path:
@@ -403,6 +481,14 @@ def train(
         model, targets = apply_lora(base, config, config.training.gradient_checkpointing)
         trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
         run["lora"] = {"target_modules": len(targets), "trainable_parameters": trainable}
+        init_adapter = None
+        if config.init_adapter is not None and not resume:
+            init_adapter = load_init_adapter(model, config, project_root or PROJECT_ROOT)
+            run["init_adapter"] = init_adapter
+            log(f"initial adapter {init_adapter['checkpoint']} loaded ({init_adapter['tensors']} tensors); new optimizer and schedule")
+        elif config.init_adapter is not None:
+            init_adapter = check_init_adapter(config, project_root or PROJECT_ROOT)  # resume: weights come from the run's own checkpoint
+            run["init_adapter"] = init_adapter
 
         micro_batches_per_epoch = math.ceil(len(train_examples) / config.training.micro_batch_size)
         steps_per_epoch = math.ceil(micro_batches_per_epoch / config.training.gradient_accumulation_steps)
@@ -416,7 +502,7 @@ def train(
         )
         scheduler = get_cosine_schedule_with_warmup(optimizer, int(total_steps * config.training.warmup_ratio), total_steps)
 
-        provenance = checkpoint_provenance(config, data)
+        provenance = checkpoint_provenance(config, data, init_adapter)
         if resume:
             checkpoints = _checkpoints(output_dir)
             if not checkpoints:

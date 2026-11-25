@@ -76,6 +76,15 @@ def main(argv: list[str] | None = None) -> int:
         except ValueError as exc:
             print(f"refused (tokenization): {exc}", file=sys.stderr)
             return 1
+    if config.init_adapter is not None:
+        from sentinel.train.trainer import InitAdapterMismatch, check_init_adapter
+
+        try:
+            info = check_init_adapter(config, PROJECT_ROOT)
+        except InitAdapterMismatch as exc:
+            print(f"refused (initial adapter): {exc}", file=sys.stderr)
+            return 2
+        print(f"initial adapter {info['checkpoint']} (step {info['step']}, weights sha256 {info['weights_sha256'][:12]}); new optimizer and schedule")
     if args.dry_run:
         print("dry run: configuration, governance and data checks passed; no model loaded")
         return 0

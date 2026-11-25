@@ -1,0 +1,62 @@
+{
+  "ecosystems": {
+    "Go": {
+      "advisories_in_export": 5067,
+      "inspected": 5067,
+      "outcomes": {
+        "candidate": 2123,
+        "candidate_multi_commit": 288,
+        "cwe_not_localizable": 163,
+        "duplicate_fix_commit": 195,
+        "multiple_fix_commits": 51,
+        "no_cwe": 152,
+        "no_fix_commit": 1775,
+        "published_after_snapshot": 3,
+        "repository_cap": 283,
+        "short_commit_reference": 4,
+        "too_many_cwes": 173,
+        "withdrawn": 145
+      }
+    },
+    "PyPI": {
+      "advisories_in_export": 6813,
+      "inspected": 6813,
+      "outcomes": {
+        "candidate": 2652,
+        "candidate_multi_commit": 402,
+        "cwe_not_localizable": 106,
+        "duplicate_fix_commit": 298,
+        "multiple_fix_commits": 50,
+        "no_cwe": 216,
+        "no_fix_commit": 2081,
+        "published_after_snapshot": 1,
+        "repository_cap": 942,
+        "short_commit_reference": 24,
+        "too_many_cwes": 193,
+        "withdrawn": 250
+      }
+    },
+    "npm": {
+      "advisories_in_export": 8079,
+      "inspected": 8079,
+      "outcomes": {
+        "candidate": 2976,
+        "candidate_multi_commit": 438,
+        "cwe_not_localizable": 97,
+        "duplicate_fix_commit": 268,
+        "multiple_fix_commits": 48,
+        "no_cwe": 181,
+        "no_fix_commit": 3178,
+        "published_after_snapshot": 5,
+        "repository_cap": 666,
+        "short_commit_reference": 12,
+        "too_many_cwes": 235,
+        "withdrawn": 413
+      }
+    }
+  },
+  "frozen_candidates": {
+    "path": "data/garden/seed_v3/candidates.jsonl",
+    "sha256": "535494cb12bb20a54ff2e3b1bffbcd51a5f9f557b3f2827fdcc735f8f5927061"
+  }
+}

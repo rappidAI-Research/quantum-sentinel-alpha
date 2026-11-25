@@ -17,6 +17,8 @@ DEFAULT_TRAIN_CONFIG = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b.y
 # Every linear module of the pinned foundation (scripts/inspect_foundation.py); the LoRA regex is checked against it.
 LINEAR_MODULES = PROJECT_ROOT / "configs" / "train" / "ornith15_9b_linear_modules.txt"
 TOP_KEYS = {"schema_version", "run_name", "foundation", "data", "quantization", "lora", "training", "output_dir"}
+OPTIONAL_TOP_KEYS = {"init_adapter"}
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
 class ConfigError(ValueError):
@@ -66,6 +68,20 @@ class TrainingSettings:
 
 
 @dataclass(frozen=True)
+class InitAdapterSettings:
+    """Continue from an earlier run's checkpoint adapter with a NEW optimizer and schedule (approach A).
+
+    The checkpoint is bound to the run that wrote it: its provenance must name the pinned foundation and
+    exactly `source_config_sha256` / `source_data_sha256`, its state must be at `step`, and its LoRA
+    shape must equal this config's `lora` section (sentinel/train/trainer.py `check_init_adapter`)."""
+
+    checkpoint: str  # runs/.../checkpoints/step-NNNNNN (Git-ignored)
+    step: int
+    source_config_sha256: str
+    source_data_sha256: str
+
+
+@dataclass(frozen=True)
 class TrainConfig:
     path: Path
     sha256: str
@@ -77,9 +93,12 @@ class TrainConfig:
     lora: LoraSettings
     training: TrainingSettings
     output_dir: Path
+    init_adapter: InitAdapterSettings | None = None
 
     def as_dict(self) -> dict[str, Any]:
+        extra = {"init_adapter": asdict(self.init_adapter)} if self.init_adapter else {}
         return {
+            **extra,
             "run_name": self.run_name,
             "model_id": self.model_id,
             "revision": self.revision,
@@ -103,8 +122,8 @@ def _section(document: dict[str, Any], name: str, cls: type) -> Any:
 def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
     data = path.read_bytes()
     document = yaml.safe_load(data)
-    if not isinstance(document, dict) or set(document) != TOP_KEYS:
-        raise ConfigError(f"training config must define exactly {sorted(TOP_KEYS)}")
+    if not isinstance(document, dict) or not TOP_KEYS <= set(document) <= TOP_KEYS | OPTIONAL_TOP_KEYS:
+        raise ConfigError(f"training config must define exactly {sorted(TOP_KEYS)} (optional: {sorted(OPTIONAL_TOP_KEYS)})")
     if document["schema_version"] != "1.0":
         raise ConfigError("unsupported training config schema_version")
     foundation = load_foundation(PROJECT_ROOT / document["foundation"])
@@ -137,6 +156,14 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
         raise ConfigError("training.warmup_ratio must be in [0, 1) and max_grad_norm positive")
     if training.max_steps is not None and training.max_steps <= 0:
         raise ConfigError("training.max_steps must be null or positive")
+    init_adapter = _section(document, "init_adapter", InitAdapterSettings) if "init_adapter" in document else None
+    if init_adapter is not None:
+        if not str(init_adapter.checkpoint).startswith("runs/") or not re.search(r"/checkpoints/step-\d{6}$", init_adapter.checkpoint):
+            raise ConfigError("init_adapter.checkpoint must be a runs/.../checkpoints/step-NNNNNN directory")
+        if init_adapter.step <= 0 or not all(_SHA256.match(str(v)) for v in (init_adapter.source_config_sha256, init_adapter.source_data_sha256)):
+            raise ConfigError("init_adapter.step must be positive and the source hashes 64 lower-case hex characters")
+        if int(init_adapter.checkpoint[-6:]) != init_adapter.step:
+            raise ConfigError("init_adapter.step does not match the checkpoint directory name")
     output_dir = PROJECT_ROOT / document["output_dir"]
     if not str(document["output_dir"]).startswith(("runs/", "artifacts/")):
         raise ConfigError("output_dir must be under the Git-ignored runs/ or artifacts/ directory")
@@ -152,6 +179,7 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
         lora=lora,
         training=training,
         output_dir=output_dir,
+        init_adapter=init_adapter,
     )
 
 

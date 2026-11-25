@@ -71,3 +71,31 @@ An adapter evaluation records three separate checks:
 - **Checkpoint files:** a checkpoint adapter must match its checkpoint's `checksums.json`.
 
 Any failure keeps the run non-reportable. The combined `parameter_dtypes` is still recorded.
+
+## Garden v4: fresh development and final test sets (2026-11-25)
+
+Results so far (reported by the GPU session):
+- Rule v1 selected `step-000200` on the v3 development set: decision accuracy 63.2 %, precision 73.3 %, recall 34.9 %, F1 47.3 %, strict recall 12.7 %, FPR 14.8 %, abstention recall 100 %, invalid 0 %.
+- With 63 finding, 54 no_finding and 16 abstain cases, these rates are exactly: 22 of 63 findings detected (8 of them strictly), 8 false positives, 46 hard negatives correct and 16 of 16 abstentions.
+- How the 41 missed findings split between `no_finding` and `abstain` is not known without the run artifacts (`runs/eval/dev/step-000200.json`).
+
+That set has now been used for a choice, and its failures inform Garden v4. It is therefore **retired**: from v4 on it serves only for the validation loss, never for a selection. Garden v4 gives every record an `evaluation_role` (`sentinel/garden/pipeline.py`; frozen split policy unchanged, no repository moves):
+
+| Role | What | v4 accepted records | Used for |
+| --- | --- | ---: | --- |
+| `training` | train split | 2,811 | training (after approval) |
+| `retired_development` | validation repositories of the v3 development set | 142 | validation loss only |
+| `development` | the other validation repositories (never evaluated) | 176 (59 repositories: finding 87, no_finding 66, abstain 23) | **v4 checkpoint selection**; excluded from training exports whatever their approvals |
+| `previous_holdout` | holdout repositories whose cases v1-v3 exported | 431 | final test, reported separately; untouched only if § 12's holdout runs were never made |
+| `final_test` | holdout repositories no version exported before | 45 (23 repositories: finding 24, no_finding 21) | **final test**, once |
+| `temporal_quarantine` | post-cutoff fixes of train/validation repositories | 442 | reported separately; not repository-disjoint |
+
+- The development set is written in the format of `sentinel.eval.devset` (`artifacts/garden/seed_v4/development/manifest.json`). `select_checkpoint` therefore accepts it unchanged, and still refuses every other case set.
+- Checkpoints of several training runs are compared under rule v1 together. They are labelled `<run>/step-NNNNNN`. The final weights for the case-level comparison are those of the selected checkpoint's run.
+- The training loader refuses any record whose role is not `training` or `retired_development`.
+- `check` recomputes every role from the split and the earlier manifests.
+
+**Limits:**
+- With 45 cases, `final_test` is small: one case moves a rate by 2 to 5 points.
+- If the v3 holdout was never evaluated, it is the stronger final test (431 cases). Please confirm whether § 12's holdout runs were made.
+- Both sets are public reservations like every Garden split. Their upstream fixes may predate the foundation's training data.
