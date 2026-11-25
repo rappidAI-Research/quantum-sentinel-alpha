@@ -229,6 +229,8 @@ Save `runs/eval/` and `runs/devset/manifest.json` together with the training out
 
 ## 13. Garden v4: diagnosis, training (A and B), selection, final test (**GPU**)
 
+> **Superseded by § 14** (owner decision of 2026-11-25: fresh training on Garden v5 only; the continuation config was removed). Step 1 (the diagnosis of `step-000200`) remains useful and can be run on the v5 development set instead.
+
 Data and roles: `docs/GARDEN_V4.md`. Approaches and settings: `docs/TRAINING_V4.md`. Selection: `docs/EVALUATION.md`. Keep the first run's outputs (`runs/train/qsa-qlora-ornith15-9b-v0/`, including `checkpoints/step-000200`) in place: approach A starts from them and refuses a modified checkpoint.
 
 Update, install, offline checks:
@@ -297,3 +299,42 @@ done
 ```
 
 Save `runs/eval/` and both training runs' `run.json` and `checkpoints/*/provenance.json` with the outputs (§ 11). Do not save case files or records: they contain upstream code.
+
+## 14. Garden v5: fresh training, selection, final test (**GPU**)
+
+Data: `docs/GARDEN_V5.md`. Settings: `docs/TRAINING_V5.md`. Train only after the approval decisions in `docs/GARDEN_V5.md` § Summary (otherwise the data is almost the first run's).
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && git log --oneline -1 && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+python -m sentinel.foundation
+python -m sentinel.garden materialize --config configs/garden/seed_v5.yaml
+cd artifacts/garden/seed_v5 && sha256sum -c SHA256SUMS && cd ~/quantum-sentinel-alpha
+python -m sentinel.garden materialize-eval --config configs/garden/seed_v5.yaml
+cd artifacts/garden/seed_v5 && sha256sum -c SHA256SUMS.evaluation && cd ~/quantum-sentinel-alpha
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v5.yaml --dry-run --check-tokens
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v5.yaml
+```
+
+Development evaluation of the foundation, the first run's `step-000200` (reference) and every v5 checkpoint, then rule v1:
+
+```bash
+REV=489cb97981b8654bcfcf30ce1f94ed1b62e07b53; DEV=artifacts/garden/seed_v5/development; RUN=runs/train/qsa-qlora-ornith15-9b-v5
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --output runs/eval/dev-v5/runs/foundation.json
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/step-000200/adapter --output runs/eval/dev-v5/runs/v0-step-000200.json
+for ckpt in $RUN/checkpoints/step-*; do python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter $ckpt/adapter --output runs/eval/dev-v5/runs/v5-$(basename $ckpt).json; done
+python -m sentinel.eval.select_checkpoint --devset $DEV/manifest.json runs/eval/dev-v5/runs/*.json --output runs/eval/dev-v5/selection.json
+SEL=$(python -c "import json; print(json.load(open('runs/eval/dev-v5/selection.json'))['selected_adapter'])"); echo $SEL
+python -m sentinel.garden analyze --config configs/garden/seed_v5.yaml --output runs/eval/dev-v5/analysis.json --runs runs/eval/dev-v5/runs/*.json --cases $DEV/dev.eval_cases.jsonl
+```
+
+Regression check of `$SEL` as in § 12 (new output files). Then, once, the final test, with the two sets reported separately:
+
+```bash
+for SET in final_test holdout_reserved; do
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v5/$SET.eval_cases.jsonl --output runs/eval/$SET-v5/foundation.json
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v5/$SET.eval_cases.jsonl --adapter $SEL --output runs/eval/$SET-v5/selected.json
+  python -m sentinel.eval.compare runs/eval/$SET-v5/foundation.json runs/eval/$SET-v5/selected.json
+done
+```
+
+Save `runs/eval/`, the run's `run.json` and the checkpoints' `provenance.json` (§ 11); never the case files.

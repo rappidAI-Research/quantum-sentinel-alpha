@@ -82,8 +82,13 @@ QUESTIONS: dict[str, dict[str, Any]] = {
         "allowed": {"yes", "no", "unclear"},
         "ask": "Without the withheld callee, is the right answer really `abstain` (safety cannot be decided from the excerpt and its context)?",
     },
+    "negative_safe": {
+        "items": {"negative"},
+        "allowed": {"yes", "no", "unclear"},
+        "ask": "Garden v5 defended sibling: is this unchanged function safe with respect to the advisory's weakness - does the named defence really protect the relevant data flow here (expected decision `no_finding`)?",
+    },
     "leakage_or_duplicate": {
-        "items": {"pair", "abstention"},
+        "items": {"pair", "abstention", "negative"},
         "allowed": {"none_seen", "suspected"},
         "ask": "Do you recognise this code as copied from another project or as part of a public benchmark? (Optional search.)",
     },
@@ -96,6 +101,7 @@ def _order(key: str) -> str:
 
 
 NEW_EXTRACTION_PAIRS_PER_LANGUAGE = 4
+NEGATIVES_PER_LANGUAGE = 6  # Garden v5: the defended-sibling kind is trained only after its sample is validated
 
 
 def _new_extraction(vulnerable: dict[str, Any]) -> bool:
@@ -135,10 +141,11 @@ def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = N
         new_extraction = sorted(
             (g for g in complete if g not in chosen and _new_extraction(groups[g]["vulnerable"])), key=_order
         )[:NEW_EXTRACTION_PAIRS_PER_LANGUAGE]
-        for item, group_ids in (("pair", chosen), ("pair", new_extraction), ("abstention", abstentions)):
+        negatives = sorted((g for g in by_language[language] if "defended_sibling" in groups[g] and "vulnerable" in groups[g]), key=_order)[:NEGATIVES_PER_LANGUAGE]
+        for item, group_ids in (("pair", chosen), ("pair", new_extraction), ("abstention", abstentions), ("negative", negatives)):
             for group_id in group_ids:
                 group = groups[group_id]
-                kinds = ("vulnerable", "post_fix") if item == "pair" else ("caller_abstention",)
+                kinds = {"pair": ("vulnerable", "post_fix"), "abstention": ("caller_abstention",), "negative": ("defended_sibling", "vulnerable")}[item]
                 anchor = group.get("vulnerable") or group["caller_abstention"]
                 sample.append(
                     {
@@ -147,7 +154,7 @@ def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = N
                         "item": item,
                         "language": language,
                         "split": anchor["split"],
-                        "cwe_family": family_of(anchor["target"]["cwe"]) if item == "pair" else None,
+                        "cwe_family": family_of(anchor["target"]["cwe"]) if item in {"pair", "negative"} else None,
                         "advisory_id": anchor["provenance"]["advisory_id"],
                         "record_ids": [group[k]["record_id"] for k in kinds],
                     }
@@ -259,19 +266,41 @@ def build_package(
         ]
     else:
         abstention = records[item["record_ids"][0]]
-        lines += [
-            "## Expected label",
-            "",
-            f"- Caller excerpt (`{abstention['record_id']}`): `abstain` - its safety depends on `{abstention['localization'].get('withheld_callee')}`,"
-            " the vulnerable function, which is withheld.",
-            "",
-            "## Caller excerpt and the context given to the model",
-            "",
-            _fence(abstention["input"]["context"]),
-            "",
-            _fence(_numbered(abstention["input"]["code"], (abstention["localization"].get("call_line") or 0,) * 2)),
-            "",
-        ]
+        if item["item"] == "negative":
+            sibling, vulnerable = records[item["record_ids"][0]], records[item["record_ids"][1]]
+            local = sibling["localization"]
+            lines += [
+                "## Expected label",
+                "",
+                f"- Excerpt (`{sibling['record_id']}`): `no_finding` for {vulnerable['target']['cwe']} - the function was not changed by the fix and already"
+                f" calls `{local.get('defence_call')}`, the defence the fix added to `{local.get('defended_like')}`.",
+                f"- Label scope: {sibling['target'].get('label_scope')}",
+                "",
+                "## The upstream fix of the other function, for comparison",
+                "",
+                _fence(vulnerable["target"]["patch"] or "(none)", "diff"),
+                "",
+                f"## Excerpt ([file at the fix commit]({_blob_url(repository, provenance['fixed_revision'], provenance['file_path'], sibling['provenance']['excerpt_file_lines'])})) and the context given to the model",
+                "",
+                _fence(sibling["input"]["context"]),
+                "",
+                _fence(_numbered(sibling["input"]["code"])),
+                "",
+            ]
+        else:
+            lines += [
+                "## Expected label",
+                "",
+                f"- Caller excerpt (`{abstention['record_id']}`): `abstain` - its safety depends on `{abstention['localization'].get('withheld_callee')}`,"
+                " the vulnerable function, which is withheld.",
+                "",
+                "## Caller excerpt and the context given to the model",
+                "",
+                _fence(abstention["input"]["context"]),
+                "",
+                _fence(_numbered(abstention["input"]["code"], (abstention["localization"].get("call_line") or 0,) * 2)),
+                "",
+            ]
     lines += ["## Checklist", ""]
     for key, question in QUESTIONS.items():
         if item["item"] in question["items"]:
@@ -422,6 +451,8 @@ def summarize_human(review: dict[str, Any], index: list[dict[str, Any]]) -> dict
         "pair_inconsistent": ("pair_consistent", {"no"}),
         "abstention_invalid": ("abstention_valid", {"no"}),
     }
+    if any(i.get("item") == "negative" for i in index):  # Garden v5 defended siblings (decides whether the kind is validated)
+        errors["defended_sibling_not_safe"] = ("negative_safe", {"no", "unclear"})
     rates = {}
     for name, (key, bad) in errors.items():
         judged = [i for i in review["items"] if key in i and i[key] in QUESTIONS[key]["allowed"]]

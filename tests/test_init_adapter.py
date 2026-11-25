@@ -1,4 +1,6 @@
-"""Approach A: continue from a selected checkpoint adapter. Pure checks (no torch needed).
+"""Continuing from a checkpoint adapter (`init_adapter`): pure checks (no torch needed).
+
+The owner decided on 2026-11-25 to train only fresh adapters; no committed config uses `init_adapter`.
 
 The end-to-end continued run on a tiny model is in tests/test_train_smoke.py."""
 
@@ -24,9 +26,6 @@ from sentinel.train.trainer import (
     _file_digests,
     check_init_adapter,
 )
-
-CONFIG_A = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b_v4_continue.yaml"
-CONFIG_B = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b_v4_fresh.yaml"
 
 
 def write_checkpoint(root: Path, config, step: int = 200, **overrides) -> Path:
@@ -104,14 +103,3 @@ def test_init_adapter_config_validation(tmp_path: Path) -> None:
         path.write_text(yaml.safe_dump({**document, "init_adapter": bad}))
         with pytest.raises(ConfigError):
             load_train_config(path)
-
-
-def test_v4_configs_bind_approach_a_to_the_first_run() -> None:
-    a, b = load_train_config(CONFIG_A), load_train_config(CONFIG_B)
-    v0 = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b.yaml"
-    assert a.init_adapter is not None and b.init_adapter is None
-    assert a.init_adapter.source_config_sha256 == hashlib.sha256(v0.read_bytes()).hexdigest()
-    assert a.init_adapter.checkpoint == "runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/step-000200"
-    assert a.data.garden_config == b.data.garden_config == "configs/garden/seed_v4.yaml"
-    assert (a.lora.rank, a.lora.alpha, a.lora.target_modules) == (b.lora.rank, b.lora.alpha, b.lora.target_modules)
-    assert a.output_dir != b.output_dir

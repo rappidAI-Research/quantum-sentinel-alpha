@@ -9,10 +9,10 @@
   "properties": {
     "schema_version": {"const": "1.0"},
     "dataset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
-    "record_id": {"type": "string", "pattern": "^sg-(py|js|ts|go)-(vulnerable|post-fix|caller-abstention)-[0-9a-f]{16}$"},
+    "record_id": {"type": "string", "pattern": "^sg-(py|js|ts|go)-(vulnerable|post-fix|caller-abstention|defended-sibling)-[0-9a-f]{16}$"},
     "group_id": {"type": "string", "pattern": "^sgg-[0-9a-f]{16}$"},
     "pair_id": {"type": ["string", "null"], "pattern": "^sgp-[0-9a-f]{16}$"},
-    "kind": {"enum": ["vulnerable", "post_fix", "caller_abstention"]},
+    "kind": {"enum": ["vulnerable", "post_fix", "caller_abstention", "defended_sibling"]},
     "input": {
       "type": "object",
       "additionalProperties": false,

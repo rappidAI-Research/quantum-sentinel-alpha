@@ -8,6 +8,31 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
 
 ## Completed
 
+### Sentinel Garden v5 (2026-11-25)
+
+- **Owner decision:** no training yet, and later only a fresh adapter from Ornith-1.5-9B. The first run's adapter stays as the baseline; the continuation config was removed.
+- **Garden v5** (`docs/GARDEN_V5.md`):
+  - **Discovery:**
+    - 8,727 candidates: the frozen v3 list plus 377 pull-request fixes (resolved to their merge commit) and 599 over the old repository cap;
+    - new candidates wait for an extension of the source approval.
+  - **Labels:**
+    - combined excerpts need evidence for the labelled function (338 without it are dropped);
+    - comments the fix added that name the weakness are left out;
+    - caller notes;
+    - a new negative kind, defended siblings (30 accepted), pending until its human-review sample validates it.
+  - **Shortcuts:** the security-comment cue is gone (6.7 % vs 6.9 %). Surface features predict finding vs no_finding 2.3 points above chance (v4: 6.4).
+  - **Funnel:**
+    - 4,831 records, 3,898 accepted, **1,467 authorized**;
+    - 1,869 train examples (156 k supervised tokens).
+    - With the owner's decision-ready approvals (85 repositories, the source extension, the sibling kind): up to 2,260.
+    - 5,000–10,000 are not reachable at this quality bar; the measured reasons are in `docs/GARDEN_V5.md` § 6.
+  - **Contamination:** 0 shared identities or near-duplicates with any v1–v5 evaluation set.
+  - **Evaluation:**
+    - development 163 cases;
+    - untouched final test only 9 cases;
+    - the 453-case previous holdout is a valid final test only if the v3 holdout was never evaluated (owner to confirm).
+  - **Independent human review:** 80 packages, not performed.
+
 ### Sentinel Garden v4 and second training phase readiness (2026-11-25)
 
 - **Development result of the first run:** rule v1 selected `step-000200` (decision accuracy 63.2 %, recall 34.9 %, strict recall 12.7 %, FPR 14.8 %, abstention recall 100 %). Alpha is not ready for release.

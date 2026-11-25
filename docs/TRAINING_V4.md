@@ -1,5 +1,7 @@
 # Training on Garden v4: approaches A and B
 
+> **Superseded on 2026-11-25:** the owner decided to train only a fresh adapter on Garden v5 (`docs/TRAINING_V5.md`). Approach A's config was removed; nothing here was trained.
+
 Prepared on 2026-11-25. No v4 training has run, and nothing on this page is a measured improvement. Data: `docs/GARDEN_V4.md`. Evaluation and selection: `docs/EVALUATION.md`. GPU commands: `docs/GPU_RUNBOOK.md` § 13.
 
 ## Evidence this proposal rests on

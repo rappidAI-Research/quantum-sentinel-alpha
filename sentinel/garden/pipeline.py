@@ -132,6 +132,82 @@ def file_sha256(path: Path) -> str:
 # --------------------------------------------------------------------------------------------
 
 
+EXTENSION_SET = "garden-v5-extension"
+
+
+def discover_extension(config: GardenConfig, log: Any = print, resolver: Any = None) -> dict[str, Any]:
+    """Garden v5: candidates beyond the frozen list, appended to it (the frozen rows stay byte-identical).
+
+    From the same cached OSV snapshot, in the same salted order, after the frozen list's commits and
+    per-repository counts:
+    - advisories that reference exactly one pull request and no fix commit, resolved to the commit that
+      merged it (`sentinel.garden.pulls`, frozen in `pull_request_resolutions.jsonl`);
+    - advisories the per-repository cap left out, up to `extension.max_candidates_per_repository`.
+    Every new candidate is marked `candidate_set: garden-v5-extension`. The source approvals in
+    data/registry.yaml cover the frozen list only, so records of these candidates carry the blocker
+    `source_approval_not_extended` until the owner extends them (`curate_records`)."""
+    from sentinel.garden.pulls import PullRequestResolver
+
+    d, sel, ext = config.raw["discovery"], config.raw["selection"], config.raw["discovery"]["extension"]
+    client = OsvClient(d["osv_bucket"], config.workdir / "cache" / "osv")
+    path = config.committed_dir / "candidates.jsonl"
+    frozen = _read_jsonl(path)
+    frozen_ids = {c["advisory_id"] for c in frozen}
+    seen: set[tuple[str, str]] = {(c["repository_key"], sha) for c in frozen for sha in c.get("fix_commits") or [c["fix_commit"]]}
+    per_repo: Counter[str] = Counter(c["repository_key"] for c in frozen)
+    per_ecosystem: Counter[str] = Counter(c["ecosystem"] for c in frozen)
+    resolver = resolver or PullRequestResolver(config.committed_dir / "pull_request_resolutions.jsonl", log=log)
+    added: list[dict[str, Any]] = []
+    outcomes: Counter[str] = Counter()
+    for ecosystem in d["ecosystems"]:
+        ids = client.advisory_ids(ecosystem, d["advisory_prefix"])
+        ordered = sorted(ids, key=lambda advisory_id: sample_key(d["sample_salt"], advisory_id))[: d["inspect_per_ecosystem"]]
+        for advisory_id, record in zip(ordered, client.records(ecosystem, ordered, d["workers"])):
+            if record is None or advisory_id in frozen_ids:
+                continue
+            candidate, reason = parse_candidate(
+                record,
+                ecosystem,
+                published_before=d["published_before"],
+                require_reviewed=d["require_github_reviewed"],
+                rejected_cwes=set(sel["rejected_cwes"]),
+                max_cwes=sel["max_cwes"],
+                allow_multiple_fix_commits=bool(d.get("multi_commit_fixes", False)),
+                allow_pull_requests=bool(ext.get("pull_request_fixes", False)),
+            )
+            if candidate is None:
+                continue
+            if candidate.get("fix_pull_request"):
+                number = candidate["fix_pull_request"]["number"]
+                resolution = resolver.resolve(candidate["repository_key"], number)
+                if resolution["status"] != "resolved":
+                    outcomes[f"pull_request_{resolution['status']}"] += 1
+                    continue
+                candidate["fix_commit"] = resolution["commit"]
+                candidate["fix_pull_request"] = {"number": number, "merged_by": resolution["kind"]}
+            commits = [(candidate["repository_key"], sha) for sha in candidate.get("fix_commits") or [candidate["fix_commit"]]]
+            if any(c in seen for c in commits):
+                outcomes["duplicate_fix_commit"] += 1
+                continue
+            if per_repo[candidate["repository_key"]] >= ext["max_candidates_per_repository"]:
+                outcomes["extension_repository_cap"] += 1
+                continue
+            if per_ecosystem[ecosystem] >= d["max_candidates_per_ecosystem"]:
+                outcomes["ecosystem_cap"] += 1
+                continue
+            seen.update(commits)
+            per_repo[candidate["repository_key"]] += 1
+            per_ecosystem[ecosystem] += 1
+            candidate["candidate_set"] = EXTENSION_SET
+            added.append(candidate)
+            outcomes["candidate_pull_request" if candidate.get("fix_pull_request") else "candidate_over_v3_repository_cap"] += 1
+    resolver.write()
+    rows = frozen + sorted(added, key=lambda c: c["advisory_id"])
+    _write_jsonl(path, rows)
+    log(f"discover: {len(added)} extension candidates {dict(sorted(outcomes.items()))}")
+    return {"added": len(added), "outcomes": dict(sorted(outcomes.items()))}
+
+
 def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> dict[str, Any]:
     d, sel = config.raw["discovery"], config.raw["selection"]
     if d.get("frozen_candidates"):
@@ -146,6 +222,9 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
         stats["frozen_candidates"] = {"path": d["frozen_candidates"], "sha256": d["frozen_candidates_sha256"]}
         _write_json(config.committed_dir / "discovery_stats.json", stats)
         log(f"discover: frozen candidate list {d['frozen_candidates']} copied unchanged")
+        if d.get("extension"):
+            stats["extension"] = discover_extension(config, log)
+            _write_json(config.committed_dir / "discovery_stats.json", stats)
         return stats
     client = OsvClient(d["osv_bucket"], config.workdir / "cache" / "osv")
     candidates: list[dict[str, Any]] = []
@@ -326,6 +405,50 @@ def evaluation_history(config: GardenConfig) -> tuple[set[str], set[str]] | None
     return retired, previous
 
 
+def source_approved_advisories(config: GardenConfig) -> set[str] | None:
+    """Garden v5: the advisories the registry's source approvals cover (`governance.source_approval_covers`,
+    a candidate list bound by sha256), or None when every candidate of the dataset is covered."""
+    covers = (config.raw.get("governance") or {}).get("source_approval_covers")
+    if not covers:
+        return None
+    path = PROJECT_ROOT / covers["path"]
+    if file_sha256(path) != covers["sha256"]:
+        raise ValueError(f"{path} does not match governance.source_approval_covers.sha256")
+    return {c["advisory_id"] for c in _read_jsonl(path)}
+
+
+def unvalidated_negative_kinds(config: GardenConfig) -> set[str]:
+    """Garden v5: negative kinds whose labels rest on a heuristic stay pending until an independent
+    review of their sample validates the kind and the owner lists it in `governance.validated_negative_kinds`."""
+    governance = config.raw.get("governance") or {}
+    return {"defended_sibling"} - set(governance.get("validated_negative_kinds") or [])
+
+
+def apply_negative_validation(record: dict[str, Any], unvalidated: set[str]) -> None:
+    if record["kind"] not in unvalidated:
+        return
+    blocker = f"negative_kind_not_validated:{record['kind']}"
+    governance = record["governance"]
+    if blocker in governance["blockers"]:
+        return
+    status = "excluded" if governance["approval_status"] == "excluded" else "pending_review"
+    record["governance"] = {"approval_status": status, "blockers": [blocker] + governance["blockers"]}
+
+
+def apply_source_coverage(record: dict[str, Any], covered: set[str]) -> None:
+    """A record of a candidate outside the approved list cannot be trained on until the owner extends
+    the source approval to it (the registry approval names the list it covers)."""
+    if record["provenance"]["advisory_id"] in covered:
+        return
+    governance = record["governance"]
+    if governance["approval_status"] == "excluded":
+        if "source_approval_not_extended" not in governance["blockers"]:
+            governance["blockers"] = governance["blockers"] + ["source_approval_not_extended"]
+        return
+    blockers = [b for b in governance["blockers"] if b != "source_approval_not_extended"]
+    record["governance"] = {"approval_status": "pending_review", "blockers": ["source_approval_not_extended"] + blockers}
+
+
 def evaluation_role(record: dict[str, Any], retired: set[str], previous: set[str]) -> str:
     repository = record["provenance"]["repository_key"]
     split = record["split"]
@@ -412,11 +535,16 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
     # post-cutoff records to an approved repository).
     held_out = {r["provenance"]["repository_key"] for r in records if r["split"] in {"holdout_reserved", "temporal_quarantine"}}
     history = evaluation_history(config)
+    covered = source_approved_advisories(config)
     for record in records:
         status, blockers = gate(record, sources, approvals)
         if status == "training_approved" and record["provenance"]["repository_key"] in held_out:
             status, blockers = "excluded", ["repository_has_holdout_or_quarantine_records"]
         record["governance"] = {"approval_status": status, "blockers": blockers}
+        if covered is not None:
+            apply_source_coverage(record, covered)
+        if "governance" in config.raw:
+            apply_negative_validation(record, unvalidated_negative_kinds(config))
         if history is not None:
             apply_evaluation_role(record, history)
         errors = list(validator.iter_errors(record))
@@ -875,6 +1003,9 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     if exclusions_path.is_file():
         previous = yaml.safe_load(exclusions_path.read_text(encoding="utf-8")) or {}
         incomplete = {g["records"]["post_fix"] for g in result["groups"] if g.get("later_fix_check") == "incomplete" and "post_fix" in g["records"]}
+        incomplete |= {  # Garden v5: a defended sibling's later-fix check is a hard-negative check too
+            g["records"]["defended_sibling"] for g in result["groups"] if g.get("sibling_later_fix_check") == "incomplete" and "defended_sibling" in g["records"]
+        }
         present = {(e["record_id"], e["reason"]) for e in result["exclusions"]}
         carried = [
             e for e in previous.get("automated") or []
@@ -1157,6 +1288,15 @@ def check(config: GardenConfig) -> dict[str, Any]:
         recorded = row["governance"]["approval_status"]
         if recorded == "training_approved" and status != "training_approved":
             raise ValueError(f"{row['record_id']} is marked training_approved but fails the gate now")
+    if "governance" in config.raw:
+        for row in rows:
+            if row["kind"] in unvalidated_negative_kinds(config) and row["governance"]["approval_status"] == "training_approved":
+                raise ValueError(f"{row['record_id']}: unvalidated negative kind is training-approved (rerun curate)")
+    covered = source_approved_advisories(config)
+    if covered is not None:
+        for row in rows:
+            if row["provenance"]["advisory_id"] not in covered and "source_approval_not_extended" not in row["governance"]["blockers"]:
+                raise ValueError(f"{row['record_id']}: candidate outside the approved list without its blocker (rerun curate)")
     history = evaluation_history(config)
     for row in rows:
         if history is None:

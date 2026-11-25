@@ -149,7 +149,13 @@ def shortcut_probes(train: list[dict[str, Any]], test: list[dict[str, Any]]) -> 
     def binary(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
         return [r for r in records if r["target"]["decision"] in {"finding", "no_finding"}]
 
+    result["surface_features_nb_all_decisions"] = surface_probe(train, test)
+    result["security_comment"] = {
+        decision: round(sum(1 for r in group if security_comment(r["input"]["code"])) / len(group), 3)
+        for decision, group in _by_decision(test).items()
+    }
     fit, score = binary(train), binary(test)
+    result["surface_features_nb_finding_vs_no_finding"] = surface_probe(fit, score)
     base = Counter(r["target"]["decision"] for r in score)
     result["finding_vs_no_finding_test_majority_rate"] = round(max(base.values()) / len(score), 3) if score else None
 
@@ -180,6 +186,49 @@ def shortcut_probes(train: list[dict[str, Any]], test: list[dict[str, Any]]) -> 
                 "pair_accuracy": round(sum(1 for a, b in differing if a > b) / len(differing), 3) if differing else None,
             }
     return result
+
+
+_COMMENT = re.compile(r"^\s*(#|//|/\*|\*)")
+_SECURITY_WORD = re.compile(r"(?i)secur|vulnerab|sanitiz|escap|inject|travers|xss|csrf|ssrf|prevent|attack|malicious|untrusted|cve-|ghsa-|exploit|bypass|validat")
+
+
+def security_comment(code: str) -> bool:
+    """A comment line that talks about security (fixes often add one, e.g. "// prevent path traversal")."""
+    return any(_COMMENT.match(line) and _SECURITY_WORD.search(line) for line in code.splitlines())
+
+
+def _bucket(value: int, edges: tuple[int, ...]) -> int:
+    return sum(value > edge for edge in edges)
+
+
+def surface_features(record: dict[str, Any]) -> list[str]:
+    """Features that say nothing about the code's semantics: if they predict the label, it is a shortcut."""
+    code_text, context = record["input"]["code"], record["input"]["context"]
+    lines = code_text.splitlines()
+    first = next((line for line in lines if line.strip()), "")
+    return [
+        f"lines:{_bucket(len(lines), (10, 20, 40, 80))}",
+        f"blocks:{min(len(record['provenance']['excerpt_file_lines']), 3)}",
+        f"indent:{_bucket(len(first) - len(first.lstrip()), (0, 4))}",
+        f"callee_note:{CALLEE_NOTE in context or ABSTENTION_PHRASE in context}",
+        f"caller_note:{'Called in this file by' in context}",
+        f"security_comment:{security_comment(code_text)}",
+        f"context_chars:{_bucket(len(context), (200, 400, 700))}",
+        f"blank_lines:{_bucket(sum(1 for line in lines if not line.strip()), (0, 3, 8))}",
+    ]
+
+
+def surface_probe(fit: list[dict[str, Any]], score: list[dict[str, Any]]) -> dict[str, Any]:
+    if not fit or not score:
+        return {}
+    model = NaiveBayes([(surface_features(r), r["target"]["decision"]) for r in fit])
+    correct = sum(1 for r in score if model.predict(surface_features(r)) == r["target"]["decision"])
+    majority = Counter(r["target"]["decision"] for r in score).most_common(1)[0][1]
+    by_decision = {}
+    for decision in sorted({r["target"]["decision"] for r in score}):
+        group = [r for r in score if r["target"]["decision"] == decision]
+        by_decision[decision] = round(sum(1 for r in group if model.predict(surface_features(r)) == decision) / len(group), 3)
+    return {"test_accuracy": round(correct / len(score), 3), "majority_rate": round(majority / len(score), 3), "recall_by_decision": by_decision}
 
 
 def _threshold_accuracy(records: list[dict[str, Any]], measure: Any, threshold: int, direction: str) -> float:

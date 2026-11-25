@@ -1,0 +1,648 @@
+{"commit": "66a451fc1f540ce5e4a24b31d13680c354867bbf", "first_line": "fix: \u89e3\u51b3\u767b\u9646\u9875\u5237\u65b0\u8df3\u8f6c\u7684\u95ee\u9898 (#4014)", "kind": "squash_or_rebase", "number": 4014, "repository_key": "1panel-dev/1panel", "status": "resolved"}
+{"commit": "60173004bc645ea1f27a7b871272a06695154516", "first_line": "Limit the strings which can be eval'd (#165)", "kind": "squash_or_rebase", "number": 165, "repository_key": "23andme/yamale", "status": "resolved"}
+{"commit": "b6dcc67722856961e027819d2b0dee9ac6cd93d8", "first_line": "Merge pull request #1329 from B3EF/microsoft-qlib-1", "kind": "merge_commit", "number": 1329, "repository_key": "418sec/huntr", "status": "resolved"}
+{"number": 3, "repository_key": "418sec/json-ptr", "status": "not_found"}
+{"number": 407, "repository_key": "aaugustin/websockets", "status": "repository_not_searchable"}
+{"commit": "fe890813fc3980e60d5ba0f41834c8581b3e6361", "first_line": "Fix JSON object key displaying (#26)", "kind": "squash_or_rebase", "number": 26, "repository_key": "abodelot/jquery.json-viewer", "status": "resolved"}
+{"commit": "78fb47f6c996f22c0b7184afb29620ab8c240522", "first_line": "AG-12065 Avoid prototype polution (#8250) (#8290)", "kind": "squash_or_rebase", "number": 8290, "repository_key": "ag-grid/ag-grid", "status": "resolved"}
+{"commit": "678051366f14fe21de347b58a400bd707d5bebea", "first_line": "fix: eliminate SQL injection in ClickHouse delete_by_metadata (#7883)", "kind": "squash_or_rebase", "number": 7883, "repository_key": "agno-agi/agno", "status": "resolved"}
+{"commit": "d643045f40d6dc8afa000a644d857da1436ed08c", "first_line": "Fix pool pollution, infinite loop (#510)", "kind": "squash_or_rebase", "number": 510, "repository_key": "ai/nanoid", "status": "resolved"}
+{"number": 5137, "repository_key": "aider-ai/aider", "status": "not_found"}
+{"number": 3333, "repository_key": "aimhubio/aim", "status": "not_found"}
+{"number": 67964, "repository_key": "angular/angular", "status": "not_found"}
+{"number": 68570, "repository_key": "angular/angular", "status": "not_found"}
+{"number": 68840, "repository_key": "angular/angular", "status": "not_found"}
+{"number": 68904, "repository_key": "angular/angular", "status": "not_found"}
+{"number": 68928, "repository_key": "angular/angular", "status": "not_found"}
+{"number": 32516, "repository_key": "angular/angular-cli", "status": "not_found"}
+{"number": 32771, "repository_key": "angular/angular-cli", "status": "not_found"}
+{"number": 33031, "repository_key": "angular/angular-cli", "status": "not_found"}
+{"number": 29, "repository_key": "angular/domino", "status": "not_found"}
+{"commit": "921bd53103c2b543e95c9e6b863702db3ff54d0c", "first_line": "aws_ssm: Namespace S3 buckets and delete transferred files (#237)", "kind": "squash_or_rebase", "number": 237, "repository_key": "ansible-collections/community.aws", "status": "resolved"}
+{"number": 67808, "repository_key": "ansible/ansible", "status": "not_found"}
+{"commit": "dcdb62daf668a31754fc6fbf73374e7d14d5f52c", "first_line": "Merge pull request #742 from abadger/secure-tempfiles", "kind": "merge_commit", "number": 742, "repository_key": "ansible/ansible-runner", "status": "resolved"}
+{"commit": "be8a62e596a0dc0f935114a9d585007b497312a2", "first_line": "Pig cli connection properties cannot be passed by connection extra (#27644)", "kind": "squash_or_rebase", "number": 27644, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "93589288156d56aff4b1f822b77695e3c58e4568", "first_line": "Remove custom spark home and custom binarires for spark (#27646)", "kind": "squash_or_rebase", "number": 27646, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "150dd927c3297daccab507bc5a5f2c3a32f24d5f", "first_line": "Filter out invalid schemas in Hive hook (#27647)", "kind": "squash_or_rebase", "number": 27647, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "5f8481c799ea6bd742a5ccc194b2ff8dbe01eab5", "first_line": "Move hive_cli_params to hook parameters (#28101)", "kind": "squash_or_rebase", "number": 28101, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "45dd0c484e16ff56800cc9c047f56b4a909d2d0d", "first_line": "Move local_infile option from extra to hook parameter (#28811)", "kind": "squash_or_rebase", "number": 28811, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "5e6f8eb4d5fdcaa713022ee46b1ca9bd2e3ab44e", "first_line": "Check that cloud sql provider version is valid (#29497)", "kind": "squash_or_rebase", "number": 29497, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "32c571e5926983903ac8b9017c36f14137a797a5", "first_line": "Move cloud_sql_binary_path from connection to Hook (#29499)", "kind": "squash_or_rebase", "number": 29499, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "655ffb835eb4c5343c3f2b4d37b352248f2768ef", "first_line": "Move libjars parameter in Sqoop Hook to Hook parameter (#29500)", "kind": "squash_or_rebase", "number": 29500, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "1cb127b9fd22a7dc8e0b82cab8acb7cd4c317c9c", "first_line": "Validate Hive Beeline parameters (#29502)", "kind": "squash_or_rebase", "number": 29502, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "46d45e09cb5607ae583929f3eba1923a64631f48", "first_line": "Explicitly handle exceptions raised by config parsing in AWS provider (#29587)", "kind": "squash_or_rebase", "number": 29587, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "f01140141f1fe51b6ee1eba5b02ab7516a67c9c7", "first_line": "Move auth parameter from extra to Hook parameter (#30212)", "kind": "squash_or_rebase", "number": 30212, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "d9dea5ce17f0c5859dc705bba8e6ef22e5659955", "first_line": "Validate host and schema for Spark JDBC Hook (#30223)", "kind": "squash_or_rebase", "number": 30223, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "59f5f58e2bfcc8c12b0b44d6c6ce5cfed60b8867", "first_line": "Validate SqoopHook connection string and disable extra options from public hook methods (#33039)", "kind": "squash_or_rebase", "number": 33039, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "dfa70b942348ba51be7594499ff54030375e4d89", "first_line": "Fix package name in exception message for hdfs provider (#33813)", "kind": "squash_or_rebase", "number": 33813, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "3df1af4c45705d67598753a96debf5619bbfee04", "first_line": "REST API: Fix task instance access issue in the batch endpoint (#34315)", "kind": "squash_or_rebase", "number": 34315, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "4f1b500c47813c54349b7d3e48df0a444fb4826c", "first_line": "Check that dag_ids passed in request are consistent (#34366)", "kind": "squash_or_rebase", "number": 34366, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "dd59e3e63e0db349f40f8d1c91e7f6ef252caa4b", "first_line": "Remove sensitive information from Celery executor warning (#34954)", "kind": "squash_or_rebase", "number": 34954, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "a5a6549e5b6609c8feeab992731854ebffddcd1c", "first_line": "Adding certificate validation for ssl in mongo hook (#37214)", "kind": "squash_or_rebase", "number": 37214, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "884852a7b8b559cbab68813941c932ae65c3c916", "first_line": "Add ssl context for verification of certs in FTPS hook (#38266)", "kind": "squash_or_rebase", "number": 38266, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "d029e77f2fd704bec4f4797b09d54c5c824a8536", "first_line": "Bump version checked by FAB provider on logout CSRF protection to 2.10.0 (#40784)", "kind": "squash_or_rebase", "number": 40784, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "0b030c562363dd924bbbee0793636be18deeabe3", "first_line": "Masking configuration values irrelevant to DAG author (#43040)", "kind": "squash_or_rebase", "number": 43040, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "1260d9c042f7a6351a4b67611ce39f91764dcbdf", "first_line": "Better handling masking of values of set variable  (#43123)", "kind": "squash_or_rebase", "number": 43123, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "cf401c48bb6d06f1b30fef59d2a07afab22118bc", "first_line": "Invalidate user session on password reset (#45139)", "kind": "squash_or_rebase", "number": 45139, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "e6c0793b27313a6eae918a90661e5f68231f7687", "first_line": "Do not allow semicolon in partition_clause (#48098)", "kind": "squash_or_rebase", "number": 48098, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "0afe6d3e656927fea80f2d4a608603ae47e107d1", "first_line": "Mask secrets properly when using deprecated import path (#58662)", "kind": "squash_or_rebase", "number": 58662, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "fffab39f99607e3c54842342fdc982babd403707", "first_line": "Drop Airflow 2 Support in Edge Provider (#59143)", "kind": "squash_or_rebase", "number": 59143, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "a9dea6d0b81d67843c2507bd85af772fde9dd738", "first_line": "Prevent client secrets and proxy credentials from being logged in Microsoft Graph hook logs (#59688)", "kind": "squash_or_rebase", "number": 59688, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "2b6e8181e3ae2d4816a67f1be020c8effbfed440", "first_line": "Two-token mechanism for task execution to prevent token expiration while tasks wait in executor queues (#60108)", "kind": "squash_or_rebase", "number": 60108, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "934409f51d432c34fbcf21eca014ea18b0c78b94", "first_line": "Correct the access for the externalLogUrl (#60412)", "kind": "squash_or_rebase", "number": 60412, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "ac45d92b7d3d39c7c3e1784824e30308bc47b09d", "first_line": "Fix permissions check in import error APIs (#60801)", "kind": "squash_or_rebase", "number": 60801, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "01ac969bbb73d07588049715c80827d01f367756", "first_line": "Improve xcom value handling in extra links API (#61641)", "kind": "squash_or_rebase", "number": 61641, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "197edfd873a1307090688aafd05695eb54724af3", "first_line": "Fix list dag versions permissions (#61675)", "kind": "squash_or_rebase", "number": 61675, "repository_key": "apache/airflow", "status": "resolved"}
+{"number": 61880, "repository_key": "apache/airflow", "status": "not_found"}
+{"number": 61882, "repository_key": "apache/airflow", "status": "not_found"}
+{"commit": "9d7b2a1c19ef4adce9e9aadd1f7a036794f4483e", "first_line": "Add readable dags checks for the dependencies endpoint (#62046)", "kind": "squash_or_rebase", "number": 62046, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "43ee8c48c9bf6ec3de382052602a43afc4a0da34", "first_line": "Scope session token in cookie to base_url (#62771)", "kind": "squash_or_rebase", "number": 62771, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "0f64abcee310fd392ac8b42edd2e0311a777847b", "first_line": "Fix: Adds task instance validation for hitl (#62886)", "kind": "squash_or_rebase", "number": 62886, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "b196cf3d1c5ed20667f39742cd4f8151b18123c9", "first_line": "fix: Exclude JWT token from workload repr to prevent log exposure (#62964)", "kind": "squash_or_rebase", "number": 62964, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "60f6efca5b5169ad89eda9993c12687715413d69", "first_line": "Updates exception to hide sql statements on constraint failure (#63028)", "kind": "squash_or_rebase", "number": 63028, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "6d0142061cae9738e046490fc755e506cab7a44e", "first_line": "Add additional permission check in asset materialization (#63338)", "kind": "squash_or_rebase", "number": 63338, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "74b0fd98f9876374c52a2d4acd891497c3b93774", "first_line": "Use default max depth to redact Variable (#63480)", "kind": "squash_or_rebase", "number": 63480, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "a8c12067fbe984cd2a99b35f0a6909a570e87a1c", "first_line": "Enable TLS certificate verification for K8s token exchange in `DatabricksHook` (#63704)", "kind": "squash_or_rebase", "number": 63704, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "7dca298eb8113dc635cb7539646140dcf6699aba", "first_line": "Adds a state param into keycloak login (#64114)", "kind": "squash_or_rebase", "number": 64114, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "af4f825962c06208fb31b16065ffc63f6d6b002f", "first_line": "update Dag Runs document under Core Concept to make it consistent with BashOperator document (#64129)", "kind": "squash_or_rebase", "number": 64129, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "0ed72b480c572f5dab81084530b79fb89589dce2", "first_line": "Refactor xcom API to use shared serialisation constants (#64148)", "kind": "squash_or_rebase", "number": 64148, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "a1c45b950c9a54b7d1691c863def7ee56f07c521", "first_line": "Fix bulk task instance rbac bypass (#64288)", "kind": "squash_or_rebase", "number": 64288, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "35ca494ace6ec7d4962c27f5fd7137097934c0b1", "first_line": "add check for xcom permission when result is specified in query parameter (#64415)", "kind": "squash_or_rebase", "number": 64415, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "3eda84547e743397ec1027733f97d37ab2e628b4", "first_line": "Refuse to follow log symlinks that resolve outside the base log folder (#65325)", "kind": "squash_or_rebase", "number": 65325, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "01888df3ae9b437e9086d296d29d2fee147d6312", "first_line": "Filter external dependency nodes by readable DAGs in structure_data endpoint (#65342)", "kind": "squash_or_rebase", "number": 65342, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "e36d10a5196d100adb3829219dc91be72d6a7fc9", "first_line": "Add per-DAG authorization to partitioned_dag_runs endpoints (#65344)", "kind": "squash_or_rebase", "number": 65344, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "06981d4ad8249bfd371bd718d37c7f04eec7c151", "first_line": "Validate SMTP server certificate on STARTTLS upgrade (#65346)", "kind": "squash_or_rebase", "number": 65346, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "60db83fa80233c330933bb65123bdce14dfc5c26", "first_line": "Set JWT refresh cookie Secure flag when request is HTTPS (#65348)", "kind": "squash_or_rebase", "number": 65348, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "aa3ccb8c3c2cb7ce66d538e95c7681890965e654", "first_line": "Prevent unauthorized access to team-scoped secrets in SM and SSM (#65703)", "kind": "squash_or_rebase", "number": 65703, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "4ceb0db321e2f716f326e3f1ccf82387992da121", "first_line": "Redact rendered template fields while still structured to preserve nested-key masking on truncation (#65906)", "kind": "squash_or_rebase", "number": 65906, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "354391bbccc1658ce66d8ec2e2e415e6a01aa7a4", "first_line": "Check sensitive key names before applying recursion-depth cutoff in secrets masker (#65912)", "kind": "squash_or_rebase", "number": 65912, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "c1734893709c9d0bfeaa496799f4c560fc93fac4", "first_line": "Apply reserved-key check to XCom update payload (#65915)", "kind": "squash_or_rebase", "number": 65915, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "32ac8ad5132963ff0351aa756331e9e9c60a692b", "first_line": "Extend DEFAULT_SENSITIVE_FIELDS with common credential field names (#66673)", "kind": "squash_or_rebase", "number": 66673, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "d8865dd42499d1ded98640ddf9d88f37a8209904", "first_line": "Fix log server path extraction to use removeprefix (#66749)", "kind": "squash_or_rebase", "number": 66749, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "4498582dd1ee553c403db5119ddadd7151d6fde1", "first_line": "Apply per-DAG audit log permission to event log detail endpoint (#67112)", "kind": "squash_or_rebase", "number": 67112, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "b1aec757ce1e3800b629f36d4fbc274a48698412", "first_line": "Revoke JWT on /auth/logout regardless of auth manager logout URL (#67289)", "kind": "squash_or_rebase", "number": 67289, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "16547dfef2e09c3f56fa5af978d075ce1ca65fb6", "first_line": "Validate downloaded paths stay within the destination directory in SFTPHook.retrieve_directory (#67985)", "kind": "squash_or_rebase", "number": 67985, "repository_key": "apache/airflow", "status": "resolved"}
+{"commit": "8010794116fa9fb1ed020c649053411a7bd7f1bf", "first_line": "GH-48924: [C++][CI] Fix pre-buffering issues in IPC file reader (#48925)", "kind": "squash_or_rebase", "number": 48925, "repository_key": "apache/arrow", "status": "resolved"}
+{"commit": "e58361e04b42e89465c7f6a4457faf5b3aa798aa", "first_line": "fix some security issues (#68)", "kind": "squash_or_rebase", "number": 68, "repository_key": "apache/doris-mcp-server", "status": "resolved"}
+{"number": 14365, "repository_key": "apache/iotdb", "status": "not_found"}
+{"commit": "48c575db6fac571acd70bb6568fb067c1d52bf34", "first_line": "Clean up C++ client curl configuration (#16064)", "kind": "squash_or_rebase", "number": 16064, "repository_key": "apache/pulsar", "status": "resolved"}
+{"number": 1054, "repository_key": "apache/submarine", "status": "not_found"}
+{"number": 11617, "repository_key": "apache/superset", "status": "not_found"}
+{"number": 3236, "repository_key": "apollographql/federation", "status": "not_found"}
+{"commit": "6012524e7824a2c8f6782b2bc5f93b1261723403", "first_line": "Merge pull request #460 from apostrophecms/iframe-validation-redux", "kind": "merge_commit", "number": 460, "repository_key": "apostrophecms/sanitize-html", "status": "resolved"}
+{"commit": "e896c0e4b46974288f61f612701c34d171e05456", "first_line": "fix: Properly escape HTML for error message from CLI SSO (#5563)", "kind": "squash_or_rebase", "number": 5563, "repository_key": "argoproj/argo-cd", "status": "resolved"}
+{"commit": "17167fc2e7e28a5b25151c8a269ea17477038aba", "first_line": "fix: sanitize repo creds in error messages (#12309) (#12320)", "kind": "squash_or_rebase", "number": 12320, "repository_key": "argoproj/argo-cd", "status": "resolved"}
+{"commit": "0a096e66ba185d02caa5172fa677087dd4aba065", "first_line": "feat: add sqlite-based memory store for live workflows. Fixes #12025 (#13021)", "kind": "squash_or_rebase", "number": 13021, "repository_key": "argoproj/argo-workflows", "status": "resolved"}
+{"commit": "bb29aec54fec6fd1e8fb7e209eecedab345a0eac", "first_line": "Check for more than one Assertions (#179)", "kind": "squash_or_rebase", "number": 179, "repository_key": "auth0/passport-wsfed-saml2", "status": "resolved"}
+{"commit": "666d083225a1f3274112be95a9c6e17cc003be34", "first_line": "Merge pull request #1397 from josephschorr/lr-context-and-perf", "kind": "merge_commit", "number": 1397, "repository_key": "authzed/spicedb", "status": "resolved"}
+{"commit": "cd1e2b952cfc2a62f1b8bd6ce1382ad040949255", "first_line": "fix: avoid hash collision in caveat context (#3065)", "kind": "squash_or_rebase", "number": 3065, "repository_key": "authzed/spicedb", "status": "resolved"}
+{"commit": "661df53a58da614c71ae4c9fbdd0299d94d1a9f8", "first_line": "chore: refactoring pg sql queries to be fully qualified (#574)", "kind": "squash_or_rebase", "number": 574, "repository_key": "aws/aws-advanced-nodejs-wrapper", "status": "resolved"}
+{"commit": "5f03c754dc9f4de9f0d1a98a894657ff1c505288", "first_line": "chore: refactoring pg sql queries to be fully qualified (#1007)", "kind": "squash_or_rebase", "number": 1007, "repository_key": "aws/aws-advanced-python-wrapper", "status": "resolved"}
+{"commit": "a643c2c3fa9937733f32af0bd8583c10141d9742", "first_line": "fix: Resolve symlinks on local invoke only (#7865)", "kind": "squash_or_rebase", "number": 7865, "repository_key": "aws/aws-sam-cli", "status": "resolved"}
+{"commit": "462b4e07b873035c25e8abc9068bb3b76e06314c", "first_line": "fix: Keep symlinks when copying files after build (#7890)", "kind": "squash_or_rebase", "number": 7890, "repository_key": "aws/aws-sam-cli", "status": "resolved"}
+{"commit": "35dd717a80ae1f04128d79bd0bcf340e2e9d1427", "first_line": "Use safe yaml loader (#964)", "kind": "squash_or_rebase", "number": 964, "repository_key": "awslabs/sockeye", "status": "resolved"}
+{"commit": "b32de562a4231c2c9488abf0d25b9971d205c116", "first_line": "fix: end blockers staking (#1244)", "kind": "squash_or_rebase", "number": 1244, "repository_key": "babylonlabs-io/babylon", "status": "resolved"}
+{"commit": "9baf8c0d5ed013a07278c45d6e1475cb12c5d887", "first_line": "Merge pull request #66 from devinivy/escape-like", "kind": "merge_commit", "number": 66, "repository_key": "balderdashy/waterline-sequel", "status": "resolved"}
+{"commit": "0b4c93952723d917d50de09d9c8e43e000a35ccd", "first_line": "Merge pull request #3113 from pajod/patch-security", "kind": "merge_commit", "number": 3113, "repository_key": "benoitc/gunicorn", "status": "resolved"}
+{"number": 2954, "repository_key": "berriai/litellm", "status": "not_found"}
+{"commit": "0dc7f02b516c5fb91b762f35a7c259f22d9ad298", "first_line": "Merge pull request #3193 from BerriAI/litellm_sec_fix_delete_files", "kind": "merge_commit", "number": 3193, "repository_key": "berriai/litellm", "status": "resolved"}
+{"commit": "2d98b49f0eda558c6ee33e11a50e5b97d24e31ef", "first_line": "Merge pull request #23781 from BerriAI/litellm_key_admin_privilege_escalation_fix", "kind": "merge_commit", "number": 23781, "repository_key": "berriai/litellm", "status": "resolved"}
+{"commit": "fee4e7190509cf860129fb82969b2d645781a802", "first_line": "Merge pull request #25592 from BerriAI/litellm_tightenEnvReferenceHandling", "kind": "merge_commit", "number": 25592, "repository_key": "berriai/litellm", "status": "resolved"}
+{"number": 140, "repository_key": "bitcoinjs/tiny-secp256k1", "status": "not_found"}
+{"commit": "e2f506b5089b1b29d22c80a77ff636b3b1f6e57c", "first_line": "Merge pull request #124 from 418sec/master", "kind": "merge_commit", "number": 124, "repository_key": "bitovi/launchpad", "status": "resolved"}
+{"number": 143, "repository_key": "boscop-fr/orejime", "status": "not_found"}
+{"commit": "d20ac0b4c1e73c8b542160fbced0647ac7affc17", "first_line": "new method `setUrlAccessPolicy()` (#2920)", "kind": "squash_or_rebase", "number": 2920, "repository_key": "bpampuch/pdfmake", "status": "resolved"}
+{"commit": "21a12d0fd47c1b8f63a310da052cedf29ba5c00d", "first_line": "fixed randomNumber's frontwards bias (#26)", "kind": "squash_or_rebase", "number": 26, "repository_key": "brendanashworth/generate-password", "status": "resolved"}
+{"commit": "236901f22a5aed8ae00cb2b2aaa164a637c332d3", "first_line": "Add check for valid parameter array (#86)", "kind": "squash_or_rebase", "number": 86, "repository_key": "brianc/node-libpq", "status": "resolved"}
+{"commit": "cd2fc9178b20f1a9818bb704f301a043da194ce7", "first_line": "fix security issue with url parsing (#1561)", "kind": "squash_or_rebase", "number": 1561, "repository_key": "browser-use/browser-use", "status": "resolved"}
+{"commit": "345c9a50ab07018f1b4439776bad78a0d40778ec", "first_line": "Fix two out-of-bounds read issues when handling truncated UTF-8 input (#1005)", "kind": "squash_or_rebase", "number": 1005, "repository_key": "byvoid/opencc", "status": "resolved"}
+{"commit": "85375861f6a903da9af8aa665552a6546d075c9f", "first_line": "caddyhttp: Fix `vars_regexp` matcher with placeholders (#5408)", "kind": "squash_or_rebase", "number": 5408, "repository_key": "caddyserver/caddy", "status": "resolved"}
+{"commit": "ec09b24179f30fbcbcd0ce6022048e35c3cf981c", "first_line": "Improved validation of project and instance names (#15022)", "kind": "squash_or_rebase", "number": 15022, "repository_key": "canonical/lxd", "status": "resolved"}
+{"commit": "dcc5343608a8492e0aecd8293ed6e0caad87fcd4", "first_line": "lxd: Prevent use of raw.apparmor and raw.qemu.conf when low level options are blocked (#17909)", "kind": "squash_or_rebase", "number": 17909, "repository_key": "canonical/lxd", "status": "resolved"}
+{"commit": "06637bfd3158e2457128703afcf60e286a6d6a61", "first_line": "Import: Create backup config from index (#17921)", "kind": "squash_or_rebase", "number": 17921, "repository_key": "canonical/lxd", "status": "resolved"}
+{"commit": "65d0c1db01bd8b9010cba9b72976c55f79feecee", "first_line": "Improve validation on certificate edit (#17936)", "kind": "squash_or_rebase", "number": 17936, "repository_key": "canonical/lxd", "status": "resolved"}
+{"commit": "645c631db9c52dcbccfcbe497cbcbf3bcbf8cf8a", "first_line": "fix: fix the delete file vulnerability issue (#1174)", "kind": "squash_or_rebase", "number": 1174, "repository_key": "casdoor/casdoor", "status": "resolved"}
+{"commit": "37cc7d41da83969e18d2ea20ee4cc005902d4f38", "first_line": "[Security] harden maven shell metacharacters (#4059)", "kind": "squash_or_rebase", "number": 4059, "repository_key": "cdxgen/cdxgen", "status": "resolved"}
+{"commit": "e447d2bbeafc9584f4538f016b1b97f75ce58337", "first_line": "Merge pull request #130 from ChainSafe/chore/fix-signature-validation", "kind": "merge_commit", "number": 130, "repository_key": "chainsafe/js-libp2p-noise", "status": "resolved"}
+{"commit": "e8f60b6a4cd28d475ef1b5acf0f2608a5865c992", "first_line": "Optimize uint (#3977)", "kind": "squash_or_rebase", "number": 3977, "repository_key": "chainsafe/lodestar", "status": "resolved"}
+{"number": 7920, "repository_key": "chartjs/chart.js", "status": "not_found"}
+{"number": 7602, "repository_key": "chroma-core/chroma", "status": "not_found"}
+{"number": 24075, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 24336, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 27597, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 28007, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 35150, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 36657, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 37401, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 44512, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 44693, "repository_key": "cilium/cilium", "status": "not_found"}
+{"number": 1172, "repository_key": "cilium/proxy", "status": "not_found"}
+{"commit": "6899fe21dd80873893dd1a3bf3bdd4d33b1b2338", "first_line": "Merge pull request #10421 from cli/exit1-wrong-predicate-type", "kind": "merge_commit", "number": 10421, "repository_key": "cli/cli", "status": "resolved"}
+{"commit": "ec7ab01b512a3c06a9944a25d50f255bf07c3499", "first_line": "util.unsetByPath(): prevent prototype modification (#1406)", "kind": "squash_or_rebase", "number": 1406, "repository_key": "clientio/joint", "status": "resolved"}
+{"commit": "4393dd4f96159f261629ce80e9ecaa027d348131", "first_line": "Merge pull request #26 from cloudflare/validate-redirect-on-authorize", "kind": "merge_commit", "number": 26, "repository_key": "cloudflare/workers-oauth-provider", "status": "resolved"}
+{"commit": "09a2adb2f197469e5b64e8b89c22b6687cacabc1", "first_line": "Merge pull request #27 from cloudflare/prevent-pkce-downgrade-attack", "kind": "merge_commit", "number": 27, "repository_key": "cloudflare/workers-oauth-provider", "status": "resolved"}
+{"commit": "311ffbd5064f8301ac6f0311bbe5630897923b93", "first_line": "[wrangler] fix: change `wrangler (pages) dev` to listen on `localhost` by default (#4532)", "kind": "squash_or_rebase", "number": 4532, "repository_key": "cloudflare/workers-sdk", "status": "resolved"}
+{"commit": "dcb0b5a1861a1e2e4629a8607a3ca9c89009ac55", "first_line": "fix: fix path-traversal bug (#229)", "kind": "squash_or_rebase", "number": 229, "repository_key": "cloudwego/hertz", "status": "resolved"}
+{"commit": "10b2112db83fedfc391e900edfedc2b4e507d3f7", "first_line": "Merge pull request #2945 from agraul/cve-patches-2022-02-16", "kind": "merge_commit", "number": 2945, "repository_key": "cobbler/cobbler", "status": "resolved"}
+{"commit": "31d5823d1071dc1481c4524157265157c7f292b2", "first_line": "Escape HTML from messages in error page (#4430)", "kind": "squash_or_rebase", "number": 4430, "repository_key": "coder/code-server", "status": "resolved"}
+{"commit": "1a1f06aa79928ca778d1f7c023bafde4be8439a7", "first_line": "fix: verify PKCS7 signature on Azure instance identity tokens (#25286)", "kind": "squash_or_rebase", "number": 25286, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "76bf462bbf43d903879a6e5be720e6add1a121c7", "first_line": "fix(coderd): prevent user-admin from resetting owner password (#25709)", "kind": "squash_or_rebase", "number": 25709, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "a2e1ddb56f4d153fff5cf5b834d6a1b252abb231", "first_line": "fix: validate FileSize in NewDataBuilder to prevent OOM DoS (#25710)", "kind": "squash_or_rebase", "number": 25710, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "c248dfb437432b6dac4ba38ff047a863a1a74624", "first_line": "fix: escape agent log HTML (#25808)", "kind": "squash_or_rebase", "number": 25808, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "bb11946bd4c193a81450036b7d409ef3055aa0f2", "first_line": "fix: require update permission to recreate devcontainers (#25812)", "kind": "squash_or_rebase", "number": 25812, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "2f011fd2a3956eaaf52c48185083249e38e61c92", "first_line": "fix: reject oversized and invalid zip uploads (#25877)", "kind": "squash_or_rebase", "number": 25877, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "63cd8a8c01e22b0bb34eff2578b80d874bd2fb35", "first_line": "fix: clamp template port sharing level in SubAgentAPI (#26061)", "kind": "squash_or_rebase", "number": 26061, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "f3c7c23623f36ebecd27efff7993bc6b57d16523", "first_line": "fix(coderd): prevent cross-tenant workspace app rebinding (#26103)", "kind": "squash_or_rebase", "number": 26103, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "a9fb2619e4ffd15932c74ae554f1decbdadc0955", "first_line": "fix: always verify TLS on aibridgeproxyd upstream transport (#26131)", "kind": "squash_or_rebase", "number": 26131, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "9b351c360286ec8f42bb94aac24b79bdc023efb6", "first_line": "fix: validate agent-supplied AllowedIPs in coordinator (#26144)", "kind": "squash_or_rebase", "number": 26144, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "9b550cbfe97d2eb565b2c797b0c025f9de65e56b", "first_line": "fix: prevent session token exfiltration via external app URLs (#26146)", "kind": "squash_or_rebase", "number": 26146, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "a26c46a3bf0388c8c158b89f6d2d7e569dcc7bab", "first_line": "fix!: validate HostnameSuffix and SSHConfigOptions' (#26154)", "kind": "squash_or_rebase", "number": 26154, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "aba94072fe6bc00c816dd8254669169fcbf3a0ab", "first_line": "fix: add max bytes request limit to aibridge (#26164)", "kind": "squash_or_rebase", "number": 26164, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "b5ef700dd65fd369430b015b77818301b62021f9", "first_line": "fix!: only trust x-forwarded-host from configured trusted proxies (#26204)", "kind": "squash_or_rebase", "number": 26204, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "eeb2624549ddb85538e493af3e678fdb185a809f", "first_line": "fix: pin workspace agent API client to intended agent (#26600)", "kind": "squash_or_rebase", "number": 26600, "repository_key": "coder/coder", "status": "resolved"}
+{"commit": "2ba00fe2377f4d53947a84b8cdb314a63bbd6dd4", "first_line": "[2609] fix ReDoS vulnerability in email regex (#2824)", "kind": "squash_or_rebase", "number": 2824, "repository_key": "colinhacks/zod", "status": "resolved"}
+{"number": 8, "repository_key": "component/trim", "status": "not_found"}
+{"commit": "4f06eca89aa13209774d26dbac077c41b72bac7c", "first_line": "fix: reject path traversal in python entrypoints (#2445)", "kind": "squash_or_rebase", "number": 2445, "repository_key": "conda/rattler", "status": "resolved"}
+{"number": 449, "repository_key": "consensys/gnark-crypto", "status": "repository_not_searchable"}
+{"commit": "a5c35b1d1730a85efda243217db3ab28bb17681b", "first_line": "Merge pull request #808 from squeed/plugin-name", "kind": "merge_commit", "number": 808, "repository_key": "containernetworking/cni", "status": "resolved"}
+{"number": 2245, "repository_key": "containers/buildah", "status": "repository_not_searchable"}
+{"number": 5918, "repository_key": "containers/buildah", "status": "repository_not_searchable"}
+{"number": 3214, "repository_key": "containers/libpod", "status": "repository_not_searchable"}
+{"number": 25173, "repository_key": "containers/podman", "status": "repository_not_searchable"}
+{"commit": "5fc0350f7c74e496fba86e5d29837e4e019d7458", "first_line": "Fix for CVE-2021-31232: Alertmanager can expose local files content via specially crafted config (#4129)", "kind": "squash_or_rebase", "number": 4129, "repository_key": "cortexproject/cortex", "status": "resolved"}
+{"commit": "d7bdbd7488644f0aaeee5cdcdc119c863f199f72", "first_line": "Fix nonce issue for replay attack (#692)", "kind": "squash_or_rebase", "number": 692, "repository_key": "cosmos/ethermint", "status": "resolved"}
+{"commit": "5bf2e8dd7c57acad5b152cc099a2f7cf177979a3", "first_line": "Add rate limiting to prevent DDoS abuse and improve wget command (#2800)", "kind": "squash_or_rebase", "number": 2800, "repository_key": "cowrie/cowrie", "status": "resolved"}
+{"commit": "9ad033bc06aa8a9c53c0bf9409c58965e6049b93", "first_line": "Merge pull request #5610 from haircommander/sysctl-no-host-2", "kind": "merge_commit", "number": 5610, "repository_key": "cri-o/cri-o", "status": "resolved"}
+{"commit": "3e342bff116e452f2156b1972bc3069696f25b6f", "first_line": "Merge pull request #6450 from haircommander/homedir-drop", "kind": "merge_commit", "number": 6450, "repository_key": "cri-o/cri-o", "status": "resolved"}
+{"commit": "f7b7ad5c1066bdcc551775b73da15dca5c111623", "first_line": "URL must be re-encoded when doing redirect (#1439)", "kind": "squash_or_rebase", "number": 1439, "repository_key": "crossbario/autobahn-python", "status": "resolved"}
+{"commit": "e4cb9b0b563ba36718acd7006f35fa4b3ac43c05", "first_line": "Merge pull request #86 from steveluscher/prohibit-high-char-codes", "kind": "merge_commit", "number": 86, "repository_key": "cryptocoinjs/base-x", "status": "resolved"}
+{"number": 575, "repository_key": "cthackers/adm-zip", "status": "not_found"}
+{"number": 1614, "repository_key": "cyclonedx/cdxgen", "status": "repository_not_searchable"}
+{"commit": "9f646253f4263d8644dadb86e5597fad996f688f", "first_line": "fix: eliminate possible shell-injection in `--workspace` argument  (#1476)", "kind": "squash_or_rebase", "number": 1476, "repository_key": "cyclonedx/cyclonedx-node-npm", "status": "resolved"}
+{"commit": "994d8fd95181484a5a27c5edc919aa625781432d", "first_line": "avoid backtracking (#100)", "kind": "squash_or_rebase", "number": 100, "repository_key": "d3/d3-color", "status": "resolved"}
+{"number": 9589, "repository_key": "dapr/dapr", "status": "not_found"}
+{"commit": "f720c729deca5d5c79da8464f8a05500d38b140c", "first_line": "Merge pull request #279 from yetingli/master", "kind": "merge_commit", "number": 279, "repository_key": "dataarts/dat.gui", "status": "resolved"}
+{"number": 1528, "repository_key": "developit/preact", "status": "repository_not_searchable"}
+{"number": 851, "repository_key": "dfinity/agent-js", "status": "repository_not_searchable"}
+{"commit": "9e723adfd3ddc2a1c9feda6c352ea35acc923bfd", "first_line": "security(logging): fix aes implementation in audit logging (#8323)", "kind": "squash_or_rebase", "number": 8323, "repository_key": "dgraph-io/dgraph", "status": "resolved"}
+{"commit": "f8e587c415046616a53b3fa39eaaf6837bc29cc4", "first_line": "Security - Possible stored XSS in watch list - Only permit HTTP/HTTP/FTP by default - override with env var `SAFE_PROTOCOL_REGEX` (#1359)", "kind": "squash_or_rebase", "number": 1359, "repository_key": "dgtlmoon/changedetection.io", "status": "resolved"}
+{"commit": "ab0b85d088ac2e5f80fb6e50f596edc2ed0c0732", "first_line": "Unify safe URL checking to the one function, strengthen tests and filters (#3564)", "kind": "squash_or_rebase", "number": 3564, "repository_key": "dgtlmoon/changedetection.io", "status": "resolved"}
+{"number": 12, "repository_key": "diasdavid/go-ipfs-dep", "status": "repository_not_searchable"}
+{"number": 1124, "repository_key": "digitalbazaar/forge", "status": "not_found"}
+{"number": 1152, "repository_key": "digitalbazaar/forge", "status": "not_found"}
+{"commit": "37902c8b91b741868aa082ca9d840d3792c80219", "first_line": "Merge pull request #41 from diplodoc-platform/fix/fix-highlighte-search", "kind": "merge_commit", "number": 41, "repository_key": "diplodoc-platform/search-extension", "status": "resolved"}
+{"commit": "a8df6d96531fea4ee747594d0b047d2a676714be", "first_line": "Allow configuring /assets endpoint CSP separately  (#12020)", "kind": "squash_or_rebase", "number": 12020, "repository_key": "directus/directus", "status": "resolved"}
+{"commit": "826404bcbe769f9bcd526baec41e696237b78ebb", "first_line": "Default CORS to disabled (#12022)", "kind": "squash_or_rebase", "number": 12022, "repository_key": "directus/directus", "status": "resolved"}
+{"commit": "0f9f0d8fc42a269aa2573efd67dd22b069b4fa83", "first_line": "Fix url encoding query parameters and added tests (#17120)", "kind": "squash_or_rebase", "number": 17120, "repository_key": "directus/directus", "status": "resolved"}
+{"commit": "4cc55b86ba5ae318577a79f98f2afb6966289996", "first_line": "Using the same data fetching logic for rest and graphql (#19155)", "kind": "squash_or_rebase", "number": 19155, "repository_key": "directus/directus", "status": "resolved"}
+{"commit": "714ef29afe779a6db5c4761ebaacdfc70ee2d8dd", "first_line": "feat: added html sanitizer for remote rendering (#1128)", "kind": "squash_or_rebase", "number": 1128, "repository_key": "docsifyjs/docsify", "status": "resolved"}
+{"commit": "63346eef9e731e58f9c68ae52e8903494b00ebd2", "first_line": "Merge pull request #283 from devpaul/grid-cleanup", "kind": "merge_commit", "number": 283, "repository_key": "dojo/dojox", "status": "resolved"}
+{"commit": "bef24219dab334f5187b04da733c2db8d33ff437", "first_line": "feat: Add rate limiter (#1976)", "kind": "squash_or_rebase", "number": 1976, "repository_key": "dpgaspar/flask-appbuilder", "status": "resolved"}
+{"commit": "339a6cdbf716eca7df9a731a909887f98f87246d", "first_line": "Merge pull request #8 from DrPaulBrewer/ensureNumeric", "kind": "merge_commit", "number": 8, "repository_key": "drpaulbrewer/cumulative-distribution-function", "status": "resolved"}
+{"commit": "9df18fdc69de2e71f30d8c1e6bfab2fda2e52eb4", "first_line": "fixes-20210521 (#373)", "kind": "squash_or_rebase", "number": 373, "repository_key": "dutchcoders/transfer.sh", "status": "resolved"}
+{"commit": "31ad4e01e158497519f8680c187e1ceb8594c59d", "first_line": "Fixed improper implementation of content type (#501)", "kind": "squash_or_rebase", "number": 501, "repository_key": "dutchcoders/transfer.sh", "status": "resolved"}
+{"commit": "de2a6a3ceb17573d3a366073e5cb8b7b36d13128", "first_line": "Merge pull request #112 from dwyl/try-mode", "kind": "merge_commit", "number": 112, "repository_key": "dwyl/hapi-auth-jwt2", "status": "resolved"}
+{"number": 7289, "repository_key": "eclipse-theia/theia", "status": "not_found"}
+{"number": 7971, "repository_key": "eclipse-theia/theia", "status": "not_found"}
+{"number": 10125, "repository_key": "eclipse-theia/theia", "status": "not_found"}
+{"commit": "4800be50910230b118a2bae9141ed19c8f197c25", "first_line": "Prevent task execution and debug session creation without workspace trust (#16917)", "kind": "squash_or_rebase", "number": 16917, "repository_key": "eclipse-theia/theia", "status": "resolved"}
+{"commits": ["4485727e3005ac93b75615fe23d5346e5fd2231c", "a810fee2229849e3b8fd4436753e4e1f3db5d1b6"], "number": 826, "repository_key": "ecomfe/zrender", "status": "ambiguous"}
+{"number": 2, "repository_key": "edx/recommenderxblock", "status": "repository_not_searchable"}
+{"commit": "e31adae59082578cb4e7d1af65135af1738b943d", "first_line": "Tenant-isolation hardening (v0.9.0a12 Track A) (#728)", "kind": "squash_or_rebase", "number": 728, "repository_key": "eidetic-labs/stigmem", "status": "resolved"}
+{"number": 507, "repository_key": "elazarl/goproxy", "status": "not_found"}
+{"commit": "1d9f69e7428c73a4e10f14740611c159b3e93800", "first_line": "Merge pull request #10008 from qazbnm456/fix-pdf-viewer", "kind": "merge_commit", "number": 10008, "repository_key": "electron/electron", "status": "resolved"}
+{"commit": "16aec702b407af24aab4632c97a21d24c2015acc", "first_line": "fix: ensure app load is limited to real asar files when appropriate (#39788)", "kind": "squash_or_rebase", "number": 39788, "repository_key": "electron/electron", "status": "resolved"}
+{"number": 1122, "repository_key": "embedchain/embedchain", "status": "repository_not_searchable"}
+{"commit": "bcb43266cff30b702d6b996c840fb2466cd5318b", "first_line": "[BUG] SQL Injection through CVE Bypass in DB-GPT 0.7.0 (CVE-2024-10835 & CVE-2024-10901) (#2650)", "kind": "squash_or_rebase", "number": 2650, "repository_key": "eosphoros-ai/db-gpt", "status": "resolved"}
+{"commit": "413810c786687f73824313a45d4fe287e4957d3f", "first_line": "Escape trailing strings like `=~` for Bash-like shells (#170)", "kind": "squash_or_rebase", "number": 170, "repository_key": "ericcornelissen/shescape", "status": "resolved"}
+{"commit": "e94341f8b022a980512c464cdc088063fa245dea", "first_line": "Merge pull request #344 from PangeaCake/patch-1", "kind": "merge_commit", "number": 344, "repository_key": "erming/shout", "status": "resolved"}
+{"commit": "573251572cec7208d53410b292028e901c26a7bd", "first_line": "Merge pull request #15648 from ahrtr/auth_cve_20230406", "kind": "merge_commit", "number": 15648, "repository_key": "etcd-io/etcd", "status": "resolved"}
+{"commit": "49b59cc8e5c838bdc5e661de6388a0e348b3985c", "first_line": "Merge pull request #15656 from mitake/lease-timetolive-auth", "kind": "merge_commit", "number": 15656, "repository_key": "etcd-io/etcd", "status": "resolved"}
+{"commit": "8c6104c5d5daf41f0d454acc04d42dffa0e0d996", "first_line": "harden: assorted server-side tightening for 3.0.2 (#7784)", "kind": "squash_or_rebase", "number": 7784, "repository_key": "ether/etherpad", "status": "resolved"}
+{"commit": "870b4505a05cd8b3604078ed4afcd3012bf72a47", "first_line": "p2p: define DiscReason as uint8 (#24507)", "kind": "squash_or_rebase", "number": 24507, "repository_key": "ethereum/go-ethereum", "status": "resolved"}
+{"commit": "49d60271d3fc849096eeb45f18f9972dc272c4ba", "first_line": "Merge pull request #37 from evangelion1204/fix-prototype-pollution", "kind": "merge_commit", "number": 37, "repository_key": "evangelion1204/multi-ini", "status": "resolved"}
+{"commit": "8a5245c9fa4d01573e39dc062d4a51520fcfe8fb", "first_line": "Merge pull request #244 from evershopcommerce/dev", "kind": "merge_commit", "number": 244, "repository_key": "evershopcommerce/evershop", "status": "resolved"}
+{"commit": "252e426f4581f2868ac8d3f2e67961cc700840ce", "first_line": "Merge pull request #338 from evershopcommerce/dev", "kind": "merge_commit", "number": 338, "repository_key": "evershopcommerce/evershop", "status": "resolved"}
+{"commit": "c0221fcd5093d3c3d85ee784ce362ab52afed152", "first_line": "Merge pull request #1856 from cormacmccarthy/GH1841---xss-when-pasting-script-into-pillbox-control_or_fuelux", "kind": "merge_commit", "number": 1856, "repository_key": "exacttarget/fuelux", "status": "resolved"}
+{"number": 2337, "repository_key": "exiv2/exiv2", "status": "not_found"}
+{"commit": "3dbda4bd9c2531a05fe0ea77a4bf4d7f294dc1da", "first_line": "fix(builtin): limit recursion depth (#870)", "kind": "squash_or_rebase", "number": 870, "repository_key": "expr-lang/expr", "status": "resolved"}
+{"number": 4866, "repository_key": "facebook/create-react-app", "status": "repository_not_searchable"}
+{"commit": "7c13bda5b7793b172efd1abb6712e156a83fe07d", "first_line": "Fix regression of snippets nested deeply under specified base path (#2039)", "kind": "squash_or_rebase", "number": 2039, "repository_key": "facelessuser/pymdown-extensions", "status": "resolved"}
+{"commit": "7b6948928f63d3211fc1624c408b38c6fbf8f1b4", "first_line": "Delete file when user cancel request (#567)", "kind": "squash_or_rebase", "number": 567, "repository_key": "fastify/fastify-multipart", "status": "resolved"}
+{"commit": "7dbf7a3528234b2a9ee9c4115e8ecf58d258ca51", "first_line": "fix: check share owner permissions on public share access (#5888)", "kind": "squash_or_rebase", "number": 5888, "repository_key": "filebrowser/filebrowser", "status": "resolved"}
+{"commit": "8adf127c7d33585333b8030869f6f318e6517179", "first_line": "fix: enforce directory boundary in rule path matching (#5889)", "kind": "squash_or_rebase", "number": 5889, "repository_key": "filebrowser/filebrowser", "status": "resolved"}
+{"commit": "f13c7c8cffd6d58ff29c4a6763ced1385f69961e", "first_line": "fix: restrict default permissions for proxy-auth auto-provisioned users (#5890)", "kind": "squash_or_rebase", "number": 5890, "repository_key": "filebrowser/filebrowser", "status": "resolved"}
+{"commit": "260908015f41324db5a31d7ee5724df08af186dc", "first_line": "Merge pull request #5393 from filecoin-project/feat-refactor-bls", "kind": "merge_commit", "number": 5393, "repository_key": "filecoin-project/lotus", "status": "resolved"}
+{"number": 231, "repository_key": "finastra/finastra-nodejs-libs", "status": "repository_not_searchable"}
+{"number": 232, "repository_key": "finastra/finastra-nodejs-libs", "status": "repository_not_searchable"}
+{"commit": "55704aca1b8d6f45bc7c7c2e4805c7e14875ec0f", "first_line": "fix(utils): confine zip extraction to the destination with os.Root (zip-slip) (#3444)", "kind": "squash_or_rebase", "number": 3444, "repository_key": "fission/fission", "status": "resolved"}
+{"commit": "05f8ae2aaea86626669e822974e13546528d72fc", "first_line": "\u589e\u52a0\u81ea\u52a8\u5316\u4ee3\u7801\u9009\u62e9\u4e1a\u52a1\u5e93\u529f\u80fd\uff0c\u589e\u52a0\u65e0\u8fb9\u6846\u9875\u9762\u529f\u80fd\u3002 (#1264)", "kind": "squash_or_rebase", "number": 1264, "repository_key": "flipped-aurora/gin-vue-admin", "status": "resolved"}
+{"commit": "f963e5aa48a0697798ed63a84e826b1734ee2275", "first_line": "Bugfix - Validating IDs for all imports (#4226)", "kind": "squash_or_rebase", "number": 4226, "repository_key": "flowiseai/flowise", "status": "resolved"}
+{"commit": "42152dd036d6d4e292dcb7062650882625f6138d", "first_line": "Chore/Disable Available Dep By Default (#5231)", "kind": "squash_or_rebase", "number": 5231, "repository_key": "flowiseai/flowise", "status": "resolved"}
+{"commit": "eed7581d0e264ec9acc6e928fa0f77ebb125704d", "first_line": "Updates to change/reset password functionality (#5294)", "kind": "squash_or_rebase", "number": 5294, "repository_key": "flowiseai/flowise", "status": "resolved"}
+{"commit": "c045ceb872c01a583e817480de4fc1a0a4cbf57f", "first_line": "Increase salt rounds for new passwords, and update hash with more salt rounds for old passwords (#5665)", "kind": "squash_or_rebase", "number": 5665, "repository_key": "flowiseai/flowise", "status": "resolved"}
+{"commit": "14bd5360d64f2652abcb8e4546e4c8267407c033", "first_line": "Merge pull request #1279 from fluxcd/refactor-receiver", "kind": "merge_commit", "number": 1279, "repository_key": "fluxcd/notification-controller", "status": "resolved"}
+{"commit": "774c01c3f351450d60696a48c786d38ad6e20867", "first_line": "use a safer version of DebugHandler, also avoids https://github.com/fortio/fortio/issues/692 as side benefit (#38)", "kind": "squash_or_rebase", "number": 38, "repository_key": "fortio/proxy", "status": "resolved"}
+{"number": 1940, "repository_key": "foundationagents/metagpt", "status": "not_found"}
+{"number": 1941, "repository_key": "foundationagents/metagpt", "status": "not_found"}
+{"number": 1946, "repository_key": "foundationagents/metagpt", "status": "not_found"}
+{"number": 1983, "repository_key": "foundationagents/metagpt", "status": "not_found"}
+{"number": 1988, "repository_key": "foundationagents/metagpt", "status": "not_found"}
+{"number": 23, "repository_key": "free5gc/nef", "status": "not_found"}
+{"number": 24, "repository_key": "free5gc/nef", "status": "not_found"}
+{"commit": "5f164247b2fc6c645cbd29f7fff15c13259c397f", "first_line": "Merge pull request #73 from Zach1113/fix/nrf-oauth-scope-check", "kind": "merge_commit", "number": 73, "repository_key": "free5gc/nrf", "status": "resolved"}
+{"commit": "f74d8fda26d7a2c769bc877b8c0e789a91fb8169", "first_line": "Merge pull request #53 from leowu0407/fix/unsafe-bdt-type-assertion", "kind": "merge_commit", "number": 53, "repository_key": "free5gc/pcf", "status": "resolved"}
+{"commit": "88de9fa74a1b3f3522e53b4cfa2d184712ffa4ee", "first_line": "Merge pull request #79 from wiwi878/fix/udm/validation-subscriberdatamanagement", "kind": "merge_commit", "number": 79, "repository_key": "free5gc/udm", "status": "resolved"}
+{"commit": "2b2638040b6d1921df7e9247b441a630ba80d517", "first_line": "Merge pull request #7 from gagliardetto/slice-append", "kind": "merge_commit", "number": 7, "repository_key": "gagliardetto/binary", "status": "resolved"}
+{"commit": "676f6b76c7f8c4866eea0a983eba0b7537dd170b", "first_line": "Merge pull request #11 from 418sec/1-npm-nested-object-assign", "kind": "merge_commit", "number": 11, "repository_key": "geta/nestedobjectassign", "status": "resolved"}
+{"commit": "a736720b4ea97a24855ab1c0ca4d4dc5d05a55ca", "first_line": "ref: remove logging the slack request body (#70508)", "kind": "squash_or_rebase", "number": 70508, "repository_key": "getsentry/sentry", "status": "resolved"}
+{"commit": "02cc5f9ef63431e0080406adf8e6a438060d3904", "first_line": "Harden SSO login pipeline for inactive user identities (#108458)", "kind": "squash_or_rebase", "number": 108458, "repository_key": "getsentry/sentry", "status": "resolved"}
+{"number": 14997, "repository_key": "getsentry/sentry-javascript", "status": "not_found"}
+{"commit": "d5152331f58d86efd3283eec928989810aa21975", "first_line": "Always remove Django session related cookies. (#1842)", "kind": "squash_or_rebase", "number": 1842, "repository_key": "getsentry/sentry-python", "status": "resolved"}
+{"commit": "2d4bbec941551479b1fdf1e54ece03e6e82a7e72", "first_line": "fix lack of escaping of filename in Content-Disposition (#3556)", "kind": "squash_or_rebase", "number": 3556, "repository_key": "gin-gonic/gin", "status": "resolved"}
+{"number": 5444, "repository_key": "github/advisory-database", "status": "not_found"}
+{"number": 7635, "repository_key": "github/advisory-database", "status": "not_found"}
+{"number": 8521, "repository_key": "github/advisory-database", "status": "not_found"}
+{"number": 8522, "repository_key": "github/advisory-database", "status": "not_found"}
+{"number": 10226, "repository_key": "github/advisory-database", "status": "not_found"}
+{"number": 2162, "repository_key": "gitpython-developers/gitpython", "status": "not_found"}
+{"commit": "1e1ece8f3dce8ed9958f3bd5823c135d1c19eb49", "first_line": "Do not allow to reuse TOTP passcode (#3878)", "kind": "squash_or_rebase", "number": 3878, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "92466129ec242536c71b66a8987d9b37e6bc0bce", "first_line": "Improve URL validation for external wiki  and external issues (#4710)", "kind": "squash_or_rebase", "number": 4710, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "e47df0b301510a49b49fc43266f436b7d58a02b1", "first_line": "Enforce token on api routes [fixed critical security issue #4357] (#4840)", "kind": "squash_or_rebase", "number": 4840, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "80098bd7526fed84cfb4fa48272be71541b37205", "first_line": "Fix go-get URL generation (#5905)", "kind": "squash_or_rebase", "number": 5905, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "c3d9a5f8464e0921fc4063d903ecf2063fa152fa", "first_line": "Use session for retrieving org  teams (#11438)", "kind": "squash_or_rebase", "number": 11438, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "b59ed41e81270660e08a18ade5ad09ecd033f905", "first_line": "Use path not filepath in routers/editor (#14390)", "kind": "squash_or_rebase", "number": 14390, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"number": 15125, "repository_key": "go-gitea/gitea", "status": "not_found"}
+{"number": 21463, "repository_key": "go-gitea/gitea", "status": "not_found"}
+{"commit": "8af96f585f83ff5c0000f0395dab52b02517abe3", "first_line": "Disallow dangerous url schemes (#25960)", "kind": "squash_or_rebase", "number": 25960, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "717d0f5934826e0ddfdce176cf3cab303cd74fbb", "first_line": "Do some missing checks (#28423)", "kind": "squash_or_rebase", "number": 28423, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "eedb8f41297c343d6073a7bab46e4df6ee297a90", "first_line": "Only use supported sort order for \"explore/users\" page (#29430)", "kind": "squash_or_rebase", "number": 29430, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "7eef261c3ebf9bfe37fe0dceb51bde9a79bbaf17", "first_line": "Replace v-html with v-text in search inputbox (#31966)", "kind": "squash_or_rebase", "number": 31966, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "5c05dddbed8247a4fb272619f1eb7cf090443b8b", "first_line": "Fix nuget/conan/container packages upload bugs (#31967)", "kind": "squash_or_rebase", "number": 31967, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"number": 32218, "repository_key": "go-gitea/gitea", "status": "not_found"}
+{"commit": "17053e953f697ba21e067f1ad7715b18e07e273b", "first_line": "Fix delete branch perm checking (#32654)", "kind": "squash_or_rebase", "number": 32654, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "62d750eadb4a6ecdbaf807c1682ace4d87695977", "first_line": "Fix various permission & login related bugs (#36002)", "kind": "squash_or_rebase", "number": 36002, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"commit": "5d87a70af929dba47402fbea7d59f34e5913b3b4", "first_line": "fix(packages): Add label for private and internal package and fix composor package source permission check (#37610)", "kind": "squash_or_rebase", "number": 37610, "repository_key": "go-gitea/gitea", "status": "resolved"}
+{"number": 38151, "repository_key": "go-gitea/gitea", "status": "not_found"}
+{"commit": "70e81ee68291e0702f82e2dad91c4598d28d2676", "first_line": "fix(deps): update vueuse to v9.4.0 (#2575)", "kind": "squash_or_rebase", "number": 2575, "repository_key": "go-vikunja/vikunja", "status": "resolved"}
+{"commit": "7ec31363c33f4d02257f18ba2d27f28133b2cd88", "first_line": "chore(deps): update dependency vite to v3.2.0 (#2580)", "kind": "squash_or_rebase", "number": 2580, "repository_key": "go-vikunja/vikunja", "status": "resolved"}
+{"number": 3688, "repository_key": "go-vikunja/vikunja", "status": "not_found"}
+{"commit": "789c56fbb7194085fcaa91f71d022923da4faab6", "first_line": "\ud83d\udd25 feat: Implement OverrideParam override behavior for DefaultCtx (#3962)", "kind": "squash_or_rebase", "number": 3962, "repository_key": "gofiber/fiber", "status": "resolved"}
+{"commit": "519aeefbd93adad833cb45ba36f71622d3068223", "first_line": "repo_editor: prohibits uploading files to `.git.` directory (#6970)", "kind": "squash_or_rebase", "number": 6970, "repository_key": "gogs/gogs", "status": "resolved"}
+{"commit": "90bc75229726a24a28507d3e8178f86734f112e1", "first_line": "repo_editor: prohibit move files to to `.git` directory (#6986)", "kind": "squash_or_rebase", "number": 6986, "repository_key": "gogs/gogs", "status": "resolved"}
+{"number": 22751, "repository_key": "goharbor/harbor", "status": "not_found"}
+{"commit": "91aa3ebf42032ca783c41f9ec25d885875f66ddb", "first_line": "Merge pull request #346 from google/fixes", "kind": "merge_commit", "number": 346, "repository_key": "google/fscrypt", "status": "resolved"}
+{"commit": "dfd66ee7de6fe9750d932d30bf3b67a2f4d2a176", "first_line": "fix(auth): separate Google and Generic MCP OAuth verification (#3341)", "kind": "squash_or_rebase", "number": 3341, "repository_key": "googleapis/mcp-toolbox", "status": "resolved"}
+{"commit": "1d8df0df590383ba56091b6e4d7c37ab7d7d9749", "first_line": "fix(auth/generic): enforce issuer presence in opaque token validation (#3360)", "kind": "squash_or_rebase", "number": 3360, "repository_key": "googleapis/mcp-toolbox", "status": "resolved"}
+{"commit": "fa0ad66bc7e4a0c46f1ae5ca10b2a6f3a528ab6f", "first_line": "fix: Don't allow serialization of firestore settings (#1742)", "kind": "squash_or_rebase", "number": 1742, "repository_key": "googleapis/nodejs-firestore", "status": "resolved"}
+{"commit": "2ae5591df683d21d6851f9bfbb67ec5fdc037b2a", "first_line": "fix: sanitize environment variables used in RegExp (#197)", "kind": "squash_or_rebase", "number": 197, "repository_key": "googlechrome/chrome-launcher", "status": "resolved"}
+{"commit": "a261d8cd9f26fbbef7ff9a520944ebf1dcb1e823", "first_line": "Merge pull request #541 from gotify/swagger-ui-xss", "kind": "merge_commit", "number": 541, "repository_key": "gotify/server", "status": "resolved"}
+{"number": 8301, "repository_key": "gradio-app/gradio", "status": "not_found"}
+{"commit": "00454b32f5db19f9dee4fa05b5cff5e24941548d", "first_line": "fix XSS vulnerabilities in dashboard links (#11813)", "kind": "squash_or_rebase", "number": 11813, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "125ba95686df79989626ac1e8aa48e582c0efd98", "first_line": "Security: Tag value sanitization fix in OpenTSDB data source (#24539)", "kind": "squash_or_rebase", "number": 24539, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "c53435f7a76f79a07bac2fe1a66827624e217a1c", "first_line": "Graph: Fix XSS vulnerability with series overrides (#25401)", "kind": "squash_or_rebase", "number": 25401, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "8f20b13f1c8e49b224ad807c78f759a302be20b9", "first_line": "Snapshots: Disallow anonymous user to create snapshots (#31263)", "kind": "squash_or_rebase", "number": 31263, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "605d056136b3dce5545bdbd7868acd8778eed9b1", "first_line": "Security: Sync security changes on main (#45083)", "kind": "squash_or_rebase", "number": 45083, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "70009201d44c2d0ab39cc77081808a69a6c4fd63", "first_line": "Expressions: Sql expressions with Duckdb (#81666)", "kind": "squash_or_rebase", "number": 81666, "repository_key": "grafana/grafana", "status": "resolved"}
+{"commit": "2fd633cded9a97c8c6b29160549a157678d1fa2f", "first_line": "Restrict path segments in TenantIDs (#4020)", "kind": "squash_or_rebase", "number": 4020, "repository_key": "grafana/loki", "status": "resolved"}
+{"commit": "d22ecf3891d3fe55d3878157b58dbc5c33967921", "first_line": "Bind context to async execution avoiding race-conditions (#2521)", "kind": "squash_or_rebase", "number": 2521, "repository_key": "graphql-hive/graphql-modules", "status": "resolved"}
+{"commit": "4e091a6baadb7fe3708f3485b94b85c6457643d3", "first_line": "fix(basic-auth): use jitter and  constant-time string comparison (#1283)", "kind": "squash_or_rebase", "number": 1283, "repository_key": "h3js/h3", "status": "resolved"}
+{"commit": "5e60f4a366b2fabc758801c1111d629076a5b8d3", "first_line": "[CVE-2017-16088] Sandbox Breakout (Critical Security Fix) - context clear (#13)", "kind": "squash_or_rebase", "number": 13, "repository_key": "hacksparrow/safe-eval", "status": "resolved"}
+{"commits": ["7323f3d08b4c85e6d92f8511c849d2b1821aadcc", "aa7653c02d97e9e2fd3e4b56d3e07e7095df5bb2"], "number": 8742, "repository_key": "handsontable/handsontable", "status": "ambiguous"}
+{"number": 38, "repository_key": "hapijs/content", "status": "not_found"}
+{"commit": "529dd67eeb6b125637623d6a723601f0938d3613", "first_line": "fix: use realpath for fs.contains (#867)", "kind": "squash_or_rebase", "number": 867, "repository_key": "harttle/liquidjs", "status": "resolved"}
+{"commit": "58387fef0a8240d0457001bb2bac075796775e11", "first_line": "server: config entry replication now correctly uses namespaces in comparisons (#9024)", "kind": "squash_or_rebase", "number": 9024, "repository_key": "hashicorp/consul", "status": "resolved"}
+{"commit": "3e2ec34409babda7f625889f3620c9d3810521fc", "first_line": "Merge pull request #10824 from hashicorp/dnephin/acl-token-bug", "kind": "merge_commit", "number": 10824, "repository_key": "hashicorp/consul", "status": "resolved"}
+{"commit": "dd8fbf476e2ecc6cb756c7f9db1c242fcbcbd61f", "first_line": "Merge pull request #7022 from hashicorp/f-handshake-deadlines-oss", "kind": "merge_commit", "number": 7022, "repository_key": "hashicorp/nomad", "status": "resolved"}
+{"commit": "f5441e69d4c991b77318bb661b31ab6acb2c7ea7", "first_line": "Merge pull request #7023 from hashicorp/b-tls-validation", "kind": "merge_commit", "number": 7023, "repository_key": "hashicorp/nomad", "status": "resolved"}
+{"number": 9139, "repository_key": "hashicorp/nomad", "status": "not_found"}
+{"commit": "306cfabb6229a296aa9dbb2436a4f67028ce3f04", "first_line": "docker: disallow volume mounts from host by default (#9321)", "kind": "squash_or_rebase", "number": 9321, "repository_key": "hashicorp/nomad", "status": "resolved"}
+{"commit": "d2f93fa0072a8c12244e6c5b4b139d1ceaf7ba08", "first_line": "Improve consistency in error messages (#10537)", "kind": "squash_or_rebase", "number": 10537, "repository_key": "hashicorp/vault", "status": "resolved"}
+{"commit": "ed08e45069d60fc4452fad7d44bcfd3b2e4c8236", "first_line": "change mul and div functions (#19495)", "kind": "squash_or_rebase", "number": 19495, "repository_key": "hashicorp/vault", "status": "resolved"}
+{"commit": "f15715f6d01f68a30431b9c09d3a6f52157f47fb", "first_line": "vault-12244 (#19591)", "kind": "squash_or_rebase", "number": 19591, "repository_key": "hashicorp/vault", "status": "resolved"}
+{"commit": "aeb817dfba95ebe6f7f0577d144510ff19648d0a", "first_line": "Buffer body read up to MaxRequestSize (#24354)", "kind": "squash_or_rebase", "number": 24354, "repository_key": "hashicorp/vault", "status": "resolved"}
+{"commit": "318f8582134a4a79a45ee2a6edad3072d865739b", "first_line": "VAULT-36229: Nonce for rekey cancellations (#30794)", "kind": "squash_or_rebase", "number": 30794, "repository_key": "hashicorp/vault", "status": "resolved"}
+{"number": 3, "repository_key": "heyitsmeuralex/mrk", "status": "repository_not_searchable"}
+{"commit": "9beac2206a053fe4ccbce25c1916e561dd3d619e", "first_line": "Migrate to ImmutableSandboxedEnvironment  (#453)", "kind": "squash_or_rebase", "number": 453, "repository_key": "home-assistant-ecosystem/home-assistant-cli", "status": "resolved"}
+{"commits": ["e5f776fdc3a2b5ff8000ea728e9cf80c8547803e", "fe95f6e1c5ebf15da0987c1a69fc23f05cbf36cf"], "number": 150046, "repository_key": "home-assistant/core", "status": "ambiguous"}
+{"commit": "e0ae9b59747445d6e470e04dc3ed45128123ee4d", "first_line": "\ud83d\udea8\ud83d\udea8\ud83d\udea8 Delete conversion scripts when making release wheels (#35296)", "kind": "squash_or_rebase", "number": 35296, "repository_key": "huggingface/transformers", "status": "resolved"}
+{"number": 1119, "repository_key": "hwchase17/langchain", "status": "repository_not_searchable"}
+{"commit": "71fbe9480904c98c484e36291af95f78954031c4", "first_line": "Merge pull request #58 from hydralabs/defusedxml", "kind": "merge_commit", "number": 58, "repository_key": "hydralabs/pyamf", "status": "resolved"}
+{"commit": "497a177ffb818ed8f75578cb55a65ba2224a85ea", "first_line": "Fix FAB-18528: remove panic in ifConfig func (#2828)", "kind": "squash_or_rebase", "number": 2828, "repository_key": "hyperledger/fabric", "status": "resolved"}
+{"number": 443, "repository_key": "i18next/i18next", "status": "not_found"}
+{"commit": "11f059599889d857d497aa0499355be32df0dbb6", "first_line": "Merge pull request #826 from alexmchardy/fix-interpolation-escapevalue-default", "kind": "merge_commit", "number": 826, "repository_key": "i18next/i18next", "status": "resolved"}
+{"number": 397, "repository_key": "indexzero/nconf", "status": "not_found"}
+{"number": 19, "repository_key": "inikulin/replicator", "status": "not_found"}
+{"commit": "81be52961aa324fd5cd3cacebffba1ba051bc107", "first_line": " add explicit trust_remote_code controls to resolve the security issue (#4511)", "kind": "squash_or_rebase", "number": 4511, "repository_key": "internlm/lmdeploy", "status": "resolved"}
+{"commit": "e8d722c62e22fb25c466e74f4b838be15ea80a9d", "first_line": "fix: ignore unwanted blocks (#194)", "kind": "squash_or_rebase", "number": 194, "repository_key": "ipfs/js-ipfs-bitswap", "status": "resolved"}
+{"number": 1, "repository_key": "isaacs/csrf-lite", "status": "not_found"}
+{"commit": "1316820b5665346414f9bd1287d4701f9cf77727", "first_line": "fix(checkout): throw error on malicious filepaths (#1339)", "kind": "squash_or_rebase", "number": 1339, "repository_key": "isomorphic-git/isomorphic-git", "status": "resolved"}
+{"number": 2, "repository_key": "itworkcenter/fileview", "status": "not_found"}
+{"number": 949, "repository_key": "jameswlane/status-board", "status": "repository_not_searchable"}
+{"commit": "dddf3500ec604f851536b0e460db334133f10064", "first_line": "fix: validate path in fs (#3152)", "kind": "squash_or_rebase", "number": 3152, "repository_key": "janhq/jan", "status": "resolved"}
+{"commit": "5b6e94e4e455a5d25bebea9c53603c05ffa87ff6", "first_line": "Fix trusted proxy client IP matching (#139)", "kind": "squash_or_rebase", "number": 139, "repository_key": "jasonlovesdoggo/caddy-defender", "status": "resolved"}
+{"commit": "b0ff39fb9b2f457e5332249b4cc2ec11eabf46ee", "first_line": "Escaped dataset title in HTML serialization (#668)", "kind": "squash_or_rebase", "number": 668, "repository_key": "jazzband/tablib", "status": "resolved"}
+{"commit": "33acc7d201ef42a053edba43c49de6a85a7cba4c", "first_line": "Merge pull request #27 from exx8/redos_ii", "kind": "merge_commit", "number": 27, "repository_key": "jefferyhus/es6-crawler-detect", "status": "resolved"}
+{"number": 3789, "repository_key": "jellyfin/jellyfin-web", "status": "not_found"}
+{"commit": "da5f2242981afa832c4337935b8a5eff3ea192c7", "first_line": "Merge pull request #40 from johndatserakis/jd-update-name-assignment", "kind": "merge_commit", "number": 40, "repository_key": "johndatserakis/file-upload-with-preview", "status": "resolved"}
+{"number": 3134, "repository_key": "jquery/jquery", "status": "not_found"}
+{"number": 1953, "repository_key": "jquery/jquery-ui", "status": "not_found"}
+{"number": 21062, "repository_key": "juju/juju", "status": "not_found"}
+{"commit": "7a4925f8c77d6e61fbafb4c0eb44990cbdc9f4c5", "first_line": "Merge pull request #2713 from bergwolf/ro-shared-dir", "kind": "merge_commit", "number": 2713, "repository_key": "kata-containers/runtime", "status": "resolved"}
+{"commit": "b1a11422cc3f7f47211065d3da6928e348933c82", "first_line": "Fix version path traversal (#5442)", "kind": "squash_or_rebase", "number": 5442, "repository_key": "kedro-org/kedro", "status": "resolved"}
+{"commit": "7811fab5d061173fe2f1d54049836ece7a48933c", "first_line": "Merge pull request #283 from keichi/fix-code-injection", "kind": "merge_commit", "number": 283, "repository_key": "keichi/binary-parser", "status": "resolved"}
+{"commit": "ce0d2788b76119bc778f3d094816b0a9fc2b9748", "first_line": "Disable `torch.load` in `TorchModuleWrapper` when in safe mode. (#21575)", "kind": "squash_or_rebase", "number": 21575, "repository_key": "keras-team/keras", "status": "resolved"}
+{"commit": "ac5c97fb57c36fad4da14eaec04f981d3ad6bdb9", "first_line": "Propagate `safe_mode` flag to legacy h5 loading code. (#21602)", "kind": "squash_or_rebase", "number": 21602, "repository_key": "keras-team/keras", "status": "resolved"}
+{"commit": "070da5d314249e9fd930ab1f766bf6f6793ff4c9", "first_line": "security: fix 4 HIGH + 15 MEDIUM Codex findings (8 root-cause clusters) \u2014 DCO-signed replacement for #177 (#178)", "kind": "squash_or_rebase", "number": 178, "repository_key": "kerberosmansour/hulumi", "status": "resolved"}
+{"number": 112, "repository_key": "kevva/decompress", "status": "not_found"}
+{"commit": "4b019b8cfcb7bea6f800609da5d07e8c8abfc80a", "first_line": "Factor out base keystone types (#4478)", "kind": "squash_or_rebase", "number": 4478, "repository_key": "keystonejs/keystone", "status": "resolved"}
+{"commit": "a30c7a1630a670eb814e015254c7ae608500b2d8", "first_line": "Removes redirect functionality from `/signin` page to prevent open redirection CVE (#8626)", "kind": "squash_or_rebase", "number": 8626, "repository_key": "keystonejs/keystone", "status": "resolved"}
+{"number": 9831, "repository_key": "keystonejs/keystone", "status": "not_found"}
+{"number": 63, "repository_key": "khan/simple-markdown", "status": "repository_not_searchable"}
+{"commit": "8e5d04d8485284376e9e66fcd51d0be46b4dc06e", "first_line": "Abort on ad hoc kiali namespace deployment when it is not allowed (#278)", "kind": "squash_or_rebase", "number": 278, "repository_key": "kiali/kiali-operator", "status": "resolved"}
+{"commit": "18ea1dab2f0dcb558209329f033dba1a4d1c5a97", "first_line": "update windows data dir installation (#1510)", "kind": "squash_or_rebase", "number": 1510, "repository_key": "kolide/launcher", "status": "resolved"}
+{"commit": "c26c6a1b9734c5089217986ffa5cd19f8a6b8900", "first_line": "feat(cli): restrict insecure unauthenticated server to loopback binds (#5354)", "kind": "squash_or_rebase", "number": 5354, "repository_key": "kopia/kopia", "status": "resolved"}
+{"commit": "c2a5adef47a5b6cda3fb5c57b4e73311b89ed852", "first_line": "Merge pull request #98 from korzio/add-sanitize-template-value", "kind": "merge_commit", "number": 98, "repository_key": "korzio/djv", "status": "resolved"}
+{"commit": "a047e09a36613e3d17f2bef1d98e0ef5807ff263", "first_line": "Merge pull request #1595 from giantswarm/proxmox_user", "kind": "merge_commit", "number": 1595, "repository_key": "kubernetes-sigs/image-builder", "status": "resolved"}
+{"commit": "09aedcd7e36cddacdb2d5ea7532003f39bf7bb57", "first_line": "Merge pull request #1596 from giantswarm/ssh_defaults", "kind": "merge_commit", "number": 1596, "repository_key": "kubernetes-sigs/image-builder", "status": "resolved"}
+{"commit": "bd1eb048b7e828d62bc92c3ecaeb8288efa91365", "first_line": "Improve path rule (#8623)", "kind": "squash_or_rebase", "number": 8623, "repository_key": "kubernetes/ingress-nginx", "status": "resolved"}
+{"commit": "35e0f17a33e4f63b4e6328d0e0e3aabf8b6a68a6", "first_line": "Merge pull request #82143 from soltysh/cp_no_links", "kind": "merge_commit", "number": 82143, "repository_key": "kubernetes/kubernetes", "status": "resolved"}
+{"commit": "4afcba42bed2bb7c36e5209a90d87343f32a0efa", "first_line": "Merge pull request #83261 from liggitt/yaml-limits", "kind": "merge_commit", "number": 83261, "repository_key": "kubernetes/kubernetes", "status": "resolved"}
+{"commit": "01df16aee8297041e32e0c7a2194a2749361d642", "first_line": "Merge pull request #89794 from msau42/cleanup-logs", "kind": "merge_commit", "number": 89794, "repository_key": "kubernetes/kubernetes", "status": "resolved"}
+{"commit": "dcf60e04ddd6c50c8bf9b0c9d913bf82bff44333", "first_line": "Merge pull request #92941 from tallclair/invalid-redirect", "kind": "merge_commit", "number": 92941, "repository_key": "kubernetes/kubernetes", "status": "resolved"}
+{"number": 130786, "repository_key": "kubernetes/kubernetes", "status": "not_found"}
+{"commit": "85489c63b4a3c2148229e5384af9e01e4e8471aa", "first_line": "Fix: forbid 302 request to avoid SSRF (#5000)", "kind": "squash_or_rebase", "number": 5000, "repository_key": "kubevela/kubevela", "status": "resolved"}
+{"number": 3686, "repository_key": "kubevirt/kubevirt", "status": "not_found"}
+{"commit": "14d82cbf6df091d0b12d2d1cdce1d9c9f29f659d", "first_line": "Require predicate type (#5713)", "kind": "squash_or_rebase", "number": 5713, "repository_key": "kyverno/kyverno", "status": "resolved"}
+{"number": 15729, "repository_key": "kyverno/kyverno", "status": "not_found"}
+{"commit": "f17b527047dfba1925a3a976a39b5a871b46a838", "first_line": "docs(BA-3445): Document network isolation requirements and security architecture (#7587)", "kind": "squash_or_rebase", "number": 7587, "repository_key": "lablup/backend.ai", "status": "resolved"}
+{"commit": "b1caae62fd529b682517557989b7df11ea41ab1a", "first_line": "APIChain add restrictions to domains (CVE-2023-32786) (#12747)", "kind": "squash_or_rebase", "number": 12747, "repository_key": "langchain-ai/langchain", "status": "resolved"}
+{"commit": "f873309004ca10b58bca623a163928c1678bc78d", "first_line": "fix: security file upload (#3923)", "kind": "squash_or_rebase", "number": 3923, "repository_key": "langflow-ai/langflow", "status": "resolved"}
+{"commit": "d437d018ceba95242fcf4c1279df214d96314f2e", "first_line": "refactor(auth): simplify flow retrieval by removing settings_service dependency (#8956)", "kind": "squash_or_rebase", "number": 8956, "repository_key": "langflow-ai/langflow", "status": "resolved"}
+{"commit": "41d34b204803dc2b7de9734bdd238cac87c32585", "first_line": "fix: prevent path traversal in knowledge base create endpoint  (#12337)", "kind": "squash_or_rebase", "number": 12337, "repository_key": "langflow-ai/langflow", "status": "resolved"}
+{"commit": "cb06a666d0f00a86d40599a91713fc615d7ea313", "first_line": "fix(security): reject symlinks/hardlinks in BaseFileComponent TAR extraction (GHSA-ccv6-r384-xp75) (#12945)", "kind": "squash_or_rebase", "number": 12945, "repository_key": "langflow-ai/langflow", "status": "resolved"}
+{"commit": "ec5f13f7d8d03233640ade43228934140a2fa933", "first_line": "fix: (critical) prevent xss in unicode input component (#735)", "kind": "squash_or_rebase", "number": 735, "repository_key": "leanprover/vscode-lean4", "status": "resolved"}
+{"number": 95, "repository_key": "libp2p/js-libp2p-secio", "status": "not_found"}
+{"number": 7098, "repository_key": "lightningnetwork/lnd", "status": "not_found"}
+{"number": 2932, "repository_key": "lmcache/lmcache", "status": "not_found"}
+{"commit": "1f8ea07746963a535385a5befc19fa687a627d2b", "first_line": "fix: prototype pollution in _.defaultsDeep (#4336)", "kind": "squash_or_rebase", "number": 4336, "repository_key": "lodash/lodash", "status": "resolved"}
+{"number": 3894, "repository_key": "lumieducation/h5p-nodejs-library", "status": "not_found"}
+{"commit": "63315c8f79af76d3986bae1a5530767d7cd9d557", "first_line": "Merge pull request #2642 from stgraber/main", "kind": "merge_commit", "number": 2642, "repository_key": "lxc/incus", "status": "resolved"}
+{"commit": "2351031dd6f1d58930b8e46548e91b1e96f7c20c", "first_line": "Fixed parse.js to prevent Prototype Pollution (#70)", "kind": "squash_or_rebase", "number": 70, "repository_key": "mafintosh/protocol-buffers-schema", "status": "resolved"}
+{"commit": "1dbd1ed6bef76f359dcf44d5b0e849d4881540b2", "first_line": "Merge pull request #34 from AdamGold/master", "kind": "merge_commit", "number": 34, "repository_key": "manuelstofer/json-pointer", "status": "resolved"}
+{"commit": "dbf7cef7491ce88d237d689eccf443fab80166e6", "first_line": "fix: prevent SSTI by switching to SandboxedEnvironment (#74)", "kind": "squash_or_rebase", "number": 74, "repository_key": "masci/banks", "status": "resolved"}
+{"number": 49, "repository_key": "materializecss/materialize", "status": "not_found"}
+{"commit": "45acf70b00cb0c51740455d09164b1c3c033b5f3", "first_line": "Merge pull request #5981 from matrix-org/jryans/upload-preview-mimetype", "kind": "merge_commit", "number": 5981, "repository_key": "matrix-org/matrix-react-sdk", "status": "resolved"}
+{"number": 3401, "repository_key": "matrix-org/matrix-spec-proposals", "status": "not_found"}
+{"commit": "36c5ec47a2f0174455bb53a646ef12b4f689a2e8", "first_line": "MSC3916: Authentication for media (#3916)", "kind": "squash_or_rebase", "number": 3916, "repository_key": "matrix-org/matrix-spec-proposals", "status": "resolved"}
+{"commit": "ffc54bc05c827edfb9791cfd7c154837c8487204", "first_line": "MSC4186: Simplified Sliding Sync (#4186)", "kind": "squash_or_rebase", "number": 4186, "repository_key": "matrix-org/matrix-spec-proposals", "status": "resolved"}
+{"commit": "34ff8da83b54024289f515c6d73e6b486574d699", "first_line": "Convert additional templates to Jinja (#8444)", "kind": "squash_or_rebase", "number": 8444, "repository_key": "matrix-org/synapse", "status": "resolved"}
+{"commit": "177dae270420ee4b4c8fa5e2c74c5081d98da320", "first_line": "Limit length of accepted email addresses (#9855)", "kind": "squash_or_rebase", "number": 9855, "repository_key": "matrix-org/synapse", "status": "resolved"}
+{"commit": "c06b2b714262825e1d2510b62c38fdeda339f6dc", "first_line": "Faster Remote Room Joins: tell remote homeservers that we are unable to authorise them if they query a room which has partial state on our server. (#13823)", "kind": "squash_or_rebase", "number": 13823, "repository_key": "matrix-org/synapse", "status": "resolved"}
+{"commit": "e2a1adbf5d11288f2134ced1f84c6ffdd91a9357", "first_line": "Allow selecting \"prejoin\" events by state keys (#14642)", "kind": "squash_or_rebase", "number": 14642, "repository_key": "matrix-org/synapse", "status": "resolved"}
+{"commit": "4ee82c0576baed6358e3818e8c22e01bde6afd02", "first_line": "Apply url_preview_url_blacklist to oEmbed and pre-cached images (#15601)", "kind": "squash_or_rebase", "number": 15601, "repository_key": "matrix-org/synapse", "status": "resolved"}
+{"commit": "fb4d27d596408841ee33d58b91bd4b0d70af02ec", "first_line": "MM-22265  - Restrict the WS \"update_team\" event broadcast (#13848)", "kind": "squash_or_rebase", "number": 13848, "repository_key": "mattermost/mattermost", "status": "resolved"}
+{"number": 30821, "repository_key": "mattermost/mattermost", "status": "not_found"}
+{"number": 19988, "repository_key": "mattermost/mattermost-server", "status": "repository_not_searchable"}
+{"number": 160, "repository_key": "max-mapper/extract-zip", "status": "not_found"}
+{"commit": "ae34635a1e038ff42333bb3c952f5b9bfe301b83", "first_line": "Merge pull request #1241 from Nordix/lentzi90/secret-htpasswd", "kind": "merge_commit", "number": 1241, "repository_key": "metal3-io/baremetal-operator", "status": "resolved"}
+{"commit": "956924897d6fdc38c4cbaafd600f549a2c93308d", "first_line": "Merge pull request #635 from Nordix/lentzi90/prometheus-exporter", "kind": "merge_commit", "number": 635, "repository_key": "metal3-io/ironic-standalone-operator", "status": "resolved"}
+{"commit": "4ad3c5f622f07b3ba0826c074668213c6d5c8994", "first_line": "PyACL - Fixing integer overflows that occur when resizing ACLs (#1701)", "kind": "squash_or_rebase", "number": 1701, "repository_key": "mhammond/pywin32", "status": "resolved"}
+{"number": 1216, "repository_key": "mher/flower", "status": "not_found"}
+{"number": 604, "repository_key": "michaelmure/git-bug", "status": "repository_not_searchable"}
+{"commit": "526404403b459316b225e399faaea827a0826b2a", "first_line": "Add escape parameter to escape html data by default (#169)", "kind": "squash_or_rebase", "number": 169, "repository_key": "microlinkhq/metascraper", "status": "resolved"}
+{"commit": "d6d4f3bc124b998da16e9e20460d9dd89a15fbbe", "first_line": "Python: refinement of filtering (#13505)", "kind": "squash_or_rebase", "number": 13505, "repository_key": "microsoft/semantic-kernel", "status": "resolved"}
+{"number": 1745, "repository_key": "miniflux/v2", "status": "not_found"}
+{"number": 1746, "repository_key": "miniflux/v2", "status": "not_found"}
+{"number": 1217, "repository_key": "minio/console", "status": "repository_not_searchable"}
+{"number": 3, "repository_key": "mirahezebots/sopel-channelmgnt", "status": "repository_not_searchable"}
+{"commit": "4ae428205821795da7364af951a7b27e21e2022f", "first_line": "Fix: Template injection in MLflow Recipe leads to an RCE (#10873)", "kind": "squash_or_rebase", "number": 10873, "repository_key": "mlflow/mlflow", "status": "resolved"}
+{"commit": "4a0f6c1345d7502451c89ee1c375891901c21393", "first_line": "Validate `gateway_path` in `gateway_proxy_handler` (#15970)", "kind": "squash_or_rebase", "number": 15970, "repository_key": "mlflow/mlflow", "status": "resolved"}
+{"number": 22420, "repository_key": "mlflow/mlflow", "status": "not_found"}
+{"number": 9692, "repository_key": "mlrun/mlrun", "status": "not_found"}
+{"commit": "62e76cfdf9aaaa3d0a26b78f7a93710406482274", "first_line": "Add modules to unsafe globals (#40)", "kind": "squash_or_rebase", "number": 40, "repository_key": "mmaitre314/picklescan", "status": "resolved"}
+{"commit": "a0aa68980928ab5c62b4540de454952aae3af191", "first_line": "feat: restrict open url schemes unless env variable set (#299)", "kind": "squash_or_rebase", "number": 299, "repository_key": "mobile-next/mobile-mcp", "status": "resolved"}
+{"commit": "79fa2a153da2dd1ae51f58ce3ede8d52bb3b41d5", "first_line": "Merge pull request #4603 from tonistiigi/0131-fix-stubs-cleaner", "kind": "merge_commit", "number": 4603, "repository_key": "moby/buildkit", "status": "resolved"}
+{"commit": "3436b4d07523bd97e039195e8e31b2bc70e5d72c", "first_line": "Merge pull request #4604 from tonistiigi/0131-fix-subpaths-mount", "kind": "merge_commit", "number": 4604, "repository_key": "moby/buildkit", "status": "resolved"}
+{"number": 45118, "repository_key": "moby/moby", "status": "not_found"}
+{"number": 46609, "repository_key": "moby/moby", "status": "not_found"}
+{"commit": "52aacf18fa206c7551a560879eca00cb903ca5db", "first_line": "Merge pull request #25 from adamdecaf/clarify-validaterefs-godoc", "kind": "merge_commit", "number": 25, "repository_key": "moov-io/signedxml", "status": "resolved"}
+{"commit": "1c66cfc4ac7b23d324f131bec7739265887e30fc", "first_line": "Merge pull request #464 from JelteF/escape-hover", "kind": "merge_commit", "number": 464, "repository_key": "morrisjs/morris.js", "status": "resolved"}
+{"commit": "b3b875c7c0436a7f30d2498138e782ad6d450724", "first_line": "feature: URL prefix case-sensitive (#1637)", "kind": "squash_or_rebase", "number": 1637, "repository_key": "mosn/mosn", "status": "resolved"}
+{"commit": "a9e8165504315942999555a982154912a590ddf6", "first_line": "Fix unsafe command execution in V4L2 control (#3143)", "kind": "squash_or_rebase", "number": 3143, "repository_key": "motioneye-project/motioneye", "status": "resolved"}
+{"number": 345, "repository_key": "mpdavis/python-jose", "status": "not_found"}
+{"number": 8, "repository_key": "mqttjs/mqtt-packet", "status": "not_found"}
+{"commit": "d4ef191be0b39b65efa68559a3b8d5dad2e102b2", "first_line": "fix(Chat Trigger Node): Prevent XSS vulnerabilities and improve parameter validation (#18148)", "kind": "squash_or_rebase", "number": 18148, "repository_key": "n8n-io/n8n", "status": "resolved"}
+{"number": 107, "repository_key": "nats-io/jwt", "status": "not_found"}
+{"commit": "818c2c7a7e258414e4007618a64ce955b7eeb761", "first_line": "Merge pull request #2917 from nats-io/file_path", "kind": "merge_commit", "number": 2917, "repository_key": "nats-io/nats-server", "status": "resolved"}
+{"commit": "0ef240575e01c2ab7e687abf952464d56030e640", "first_line": "Merge pull request #128 from TasosY2K/master", "kind": "merge_commit", "number": 128, "repository_key": "nbubna/store", "status": "resolved"}
+{"number": 14881, "repository_key": "nestjs/nest", "status": "not_found"}
+{"number": 1155, "repository_key": "nextlevelbuilder/goclaw", "status": "not_found"}
+{"number": 401, "repository_key": "nicolaskruchten/pivottable", "status": "not_found"}
+{"commit": "b751eeb137d71765b3c35c4210c1c3b64dcd3a32", "first_line": "Merge pull request #419 from xiaoxiaoafeifei/master", "kind": "merge_commit", "number": 419, "repository_key": "nixos/patchelf", "status": "resolved"}
+{"commit": "7df10e6efa0417145e370aa42d8342faa6d244b8", "first_line": "fix(security): block URL-encoded path traversal in nltk: resource URLs (#3575)", "kind": "squash_or_rebase", "number": 3575, "repository_key": "nltk/nltk", "status": "resolved"}
+{"number": 8967, "repository_key": "nocobase/nocobase", "status": "not_found"}
+{"commit": "ffacd21514b808d33f41fe909f5161b236fcf9b8", "first_line": "Merge pull request #3 from node-modules/long-fix", "kind": "merge_commit", "number": 3, "repository_key": "node-modules/byte", "status": "resolved"}
+{"commit": "924692404d8415893b7c903d6e9b61550aaae68c", "first_line": "Merge pull request #3371 from mikicaivosevic/patch-1", "kind": "merge_commit", "number": 3371, "repository_key": "nodebb/nodebb", "status": "resolved"}
+{"number": 43210, "repository_key": "nodejs/node", "status": "not_found"}
+{"commit": "a516f87098aad3c2daedfc24eada6f5a1594ed9e", "first_line": "fix(socks5-proxy-agent): use per-origin pools to prevent cross-origin routing (#5041)", "kind": "squash_or_rebase", "number": 5041, "repository_key": "nodejs/undici", "status": "resolved"}
+{"commit": "064887e1ee5b8401fdaa1373d4a93bf16691a31e", "first_line": "fix: add check for unsupported subject fields (#275)", "kind": "squash_or_rebase", "number": 275, "repository_key": "notaryproject/notation-go", "status": "resolved"}
+{"number": 73406, "repository_key": "nousresearch/hermes-agent", "status": "not_found"}
+{"commit": "9fab115eaaa4e0adc0260b17a4feb83d339327eb", "first_line": "Merge pull request #29 from npm/nlf/no-shell", "kind": "merge_commit", "number": 29, "repository_key": "npm/git", "status": "resolved"}
+{"commit": "e763cc34592a3b8a8c1acf9910e378d192852696", "first_line": "refactor(rspack,webpack): extract same-origin check for dev middleware (#35051)", "kind": "squash_or_rebase", "number": 35051, "repository_key": "nuxt/nuxt", "status": "resolved"}
+{"commit": "6d4051f58ea152896407622fdc0022e9578e9113", "first_line": "fix(nuxt): encode html-significant characters in external redirect body (#35052)", "kind": "squash_or_rebase", "number": 35052, "repository_key": "nuxt/nuxt", "status": "resolved"}
+{"commit": "e6c9ab5f4835ea00b2661c1aeb5c9f71ae52ca09", "first_line": "fix(nuxt): run middleware for page islands (#35092)", "kind": "squash_or_rebase", "number": 35092, "repository_key": "nuxt/nuxt", "status": "resolved"}
+{"commit": "7a0825ad6a17627ce4c6dd860df3cebb7cf1d813", "first_line": "fix(Form): add `method=\"post\"` to prevent credential leaking via GET before hydration (#6512)", "kind": "squash_or_rebase", "number": 6512, "repository_key": "nuxt/ui", "status": "resolved"}
+{"commit": "5e7f14bdcbbd22702c7b5de907398e94012bab2a", "first_line": "fix: show login page on broken session cookie (#2605)", "kind": "squash_or_rebase", "number": 2605, "repository_key": "oauth2-proxy/oauth2-proxy", "status": "resolved"}
+{"number": 452, "repository_key": "oauthjs/node-oauth2-server", "status": "not_found"}
+{"number": 19, "repository_key": "ofirdagan/cross-domain-local-storage", "status": "not_found"}
+{"number": 10750, "repository_key": "ollama/ollama", "status": "not_found"}
+{"commit": "34bc6724acc97dba1f8691e586da95b042cb612d", "first_line": "Address multiple cases of crashes due to malformed NGAP input (#666)", "kind": "squash_or_rebase", "number": 666, "repository_key": "omec-project/amf", "status": "resolved"}
+{"commit": "dd6bc92ea39fd2274fd671f0734b0b8b558356f5", "first_line": "Fix null pointer dereferences in shape inference (#7916)", "kind": "squash_or_rebase", "number": 7916, "repository_key": "onnx/onnx", "status": "resolved"}
+{"commits": ["7ceb9a2bce3ada7334be089d411337f97b0435e6", "ee0a60f013bb575f89227b1db05d238fce8c8077"], "number": 325, "repository_key": "open-cluster-management-io/ocm", "status": "ambiguous"}
+{"commit": "aa1894e09e3fe66860c7885cb40f98901b35277f", "first_line": "Comply with W3C Baggage specification limits (#7880)", "kind": "squash_or_rebase", "number": 7880, "repository_key": "open-telemetry/opentelemetry-go", "status": "resolved"}
+{"commit": "5e363de517dba6db62736b2f5cdef0e0929b4cd0", "first_line": "limit response body size for OTLP HTTP exporters (#8108)", "kind": "squash_or_rebase", "number": 8108, "repository_key": "open-telemetry/opentelemetry-go", "status": "resolved"}
+{"commit": "50ca48f8017e04bcf9149a5435e7f8f96f9e83c9", "first_line": "Remove high cardanility metrics from otelhttp (#4277)", "kind": "squash_or_rebase", "number": 4277, "repository_key": "open-telemetry/opentelemetry-go-contrib", "status": "resolved"}
+{"commit": "95a8c2a3dc64a762d3ab8eba8c903b5702a03a9c", "first_line": "feat: add support for arb sm toggle (#5104)", "kind": "squash_or_rebase", "number": 5104, "repository_key": "open-telemetry/opentelemetry-operator", "status": "resolved"}
+{"commit": "2054ee0b73f56e471cc2cc3d79a9d2c0e95bb87c", "first_line": "fix: enforce ownership check on user-memory collection queries (#22109)", "kind": "squash_or_rebase", "number": 22109, "repository_key": "open-webui/open-webui", "status": "resolved"}
+{"commit": "e790e7be7abfa2740bc16c748351dcc6e9d62699", "first_line": "fix: enforce model access control on /responses endpoint (#23481)", "kind": "squash_or_rebase", "number": 23481, "repository_key": "open-webui/open-webui", "status": "resolved"}
+{"commit": "6517c700de9bb0ee11b41ab625ef3b63d01b6083", "first_line": "fix(nostr): require operator.admin scope for profile mutation routes [AI] (#63553)", "kind": "squash_or_rebase", "number": 63553, "repository_key": "openclaw/openclaw", "status": "resolved"}
+{"number": 3785, "repository_key": "opencontainers/runc", "status": "not_found"}
+{"commit": "3db0871f1cf25c7025861ba0d51d25794cb21623", "first_line": "Merge pull request #4217 from AkihiroSuda/features-unsafe", "kind": "merge_commit", "number": 4217, "repository_key": "opencontainers/runc", "status": "resolved"}
+{"commit": "f0fb665407a1162153930de1ab5a048a4f3d60f9", "first_line": "Merge pull request #9376 from alalek:imgcodecs_refactoring", "kind": "merge_commit", "number": 9376, "repository_key": "opencv/opencv", "status": "resolved"}
+{"commit": "91f680aff6bea99fd3fd79155db688ac29eeab3e", "first_line": "Merge pull request #9448 from alalek:issue_9443", "kind": "merge_commit", "number": 9448, "repository_key": "opencv/opencv", "status": "resolved"}
+{"commit": "7763b58a602699ccb4980457880648b83ab3892c", "first_line": "Merge pull request #10563 from alalek:issue_10540", "kind": "merge_commit", "number": 10563, "repository_key": "opencv/opencv", "status": "resolved"}
+{"commit": "c05595e48274188e34a30d37ef22bdedc87c53ae", "first_line": "Merge pull request #15382 from alalek:fix_15287", "kind": "merge_commit", "number": 15382, "repository_key": "opencv/opencv", "status": "resolved"}
+{"commit": "3ece62cb9c62c66d3fcc314eb5327aa4c5bcb701", "first_line": "Merge pull request #15531 from terfendail:disflow_fix", "kind": "merge_commit", "number": 15531, "repository_key": "opencv/opencv", "status": "resolved"}
+{"number": 233, "repository_key": "openexr/openexr", "status": "repository_not_searchable"}
+{"commit": "cdf2c76ea34b33a9e37d6be516706ef8bf865782", "first_line": "fix: filter reads by type restriction in direct relationship lookups (#422)", "kind": "squash_or_rebase", "number": 422, "repository_key": "openfga/openfga", "status": "resolved"}
+{"commit": "698cfc2520cdc50eac5fa869c6c1ba5c8fee9e13", "first_line": "fix: sanitize file_path in git diff shell commands to prevent command injection (#13051)", "kind": "squash_or_rebase", "number": 13051, "repository_key": "openhands/openhands", "status": "resolved"}
+{"commit": "a6e61d69663192b68b5fdf88fbf152eb06473e84", "first_line": "Merge pull request #2612 from dlom/HIVE-2804", "kind": "merge_commit", "number": 2612, "repository_key": "openshift/hive", "status": "resolved"}
+{"number": 1876, "repository_key": "openshift/kubernetes", "status": "not_found"}
+{"commit": "4708e66328ce5a1860f9de582185027dc4ae92e3", "first_line": "Merge pull request #4098 from csabapalfi/f-aws-s3-redirect-protocol", "kind": "merge_commit", "number": 4098, "repository_key": "opentofu/opentofu", "status": "resolved"}
+{"commits": ["08840b9f8c21b235466b6d0c5a00a4d3a2de2682", "553c8fdec708ea10dd5f4a2977364af7a562566f"], "number": 3006, "repository_key": "openzeppelin/openzeppelin-contracts", "status": "ambiguous"}
+{"commit": "628a6e2866620fe638fc3dd77419b5572d3b87d7", "first_line": "Fix issues caused by abi.decode reverting (#3552)", "kind": "squash_or_rebase", "number": 3552, "repository_key": "openzeppelin/openzeppelin-contracts", "status": "resolved"}
+{"commit": "81336aefb52d5777cd140cf2eac31fdf65d9bc95", "first_line": "Fix arbitrum L1 to L2 crosschain call detection (#3578)", "kind": "squash_or_rebase", "number": 3578, "repository_key": "openzeppelin/openzeppelin-contracts", "status": "resolved"}
+{"commit": "dc4869eb233e2f1b1f9ee96f4a406efa449e9753", "first_line": "Avoid returnbomb in ERC165Checker (#3587)", "kind": "squash_or_rebase", "number": 3587, "repository_key": "openzeppelin/openzeppelin-contracts", "status": "resolved"}
+{"commit": "76e02bc055b3d735573acce90d6d40ba5d44bee2", "first_line": "Fix bug in Bytes.lastIndexOf when array is empty and position is not 2\u00b2\u2075\u2076-1 (#5797)", "kind": "squash_or_rebase", "number": 5797, "repository_key": "openzeppelin/openzeppelin-contracts", "status": "resolved"}
+{"number": 117, "repository_key": "ospfranco/link-preview-js", "status": "repository_not_searchable"}
+{"number": 2169, "repository_key": "ovn-org/ovn-kubernetes", "status": "repository_not_searchable"}
+{"number": 890, "repository_key": "pallets/werkzeug", "status": "not_found"}
+{"number": 860, "repository_key": "pandao/editor.md", "status": "not_found"}
+{"commit": "d6271dba1539e6f6797a92cb24ceb731f223122d", "first_line": "Merge pull request #2806 from AdamGold/master", "kind": "merge_commit", "number": 2806, "repository_key": "parallax/jspdf", "status": "resolved"}
+{"commit": "552c6dd754638c9f546fbceecd2ba0f7225a95d1", "first_line": "fix: Server option routeAllowList is bypassable through batch sub-requests ([GHSA-p84r-h6rx-f2xr](https://github.com/parse-community/parse-server/security/advisories/GHSA-p84r-h6rx-f2xr)) (#10482)", "kind": "squash_or_rebase", "number": 10482, "repository_key": "parse-community/parse-server", "status": "resolved"}
+{"commit": "83e90edbe4224c81172a20e40fa986662c9394ca", "first_line": "fix: Endpoints `/login` and `/verifyPassword` disclose MFA secrets and protected fields when `_User` get is denied ([GHSA-75v4-m273-5j49](https://github.com/parse-community/parse-server/security/advis", "kind": "squash_or_rebase", "number": 10492, "repository_key": "parse-community/parse-server", "status": "resolved"}
+{"commit": "41aa5f94a30e51b1a460af27312dd9dc532aad5a", "first_line": "feat: update the minimum python version to 3.10 (#3787)", "kind": "squash_or_rebase", "number": 3787, "repository_key": "pdm-project/pdm", "status": "resolved"}
+{"commit": "3294e74197d8252c2f67b9878d55be9434c148a4", "first_line": "fix: prevent XSS via innerHTML in browser tree and explain visualizer (#9865)", "kind": "squash_or_rebase", "number": 9865, "repository_key": "pgadmin-org/pgadmin4", "status": "resolved"}
+{"commit": "117ff55fc21b47442da07c44c30b403af2da407b", "first_line": "\u4fee\u590dInMemorySecret2FA\u5168\u5c40map\u7ade\u6001\u6761\u4ef6 (#391)", "kind": "squash_or_rebase", "number": 391, "repository_key": "pilinux/gorest", "status": "resolved"}
+{"number": 5, "repository_key": "pillys/fs-path", "status": "repository_not_searchable"}
+{"number": 323, "repository_key": "piotrdabkowski/js2py", "status": "not_found"}
+{"commit": "3032da53434c5ef01d368654b3551cf21c50dec9", "first_line": "Merge pull request #4660 from pipecat-ai/filipi/websocket_security", "kind": "merge_commit", "number": 4660, "repository_key": "pipecat-ai/pipecat", "status": "resolved"}
+{"commit": "dadec52ae75a686db90b4487c4ae519eda93244a", "first_line": "Merge pull request #307 from plannigan/directory-traversal", "kind": "merge_commit", "number": 307, "repository_key": "plannigan/hyper-bump-it", "status": "resolved"}
+{"commit": "6f7c08b722c39579d2b7103937f60a1bb450a030", "first_line": "Sharing POST: Limit roles to ones the user is allowed to delegate. (#859)", "kind": "squash_or_rebase", "number": 859, "repository_key": "plone/plone.restapi", "status": "resolved"}
+{"commit": "46ee42c98d5332071c0a61d51ad2c44b6618564e", "first_line": "Refactor cookie handling (#3051)", "kind": "squash_or_rebase", "number": 3051, "repository_key": "plone/volto", "status": "resolved"}
+{"commit": "65443f4bdf1f0db9c8c7dc58fee25252607e9234", "first_line": "fix: validate staged tarball filenames (#12303)", "kind": "squash_or_rebase", "number": 12303, "repository_key": "pnpm/pnpm", "status": "resolved"}
+{"commit": "0635c838c9e4cc2592015fe47d19289f72e1c3ee", "first_line": "authenticate: validate signature on /.pomerium, /.pomerium/sign_in and /.pomerium/sign_out (#2048)", "kind": "squash_or_rebase", "number": 2048, "repository_key": "pomerium/pomerium", "status": "resolved"}
+{"commit": "c7d243d742d40311c9cd812b08392d9eefc370fe", "first_line": "proxy: restrict programmatic URLs to localhost (#2049)", "kind": "squash_or_rebase", "number": 2049, "repository_key": "pomerium/pomerium", "status": "resolved"}
+{"commit": "b2d4cc90e5b7cecdd49dbe3329982deaf2a19245", "first_line": "fix: validate server names in install commands (#3522)", "kind": "squash_or_rebase", "number": 3522, "repository_key": "prefecthq/fastmcp", "status": "resolved"}
+{"number": 6245, "repository_key": "prisma/prisma", "status": "repository_not_searchable"}
+{"number": 307, "repository_key": "probablyup/markdown-to-jsx", "status": "repository_not_searchable"}
+{"commit": "013bda0a03656415da763be9a2e61c1ef917d6bd", "first_line": "Adding allow_pickle argument (#8875)", "kind": "squash_or_rebase", "number": 8875, "repository_key": "project-monai/monai", "status": "resolved"}
+{"commit": "ddf3795816957e11d5793123c8683deb9fdf61ca", "first_line": "Fix For ghsa-rghg-q7wp-9767 (#8885)", "kind": "squash_or_rebase", "number": 8885, "repository_key": "project-monai/monai", "status": "resolved"}
+{"commit": "30135c8377ccba2c21c26ba5b9f7eadd3afabaf0", "first_line": "Merge pull request #155 from projectdiscovery/issue-136-optional-cname", "kind": "merge_commit", "number": 155, "repository_key": "projectdiscovery/interactsh", "status": "resolved"}
+{"commit": "e5154d362af900e83b30fb79028bfab1a7f0c648", "first_line": "fixing payload load (#3927)", "kind": "squash_or_rebase", "number": 3927, "repository_key": "projectdiscovery/nuclei", "status": "resolved"}
+{"commit": "8efeba9c2b15484b6475c8f863e269166e4b67d7", "first_line": "Merge pull request #657 from psd-tools/fix/ghsa-2rmg-vrx8-9j2f", "kind": "merge_commit", "number": 657, "repository_key": "psd-tools/psd-tools", "status": "resolved"}
+{"number": 20, "repository_key": "punkave/sanitize-html", "status": "repository_not_searchable"}
+{"commit": "bb3a69030fde7da545229438ff327b8c971cef49", "first_line": "SEC: Limit decompressed size for FlateDecode filter (#3430)", "kind": "squash_or_rebase", "number": 3430, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "0b5d05de59a055c132b435ee2375bc32ff04d48e", "first_line": "SEC: Improve performance and limit length of array-based content streams (#3686)", "kind": "squash_or_rebase", "number": 3686, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "02b1345f77fdbc006faccc301507df4fb1855413", "first_line": "SEC: Avoid infinite loop in read_from_stream for broken files (#3693)", "kind": "squash_or_rebase", "number": 3693, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "9d2747057c4afc06ccc0fc6244a3915ba6ea6f0b", "first_line": "SEC: Avoid excessive whitespace in layout mode text extraction (#3790)", "kind": "squash_or_rebase", "number": 3790, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "62191d5a5c3ee218856d3cbaa039366bc97909f7", "first_line": "SEC: Limit input size and element count for XMP metadata (#3796)", "kind": "squash_or_rebase", "number": 3796, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "0b5b8adf02a25b23adae9037ff32d16232936c0f", "first_line": "SEC: Improve loop control in text extraction (#3805)", "kind": "squash_or_rebase", "number": 3805, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "6755d925fae26a79c2f76f5c911bcd728f75a952", "first_line": "SEC: Optimize _decode_png_prediction regarding memory and speed (#3806)", "kind": "squash_or_rebase", "number": 3806, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "68822ded066f1bd21113b177e039f7930d57b6ff", "first_line": "SEC: Avoid infinite loops for outlines and text extraction (#3830)", "kind": "squash_or_rebase", "number": 3830, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "5efe472b07e36d1ae22c9991d744d013cfb2f214", "first_line": "SEC: Prevent infinite loops when processing threads/articles (#3839)", "kind": "squash_or_rebase", "number": 3839, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"commit": "bbd083d1196d276d9c542418f77ac49e06de3ff1", "first_line": "SEC: Apply MAX_DECLARED_STREAM_LENGTH to streams without length as well (#3871)", "kind": "squash_or_rebase", "number": 3871, "repository_key": "py-pdf/pypdf", "status": "resolved"}
+{"number": 740, "repository_key": "py-pdf/pypdf2", "status": "repository_not_searchable"}
+{"number": 7827, "repository_key": "pyinstaller/pyinstaller", "status": "not_found"}
+{"commit": "beb9dead6bc58ee29fdf4316b05feb0be3a46832", "first_line": "Merge pull request #791 from qwcode/ssl_cert", "kind": "merge_commit", "number": 791, "repository_key": "pypa/pip", "status": "resolved"}
+{"commit": "c4cdbf9b41e1c9fec452a8b7ae03eee295a94345", "first_line": "Merge pull request #13870 from f3flight/patch-1", "kind": "merge_commit", "number": 13870, "repository_key": "pypa/pip", "status": "resolved"}
+{"commit": "8eb178480bd1a2b223f509fc430796b265158dfb", "first_line": "Reject entry point names that escape scripts dir (#14000)", "kind": "squash_or_rebase", "number": 14000, "repository_key": "pypa/pip", "status": "resolved"}
+{"commit": "86dddeda7c991f8529e1995bbff280fb7b761972", "first_line": "Fix #2768: Quote template strings in activation scripts (#2771)", "kind": "squash_or_rebase", "number": 2771, "repository_key": "pypa/virtualenv", "status": "resolved"}
+{"number": 1535, "repository_key": "python-markdown/markdown", "status": "not_found"}
+{"commit": "b3e09122e527ae554eb590741bbd7611d5710e40", "first_line": "Merge pull request #1060 from wiredfool/png-dos", "kind": "merge_commit", "number": 1060, "repository_key": "python-pillow/pillow", "status": "resolved"}
+{"commit": "95561e28b24922358f1991e38e3a86d70d72dcec", "first_line": "fix: bound _seen_logs and stop retaining exc_info (#1717)", "kind": "squash_or_rebase", "number": 1717, "repository_key": "python-zeroconf/python-zeroconf", "status": "resolved"}
+{"commit": "0ad3f37b5b852b8f614d322283d148efb2cef6e4", "first_line": "fix: bound DNSCache record count to prevent unbounded LAN-driven growth (#1718)", "kind": "squash_or_rebase", "number": 1718, "repository_key": "python-zeroconf/python-zeroconf", "status": "resolved"}
+{"commit": "f9e23592137f30fdf7ef710dba065da31c79b1cf", "first_line": "fix: bound DNS compression-pointer chain depth in DNSIncoming (#1719)", "kind": "squash_or_rebase", "number": 1719, "repository_key": "python-zeroconf/python-zeroconf", "status": "resolved"}
+{"commit": "544449596e645fcaad3834fa0cb614a54f847a82", "first_line": "fix: bound record payload reads against rdlength overrun (#1756)", "kind": "squash_or_rebase", "number": 1756, "repository_key": "python-zeroconf/python-zeroconf", "status": "resolved"}
+{"commit": "96450b9d0ab2a7290221f0e07aea5fda8a83efaf", "first_line": "Update snakeyaml version to v2 (#2523)", "kind": "squash_or_rebase", "number": 2523, "repository_key": "pytorch/serve", "status": "resolved"}
+{"commit": "921f42392a8ec4b9c8756e8be7d8527b342a1bab", "first_line": "Issue warning about allowed_urls when default value is used (#2534)", "kind": "squash_or_rebase", "number": 2534, "repository_key": "pytorch/serve", "status": "resolved"}
+{"number": 2674, "repository_key": "quilljs/quill", "status": "repository_not_searchable"}
+{"number": 679, "repository_key": "quokkaproject/quokka", "status": "not_found"}
+{"commit": "a8a1d134b70a03178c80fe9c8b2c32fd5d569840", "first_line": "fix: error boundary (#7342)", "kind": "squash_or_rebase", "number": 7342, "repository_key": "qwikdev/qwik", "status": "resolved"}
+{"commit": "7faa74a968c24b0cdbd605ad90cbba757855f724", "first_line": "Check for orphaned global role ClusterRoleBindings (#52303)", "kind": "squash_or_rebase", "number": 52303, "repository_key": "rancher/rancher", "status": "resolved"}
+{"number": 1747, "repository_key": "react-native-webview/react-native-webview", "status": "not_found"}
+{"commit": "e5b296e9ec52b3430584e1eada60a3bd4dbc5655", "first_line": "Merge pull request #5 from nealpoole/security-fix", "kind": "merge_commit", "number": 5, "repository_key": "redhog/ep_imageconvert", "status": "resolved"}
+{"commit": "153ec7a0b7245639f404c0b038b612ae7377c7db", "first_line": "fix: Prototype Pollution Vulnerability Affecting redoc <=2.2.0 (#2638)", "kind": "squash_or_rebase", "number": 2638, "repository_key": "redocly/redoc", "status": "resolved"}
+{"commit": "cddfede795971045d99422bd7a9676c8803ec5ee", "first_line": "Merge pull request #617 from QKaiser/fix-pfs-path-traversal", "kind": "merge_commit", "number": 617, "repository_key": "refirmlabs/binwalk", "status": "resolved"}
+{"commit": "bf63729561365b50705a24fd576e293424df23ef", "first_line": "Consolidate url normalization logic (#15176)", "kind": "squash_or_rebase", "number": 15176, "repository_key": "remix-run/react-router", "status": "resolved"}
+{"commit": "e3fcb3382057bb0bf1b0128a4f40c557ece7527a", "first_line": "Merge pull request #6378 from remotion-dev/studio-protect-endpoint", "kind": "merge_commit", "number": 6378, "repository_key": "remotion-dev/remotion", "status": "resolved"}
+{"commit": "79c16d315a40b3acb5135d2a334da6ab410703a3", "first_line": "fix: message parser being slow to process very long messages with too many symbols (#33227)", "kind": "squash_or_rebase", "number": 33227, "repository_key": "rocketchat/rocket.chat", "status": "resolved"}
+{"commit": "92ac08ba14c46e4c0dfab1f647fdf96dc260157e", "first_line": "DOMPurify sanitizes HTML and prevents XSS attacks (#558)", "kind": "squash_or_rebase", "number": 558, "repository_key": "rocketchat/rocket.chat.livechat", "status": "resolved"}
+{"commit": "aa79db7568578ea3a413292450cd64f07481e5dd", "first_line": "fix: Fix input.type check (#1184)", "kind": "squash_or_rebase", "number": 1184, "repository_key": "rrweb-io/rrweb", "status": "resolved"}
+{"number": 22, "repository_key": "rvagg/bl", "status": "not_found"}
+{"commit": "55e442c9bc67b845094e14ceb228e95c639595be", "first_line": "Merge pull request #370 from gilbitron/20220802-security", "kind": "merge_commit", "number": 370, "repository_key": "ryanlelek/raneto", "status": "resolved"}
+{"commit": "6366e05d0d70bd709cc4233c3faf32a759d0173a", "first_line": "Merge pull request #42944 from Ch3LL/2016.11.6_follow_up", "kind": "merge_commit", "number": 42944, "repository_key": "saltstack/salt", "status": "resolved"}
+{"commit": "18829e648a26d947b7e441a9d7d012a24b0adf48", "first_line": "Merge pull request #635 from yeahx/master", "kind": "merge_commit", "number": 635, "repository_key": "sanic-org/sanic", "status": "resolved"}
+{"commit": "9d415e4ec63d31b3749fd540e2c2ac7c98dedcdd", "first_line": "Prevent directory traversion with static files (#2495)", "kind": "squash_or_rebase", "number": 2495, "repository_key": "sanic-org/sanic", "status": "resolved"}
+{"commit": "64581f147698aa6ec8437a79a23815f0cdf9fff3", "first_line": "(fix) prevent possible XSS by encodeing embedded json (#1182)", "kind": "squash_or_rebase", "number": 1182, "repository_key": "scullyio/scully", "status": "resolved"}
+{"commit": "905c80d6ed435477224c53de8850f763b04d495d", "first_line": "Merge pull request #1409 from p-l-/fix-radius", "kind": "merge_commit", "number": 1409, "repository_key": "secdev/scapy", "status": "resolved"}
+{"number": 2919, "repository_key": "sequelize/sequelize", "status": "not_found"}
+{"number": 11877, "repository_key": "sequelize/sequelize", "status": "not_found"}
+{"number": 15710, "repository_key": "sequelize/sequelize", "status": "not_found"}
+{"commit": "5fc5c18bed4a4109082d9b14197ed33de1499231", "first_line": "fix(security): replace unsafe pickle.loads with SafeUnpickler for CVE-2026-3989 (#20904)", "kind": "squash_or_rebase", "number": 20904, "repository_key": "sgl-project/sglang", "status": "resolved"}
+{"number": 22033, "repository_key": "sgl-project/sglang", "status": "not_found"}
+{"number": 25078, "repository_key": "sgl-project/sglang", "status": "not_found"}
+{"commit": "015ca4500fdaa194fd31980b8bffd7febd7275b7", "first_line": "Merge pull request #32 from shamaton/case_crash", "kind": "merge_commit", "number": 32, "repository_key": "shamaton/msgpack", "status": "resolved"}
+{"commit": "291115da68625c5f992b7bc6e10480d4ec54c246", "first_line": "Reduce CLI init install size (#1272)", "kind": "squash_or_rebase", "number": 1272, "repository_key": "shopify/hydrogen", "status": "resolved"}
+{"commit": "dec36405a80ebc686138c3504c372fb9578b2b93", "first_line": "Merge pull request #1455 from seamusabshere/prevent-xss-on-enable-cookies", "kind": "merge_commit", "number": 1455, "repository_key": "shopify/quilt", "status": "resolved"}
+{"commit": "956675190e1bdf86722c4b26181781c3b0403a90", "first_line": "Merge pull request #12 from JacksonGL/patch-4", "kind": "merge_commit", "number": 12, "repository_key": "shy2850/node-server", "status": "resolved"}
+{"commit": "291933f27364816a34ae72b820098fb11f4a1326", "first_line": "Merge pull request #10 from skoranga/input_validation_patch", "kind": "merge_commit", "number": 10, "repository_key": "skoranga/node-connection-tester", "status": "resolved"}
+{"number": 9, "repository_key": "slmnbj/selectize-plugin-a11y", "status": "repository_not_searchable"}
+{"number": 41, "repository_key": "smartfile/python-libarchive", "status": "not_found"}
+{"number": 2399, "repository_key": "songquanpeng/one-api", "status": "not_found"}
+{"number": 1227, "repository_key": "spectolabs/hoverfly", "status": "not_found"}
+{"number": 1228, "repository_key": "spectolabs/hoverfly", "status": "not_found"}
+{"commit": "7d8130d37d4c63106fd1eee207634be4893faafa", "first_line": "fix(gha): Fix github status log and add tests (#1316)", "kind": "squash_or_rebase", "number": 1316, "repository_key": "spinnaker/echo", "status": "resolved"}
+{"commit": "1a5b64106e9182aca70b52b0c55d70c64d76f413", "first_line": "Add CORS headers to api requests (#1870)", "kind": "squash_or_rebase", "number": 1870, "repository_key": "spotify/luigi", "status": "resolved"}
+{"number": 67, "repository_key": "sstephenson/eco", "status": "not_found"}
+{"commit": "fcbb73d7065d6332c302e828c6bd215a6cc69748", "first_line": "Merge pull request #3 from Trott/patch-1", "kind": "merge_commit", "number": 3, "repository_key": "stevemao/trim-off-newlines", "status": "resolved"}
+{"commit": "372efa0f5efacb49cfb60703b6adb8b2e58ed9f8", "first_line": "Merge pull request #767 from steveukx/feat/fix-fetch-snyk", "kind": "merge_commit", "number": 767, "repository_key": "steveukx/git-js", "status": "resolved"}
+{"commit": "1162698778aa721522081f4f4e70ecb30521f83e", "first_line": "Merge pull request #4443 from strapi/fix/security", "kind": "merge_commit", "number": 4443, "repository_key": "strapi/strapi", "status": "resolved"}
+{"commit": "c198c266687fbb68ca116f2718873b3e8f0315aa", "first_line": "Merge pull request #4636 from strapi/fix/plugin-name", "kind": "merge_commit", "number": 4636, "repository_key": "strapi/strapi", "status": "resolved"}
+{"commit": "9f277f67b5d317d1ffa1266a3c59db62f803fa53", "first_line": "better error handling in email (#6599)", "kind": "squash_or_rebase", "number": 6599, "repository_key": "strapi/strapi", "status": "resolved"}
+{"commit": "b3240205790f3ed6c1cce7b47bb80e687df40114", "first_line": "Merge pull request #8440 from strapi/fix/preview-security", "kind": "merge_commit", "number": 8440, "repository_key": "strapi/strapi", "status": "resolved"}
+{"commit": "328c1a3a137a91ce857ec70a9322d4301aad745a", "first_line": "Merge pull request #8442 from strapi/security/upload-proxy-disable", "kind": "merge_commit", "number": 8442, "repository_key": "strapi/strapi", "status": "resolved"}
+{"number": 12246, "repository_key": "strapi/strapi", "status": "not_found"}
+{"number": 18, "repository_key": "substack/static-eval", "status": "repository_not_searchable"}
+{"number": 3782, "repository_key": "summernote/summernote", "status": "not_found"}
+{"commit": "31709fc11810fcf4c5692b33ad3026f6e4cbcd1b", "first_line": "Merge pull request #1867 from joevennix/fix-content-type-xss", "kind": "merge_commit", "number": 1867, "repository_key": "swagger-api/swagger-ui", "status": "resolved"}
+{"commit": "cd79be6e3286da495e05a500c4b23d5d2a0b45db", "first_line": "Validate MultiOperation namespace match (#8839)", "kind": "squash_or_rebase", "number": 8839, "repository_key": "temporalio/temporal", "status": "resolved"}
+{"commit": "64ded1864de9e448e174d7270c66364d368eefe5", "first_line": "fix(verify):  Fix a vulnerability in the verification of threshold signatures (due to handling of keys with multiple IDs) (#369)", "kind": "squash_or_rebase", "number": 369, "repository_key": "theupdateframework/go-tuf", "status": "resolved"}
+{"commit": "47393fba7f6ef5e305d5e814551feef8e4acbc0a", "first_line": "fix: secure mutating and sensitive requests to HUD server (#6776)", "kind": "squash_or_rebase", "number": 6776, "repository_key": "tilt-dev/tilt", "status": "resolved"}
+{"commit": "a5f69fc777702842dd6077bcf29a0cc2e7093860", "first_line": "Merge pull request #3584 from tinacms/fix/exposed-env-vars", "kind": "merge_commit", "number": 3584, "repository_key": "tinacms/tinacms", "status": "resolved"}
+{"commit": "c491fc55e612725f5d775eeb1fdf3f8ba82314fa", "first_line": "Harden message origin checks and rich-text URL sanitization (#7056)", "kind": "squash_or_rebase", "number": 7056, "repository_key": "tinacms/tinacms", "status": "resolved"}
+{"number": 330, "repository_key": "tqdm/tqdm", "status": "not_found"}
+{"number": 8764, "repository_key": "traefik/traefik", "status": "not_found"}
+{"number": 9574, "repository_key": "traefik/traefik", "status": "not_found"}
+{"number": 11253, "repository_key": "traefik/traefik", "status": "not_found"}
+{"number": 11684, "repository_key": "traefik/traefik", "status": "not_found"}
+{"number": 13214, "repository_key": "traefik/traefik", "status": "not_found"}
+{"commit": "34b1a181c2a1d33a53ebab88f84b05f81fea4254", "first_line": "fix: security release 2026-07-06 (#4199)", "kind": "squash_or_rebase", "number": 4199, "repository_key": "triggerdotdev/trigger.dev", "status": "resolved"}
+{"number": 19646, "repository_key": "tryghost/ghost", "status": "not_found"}
+{"commit": "f323e2397b82d478360b88205819e7506978d757", "first_line": "Merge pull request #452 from tschaub/updates", "kind": "merge_commit", "number": 452, "repository_key": "tschaub/gh-pages", "status": "resolved"}
+{"number": 26630, "repository_key": "twbs/bootstrap", "status": "not_found"}
+{"number": 28236, "repository_key": "twbs/bootstrap", "status": "not_found"}
+{"commit": "11b1526008f7c872c15e76e48ddaf51e287335f0", "first_line": "Merge pull request #400 from tweepy/updated_requests", "kind": "merge_commit", "number": 400, "repository_key": "tweepy/tweepy", "status": "resolved"}
+{"commit": "cf8ed69824502cb39b3a077ec596fe01c03b93da", "first_line": "Merge pull request #1147 from twisted/9561-xmpp-tls-verify-cert", "kind": "merge_commit", "number": 1147, "repository_key": "twisted/twisted", "status": "resolved"}
+{"commit": "54a2cdf0612005dbdef948de0eb8b9f3ac0aabd9", "first_line": "merge: enable `forbidUnknownValues` by default (#1798)", "kind": "squash_or_rebase", "number": 1798, "repository_key": "typestack/class-validator", "status": "resolved"}
+{"number": 1817, "repository_key": "u-root/u-root", "status": "not_found"}
+{"commit": "544279f13630d8a9568b701cb55b3ed97c8516e8", "first_line": "fix: use up-to-date chainId/accounts when querying EIP1193-derived wallets (#749)", "kind": "squash_or_rebase", "number": 749, "repository_key": "uniswap/web3-react", "status": "resolved"}
+{"commit": "acfac594e643f9c44f1c3b8d6d8957190a4d76f2", "first_line": "change default updateDocMode behavior and add new option to keep old behavior (#510)", "kind": "squash_or_rebase", "number": 510, "repository_key": "unoconv/unoconv", "status": "resolved"}
+{"commit": "292701638dea0a5e3fd3dc0e396a212c8323646f", "first_line": "Merge pull request #4 from unshiftio/ReDoS", "kind": "merge_commit", "number": 4, "repository_key": "unshiftio/millisecond", "status": "resolved"}
+{"commit": "3ea489816c362287281c9d027cb5168b553a5b11", "first_line": "chore: pin axios version (#7632)", "kind": "squash_or_rebase", "number": 7632, "repository_key": "usebruno/bruno", "status": "resolved"}
+{"commit": "1f2429cfa8bf05d3e6d7c2f3375d034476cd4a1c", "first_line": "Merge pull request #14 from ooooooo-q/fix/escape", "kind": "merge_commit", "number": 14, "repository_key": "valeriangalliat/markdown-it-highlightjs", "status": "resolved"}
+{"commit": "496fc8b2a7f5997acaaec33cc44d0b8dba5fb5e1", "first_line": "fix(rtrim): remove regex to prevent ReDOS attack (#1738)", "kind": "squash_or_rebase", "number": 1738, "repository_key": "validatorjs/validator.js", "status": "resolved"}
+{"commit": "38ec4ddb06dedbea0a895c4848b248eb38af221b", "first_line": "Merge pull request #42 from cyphar/chunked-padding", "kind": "merge_commit", "number": 42, "repository_key": "vbatts/tar-split", "status": "resolved"}
+{"number": 3019, "repository_key": "vega/vega", "status": "not_found"}
+{"commit": "69524c290d8c7205cbec9227815e06ab90f21b74", "first_line": "Fix static file check with i18n (#33503)", "kind": "squash_or_rebase", "number": 33503, "repository_key": "vercel/next.js", "status": "resolved"}
+{"commit": "130f8645a2db18527142a7764eaa5e649183cc74", "first_line": "Update to leverage response-cache for image-optimizer (#34075)", "kind": "squash_or_rebase", "number": 34075, "repository_key": "vercel/next.js", "status": "resolved"}
+{"commit": "776dcec8fe51860d7580001de86216406629df0f", "first_line": "Disable outlines cache by default (#14837)", "kind": "squash_or_rebase", "number": 14837, "repository_key": "vllm-project/vllm", "status": "resolved"}
+{"commit": "08bf7840780980c7568c573c70a6a8db94fd45ff", "first_line": "[Bugfix] validate grammar and throw 400 error instead of crashing the engine when xgrammar validation fails (#17623)", "kind": "squash_or_rebase", "number": 17623, "repository_key": "vllm-project/vllm", "status": "resolved"}
+{"number": 37594, "repository_key": "vllm-project/vllm", "status": "not_found"}
+{"commit": "edee96519a1b3485bacea2d14b0ffb6c83cae871", "first_line": "[Spec Decode] fix returning size mismatch on extract hidden states proposer (#38610)", "kind": "squash_or_rebase", "number": 38610, "repository_key": "vllm-project/vllm", "status": "resolved"}
+{"commit": "2b94d1c0caf69d4108d720986f4e792960b02cf7", "first_line": "[Frontend] Simplify AuthenticationMiddleware path extraction (#43426)", "kind": "squash_or_rebase", "number": 43426, "repository_key": "vllm-project/vllm", "status": "resolved"}
+{"number": 1264, "repository_key": "vmware-tanzu/pinniped", "status": "repository_not_searchable"}
+{"number": 7478, "repository_key": "vuejs/vue-cli", "status": "not_found"}
+{"commit": "fbd6880d60f0966219f23bddcc68a624e56861e2", "first_line": "Merge pull request #2281 from fubuloubu/refactor/forwarder-erc-1167", "kind": "merge_commit", "number": 2281, "repository_key": "vyperlang/vyper", "status": "resolved"}
+{"commit": "93287e5ac184b53b395c907d40701f721daf8177", "first_line": "Merge pull request #2447 from charles-cooper/abi_refactor", "kind": "merge_commit", "number": 2447, "repository_key": "vyperlang/vyper", "status": "resolved"}
+{"commit": "2fddbdeb4971dc8f1ac0ca7aa968819898c3a809", "first_line": "feat: add optimizer guardrails, refactor (#2914)", "kind": "squash_or_rebase", "number": 2914, "repository_key": "vyperlang/vyper", "status": "resolved"}
+{"commit": "3d9c537142fb99b2672f21e2057f5f202cde194f", "first_line": "fix[codegen]: panic on potential eval order issue for some builtins (#4157)", "kind": "squash_or_rebase", "number": 4157, "repository_key": "vyperlang/vyper", "status": "resolved"}
+{"commit": "1ce583b2c8033b1fd337f51c1dbf2db3bc113fd6", "first_line": "fix[codegen]: cache result of iter eval (#4488)", "kind": "squash_or_rebase", "number": 4488, "repository_key": "vyperlang/vyper", "status": "resolved"}
+{"number": 17221, "repository_key": "weblateorg/weblate", "status": "not_found"}
+{"number": 17256, "repository_key": "weblateorg/weblate", "status": "not_found"}
+{"commit": "0dd54525b0bcbd83515bc4fc3190f0ed4be96abe", "first_line": "fix(api): base memory API on ReadOnlyModelViewSet (#18513)", "kind": "squash_or_rebase", "number": 18513, "repository_key": "weblateorg/weblate", "status": "resolved"}
+{"commit": "03849e7ad66c98fe5316837aae5a36b4760d786e", "first_line": "feat(add-ons): validate CDN fetch locations (#18516)", "kind": "squash_or_rebase", "number": 18516, "repository_key": "weblateorg/weblate", "status": "resolved"}
+{"commit": "80e0426728791096caa11e997e68fabf03dc6e07", "first_line": "fix(api): improve fields access control (#18687)", "kind": "squash_or_rebase", "number": 18687, "repository_key": "weblateorg/weblate", "status": "resolved"}
+{"commit": "9b1908a139650939837e4561a8792c97f368d3e5", "first_line": "fix(add-ons): use fetch_validated_url to trigger webhooks (#18815)", "kind": "squash_or_rebase", "number": 18815, "repository_key": "weblateorg/weblate", "status": "resolved"}
+{"commit": "097866f9c34b40f7d9e632a403a3aa479ac88d10", "first_line": "fix(utils): harden private IP ranges detection (#19768)", "kind": "squash_or_rebase", "number": 19768, "repository_key": "weblateorg/weblate", "status": "resolved"}
+{"commit": "3064975afdbc29034e00b917a135593c51ee31fe", "first_line": "fix: ansi logging (#879)", "kind": "squash_or_rebase", "number": 879, "repository_key": "woodpecker-ci/woodpecker", "status": "resolved"}
+{"commit": "5df9d52260626c074c6caafb2dc83d3bc6b53be1", "first_line": "Gate Kubernetes serviceAccountName backend step config behind agent config (#6792)", "kind": "squash_or_rebase", "number": 6792, "repository_key": "woodpecker-ci/woodpecker", "status": "resolved"}
+{"number": 1083, "repository_key": "wycats/handlebars.js", "status": "repository_not_searchable"}
+{"commit": "0e7133ca28618513503b4e1d9063f1c18ea318e5", "first_line": "Fixes arbitrary file write on fetch (#7831)", "kind": "squash_or_rebase", "number": 7831, "repository_key": "yarnpkg/yarn", "status": "resolved"}
+{"number": 160, "repository_key": "yelp/osxcollector", "status": "repository_not_searchable"}
+{"number": 248, "repository_key": "yoanbernabeu/grepai", "status": "not_found"}
+{"number": 250, "repository_key": "yoanbernabeu/grepai", "status": "not_found"}
+{"commit": "abd00afc217eeb2b99af8aa69dbde592f9b21621", "first_line": "fix: sanitize inspect output path (#4793)", "kind": "squash_or_rebase", "number": 4793, "repository_key": "zarf-dev/zarf", "status": "resolved"}
+{"number": 268, "repository_key": "zilliztech/deep-searcher", "status": "not_found"}
+{"number": 678, "repository_key": "zilliztech/gptcache", "status": "not_found"}

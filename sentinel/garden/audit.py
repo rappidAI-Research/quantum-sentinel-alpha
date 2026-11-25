@@ -274,9 +274,11 @@ def abstention_validity(abstention: dict[str, Any], vulnerable: dict[str, Any] |
 def excerpt_blocks(record: dict[str, Any]) -> list[str]:
     """The excerpt split into its file blocks (`excerpt_file_lines`; joined by one blank line)."""
     lines = record["input"]["code"].splitlines()
+    ranges = record["provenance"]["excerpt_file_lines"]
+    # Garden v5: lines left out of a block (fix comments) make it shorter than its file range
+    sizes = record["localization"].get("excerpt_block_lines") or [end - start + 1 for start, end in ranges]
     blocks, offset = [], 0
-    for start, end in record["provenance"]["excerpt_file_lines"]:
-        size = end - start + 1
+    for size in sizes:
         blocks.append("\n".join(lines[offset : offset + size]) + "\n")
         offset += size + 1
     return blocks if offset - 1 == len(lines) else [record["input"]["code"]]
@@ -534,6 +536,10 @@ def audit_exclusions(results: list[dict[str, Any]], leakage: dict[str, str]) -> 
             # read (not in the upstream repository, or unavailable): the hard negative is unverified.
             for sha in result["later_fix_unreadable_commits"]:
                 exclusions.append({"record_id": records_by_kind["post_fix"], "reason": f"later_fix_unverifiable:{sha}"})
+        for fix in result.get("sibling_later_fixes", []):
+            exclusions.append({"record_id": records_by_kind["defended_sibling"], "reason": f"{fix['reason']}:{fix['advisory_id']}"})
+        for sha in result.get("sibling_later_fix_unreadable_commits", []):
+            exclusions.append({"record_id": records_by_kind["defended_sibling"], "reason": f"later_fix_unverifiable:{sha}"})
         for problem in result.get("abstention", {}).get("problems", []):
             exclusions.append({"record_id": records_by_kind["caller_abstention"], "reason": f"abstention_{problem}"})
         if result.get("span", {}).get("broad") and "vulnerable" in records_by_kind:
@@ -608,6 +614,24 @@ def run_audit(
                     result["later_fix_unreadable_commits"] = sorted(set(unreadable))
         if "caller_abstention" in group:
             result["abstention"] = abstention_validity(group["caller_abstention"], group.get("vulnerable"))
+        if "defended_sibling" in group:
+            # Garden v5: a defended sibling is a hard negative too - a later fix of that function refutes it
+            sibling = group["defended_sibling"]
+            packages = by_advisory.get(provenance["advisory_id"], {}).get("packages", provenance["packages"])
+            vulns: list[dict[str, Any]] = []
+            unavailable = False
+            for package in packages:
+                found = osv_query.package_vulns(provenance["ecosystem"], package)
+                if found is None:
+                    unavailable = True
+                else:
+                    vulns.extend(found)
+            unreadable_sibling: list[str] = []
+            as_group = {"vulnerable": {**sibling, "provenance": {**sibling["provenance"]}}, "post_fix": sibling}
+            result["sibling_later_fixes"] = [vars(f) for f in later_fixes(as_group, vulns, repo, unreadable_sibling)]
+            result["sibling_later_fix_check"] = "incomplete" if unavailable or unreadable_sibling else "done"
+            if unreadable_sibling:
+                result["sibling_later_fix_unreadable_commits"] = sorted(set(unreadable_sibling))
         return result
 
     # one worker per repository: git fetches into the same cache must not run concurrently

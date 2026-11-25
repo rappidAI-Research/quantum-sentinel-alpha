@@ -1,0 +1,207 @@
+# Review batch 31: approval TEMPLATES, not approvals. Each field marked <REQUIRED> must be filled by an
+# authorized reviewer after reading the license file at the linked revision; then move the entry into
+# data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
+repositories:
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/v2fly/v2ray-core': ['BSD-2-Clause', 'BSD-3-Clause', 'MIT'], 'Go:github.com/v2fly/v2ray-core/v4': ['MIT']}
+  - repository_key: v2fly/v2ray-core
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 459a5a0847255bac47f8902fbf708f461bf3b299407e1eba4b63eb4618143c9a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/v2fly/v2ray-core
+      - https://github.com/v2fly/v2ray-core/blob/c1af2bfd7aa59a4482aa7f6ec4b9208c1d350b5c/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'validation/post_fix': 1, 'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:libre-chat': ['non-standard']}
+  - repository_key: vemonet/libre-chat
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE.txt
+    license_file_sha256: 9684d0ee41e202b6f39948837f049307287571c4413003509d9cdf7b635e6db9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/vemonet/libre-chat
+      - https://github.com/vemonet/libre-chat/blob/dbb8e3400e5258112179783d74c9cc54310cb72b/LICENSE.txt
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:openviking': ['AGPL-3.0']}
+  - repository_key: volcengine/openviking
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/volcengine/OpenViking
+      - https://github.com/volcengine/OpenViking/blob/46b3e76e28b9b3eee73693720c9ec48820228b72/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:wooey': ['non-standard']}
+  - repository_key: wooey/wooey
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: c027644ca06a97de426cf2dfb7b79e57e2ddb4b35d019afdeef1236e9471d17f
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/wooey/Wooey
+      - https://github.com/wooey/Wooey/blob/f7846fc0c323da8325422cab32623491757f1b88/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:kurwov': ['ISC']}
+  - repository_key: xiboon/kurwov
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 1528f1abd9e018744361359ac21a7fa7c2aa90312379b7fef3e1294794e3cf26
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/xiboon/kurwov
+      - https://github.com/xiboon/kurwov/blob/85d63e652594f121d6656177d7a3c0d823c976c9/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:zodb3': ['ZPL-2.1']}
+  - repository_key: zopefoundation/zodb
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
+    license_file: COPYING
+    license_file_sha256: 6e9f4faa0a2bff3074c420dc3c971cb70c1415f8f4f1651fc89f713da77441cf
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/zopefoundation/ZODB
+      - https://github.com/zopefoundation/ZODB/blob/cfe16277ef1b5bb094dc79da50b0df1ee1537590/COPYING
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:passport-wsfed-saml2': []}
+  - repository_key: auth0/passport-wsfed-saml2
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
+    license_file: LICENSE
+    license_file_sha256: 701fbe0ff1f35cf1355a5e54190fc7a893e828d8e9067fed7f0f091826fe537a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/auth0/passport-wsfed-saml2
+      - https://github.com/auth0/passport-wsfed-saml2/blob/bb29aec54fec6fd1e8fb7e209eecedab345a0eac/LICENSE
+    notes: ""
+
+  # tier B: registry_disagrees
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/dadrus/heimdall': ['Apache-2.0', 'MIT']}
+  - repository_key: dadrus/heimdall
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dadrus/heimdall
+      - https://github.com/dadrus/heimdall/blob/50321b3007db1ccafdc6b1cfd6bdc3689c19a502/LICENSE
+    notes: ""
+
+  # tier B: other_permissive_license:Unlicense
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'npm:dynamoose': ['Unlicense']}
+  - repository_key: dynamoose/dynamoose
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Unlicense>"
+    license_file: LICENSE
+    license_file_sha256: 6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/dynamoose/dynamoose
+      - https://github.com/dynamoose/dynamoose/blob/324c62b4709204955931a187362f8999805b1d8e/LICENSE
+    notes: ""
+
+  # tier B: registry_unrecognised
+  # records: 1 {'validation/vulnerable': 1}
+  # registry (deps.dev): {'PyPI:openstack-heat': ['non-standard']}
+  - repository_key: openstack/heat
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/openstack/heat
+      - https://github.com/openstack/heat/blob/a49526c278e52823080c7f3fcb72785b93fd4dcb/LICENSE
+    notes: ""
+
+  # tier B: other_permissive_license:Unlicense, registry_disagrees
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:@stablelib/cbor': ['MIT']}
+  - repository_key: stablelib/stablelib
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Unlicense>"
+    license_file: LICENSE
+    license_file_sha256: 82dbee4974c2ca274a0a497127cc3574ec8665071a125658cb0b62456225bc60
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/StableLib/stablelib
+      - https://github.com/StableLib/stablelib/blob/0f153a63b7552a0e8721f640984113e419015026/LICENSE
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 1 {'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/weaviate/weaviate': []}
+  - repository_key: weaviate/weaviate
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-3-Clause>"
+    license_file: LICENSE
+    license_file_sha256: 61fc440e31f16993a0358f2c2325618275d4487913d4ec310d6f32293fd32950
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/weaviate/weaviate
+      - https://github.com/weaviate/weaviate/blob/40f2cc32279f0f8a51016c3c6870a2c0c808e6c0/LICENSE
+    notes: ""
