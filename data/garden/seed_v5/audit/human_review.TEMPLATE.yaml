@@ -177,19 +177,6 @@ items:
   suggested_cwe: null
   exclude_records: []
   notes: null
-- item_id: pair-sgg-448cdce03823c302
-  package_sha256: 8187923688c2deb24ea89b7cb7323606f786e5146a9b393bb79b6fd61072cd7a
-  advisory_matches_code: null
-  fix_addresses_weakness: null
-  label_correct: null
-  cwe: null
-  localization: null
-  hard_negative_safe: null
-  pair_consistent: null
-  leakage_or_duplicate: null
-  suggested_cwe: null
-  exclude_records: []
-  notes: null
 - item_id: pair-sgg-3ae4c7bfebbffede
   package_sha256: fb4488f7572881de609e2605ce3b537bc734c8ceb8b19664ecf19b8d7f90598b
   advisory_matches_code: null

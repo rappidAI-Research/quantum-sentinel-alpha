@@ -1,26 +1,26 @@
 {
   "abstentions_checked": 562,
   "abstentions_invalid": 2,
-  "broad_spans": 164,
+  "broad_spans": 162,
   "correspondence": {
     "moderate": 529,
-    "strong": 1146,
+    "strong": 1140,
     "weak": 290
   },
   "correspondence_by_language": {
     "go": {
       "moderate": 121,
-      "strong": 327,
+      "strong": 325,
       "weak": 87
     },
     "javascript": {
       "moderate": 131,
-      "strong": 247,
+      "strong": 246,
       "weak": 82
     },
     "python": {
       "moderate": 192,
-      "strong": 399,
+      "strong": 396,
       "weak": 75
     },
     "typescript": {
@@ -31,8 +31,8 @@
   },
   "exclusions_by_reason": {
     "abstention_constant_arguments": 2,
-    "broad_localization_span": 164,
-    "later_fix_changes_same_function": 302,
+    "broad_localization_span": 162,
+    "later_fix_changes_same_function": 307,
     "later_fix_unverifiable": 100,
     "reported_incomplete_fix": 97,
     "split_leakage_contains_holdout_reserved_excerpt": 1,
@@ -43,21 +43,21 @@
     "split_leakage_shared_patch_with_validation": 1
   },
   "fix_pattern_by_family": {
-    "authn_authz": "168/239",
+    "authn_authz": "168/237",
     "code_injection": "17/44",
     "command_injection": "36/92",
     "crypto_tls_integrity": "47/73",
-    "deserialization_input_validation": "98/161",
+    "deserialization_input_validation": "97/160",
     "information_exposure": "87/142",
-    "path_traversal": "137/206",
+    "path_traversal": "136/205",
     "prototype_pollution": "96/110",
     "redirect_ssrf": "84/93",
-    "resource_limits_redos": "302/345",
+    "resource_limits_redos": "301/344",
     "sql_injection": "13/26",
     "xss_output_encoding": "94/203"
   },
-  "fix_pattern_consistent": "1179/1734",
-  "groups": 2003,
+  "fix_pattern_consistent": "1176/1729",
+  "groups": 1997,
   "human_review": {
     "independent_of_implementation": false,
     "rates": {
@@ -122,14 +122,14 @@
     "reviewed_items": 0,
     "reviewer": null,
     "sample_id": "sentinel-garden-human-review-v1",
-    "sample_items": 80,
+    "sample_items": 79,
     "stale_decisions": [],
     "status": "not_performed"
   },
-  "later_fix_checked": 1889,
+  "later_fix_checked": 1883,
   "later_fix_incomplete_lookups": 30,
   "manual": {
-    "items": 27,
+    "items": 26,
     "outside_sample": [
       "sgg-09a8b452421e4656:abstention",
       "sgg-123b519ef15fb572:pair",
@@ -149,6 +149,7 @@
       "sgg-6c129031942f38e7:pair",
       "sgg-833b5d2892ae09f0:pair",
       "sgg-8f3bada0bcb025d5:pair",
+      "sgg-91fb91a5c023d777:pair",
       "sgg-94aae1b326b6db26:abstention",
       "sgg-94aae1b326b6db26:pair",
       "sgg-95cbaa99c47eb222:pair",
@@ -178,6 +179,7 @@
       "sgg-709353b82e3ad307:pair",
       "sgg-6b34c86c76085228:pair",
       "sgg-cd222ddd4b02b584:abstention",
+      "sgg-ed3ea8c30891872d:pair",
       "sgg-1758c7caa88d8cb3:pair",
       "sgg-86264a0e49b7582e:pair",
       "sgg-98400c409e0a1894:pair",
@@ -207,51 +209,51 @@
       "advisory_matches_code": {
         "error_rate": 0.0,
         "errors": 0,
-        "judged": 19,
+        "judged": 18,
         "uncertain_or_partial": 3,
         "wilson95": [
           0.0,
-          0.168
+          0.176
         ]
       },
       "cwe": {
         "error_rate": 0.0,
         "errors": 0,
-        "judged": 19,
+        "judged": 18,
         "uncertain_or_partial": 6,
         "wilson95": [
           0.0,
-          0.168
+          0.176
         ]
       },
       "fix_addresses_weakness": {
         "error_rate": 0.0,
         "errors": 0,
-        "judged": 19,
+        "judged": 18,
         "uncertain_or_partial": 1,
         "wilson95": [
           0.0,
-          0.168
+          0.176
         ]
       },
       "hard_negative_safe": {
         "error_rate": 0.0,
         "errors": 0,
-        "judged": 19,
+        "judged": 18,
         "uncertain_or_partial": 1,
         "wilson95": [
           0.0,
-          0.168
+          0.176
         ]
       },
       "localization": {
-        "error_rate": 0.211,
-        "errors": 4,
-        "judged": 19,
+        "error_rate": 0.167,
+        "errors": 3,
+        "judged": 18,
         "uncertain_or_partial": 3,
         "wilson95": [
-          0.085,
-          0.433
+          0.058,
+          0.392
         ]
       }
     },
@@ -314,7 +316,7 @@
     "reviewer": "Claude (AI engineering assistant, implementing engineer) - assisted review, NOT an authorized data or rights reviewer",
     "sample_items": 44
   },
-  "post_fix_invalidated": 201,
+  "post_fix_invalidated": 203,
   "span_lines_median": 2,
   "temporal_quarantine_overlap": {
     "package_in_train_or_validation": 6,

@@ -2182,15 +2182,6 @@
     },
     {
       "commits": [
-        "1e4e0ca902ed04299c14c061a8fe797d74516e46",
-        "d9e1f81f40c607b9e97c2fc6db70ae54679917c4"
-      ],
-      "records": 2,
-      "repository_key": "cortexproject/cortex",
-      "url": "https://github.com/cortexproject/cortex.git"
-    },
-    {
-      "commits": [
         "35d875319621bd129a38b2b823abf4a2f6cda536",
         "5c6e05e996f10be1df1f2ad178560e54a2f82f1b",
         "67c4b2cc98ae87cf1fa7df4f97fd81b40c79b895",
@@ -5768,15 +5759,6 @@
     },
     {
       "commits": [
-        "780911d84d18e2c5fa008ed0c0d387631ec11965",
-        "92e103e3f3ab0467c8846cacea71f27dfc81091d"
-      ],
-      "records": 2,
-      "repository_key": "jshttp/proxy-addr",
-      "url": "https://github.com/jshttp/proxy-addr.git"
-    },
-    {
-      "commits": [
         "30942896d27cb8a806b965a5ca9ef9f686be24ee",
         "8e4acf8aff5f446aa66323e12394ac5615c3b260"
       ],
@@ -7902,14 +7884,12 @@
         "2554ff48feed878ba7e830ada9825196f3eaa86a",
         "40d0bc1d484a3458d6a63ecb5ba4957ab16ba14e",
         "8fdccfbbe6636825b79f8944644f437335d5578f",
-        "9cd22715a4b128be7c0b1fed8b9a51250eede924",
         "bbaae83db86a0f49e00f5b0db44a7254c268de9b",
-        "d8e47539317b571ab1422981f5b9653d5eae1249",
         "ee1a42e51982c4dce6ad3ee77ff1ac43894288ab",
         "f59d7ed8df2e0e957f7f247fe218032abdbe9a10",
         "f9036018bf0a4a5147aba9b8d8a43979087795cd"
       ],
-      "records": 17,
+      "records": 15,
       "repository_key": "nltk/nltk",
       "url": "https://github.com/nltk/nltk.git"
     },
@@ -8756,7 +8736,6 @@
       "commits": [
         "08a001e06d90e8bcc190084c66992f46f62c0986",
         "5153bafbe8dbe1a2f02a70bbf0365e98b80e47b0",
-        "51ad1ada06cb41ce47b7066799981816f50b7ced",
         "5693c58a4815cc6327b8d3b6980f0e5aced28abe",
         "56e6b1045292f353d3cd6b68d61e48e272569852",
         "583080a7258e22cc884162e15b078771aa2c2c80",
@@ -8767,7 +8746,7 @@
         "f842cdf383fbae6f8f7336439a9ad411eb284436",
         "f9f7b55ec258e514be0264871fa645a2c3edad11"
       ],
-      "records": 19,
+      "records": 17,
       "repository_key": "osrg/gobgp",
       "url": "https://github.com/osrg/gobgp.git"
     },
@@ -11592,11 +11571,9 @@
         "529b88f617634b37597685073c6fcca5de28666b",
         "9a2b3f89bd0598b528d62c10a64c1986fcb09f66",
         "b793563e60a5e039c5837b09d7f4f6b92e6040d1",
-        "bd10d41af149dae01445e0bdff83003196dba873",
-        "dc8ae12966edee27a78fe05c5745171a2b138d43",
-        "ff423dade2bb1f72b2b48586c022fac40cbd9a4a"
+        "dc8ae12966edee27a78fe05c5745171a2b138d43"
       ],
-      "records": 10,
+      "records": 8,
       "repository_key": "trailofbits/fickling",
       "url": "https://github.com/trailofbits/fickling.git"
     },
@@ -12334,15 +12311,6 @@
       "records": 3,
       "repository_key": "wevm/mppx",
       "url": "https://github.com/wevm/mppx.git"
-    },
-    {
-      "commits": [
-        "29876a1954fe959e4b58ef070170e81703dab60e",
-        "a912c313b8fec21469ff47e6f51a1040d03c92e8"
-      ],
-      "records": 2,
-      "repository_key": "wger-project/wger",
-      "url": "https://github.com/wger-project/wger.git"
     },
     {
       "commits": [

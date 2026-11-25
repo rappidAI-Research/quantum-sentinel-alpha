@@ -7,34 +7,34 @@
 | Stage | v4 | **v5** | What decides it |
 | --- | ---: | ---: | --- |
 | Discovered candidates | 7,751 | **8,727** | 7,751 frozen v3 candidates (byte-identical) + 976 new: 377 pull-request fixes, 599 over the old repository cap |
-| Fixes built into records | 2,257 | **2,102** | +177 from the new candidates; −332 combined excerpts without evidence for the labelled site (below) |
-| Records built / accepted | 5,065 / 4,047 | **4,843 / 3,908** | unchanged quality checks and audit (fixed point) |
-| Accepted findings / hard negatives / abstentions | 1,903 / 1,674 / 470 | 1,790 / 1,609 / 509 | 30 hard negatives are defended siblings (new kind) |
-| **Authorized (training-approved) records** | 1,524 | **1,469** | owner approvals: repositories, sources, negative kinds |
-| **Training examples** (train: detection + patch) | 1,943 | **1,872** (1,333 + 539) | + 191 validation examples (validation loss only) |
-| **Supervised tokens per epoch** | 167 k | **156 k** | of 1.77 M tokens; 0 examples dropped at 4,096 |
+| Fixes built into records | 2,257 | **2,096** | +177 from the new candidates (68 of them pull-request fixes); −338 combined excerpts without evidence for the labelled site (below) |
+| Records built / accepted | 5,065 / 4,047 | **4,831 / 3,898** | unchanged quality checks and audit (fixed point) |
+| Accepted findings / hard negatives / abstentions | 1,903 / 1,674 / 470 | 1,786 / 1,603 / 509 | 30 hard negatives are defended siblings (new kind) |
+| **Authorized (training-approved) records** | 1,524 | **1,467** | owner approvals: repositories, sources, negative kinds |
+| **Training examples** (train: detection + patch) | 1,943 | **1,869** (1,331 + 538) | + 191 validation examples (validation loss only) |
+| **Supervised tokens per epoch** | 167 k | **156 k** (155,736) | of 1.77 M tokens; 0 examples dropped at 4,096 |
 | Independent human review | not performed | **not performed** (80 packages ready) | a person outside the implementation |
 
 **The authorized training set did not grow.** Two things explain it:
-- v5 is stricter about labels. 332 combined multi-function fixes lack evidence for the vulnerable location and are no longer used.
+- v5 is stricter about labels. 338 combined multi-function fixes lack evidence for the vulnerable location and are no longer used.
 - Everything v5 adds needs a decision only the owner may take, so it stays pending:
   - 181 accepted records come from the new candidates (`source_approval_not_extended`);
-  - 1,151 records come from repositories not yet reviewed;
+  - 1,147 records come from repositories not yet reviewed;
   - 22 are defended siblings whose kind is not validated yet.
 
 What your decisions would add, computed with the real gate and roles in memory (nothing written):
 
 | Decision | Repositories | Authorized records | Train examples (detection + patch) |
 | --- | ---: | ---: | ---: |
-| today | 530 | 1,469 | 1,333 + 539 = 1,872 |
-| + the 85 recommended repositories (`cohort/OWNER_DECISION.md`) | 590 | 1,663 | 1,527 + 622 = 2,149 |
-| + extend the source approval to the v5 candidate list | 605 | 1,743 | 1,602 + 650 = 2,252 |
-| + validate the defended-sibling kind after its human review | 605 | 1,754 | 1,613 + 650 = **2,263** |
+| today | 530 | 1,467 | 1,331 + 538 = 1,869 |
+| + the 85 recommended repositories (`cohort/OWNER_DECISION.md`) | 590 | 1,661 | 1,525 + 621 = 2,146 |
+| + extend the source approval to the v5 candidate list | 605 | 1,741 | 1,600 + 649 = 2,249 |
+| + validate the defended-sibling kind after its human review | 605 | 1,752 | 1,611 + 649 = **2,260** |
 
 **5,000–10,000 examples are not reachable from this source without lowering the bar.**
 - Of 8,727 candidates, 76 % fail extraction rules that exist to keep labels unambiguous; section 6 lists each with its size.
-- Of 3,908 accepted records, 1,358 are pending and 1,211 are evaluation data or quarantine.
-- Even with every decision-ready approval, the training set is about 2,260 examples.
+- Of 3,898 accepted records, 1,354 are pending and 1,207 are evaluation data or quarantine.
+- Even with every decision-ready approval, the training set is 2,260 examples.
 
 **Final approval evidence (`cohort/OWNER_DECISION.md`).** It covers the 85 recommended repositories that have no approval entry yet:
 - 62 tier A and 23 tier B extension repositories, 257 records;
@@ -77,10 +77,10 @@ Approving is your step: copy the templates from `proposed_approvals*.yaml` and f
 
 | Evidence | Accepted fixes |
 | --- | ---: |
-| the advisory names exactly one of the changed functions | 27 |
-| the fix commit message names exactly one | 22 |
-| every site makes the same edit, so every site is the weakness | 31 |
-| none (rejected: `multi_function_site_unevidenced`) | 452 built candidates |
+| the advisory names exactly one of the changed functions (one function, not just one name) | 25 |
+| the fix commit message names exactly one | 17 |
+| every site makes the same edit, so every site is the weakness | 34 |
+| none (rejected: `multi_function_site_unevidenced`) | 458 candidates |
 
 **Defended siblings, a new negative kind** (`build.defended_siblings`, `fix_guards`):
 - **Definition.** A function in the fixed file that the fix did not change, and that already called, at the vulnerable revision, the defence the fix added elsewhere (`secure_filename`, `escape`, `Authorize`, …).
@@ -105,8 +105,8 @@ Approving is your step: copy the templates from `proposed_approvals*.yaml` and f
 | --- | --- | --- | --- |
 | Abstention-only context sentence → abstain | 100 % / 100 % | 0 records | 0 records |
 | Security comment in the excerpt: no_finding vs finding | 18.6 % vs 7.8 % | 18.5 % vs 7.1 % | **6.7 % vs 6.9 %** |
-| Surface features only (length, blocks, indentation, notes, blank lines, context length), finding vs no_finding | 63.9 % (majority 55.7 %) | 62.0 % (55.6 %) | **56.8 % (54.9 %)** |
-| The same, all three decisions | 69.0 % (47.8 %) | 56.9 % (48.7 %) | **49.3 % (47.7 %)** |
+| Surface features only (length, blocks, indentation, notes, blank lines, context length), finding vs no_finding | 63.9 % (majority 55.7 %) | 62.0 % (55.6 %) | **57.2 % (54.9 %)** |
+| The same, all three decisions | 69.0 % (47.8 %) | 56.9 % (48.7 %) | **49.7 % (47.7 %)** |
 | Excerpt length threshold | 51.7 % | 55.6 % | 53.4 % |
 | Multi-block excerpt → no_finding | 100 % (15) | 60 % (62) | 86 % (22) |
 | Code-token naive Bayes: vulnerable ranked above its own fix | 78 % | 79 % | 76 % |
@@ -121,12 +121,12 @@ Roles as in v4 (`docs/EVALUATION.md`): the v3 development set is retired, and no
 | Role | Records | Repositories | Languages (Go/JS/Py/TS) | Decisions (finding/no_finding/abstain) |
 | --- | ---: | ---: | --- | --- |
 | `development` (selection) | 163 | 47 | 40 / 32 / 55 / 36 | 78 / 62 / 23 |
-| `final_test` (never exported before v4, never evaluated) | 13 | 6 | 2 / 6 / 5 / 0 | 6 / 6 / 1 |
+| `final_test` (never exported before v4, never evaluated) | 9 | 4 | 0 / 6 / 3 / 0 | 4 / 4 / 1 |
 | `previous_holdout` (v3 holdout repositories, rebuilt with v5) | 453 | 109 | 128 / 87 / 147 / 91 | 209 / 186 / 58 |
 | `temporal_quarantine` (reported separately) | 441 | – | – | 197 / 180 / 64 |
 
 **Final test.**
-- The untouched `final_test` shrank from 45 to 13 cases. Most of v4's came from combined excerpts that v5 no longer accepts. 13 cases cannot support a final conclusion.
+- The untouched `final_test` shrank from 45 to 9 cases. Most of v4's came from combined excerpts that v5 no longer accepts. 9 cases cannot support a final conclusion.
 - The strong final test is `previous_holdout`: 453 cases in all four languages and 12 CWE families, with abstentions and patch cases. **It is untouched only if the Garden v3 holdout was never evaluated** (GPU_RUNBOOK § 12, last step). I have no information that it was. Please confirm; until then both sets are reported separately.
 
 **Development set.** It covers every family except SQL injection: 0 SQL injection findings among its 78.
@@ -137,16 +137,16 @@ Roles as in v4 (`docs/EVALUATION.md`): the v3 development set is retired, and no
 
 **Audit and reproducibility:**
 - The audit reached a fixed point: rounds 2 and 3 were byte-identical.
-- 687 automated exclusions:
+- 690 automated exclusions:
   - later fix of the same function;
   - broad spans;
   - reported incomplete fixes;
   - unverifiable later fixes;
-  - leakage: 22 training records.
+  - leakage: 22 training records (690 exclusions in total).
 - The v4 AI-assisted verdicts were carried over. The 5 groups v5 no longer builds were dropped (noted in the file).
-- `verify` rebuilds all records and compares content hashes; see the PR for its result.
+- `verify` rebuilt all 4,831 records from the pinned revisions with 0 differences.
 
-**Contamination, all versions** (`analysis/sentinel-garden-v5.json` → `contamination`). The 2,697 accepted training-role records were compared with 3,768 evaluation records of v1–v5:
+**Contamination, all versions** (`analysis/sentinel-garden-v5.json` → `contamination`). The 2,691 accepted training-role records were compared with 3,764 evaluation records of v1–v5:
 - 0 shared advisory or CVE;
 - 0 shared fix or vulnerable revision;
 - 0 shared normalized code;
@@ -169,7 +169,7 @@ Roles as in v4 (`docs/EVALUATION.md`): the v3 development set is retired, and no
 | Rejection (v5 build) | Candidates | Why it stays rejected |
 | --- | ---: | --- |
 | Change outside a function (module constants, regexes, class attributes) | 1,464 | no function-level excerpt shows the weakness |
-| Several functions without evidence for the vulnerable one | 452 + 887 over the limits | unevidenced localization (your rule) |
+| Several functions without evidence for the vulnerable one | 458 + 887 over the limits | unevidenced localization (your rule) |
 | Non-contiguous multi-commit fixes | 847 | backport and partial fix cannot be told apart without full history |
 | Added/deleted files, more than 4 files | 631 + 546 | the input shows one file. Cross-file excerpts would change the evaluation contract, so they are not built. |
 | No source change in the language | 653 | the fix is elsewhere (C extension, configuration, dependency) |

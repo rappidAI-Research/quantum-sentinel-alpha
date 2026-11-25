@@ -360,7 +360,7 @@ repositories:
     notes: ""
 
   # tier B: license_file_changed_between_revisions, registry_unrecognised
-  # records: 10 {'train/caller_abstention': 1, 'train/post_fix': 4, 'train/vulnerable': 5}
+  # records: 9 {'train/caller_abstention': 1, 'train/post_fix': 3, 'train/vulnerable': 5}
   # registry (deps.dev): {'PyPI:jupyter-server': ['non-standard']}
   - repository_key: jupyter-server/jupyter_server
     decision: "<REQUIRED: approved_for_training | blocked>"

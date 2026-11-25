@@ -8,12 +8,12 @@
   },
   "license_changed_between_revisions": 59,
   "license_lookup_failed": 0,
-  "manifest_sha256": "32580f70c90953b9af4778b89258653eca97f46844f93cbcc59f7b6bb2d63ae2",
+  "manifest_sha256": "55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2",
   "records_by_tier": {
-    "A": 1784,
-    "B": 611,
-    "C": 61,
-    "D": 545
+    "A": 1782,
+    "B": 610,
+    "C": 59,
+    "D": 544
   },
   "registry_agreement": {
     "agrees": 685,

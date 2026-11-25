@@ -5,14 +5,14 @@ approval templates (not loadable) in `proposed_approvals.yaml`. This is an engin
 summary, not a legal opinion. The method and the open legal questions are in
 `docs/TRAINING_COHORT_RIGHTS_REVIEW.md`.
 
-Manifest sha256 `32580f70c90953b9af4778b89258653eca97f46844f93cbcc59f7b6bb2d63ae2`; review queue sha256 `a3e86c2c782fddbeb67af0dd04e0fc83edc55ca46d40bbd2f83c1254d66c1fbc`.
+Manifest sha256 `55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2`; review queue sha256 `7c06498caf8967263f42321dad46d9a3495cb8de37e00f3213b3bb84727485f4`.
 
 ## Decision groups
 
 | Group | Repositories | Records (train/validation) | What the reviewer decides |
 | --- | ---: | ---: | --- |
 | `recommended:MIT` | 354 | 865 | confirm MIT for training use; obligation if code is redistributed: keep the copyright and permission notice with any redistributed copy of the code |
-| `recommended:Apache-2.0` | 136 | 487 | confirm Apache-2.0 for training use; obligation if code is redistributed: keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 §4) |
+| `recommended:Apache-2.0` | 136 | 485 | confirm Apache-2.0 for training use; obligation if code is redistributed: keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 §4) |
 | `recommended:BSD-3-Clause` | 32 | 95 | confirm BSD-3-Clause for training use; obligation if code is redistributed: keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names |
 | `recommended:BSD-2-Clause` | 10 | 23 | confirm BSD-2-Clause for training use; obligation if code is redistributed: keep the copyright notice, conditions and disclaimer with any redistributed copy of the code |
 | `recommended:ISC` | 8 | 24 | confirm ISC for training use; obligation if code is redistributed: keep the copyright and permission notice with any redistributed copy of the code |
@@ -28,19 +28,19 @@ written and nothing is approved. Holdout and temporal-quarantine records stay bl
 
 | | train | validation | total |
 | --- | ---: | ---: | ---: |
-| finding | 623 | 65 | 688 |
-| no_finding | 575 | 57 | 632 |
+| finding | 622 | 65 | 687 |
+| no_finding | 574 | 57 | 631 |
 | abstain | 157 | 17 | 174 |
-| **detection examples** | **1355** | **139** | **1494** |
-| patch examples | 550 | 57 | 607 |
+| **detection examples** | **1353** | **139** | **1492** |
+| patch examples | 549 | 57 | 606 |
 
-Record-ID set sha256: `c127c0b77e3c40efb57238d63193fb08ecd8e4e984800dbce6639d273cf41807`.
+Record-ID set sha256: `a9b117c855464e0786243bdb2b2dfe8d7d29bf3cc60eae57ea60025539e71cb4`.
 
 ### By language
 
 | Language | Records |
 | --- | ---: |
-| go | 359 |
+| go | 357 |
 | javascript | 458 |
 | python | 431 |
 | typescript | 246 |
@@ -50,7 +50,7 @@ Record-ID set sha256: `c127c0b77e3c40efb57238d63193fb08ecd8e4e984800dbce6639d273
 | Family | Findings |
 | --- | ---: |
 | resource_limits_redos | 106 |
-| other | 78 |
+| other | 77 |
 | path_traversal | 76 |
 | xss_output_encoding | 75 |
 | authn_authz | 70 |
@@ -217,7 +217,7 @@ Record-ID set sha256: `c127c0b77e3c40efb57238d63193fb08ecd8e4e984800dbce6639d273
 | [openstack/manila](https://github.com/openstack/manila) | [Apache-2.0](https://github.com/openstack/manila/blob/947315f0903c823b0fdd9d99c60078814587272c/LICENSE) (`5df2a0d87d6c`) | python | 1/1/1 | CWE-276 |
 | [openstack/mistral](https://github.com/openstack/mistral) | [Apache-2.0](https://github.com/openstack/mistral/blob/c93b45a61f49d4633f76d8e117cd89063e7759c4/LICENSE) (`09e8a9bcec80`) | python | 1/1/0 | CWE-200 |
 | [openstack/nova](https://github.com/openstack/nova) | [Apache-2.0](https://github.com/openstack/nova/blob/3eba22ff09c81a61750fbb4882e5f1f01a20fdf5/LICENSE) (`5df2a0d87d6c`) | python | 3/2/1 | CWE-400, CWE-669, CWE-770 |
-| [osrg/gobgp](https://github.com/osrg/gobgp) | [Apache-2.0](https://github.com/osrg/gobgp/blob/f9f7b55ec258e514be0264871fa645a2c3edad11/LICENSE) (`a8ad31b1c3f4`) | go | 6/6/2 | CWE-119, CWE-1284, CWE-193, CWE-400, CWE-404 |
+| [osrg/gobgp](https://github.com/osrg/gobgp) | [Apache-2.0](https://github.com/osrg/gobgp/blob/f9f7b55ec258e514be0264871fa645a2c3edad11/LICENSE) (`a8ad31b1c3f4`) | go | 5/5/2 | CWE-1284, CWE-193, CWE-400, CWE-404 |
 | [paddlepaddle/paddle](https://github.com/PaddlePaddle/Paddle) | [Apache-2.0](https://github.com/PaddlePaddle/Paddle/blob/5c50d1a8b97b310cbc36560ec36d8377d6f29d7c/LICENSE) (`ff6311c56c1b`) | python | 6/6/0 | CWE-120, CWE-125, CWE-22, CWE-369, CWE-77, CWE-78 |
 | [pingcap/tidb](https://github.com/pingcap/tidb) | [Apache-2.0](https://github.com/pingcap/tidb/blob/3d68bd21240c610c6307713e2bd54a5e71c32608/LICENSE) (`2da5bcc8cff0`) | go | 1/1/1 | CWE-476 |
 | [prefecthq/fastmcp](https://github.com/PrefectHQ/fastmcp) | [Apache-2.0](https://github.com/PrefectHQ/fastmcp/blob/40bdfb6b1de0ce30609ee9ba5bb95ecd04a9fb71/LICENSE) (`43070e2d4e53`) | python | 1/1/1 | CWE-918 |
@@ -684,7 +684,7 @@ Tier B repositories whose open questions are formal, inspected exactly like tier
 | `clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+registry_names_other_license` | 1 | 1 | not recommended: see the open questions |
 | `clarify_extension:package_metadata_names_another_license+registry_names_other_license` | 1 | 3 | not recommended: see the open questions |
 
-Recommended in the extension: **74 repositories**. If they were approved as well as the tier A recommendation: **1785 records** (train 1615, validation 170), 720 patch examples, 146 CWEs, from 614 repositories (record-ID set sha256 `a709b7169c1b`).
+Recommended in the extension: **74 repositories**. If they were approved as well as the tier A recommendation: **1783 records** (train 1613, validation 170), 719 patch examples, 146 CWEs, from 614 repositories (record-ID set sha256 `e40c6061fe24`).
 
 | Repository | License | Group | Records F/N/A | Open questions |
 | --- | --- | --- | --- | --- |

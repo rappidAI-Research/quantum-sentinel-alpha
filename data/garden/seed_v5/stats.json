@@ -2,56 +2,56 @@
   "accepted": {
     "by_decision": {
       "abstain": 509,
-      "finding": 1790,
-      "no_finding": 1609
+      "finding": 1786,
+      "no_finding": 1603
     },
     "by_kind": {
       "caller_abstention": 509,
       "defended_sibling": 30,
-      "post_fix": 1579,
-      "vulnerable": 1790
+      "post_fix": 1573,
+      "vulnerable": 1786
     },
     "by_language": {
-      "go": 1085,
-      "javascript": 909,
-      "python": 1316,
+      "go": 1081,
+      "javascript": 908,
+      "python": 1311,
       "typescript": 598
     },
     "by_language_and_decision": {
       "go/abstain": 177,
-      "go/finding": 478,
-      "go/no_finding": 430,
+      "go/finding": 476,
+      "go/no_finding": 428,
       "javascript/abstain": 87,
       "javascript/finding": 434,
-      "javascript/no_finding": 388,
+      "javascript/no_finding": 387,
       "python/abstain": 172,
-      "python/finding": 599,
-      "python/no_finding": 545,
+      "python/finding": 597,
+      "python/no_finding": 542,
       "typescript/abstain": 73,
       "typescript/finding": 279,
       "typescript/no_finding": 246
     },
     "by_split": {
-      "holdout_reserved": 466,
+      "holdout_reserved": 462,
       "temporal_quarantine": 441,
-      "train": 2697,
+      "train": 2691,
       "validation": 304
     },
     "by_split_and_decision": {
       "holdout_reserved/abstain": 59,
-      "holdout_reserved/finding": 215,
-      "holdout_reserved/no_finding": 192,
+      "holdout_reserved/finding": 213,
+      "holdout_reserved/no_finding": 190,
       "temporal_quarantine/abstain": 64,
       "temporal_quarantine/finding": 197,
       "temporal_quarantine/no_finding": 180,
       "train/abstain": 346,
-      "train/finding": 1233,
-      "train/no_finding": 1118,
+      "train/finding": 1231,
+      "train/no_finding": 1114,
       "validation/abstain": 40,
       "validation/finding": 145,
       "validation/no_finding": 119
     },
-    "complete_pairs": 1542,
+    "complete_pairs": 1536,
     "finding_cwes": {
       "CWE-1004": 1,
       "CWE-1022": 1,
@@ -60,7 +60,7 @@
       "CWE-116": 15,
       "CWE-117": 7,
       "CWE-1188": 3,
-      "CWE-119": 5,
+      "CWE-119": 4,
       "CWE-120": 3,
       "CWE-1236": 1,
       "CWE-1240": 1,
@@ -105,7 +105,7 @@
       "CWE-208": 7,
       "CWE-209": 7,
       "CWE-212": 2,
-      "CWE-22": 160,
+      "CWE-22": 159,
       "CWE-228": 1,
       "CWE-23": 2,
       "CWE-241": 2,
@@ -167,7 +167,7 @@
       "CWE-41": 1,
       "CWE-426": 1,
       "CWE-434": 5,
-      "CWE-436": 3,
+      "CWE-436": 2,
       "CWE-440": 1,
       "CWE-441": 3,
       "CWE-444": 13,
@@ -198,7 +198,7 @@
       "CWE-620": 1,
       "CWE-627": 1,
       "CWE-636": 1,
-      "CWE-639": 12,
+      "CWE-639": 11,
       "CWE-643": 1,
       "CWE-646": 1,
       "CWE-647": 1,
@@ -259,8 +259,8 @@
       "CWE-96": 1
     },
     "finding_span_kind": {
-      "changed_lines": 1100,
-      "insertion_point": 510,
+      "changed_lines": 1097,
+      "insertion_point": 509,
       "mixed": 180
     },
     "fix_year": {
@@ -275,38 +275,38 @@
       "2017": 59,
       "2018": 117,
       "2019": 125,
-      "2020": 229,
-      "2021": 292,
-      "2022": 345,
+      "2020": 228,
+      "2021": 290,
+      "2022": 344,
       "2023": 339,
       "2024": 343,
       "2025": 522,
-      "2026": 1406
+      "2026": 1400
     },
     "flags": {
       "coarse_cwe": 256,
-      "license_none": 137,
+      "license_none": 136,
       "license_unknown": 146,
-      "no_root_license_file": 137
+      "no_root_license_file": 136
     },
     "license_category": {
-      "none": 137,
-      "permissive": 3138,
-      "strong_copyleft": 417,
+      "none": 136,
+      "permissive": 3133,
+      "strong_copyleft": 415,
       "unknown": 146,
-      "weak_copyleft": 70
+      "weak_copyleft": 68
     },
     "license_detected": {
       "0BSD": 2,
-      "AGPL-3.0": 386,
-      "Apache-2.0": 1048,
+      "AGPL-3.0": 384,
+      "Apache-2.0": 1044,
       "BSD-2-Clause": 121,
-      "BSD-3-Clause": 273,
+      "BSD-3-Clause": 272,
       "GPL-2.0": 23,
       "GPL-3.0": 8,
       "ISC": 31,
       "LGPL-2.1": 47,
-      "LGPL-3.0": 20,
+      "LGPL-3.0": 18,
       "MIT": 1611,
       "MPL-2.0": 3,
       "Unlicense": 11,
@@ -323,11 +323,11 @@
       "multiple:EPL-2.0|GPL-2.0": 2,
       "multiple:GPL-2.0|LGPL-2.1": 2,
       "multiple:ISC|MIT": 3,
-      "none": 137,
+      "none": 136,
       "unknown": 105
     },
     "repositories_by_split": {
-      "holdout_reserved": 115,
+      "holdout_reserved": 113,
       "temporal_quarantine": 119,
       "train": 833,
       "validation": 104
@@ -336,15 +336,15 @@
   "build": {
     "candidates": 8727,
     "outcomes": {
-      "built": 2102,
+      "built": 2096,
       "change_outside_function": 1464,
       "fix_too_large": 132,
       "function_mismatch": 178,
       "function_size_out_of_bounds": 233,
       "module_import_rebound": 25,
       "multi_commit_distinct_changes": 847,
-      "multi_commit_unexplained_change": 141,
-      "multi_function_site_unevidenced": 452,
+      "multi_commit_unexplained_change": 142,
+      "multi_function_site_unevidenced": 458,
       "multiple_functions_changed": 887,
       "no_logic_change": 22,
       "no_source_change_in_language": 653,
@@ -353,7 +353,7 @@
       "source_file_added_or_deleted": 631,
       "too_many_source_files": 546,
       "top_level_addition_without_changed_function": 264,
-      "unresolvable_commit": 51
+      "unresolvable_commit": 50
     }
   },
   "candidates_sha256": "af72c35dfc220aa1406aac7571156bcd7262234bb541951d81bd8962f8d479bf",
@@ -439,32 +439,32 @@
       "negative_kind_not_validated:defended_sibling": 30,
       "repository_approval_license_mismatch": 9,
       "repository_has_holdout_or_quarantine_records": 11,
-      "repository_not_reviewed": 2347,
+      "repository_not_reviewed": 2339,
       "source_approval_not_extended": 310,
-      "split:holdout_reserved": 466,
+      "split:holdout_reserved": 462,
       "split:temporal_quarantine": 441
     },
     "by_approval_status": {
-      "excluded": 2016,
-      "pending_review": 1358,
-      "training_approved": 1469
+      "excluded": 2010,
+      "pending_review": 1354,
+      "training_approved": 1467
     },
-    "training_approved": 1469
+    "training_approved": 1467
   },
-  "manifest_sha256": "32580f70c90953b9af4778b89258653eca97f46844f93cbcc59f7b6bb2d63ae2",
+  "manifest_sha256": "55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2",
   "pipeline_version": "3",
   "records": {
-    "accepted": 3908,
+    "accepted": 3898,
     "failed_checks": {
       "audit:abstention_constant_arguments": 2,
-      "audit:broad_localization_span": 164,
-      "audit:later_fix_changes_same_function": 302,
+      "audit:broad_localization_span": 162,
+      "audit:later_fix_changes_same_function": 307,
       "audit:later_fix_unverifiable": 100,
       "audit:manual_hard_negative_bypass_reported": 1,
       "audit:manual_imprecise_span": 6,
       "audit:manual_imprecise_span_documentation_advisory": 3,
       "audit:reported_incomplete_fix": 97,
-      "audit:sibling_excluded": 189,
+      "audit:sibling_excluded": 187,
       "audit:split_leakage_contains_holdout_reserved_excerpt": 1,
       "audit:split_leakage_near_duplicate_of_temporal_quarantine": 3,
       "audit:split_leakage_shared_package_with_holdout_reserved": 3,
@@ -480,8 +480,8 @@
       "sibling_rejected": 102,
       "syntax_well_formed": 8
     },
-    "rejected": 935,
-    "total": 4843
+    "rejected": 933,
+    "total": 4831
   },
   "split_policy": {
     "policy_id": "sentinel-garden-split-v1",
@@ -495,17 +495,17 @@
     },
     "patch": {
       "eligible_by_split": {
-        "holdout_reserved": 184,
+        "holdout_reserved": 182,
         "temporal_quarantine": 174,
-        "train": 1069,
+        "train": 1065,
         "validation": 115
       },
       "prompt_version": "sentinel-patch-v1",
       "render_version": "patch-v1",
       "vulnerable_records_by_eligibility": {
-        "eligible": 1542,
-        "fixed_sibling_rejected": 248,
-        "vulnerable_record_rejected": 312
+        "eligible": 1536,
+        "fixed_sibling_rejected": 250,
+        "vulnerable_record_rejected": 310
       }
     },
     "version": "1"

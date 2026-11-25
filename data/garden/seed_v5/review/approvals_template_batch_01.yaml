@@ -105,23 +105,6 @@ repositories:
     notes: ""
 
   # tier A: no open questions found by tooling
-  # records: 14 {'train/caller_abstention': 2, 'train/post_fix': 6, 'train/vulnerable': 6}
-  # registry (deps.dev): {'Go:github.com/osrg/gobgp': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v3': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v4': ['Apache-2.0']}
-  - repository_key: osrg/gobgp
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/osrg/gobgp
-      - https://github.com/osrg/gobgp/blob/f9f7b55ec258e514be0264871fa645a2c3edad11/LICENSE
-    notes: ""
-
-  # tier A: no open questions found by tooling
   # records: 13 {'train/caller_abstention': 1, 'train/post_fix': 6, 'train/vulnerable': 6}
   # registry (deps.dev): {'PyPI:llama-index': ['MIT'], 'PyPI:llama-index-cli': ['MIT'], 'PyPI:llama-index-core': ['MIT'], 'PyPI:llama-index-llms-rungpt': ['MIT'], 'PyPI:llama-index-packs-finchat': ['MIT'], 'PyPI:llama-index-readers-docugami': ['MIT'], 'PyPI:llama-index-readers-obsidian': ['MIT'], 'PyPI:llama-index-readers-papers': ['MIT'], 'PyPI:llama-index-retrievers-duckdb-retriever': ['MIT'], 'PyPI:llama-index-vector-stores-duckdb': ['MIT']}
   - repository_key: run-llama/llama_index
@@ -153,6 +136,23 @@ repositories:
     evidence_urls:
       - https://github.com/answerdev/answer
       - https://github.com/answerdev/answer/blob/ac3f2f047ee00b4edaea7530e570ab67ff87cd6a/LICENSE
+    notes: ""
+
+  # tier A: no open questions found by tooling
+  # records: 12 {'train/caller_abstention': 2, 'train/post_fix': 5, 'train/vulnerable': 5}
+  # registry (deps.dev): {'Go:github.com/osrg/gobgp': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v3': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v4': ['Apache-2.0']}
+  - repository_key: osrg/gobgp
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/osrg/gobgp
+      - https://github.com/osrg/gobgp/blob/f9f7b55ec258e514be0264871fa645a2c3edad11/LICENSE
     notes: ""
 
   # tier A: no open questions found by tooling

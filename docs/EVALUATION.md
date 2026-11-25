@@ -107,7 +107,7 @@ The roles are unchanged and are recomputed for v5.
 | Role | Cases |
 | --- | --- |
 | development (selection) | 163 (47 repositories; finding 78, no_finding 62, abstain 23; no SQL injection finding) |
-| `final_test` | 13 (6 repositories) |
+| `final_test` | 9 (4 repositories) |
 | `previous_holdout` | 453 (109 repositories) |
 | `temporal_quarantine` | 441 |
 

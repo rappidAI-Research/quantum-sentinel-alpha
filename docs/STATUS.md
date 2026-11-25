@@ -16,20 +16,20 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
     - 8,727 candidates: the frozen v3 list plus 377 pull-request fixes (resolved to their merge commit) and 599 over the old repository cap;
     - new candidates wait for an extension of the source approval.
   - **Labels:**
-    - combined excerpts need evidence for the labelled function (332 without it are dropped);
+    - combined excerpts need evidence for the labelled function (338 without it are dropped);
     - comments the fix added that name the weakness are left out;
     - caller notes;
     - a new negative kind, defended siblings (30 accepted), pending until its human-review sample validates it.
-  - **Shortcuts:** the security-comment cue is gone (6.7 % vs 6.9 %). Surface features predict finding vs no_finding 1.9 points above chance (v4: 6.4).
+  - **Shortcuts:** the security-comment cue is gone (6.7 % vs 6.9 %). Surface features predict finding vs no_finding 2.3 points above chance (v4: 6.4).
   - **Funnel:**
-    - 4,843 records, 3,908 accepted, **1,469 authorized**;
-    - 1,872 train examples (156 k supervised tokens).
-    - With the owner's decision-ready approvals (85 repositories, the source extension, the sibling kind): up to 2,263.
+    - 4,831 records, 3,898 accepted, **1,467 authorized**;
+    - 1,869 train examples (156 k supervised tokens).
+    - With the owner's decision-ready approvals (85 repositories, the source extension, the sibling kind): up to 2,260.
     - 5,000–10,000 are not reachable at this quality bar; the measured reasons are in `docs/GARDEN_V5.md` § 6.
   - **Contamination:** 0 shared identities or near-duplicates with any v1–v5 evaluation set.
   - **Evaluation:**
     - development 163 cases;
-    - untouched final test only 13 cases;
+    - untouched final test only 9 cases;
     - the 453-case previous holdout is a valid final test only if the v3 holdout was never evaluated (owner to confirm).
   - **Independent human review:** 80 packages, not performed.
 

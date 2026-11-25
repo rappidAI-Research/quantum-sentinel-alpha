@@ -202,7 +202,7 @@
   },
   {
    "reason": "repository also has holdout/temporal-quarantine records; the training loader refuses it",
-   "records": 10,
+   "records": 9,
    "repository_key": "jupyter-server/jupyter_server"
   },
   {
@@ -19589,23 +19589,23 @@
  "if_extension_is_also_approved": {
   "by_decision": {
    "abstain": 214,
-   "finding": 820,
-   "no_finding": 751
+   "finding": 819,
+   "no_finding": 750
   },
   "by_language": {
-   "go": 484,
+   "go": 482,
    "javascript": 517,
    "python": 519,
    "typescript": 265
   },
   "by_split": {
-   "train": 1615,
+   "train": 1613,
    "validation": 170
   },
   "by_split_and_decision": {
    "train/abstain": 194,
-   "train/finding": 739,
-   "train/no_finding": 682,
+   "train/finding": 738,
+   "train/no_finding": 681,
    "validation/abstain": 20,
    "validation/finding": 81,
    "validation/no_finding": 69
@@ -19615,7 +19615,7 @@
    "CWE-116": 6,
    "CWE-117": 1,
    "CWE-1188": 2,
-   "CWE-119": 3,
+   "CWE-119": 2,
    "CWE-120": 2,
    "CWE-1236": 1,
    "CWE-1240": 1,
@@ -19765,7 +19765,7 @@
    "crypto_tls_integrity": 31,
    "deserialization_input_validation": 58,
    "information_exposure": 49,
-   "other": 94,
+   "other": 93,
    "path_traversal": 98,
    "prototype_pollution": 68,
    "redirect_ssrf": 38,
@@ -19774,33 +19774,33 @@
    "xss_output_encoding": 87
   },
   "patch_examples_by_split": {
-   "train": 651,
+   "train": 650,
    "validation": 69
   },
-  "record_ids_sha256": "a709b7169c1b68ba6bec66f48b9a96ac27ca055b23038f040adf9beed1b11e46",
-  "records": 1785,
+  "record_ids_sha256": "e40c6061fe24813c8453aaa6b5e47bd96c501b9467986d4ad1fbab9d1040e5a0",
+  "records": 1783,
   "repositories": 614
  },
  "if_recommended_are_approved": {
   "by_decision": {
    "abstain": 174,
-   "finding": 688,
-   "no_finding": 632
+   "finding": 687,
+   "no_finding": 631
   },
   "by_language": {
-   "go": 359,
+   "go": 357,
    "javascript": 458,
    "python": 431,
    "typescript": 246
   },
   "by_split": {
-   "train": 1355,
+   "train": 1353,
    "validation": 139
   },
   "by_split_and_decision": {
    "train/abstain": 157,
-   "train/finding": 623,
-   "train/no_finding": 575,
+   "train/finding": 622,
+   "train/no_finding": 574,
    "validation/abstain": 17,
    "validation/finding": 65,
    "validation/no_finding": 57
@@ -19809,7 +19809,7 @@
    "CWE-113": 1,
    "CWE-116": 4,
    "CWE-1188": 2,
-   "CWE-119": 2,
+   "CWE-119": 1,
    "CWE-120": 2,
    "CWE-1236": 1,
    "CWE-1240": 1,
@@ -19947,7 +19947,7 @@
    "crypto_tls_integrity": 29,
    "deserialization_input_validation": 54,
    "information_exposure": 39,
-   "other": 78,
+   "other": 77,
    "path_traversal": 76,
    "prototype_pollution": 60,
    "redirect_ssrf": 32,
@@ -19956,14 +19956,14 @@
    "xss_output_encoding": 75
   },
   "patch_examples_by_split": {
-   "train": 550,
+   "train": 549,
    "validation": 57
   },
-  "record_ids_sha256": "c127c0b77e3c40efb57238d63193fb08ecd8e4e984800dbce6639d273cf41807",
-  "records": 1494,
+  "record_ids_sha256": "a9b117c855464e0786243bdb2b2dfe8d7d29bf3cc60eae57ea60025539e71cb4",
+  "records": 1492,
   "repositories": 540
  },
- "manifest_sha256": "32580f70c90953b9af4778b89258653eca97f46844f93cbcc59f7b6bb2d63ae2",
+ "manifest_sha256": "55620dacbc35a170aaf64a5b5877d691c4cae95164b7635d0d53af5881d847f2",
  "repositories": [
   {
    "advisories": [
@@ -65345,16 +65345,14 @@
     "GHSA-7m35-vw2c-696v",
     "GHSA-c5jg-wr5v-2wp2",
     "GHSA-mfvv-mgf6-q25r",
-    "GHSA-vm3g-8xwv-mxfp",
-    "GHSA-w88c-9vg8-cmq8"
+    "GHSA-vm3g-8xwv-mxfp"
    ],
    "confirmed_evidence": [
-    "root license file(s) LICENSE detected as Apache-2.0, identical at all 10 used revisions",
+    "root license file(s) LICENSE detected as Apache-2.0, identical at all 8 used revisions",
     "package registry (deps.dev) agrees: {'Go:github.com/osrg/gobgp': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v3': ['Apache-2.0'], 'Go:github.com/osrg/gobgp/v4': ['Apache-2.0']}",
     "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
-    "CWE-119",
     "CWE-1284",
     "CWE-193",
     "CWE-400",
@@ -65365,7 +65363,6 @@
     "paths": [
      "pkg/packet/bgp/bgp.go",
      "pkg/packet/bgp/prefix_sid.go",
-     "pkg/packet/bmp/bmp.go",
      "pkg/packet/rtr/rtr.go",
      "pkg/server/fsm.go"
     ],
@@ -65393,17 +65390,6 @@
        }
       }
      },
-     "51ad1ada06cb41ce47b7066799981816f50b7ced": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae"
-       }
-      }
-     },
      "5693c58a4815cc6327b8d3b6980f0e5aced28abe": {
       "inspection": "complete",
       "license_files_on_record_paths": {},
@@ -65416,17 +65402,6 @@
       }
      },
      "583080a7258e22cc884162e15b078771aa2c2c80": {
-      "inspection": "complete",
-      "license_files_on_record_paths": {},
-      "package_metadata": [],
-      "root_notice_and_license_files": {
-       "LICENSE": {
-        "detected": "Apache-2.0",
-        "sha256": "a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae"
-       }
-      }
-     },
-     "bc77597d42335c78464bc8e15a471d887bbdf260": {
       "inspection": "complete",
       "license_files_on_record_paths": {},
       "package_metadata": [],
@@ -65482,7 +65457,7 @@
       }
      }
     },
-    "source_state_sha256": "3ffb70f6c4627ac0f39369759e8fad6ac9f52fe784740f2b56c5d1b799e1b355"
+    "source_state_sha256": "7a2158dec36cbd43c488fba342e111dcecb3f2cf8def59e3661012239b83e9d3"
    },
    "languages": [
     "go"
@@ -65501,21 +65476,19 @@
     "sg-go-caller-abstention-615af6ea3493edbe",
     "sg-go-post-fix-45200b358a5469fd",
     "sg-go-post-fix-68cf72df03097936",
-    "sg-go-post-fix-cd408735ad4f590a",
     "sg-go-post-fix-d1c047c3a6dcb8a8",
     "sg-go-post-fix-ddaefa9d294dcbbb",
     "sg-go-post-fix-f985cc3a68054d41",
     "sg-go-vulnerable-12e4302734b549bd",
     "sg-go-vulnerable-2e033b675b51e883",
     "sg-go-vulnerable-38d7ee0c0cae3743",
-    "sg-go-vulnerable-6d0a1bd7fcc24255",
     "sg-go-vulnerable-ad56b31fc2ae0742",
     "sg-go-vulnerable-db2508c67ca355e0"
    ],
    "records": {
     "abstain": 2,
-    "finding": 6,
-    "no_finding": 6
+    "finding": 5,
+    "no_finding": 5
    },
    "registry_licenses": {
     "Go:github.com/osrg/gobgp": [
@@ -65532,10 +65505,8 @@
    "revisions": [
     "08a001e06d90e8bcc190084c66992f46f62c0986",
     "5153bafbe8dbe1a2f02a70bbf0365e98b80e47b0",
-    "51ad1ada06cb41ce47b7066799981816f50b7ced",
     "5693c58a4815cc6327b8d3b6980f0e5aced28abe",
     "583080a7258e22cc884162e15b078771aa2c2c80",
-    "bc77597d42335c78464bc8e15a471d887bbdf260",
     "c3eb0db6df91379e15ce1a8709cb1b64f482248e",
     "ca7383f450f7b296c5389feceef2467de5ab6e5a",
     "f842cdf383fbae6f8f7336439a9ad411eb284436",
@@ -85254,7 +85225,7 @@
    "url": "https://github.com/zmievsa/cadwyn"
   }
  ],
- "review_queue_sha256": "a3e86c2c782fddbeb67af0dd04e0fc83edc55ca46d40bbd2f83c1254d66c1fbc",
+ "review_queue_sha256": "7c06498caf8967263f42321dad46d9a3495cb8de37e00f3213b3bb84727485f4",
  "selection": "every tier A repository of the review queue with accepted train/validation records",
  "status": "PROPOSAL - not an approval; see COHORT_REVIEW.md"
 }
