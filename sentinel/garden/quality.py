@@ -46,6 +46,9 @@ class QualitySettings:
     label_conflict_jaccard: float
     contamination_jaccard: float
     shingle_size: int
+    # Garden v4: stricter train/evaluation leakage checks in the audit (`audit.split_leakage(strict=True)`):
+    # shared vulnerable revisions and patches, and a held-out excerpt contained in a training excerpt.
+    cross_split_containment: float | None = None
 
 
 def load_record_schema() -> dict[str, Any]:

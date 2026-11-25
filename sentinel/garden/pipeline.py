@@ -25,7 +25,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from sentinel.data.registry import load_registry, validate_registry
-from sentinel.eval.io import validate_cases
+from sentinel.eval.io import case_set_sha256, validate_cases
 from sentinel.garden import build as build_module
 from sentinel.garden import human_review, render, supervision, syntax
 from sentinel.garden.build import ExtractionSettings, Rejected
@@ -134,6 +134,19 @@ def file_sha256(path: Path) -> str:
 
 def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> dict[str, Any]:
     d, sel = config.raw["discovery"], config.raw["selection"]
+    if d.get("frozen_candidates"):
+        # Garden v4: the candidate list of an earlier version, unchanged (no OSV query), so the source
+        # approvals bound to that list's sha256 cover exactly the same advisories and fix commits.
+        source = PROJECT_ROOT / d["frozen_candidates"]
+        if file_sha256(source) != d["frozen_candidates_sha256"]:
+            raise ValueError(f"{source} does not match frozen_candidates_sha256; the frozen list must not change")
+        config.committed_dir.mkdir(parents=True, exist_ok=True)
+        (config.committed_dir / "candidates.jsonl").write_bytes(source.read_bytes())
+        stats = json.loads((source.parent / "discovery_stats.json").read_text(encoding="utf-8"))
+        stats["frozen_candidates"] = {"path": d["frozen_candidates"], "sha256": d["frozen_candidates_sha256"]}
+        _write_json(config.committed_dir / "discovery_stats.json", stats)
+        log(f"discover: frozen candidate list {d['frozen_candidates']} copied unchanged")
+        return stats
     client = OsvClient(d["osv_bucket"], config.workdir / "cache" / "osv")
     candidates: list[dict[str, Any]] = []
     seen_commits: set[tuple[str, str]] = set()
@@ -210,45 +223,62 @@ def discover(config: GardenConfig, refresh: bool = False, log: Any = print) -> d
 # --------------------------------------------------------------------------------------------
 
 
-def build(config: GardenConfig, workdir: Path | None = None, workers: int = 6, log: Any = print) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def build(
+    config: GardenConfig, workdir: Path | None = None, workers: int = 6, log: Any = print, processes: int = 0
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     workdir = workdir or config.workdir
     candidates = _read_jsonl(config.committed_dir / "candidates.jsonl")
-    records, build_log = build_candidates(config, candidates, workers, log)
+    records, build_log = build_candidates(config, candidates, workers, log, processes=processes)
     _write_jsonl(workdir / "records.raw.jsonl", records)
     _write_jsonl(workdir / "build_log.jsonl", build_log)
     log(f"build: {len(records)} raw records from {sum(1 for r in build_log if r['outcome'] == 'built')}/{len(candidates)} candidates")
     return records, build_log
 
 
+def _build_repository(config: GardenConfig, repo_key: str, group: list[dict[str, Any]]) -> list[tuple[dict[str, Any], list[dict[str, Any]], str]]:
+    """Build one repository's candidates (one worker per repository: its git cache is never shared)."""
+    results = []
+    repo = UpstreamRepo(config.workdir / "cache" / "git", group[0]["repository"], repo_key)
+    for candidate in group:
+        try:
+            records = build_module.build_records(
+                candidate, repo, config.extraction, config.dataset_id, config.code_source_id, config.metadata_source_ids
+            )
+            results.append((candidate, records, "built"))
+        except Rejected as exc:
+            results.append((candidate, [], exc.reason))
+        except Exception as exc:  # noqa: BLE001 - one broken upstream must not stop the run
+            results.append((candidate, [], f"error:{type(exc).__name__}"))
+    return results
+
+
 def build_candidates(
-    config: GardenConfig, candidates: list[dict[str, Any]], workers: int = 6, log: Any = print
+    config: GardenConfig, candidates: list[dict[str, Any]], workers: int = 6, log: Any = print, processes: int = 0
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Build the given candidates from the upstream cache (fetching what is missing); writes nothing."""
-    cache = config.workdir / "cache" / "git"
+    """Build the given candidates from the upstream cache (fetching what is missing); writes nothing.
+
+    `processes` > 1 builds repositories in that many processes (parsing is CPU-bound; threads share
+    one core); the result is the same, as every candidate is built independently and sorted."""
     by_repo: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for candidate in candidates:
         by_repo[candidate["repository_key"]].append(candidate)
 
     def process(repo_key: str) -> list[tuple[dict[str, Any], list[dict[str, Any]], str]]:
-        results = []
-        group = by_repo[repo_key]
-        repo = UpstreamRepo(cache, group[0]["repository"], repo_key)
-        for candidate in group:
-            try:
-                records = build_module.build_records(
-                    candidate, repo, config.extraction, config.dataset_id, config.code_source_id, config.metadata_source_ids
-                )
-                results.append((candidate, records, "built"))
-            except Rejected as exc:
-                results.append((candidate, [], exc.reason))
-            except Exception as exc:  # noqa: BLE001 - one broken upstream must not stop the run
-                results.append((candidate, [], f"error:{type(exc).__name__}"))
-        return results
+        return _build_repository(config, repo_key, by_repo[repo_key])
 
     records: list[dict[str, Any]] = []
     build_log: list[dict[str, Any]] = []
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        for done, results in enumerate(pool.map(process, sorted(by_repo)), start=1):
+    keys = sorted(by_repo)
+    if processes > 1:
+        from concurrent.futures import ProcessPoolExecutor
+
+        pool: Any = ProcessPoolExecutor(max_workers=processes)
+        mapped = pool.map(_build_repository, [config] * len(keys), keys, [by_repo[k] for k in keys], chunksize=4)
+    else:
+        pool = ThreadPoolExecutor(max_workers=workers)
+        mapped = pool.map(process, keys)
+    with pool:
+        for done, results in enumerate(mapped, start=1):
             for candidate, built, outcome in results:
                 records.extend(built)
                 build_log.append(
@@ -264,6 +294,56 @@ def build_candidates(
 # --------------------------------------------------------------------------------------------
 # Stage 4-6: curate (quality, dedup, contamination, split, governance, export)
 # --------------------------------------------------------------------------------------------
+
+
+# Garden v4 evaluation roles (docs/GARDEN_V4.md). The frozen split policy decides the split; the role
+# adds what earlier versions already used for evaluation, so that v4 can select on, and finally test on,
+# repositories no model of ours has been evaluated on.
+EVALUATION_ROLES = ("training", "retired_development", "development", "previous_holdout", "final_test", "temporal_quarantine")
+UNTOUCHED_ROLES = {"development", "final_test"}
+
+
+def evaluation_history(config: GardenConfig) -> tuple[set[str], set[str]] | None:
+    """(retired development repositories, previously exported holdout repositories), or None without roles.
+
+    Retired: repositories of the earlier development set (accepted, training-approved validation
+    records of `retired_development_manifest`). Previous holdout: repositories whose holdout cases an
+    earlier version exported (accepted holdout_reserved records of `previous_holdout_manifests`)."""
+    settings = config.raw.get("evaluation")
+    if not settings:
+        return None
+    retired = {
+        row["provenance"]["repository_key"]
+        for row in _read_jsonl(PROJECT_ROOT / settings["retired_development_manifest"])
+        if row["split"] == "validation" and row["quality"]["status"] == "accepted" and row["governance"]["approval_status"] == "training_approved"
+    }
+    previous = {
+        row["provenance"]["repository_key"]
+        for path in settings["previous_holdout_manifests"]
+        for row in _read_jsonl(PROJECT_ROOT / path)
+        if row["split"] == "holdout_reserved" and row["quality"]["status"] == "accepted"
+    }
+    return retired, previous
+
+
+def evaluation_role(record: dict[str, Any], retired: set[str], previous: set[str]) -> str:
+    repository = record["provenance"]["repository_key"]
+    split = record["split"]
+    if split == "validation":
+        return "retired_development" if repository in retired else "development"
+    if split == "holdout_reserved":
+        return "previous_holdout" if repository in previous else "final_test"
+    return "training" if split == "train" else "temporal_quarantine"
+
+
+def apply_evaluation_role(record: dict[str, Any], history: tuple[set[str], set[str]]) -> None:
+    """Set the role; a development record is never exported for training, whatever its approvals."""
+    role = evaluation_role(record, *history)
+    record["evaluation_role"] = role
+    if role == "development":
+        governance = record["governance"]
+        blockers = ["evaluation_role:development"] + [b for b in governance["blockers"] if b != "evaluation_role:development"]
+        record["governance"] = {"approval_status": "excluded", "blockers": blockers}
 
 
 def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: dict[str, Any] | None = None) -> list[dict[str, Any]]:
@@ -331,11 +411,14 @@ def curate_records(config: GardenConfig, raw: list[dict[str, Any]], approvals: d
     # approval never exports a record the loader would refuse (a new dataset version can add
     # post-cutoff records to an approved repository).
     held_out = {r["provenance"]["repository_key"] for r in records if r["split"] in {"holdout_reserved", "temporal_quarantine"}}
+    history = evaluation_history(config)
     for record in records:
         status, blockers = gate(record, sources, approvals)
         if status == "training_approved" and record["provenance"]["repository_key"] in held_out:
             status, blockers = "excluded", ["repository_has_holdout_or_quarantine_records"]
         record["governance"] = {"approval_status": status, "blockers": blockers}
+        if history is not None:
+            apply_evaluation_role(record, history)
         errors = list(validator.iter_errors(record))
         if errors:
             raise ValueError(f"curated record {record['record_id']} violates the schema: {errors[0].message}")
@@ -494,15 +577,85 @@ def write_exports(workdir: Path, records: list[dict[str, Any]]) -> None:
         workdir / "staging.jsonl",
         select(lambda r: r["quality"]["status"] == "accepted" and r["governance"]["approval_status"] == "pending_review"),
     )
-    holdout = select(lambda r: r["quality"]["status"] == "accepted" and r["split"] == "holdout_reserved")
+    roles = any("evaluation_role" in r for r in records)
+    # with evaluation roles (v4) the holdout export holds the previously exported holdout only; the
+    # untouched final test is written separately, so a routine holdout run cannot spend it
+    holdout = select(
+        lambda r: r["quality"]["status"] == "accepted" and r["split"] == "holdout_reserved" and (not roles or r["evaluation_role"] == "previous_holdout")
+    )
+    write_holdout_exports(workdir, holdout)
+    _write_jsonl(workdir / "rejected.jsonl", select(lambda r: r["quality"]["status"] == "rejected"))
+    names = EXPORT_FILES
+    if roles:
+        write_role_exports(workdir, records)
+        names = EXPORT_FILES + ROLE_EXPORT_FILES
+    sums = "".join(f"{file_sha256(workdir / name)}  {name}\n" for name in names)
+    (workdir / "SHA256SUMS").write_text(sums, encoding="utf-8")
+
+
+ROLE_EXPORT_FILES = (
+    "development/dev.eval_cases.jsonl",
+    "development/dev.patch_cases.jsonl",
+    "development/manifest.json",
+    "development/records.jsonl",
+    "final_test.jsonl",
+    "final_test.eval_cases.jsonl",
+    "final_test.patch_cases.jsonl",
+)
+DEVELOPMENT_SET_VERSION = "2"  # 1: sentinel.eval.devset (Garden v3 approved validation); 2: Garden v4 development role
+
+
+def write_holdout_exports(workdir: Path, holdout: list[dict[str, Any]]) -> None:
     _write_jsonl(workdir / "holdout_reserved.jsonl", holdout)
     holdout_cases = [render.to_eval_case(r) for r in holdout]
     validate_cases(holdout_cases)
     _write_jsonl(workdir / "holdout_reserved.eval_cases.jsonl", holdout_cases)
     _write_jsonl(workdir / "holdout_reserved.patch_cases.jsonl", supervision.patch_cases(holdout))
-    _write_jsonl(workdir / "rejected.jsonl", select(lambda r: r["quality"]["status"] == "rejected"))
-    sums = "".join(f"{file_sha256(workdir / name)}  {name}\n" for name in EXPORT_FILES)
-    (workdir / "SHA256SUMS").write_text(sums, encoding="utf-8")
+
+
+def development_manifest(dataset_id: str, records: list[dict[str, Any]], cases: list[dict[str, Any]], patch_cases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Same shape as `sentinel.eval.devset`, so `sentinel.eval.select_checkpoint --devset` accepts it."""
+    return {
+        "devset_version": DEVELOPMENT_SET_VERSION,
+        "dataset_id": dataset_id,
+        "role": "development (checkpoint selection); repository-disjoint from every earlier evaluation set; not the final test",
+        "source": "accepted records of validation-split repositories outside the earlier development set (evaluation use; not training data)",
+        "records": len(records),
+        "repositories": len({r["provenance"]["repository_key"] for r in records}),
+        "detection": {
+            "cases_sha256": case_set_sha256(cases),
+            "count": len(cases),
+            "by_expected_decision": dict(sorted(Counter(c["expected_decision"] for c in cases).items())),
+            "by_language": dict(sorted(Counter(c["language"] for c in cases).items())),
+        },
+        "patch": {"cases_sha256": case_set_sha256(patch_cases), "count": len(patch_cases)},
+    }
+
+
+def write_role_exports(workdir: Path, records: list[dict[str, Any]]) -> None:
+    """Garden v4: the development set (devset format) and the sealed final test set."""
+    accepted = [r for r in records if r["quality"]["status"] == "accepted"]
+    development = [r for r in accepted if r["evaluation_role"] == "development"]
+    final = [r for r in accepted if r["evaluation_role"] == "final_test"]
+    cases = []
+    for record in development:
+        case = render.to_eval_case(record)
+        case["source_kind"] = "development"
+        cases.append(case)
+    validate_cases(cases)
+    patch_cases = supervision.patch_cases(development)
+    directory = workdir / "development"
+    directory.mkdir(parents=True, exist_ok=True)
+    _write_jsonl(directory / "dev.eval_cases.jsonl", cases)
+    _write_jsonl(directory / "dev.patch_cases.jsonl", patch_cases)
+    _write_jsonl(directory / "records.jsonl", development)
+    dataset_id = development[0]["dataset_id"] if development else (records[0]["dataset_id"] if records else "")
+    _write_json(directory / "manifest.json", development_manifest(dataset_id, development, cases, patch_cases))
+    _write_jsonl(workdir / "final_test.jsonl", final)
+    final_cases = [render.to_eval_case(r) for r in final]
+    validate_cases(final_cases)
+    _write_jsonl(workdir / "final_test.eval_cases.jsonl", final_cases)
+    _write_jsonl(workdir / "final_test.patch_cases.jsonl", supervision.patch_cases(final))
 
 
 def external_resources(records: list[dict[str, Any]]) -> dict[str, Any]:
@@ -704,7 +857,12 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     records = _read_jsonl(config.workdir / "records.jsonl")
     candidates = _read_jsonl(committed / "candidates.jsonl")
     result = run_audit(
-        records, candidates, config.workdir / "cache" / "git", config.workdir / "cache" / "osv", OsvQuery(config.workdir / "cache" / "osv_query")
+        records,
+        candidates,
+        config.workdir / "cache" / "git",
+        config.workdir / "cache" / "osv",
+        OsvQuery(config.workdir / "cache" / "osv_query"),
+        containment=config.quality.cross_split_containment,
     )
     audit_dir = committed / "audit"
     audit_dir.mkdir(parents=True, exist_ok=True)
@@ -850,6 +1008,44 @@ def reconstruct(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
 TRAINING_EXPORT_FILES = ("train.jsonl", "validation.jsonl", "train.chat.jsonl", "train.patch.chat.jsonl")
 
 
+def _rebuild_verified(config: GardenConfig, wanted: dict[str, dict[str, Any]], manifest: dict[str, dict[str, Any]], workers: int, log: Any) -> list[dict[str, Any]]:
+    """Rebuild the `wanted` manifest records from upstream and verify them against the manifest
+    (content hash and every supervision hash); quality, split, governance and evaluation role come
+    from the manifest. Any difference is an error; nothing is repaired."""
+    advisories = {row["provenance"]["advisory_id"] for row in wanted.values()}
+    candidates = [c for c in _read_jsonl(config.committed_dir / "candidates.jsonl") if c["advisory_id"] in advisories]
+    log(f"materialize: {len(wanted)} records from {len(candidates)} advisories in {len({c['repository_key'] for c in candidates})} repositories")
+    built, _ = build_candidates(config, candidates, workers, log)
+    by_id = {r["record_id"]: r for r in built}
+    missing = sorted(set(wanted) - set(by_id))
+    if missing:
+        raise ValueError(f"{len(missing)} records could not be rebuilt from upstream (first: {missing[:3]})")
+    # Every rebuilt record takes quality, split and governance from the manifest (siblings included,
+    # so patch eligibility sees the same pair states curate saw).
+    known = []
+    for rid, raw in by_id.items():
+        if rid not in manifest:
+            raise ValueError(f"{rid}: rebuilt but not in the committed manifest (code or config differs)")
+        row = manifest[rid]
+        if raw["provenance"]["content_sha256"] != row["provenance"]["content_sha256"]:
+            raise ValueError(f"{rid}: rebuilt code differs from the manifest content hash")
+        fields = {"quality": row["quality"], "split": row["split"], "governance": row["governance"]}
+        if "evaluation_role" in row:
+            fields["evaluation_role"] = row["evaluation_role"]
+        known.append({**raw, **fields})
+    pairs = supervision.pairs_by_id(known)
+    records = []
+    for record in sorted(known, key=lambda r: r["record_id"]):
+        if record["record_id"] not in wanted:
+            continue
+        bound = supervision.supervision(record, pairs)
+        for key in supervision.HASH_FIELDS:
+            if bound[key] != manifest[record["record_id"]]["supervision"][key]:
+                raise ValueError(f"{record['record_id']}: rebuilt {key} differs from the manifest")
+        records.append(record)
+    return records
+
+
 def materialize(config: GardenConfig, workers: int = 6, log: Any = print) -> dict[str, Any]:
     """Rebuild ONLY the training-approved records of the committed manifest and write the training exports.
 
@@ -874,36 +1070,8 @@ def materialize(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
         status, blockers = gate(row, sources, approvals)
         if status != "training_approved":
             raise ValueError(f"{rid} is training_approved in the manifest but fails the gate now: {blockers} (rerun curate)")
-
-    advisories = {row["provenance"]["advisory_id"] for row in approved.values()}
-    candidates = [c for c in _read_jsonl(committed / "candidates.jsonl") if c["advisory_id"] in advisories]
-    log(f"materialize: {len(approved)} approved records from {len(candidates)} advisories in "
-        f"{len({c['repository_key'] for c in candidates})} repositories")
-    built, _ = build_candidates(config, candidates, workers, log)
-    by_id = {r["record_id"]: r for r in built}
-    missing = sorted(set(approved) - set(by_id))
-    if missing:
-        raise ValueError(f"{len(missing)} approved records could not be rebuilt from upstream (first: {missing[:3]})")
-    # Every rebuilt record takes quality, split and governance from the manifest (siblings included,
-    # so patch eligibility sees the same pair states curate saw).
-    known = []
-    for rid, raw in by_id.items():
-        if rid not in manifest:
-            raise ValueError(f"{rid}: rebuilt but not in the committed manifest (code or config differs)")
-        row = manifest[rid]
-        if raw["provenance"]["content_sha256"] != row["provenance"]["content_sha256"]:
-            raise ValueError(f"{rid}: rebuilt code differs from the manifest content hash")
-        known.append({**raw, "quality": row["quality"], "split": row["split"], "governance": row["governance"]})
-    pairs = supervision.pairs_by_id(known)
-    records = []
-    for record in sorted(known, key=lambda r: r["record_id"]):
-        if record["record_id"] not in approved:
-            continue
-        bound = supervision.supervision(record, pairs)
-        for key in supervision.HASH_FIELDS:
-            if bound[key] != manifest[record["record_id"]]["supervision"][key]:
-                raise ValueError(f"{record['record_id']}: rebuilt {key} differs from the manifest")
-        records.append(record)
+    records = _rebuild_verified(config, approved, manifest, workers, log)
+    candidates = {r["provenance"]["advisory_id"] for r in records}
     train = [r for r in records if r["split"] == "train"]
     validation = [r for r in records if r["split"] == "validation"]
     workdir = config.workdir
@@ -926,6 +1094,34 @@ def materialize(config: GardenConfig, workers: int = 6, log: Any = print) -> dic
     _write_json(workdir / "materialize_report.json", report)
     log(f"materialize: train {len(train)}, validation {len(validation)} -> {workdir} (verify with `sha256sum -c SHA256SUMS`)")
     return report
+
+
+EVALUATION_SUMS = "SHA256SUMS.evaluation"
+
+
+def materialize_evaluation(config: GardenConfig, workers: int = 6, log: Any = print) -> dict[str, Any]:
+    """Garden v4, evaluation machine: rebuild only the evaluation-role records (development, final test,
+    previously exported holdout) of the committed manifest, verify them like `materialize`, and write
+    the development set (`development/`, devset format), `final_test.*` and `holdout_reserved.*` with
+    their own checksum file. Training exports are not touched."""
+    committed = config.committed_dir
+    manifest = {row["record_id"]: row for row in _read_jsonl(committed / "manifest.jsonl")}
+    if not any("evaluation_role" in row for row in manifest.values()):
+        raise ValueError("this dataset version has no evaluation roles (Garden v4 and later)")
+    wanted = {
+        rid: row for rid, row in manifest.items()
+        if row["quality"]["status"] == "accepted" and row["evaluation_role"] in {"development", "final_test", "previous_holdout"}
+    }
+    records = _rebuild_verified(config, wanted, manifest, workers, log)
+    workdir = config.workdir
+    write_role_exports(workdir, records)
+    write_holdout_exports(workdir, [r for r in records if r["evaluation_role"] == "previous_holdout"])
+    names = ROLE_EXPORT_FILES + ("holdout_reserved.jsonl", "holdout_reserved.eval_cases.jsonl", "holdout_reserved.patch_cases.jsonl")
+    sums = "".join(f"{file_sha256(workdir / name)}  {name}\n" for name in names)
+    (workdir / EVALUATION_SUMS).write_text(sums, encoding="utf-8")
+    counts = Counter(r["evaluation_role"] for r in records)
+    log(f"materialize-eval: {dict(sorted(counts.items()))} -> {workdir} (verify with `sha256sum -c {EVALUATION_SUMS}`)")
+    return {"records": dict(sorted(counts.items())), "exports": sums.splitlines()}
 
 
 def check(config: GardenConfig) -> dict[str, Any]:
@@ -961,6 +1157,16 @@ def check(config: GardenConfig) -> dict[str, Any]:
         recorded = row["governance"]["approval_status"]
         if recorded == "training_approved" and status != "training_approved":
             raise ValueError(f"{row['record_id']} is marked training_approved but fails the gate now")
+    history = evaluation_history(config)
+    for row in rows:
+        if history is None:
+            if "evaluation_role" in row:
+                raise ValueError(f"{row['record_id']}: evaluation role without an `evaluation` section in the config")
+            continue
+        if row.get("evaluation_role") != evaluation_role(row, *history):
+            raise ValueError(f"{row['record_id']}: evaluation role differs from the one the split and history give (rerun curate)")
+        if row["evaluation_role"] in UNTOUCHED_ROLES and row["governance"]["approval_status"] == "training_approved":
+            raise ValueError(f"{row['record_id']}: {row['evaluation_role']} record must never be training-approved")
     split_rows = [r for r in rows if r["quality"]["status"] == "accepted"]
     problems = check_split_invariants(split_rows, config.split)
     if problems:

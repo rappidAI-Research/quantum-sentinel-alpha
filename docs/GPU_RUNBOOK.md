@@ -226,3 +226,74 @@ python -m sentinel.eval.compare runs/eval/holdout/foundation.json runs/eval/hold
 ```
 
 Save `runs/eval/` and `runs/devset/manifest.json` together with the training outputs (§ 11). Do not save the case files: they contain upstream code.
+
+## 13. Garden v4: diagnosis, training (A and B), selection, final test (**GPU**)
+
+Data and roles: `docs/GARDEN_V4.md`. Approaches and settings: `docs/TRAINING_V4.md`. Selection: `docs/EVALUATION.md`. Keep the first run's outputs (`runs/train/qsa-qlora-ornith15-9b-v0/`, including `checkpoints/step-000200`) in place: approach A starts from them and refuses a modified checkpoint.
+
+Update, install, offline checks:
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && git log --oneline -1 && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+python -m sentinel.foundation
+```
+
+Evaluation sets (development, final test, previous holdout) and training exports, rebuilt only for the records they need and verified against the manifest. The development set should have 176 detection cases (abstain 23, finding 87, no_finding 66):
+
+```bash
+python -m sentinel.garden materialize-eval --config configs/garden/seed_v4.yaml
+cd artifacts/garden/seed_v4 && sha256sum -c SHA256SUMS.evaluation && cd ~/quantum-sentinel-alpha
+python -m sentinel.garden materialize --config configs/garden/seed_v4.yaml
+cd artifacts/garden/seed_v4 && sha256sum -c SHA256SUMS && cd ~/quantum-sentinel-alpha
+cat artifacts/garden/seed_v4/development/manifest.json
+```
+
+**Step 1 – diagnosis before any training (about 30 min of GPU time).** Evaluate the foundation and the first run's `step-000200` on the v4 development set. Its contexts no longer carry the abstention-only sentence, so the abstention results of `step-000200` show whether it relied on that sentence. These two runs are also the references for A and B:
+
+```bash
+REV=489cb97981b8654bcfcf30ce1f94ed1b62e07b53; DEV=artifacts/garden/seed_v4/development
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --output runs/eval/dev-v4/runs/foundation.json
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter runs/train/qsa-qlora-ornith15-9b-v0/checkpoints/step-000200/adapter --output runs/eval/dev-v4/runs/v0-step-000200.json
+python -m sentinel.garden analyze --config configs/garden/seed_v4.yaml --output runs/eval/dev-v4/diagnosis.json --runs runs/eval/dev-v4/runs/foundation.json runs/eval/dev-v4/runs/v0-step-000200.json --cases $DEV/dev.eval_cases.jsonl
+```
+
+`diagnosis.json` → `development_runs` holds the confusion matrix (expected → predicted) and recall by CWE family and language. Bring it back together with the first run's `run.json` and `runs/eval/dev/*.json` from the v3 session.
+
+**Step 2 – dry runs.** A must find and accept the step-200 checkpoint:
+
+```bash
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v4_fresh.yaml --dry-run --check-tokens
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v4_continue.yaml --dry-run
+```
+
+**Step 3 – training.** B: about 244 optimizer steps. A: about 122. The first run's 234 steps are the reference for the run time. Run them one after the other on one GPU:
+
+```bash
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v4_fresh.yaml
+python -m sentinel.train --config configs/train/qlora_ornith15_9b_v4_continue.yaml
+```
+
+**Step 4 – development evaluation of every checkpoint of both runs, then the rule:**
+
+```bash
+for RUN in runs/train/qsa-qlora-ornith15-9b-v4-fresh runs/train/qsa-qlora-ornith15-9b-v4-continue; do for ckpt in $RUN/checkpoints/step-*; do python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter $ckpt/adapter --output runs/eval/dev-v4/runs/$(basename $RUN)-$(basename $ckpt).json; done; done
+python -m sentinel.eval.select_checkpoint --devset $DEV/manifest.json runs/eval/dev-v4/runs/*.json --output runs/eval/dev-v4/selection.json
+SEL=$(python -c "import json; print(json.load(open('runs/eval/dev-v4/selection.json'))['selected_adapter'])"); echo $SEL
+python -m sentinel.garden analyze --config configs/garden/seed_v4.yaml --output runs/eval/dev-v4/analysis.json --runs runs/eval/dev-v4/runs/*.json --cases $DEV/dev.eval_cases.jsonl
+```
+
+The `v0-step-000200` run takes part as a candidate of its own run. If the rule selects it, neither v4 run beat the first run on the development set. That is also a result. Optional and for information: patch cases with `sentinel.eval.patch --cases $DEV/dev.patch_cases.jsonl`, as in § 12.
+
+**Step 5 – regression check** of `$SEL` on QuickEval v1 and `coding-v1`. Use the same commands as § 12, with a new output file.
+
+**Step 6 – final test, once, after the selection is fixed.** `final_test` has 45 cases from 23 repositories that no evaluation of ours has used. `previous_holdout` has 431 cases. That is Garden v3's holdout reservation, rebuilt with v4 contexts: untouched only if § 12's holdout runs were never made. Report the two separately:
+
+```bash
+for SET in final_test holdout_reserved; do
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v4/$SET.eval_cases.jsonl --output runs/eval/$SET-v4/foundation.json
+  python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision $REV --cases artifacts/garden/seed_v4/$SET.eval_cases.jsonl --adapter $SEL --output runs/eval/$SET-v4/selected.json
+  python -m sentinel.eval.compare runs/eval/$SET-v4/foundation.json runs/eval/$SET-v4/selected.json
+done
+```
+
+Save `runs/eval/` and both training runs' `run.json` and `checkpoints/*/provenance.json` with the outputs (§ 11). Do not save case files or records: they contain upstream code.

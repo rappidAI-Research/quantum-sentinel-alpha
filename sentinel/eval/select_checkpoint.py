@@ -59,6 +59,9 @@ def _get(document: dict[str, Any], path: tuple[str, ...]) -> Any:
     return document
 
 
+_RUN = re.compile(r"runs/train/([^/]+)/")
+
+
 def label(artifact: dict[str, Any]) -> tuple[str, int | None]:
     """'foundation', 'step-000150' (a checkpoint) or 'final' (the run's final adapter), and its step."""
     adapter = artifact["model"].get("adapter")
@@ -68,6 +71,13 @@ def label(artifact: dict[str, Any]) -> tuple[str, int | None]:
     if match:
         return f"step-{match.group(1)}", int(match.group(1))
     return "final", None
+
+
+def training_run(artifact: dict[str, Any]) -> str | None:
+    """The training run an adapter comes from (`runs/train/<run>/...`), or None."""
+    adapter = artifact["model"].get("adapter")
+    match = _RUN.search(adapter["path"]) if adapter else None
+    return match.group(1) if match else None
 
 
 def _correct(artifact: dict[str, Any]) -> dict[str, bool]:
@@ -106,8 +116,12 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 raise Refused(f"runs differ in {'.'.join(path)}; compare only runs of one model with one contract")
     runs = []
     seen: set[str] = set()
+    # checkpoints of several training runs (Garden v4: approaches A and B) are told apart by run name
+    several = len({training_run(a) for a in artifacts if a["model"].get("adapter")}) > 1
     for artifact in artifacts:
         name, step = label(artifact)
+        if several and name != "foundation":
+            name = f"{training_run(artifact)}/{name}"
         if name in seen:
             raise Refused(f"two runs for {name}")
         seen.add(name)
@@ -116,6 +130,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         runs.append(
             {
                 "label": name,
+                "run": training_run(artifact),
                 "step": step,
                 "adapter": (artifact["model"].get("adapter") or {}).get("path"),
                 "reportable": artifact["reportable"],
@@ -135,9 +150,9 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         return (-m["decision_accuracy"], m["false_positive_rate"], -(m["strict_recall"] or 0.0), step)
 
     selected = min(candidates, key=key) if candidates else None
-    # the run's final weights: the final adapter, else the latest checkpoint
-    adapters = [r for r in runs if r["label"] != "foundation"]
-    final = next((r for r in runs if r["label"] == "final"), None) or (
+    # the final weights of the selected checkpoint's run: its final adapter, else its latest checkpoint
+    adapters = [r for r in runs if r["label"] != "foundation" and (selected is None or r["run"] == selected["run"])]
+    final = next((r for r in adapters if r["step"] is None), None) or (
         max(adapters, key=lambda r: r["step"]) if adapters else None
     )
     foundation = next((r for r in runs if r["label"] == "foundation"), None)
@@ -200,7 +215,7 @@ def main(argv: list[str] | None = None) -> int:
     except Refused as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 2
-    runs = sorted(result["runs"], key=lambda r: (r["label"] != "foundation", r["step"] if r["step"] is not None else float("inf")))
+    runs = sorted(result["runs"], key=lambda r: (r["label"] != "foundation", r["run"] or "", r["step"] if r["step"] is not None else float("inf")))
     print(f"development set: {result['devset']['count']} cases {result['devset']['by_expected_decision']}")
     print("run".ljust(14) + "".join(title.rjust(15) for title, _ in COLUMNS) + "  FP/negatives  eligible")
     for run in runs:

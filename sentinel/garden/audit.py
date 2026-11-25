@@ -42,6 +42,7 @@ from sentinel.garden import code
 from sentinel.garden.diff import parse_unified_diff
 from sentinel.garden.gitsource import GitError, UpstreamRepo
 from sentinel.garden.osv import fix_commit_refs
+from sentinel.garden.quality import CONTAINMENT_MIN_SHINGLES
 from sentinel.garden.split import parse_time
 
 AUDIT_VERSION = "2"  # 2: broad localization spans are excluded
@@ -192,10 +193,10 @@ def _changed_lines(patch: str) -> tuple[list[str], list[str]]:
 
 def correspondence(vulnerable: dict[str, Any], advisory_text: str, commit_message: str) -> dict[str, Any]:
     provenance = vulnerable["provenance"]
-    function = provenance["excerpt_function"]
+    functions = provenance.get("excerpt_functions") or [provenance["excerpt_function"]]  # v4: combined excerpts
     removed, added = _changed_lines(vulnerable["target"]["patch"])
     signals = []
-    if not function.startswith("<") and re.search(rf"(?<![\w$]){re.escape(function)}(?![\w$])", advisory_text):
+    if any(not f.startswith("<") and re.search(rf"(?<![\w$]){re.escape(f)}(?![\w$])", advisory_text) for f in functions):
         signals.append("function_named_in_advisory")
     path = provenance["file_path"]
     stem = Path(path).stem
@@ -226,7 +227,8 @@ def fix_pattern(vulnerable: dict[str, Any]) -> dict[str, Any]:
 
 def span_precision(vulnerable: dict[str, Any]) -> dict[str, Any]:
     target = vulnerable["target"]
-    lines = len(vulnerable["input"]["code"].splitlines())
+    # v4 combined excerpts: the span lies in the primary function, so it is measured against that function
+    lines = vulnerable["localization"].get("primary_function_lines") or len(vulnerable["input"]["code"].splitlines())
     span = target["end_line"] - target["start_line"] + 1
     return {"span_lines": span, "function_lines": lines, "share": round(span / lines, 3), "broad": span > 12 and span / lines > 0.4}
 
@@ -269,6 +271,17 @@ def abstention_validity(abstention: dict[str, Any], vulnerable: dict[str, Any] |
     return {"call_arguments": (arguments or "")[:120], "problems": problems}
 
 
+def excerpt_blocks(record: dict[str, Any]) -> list[str]:
+    """The excerpt split into its file blocks (`excerpt_file_lines`; joined by one blank line)."""
+    lines = record["input"]["code"].splitlines()
+    blocks, offset = [], 0
+    for start, end in record["provenance"]["excerpt_file_lines"]:
+        size = end - start + 1
+        blocks.append("\n".join(lines[offset : offset + size]) + "\n")
+        offset += size + 1
+    return blocks if offset - 1 == len(lines) else [record["input"]["code"]]
+
+
 @dataclass
 class LaterFix:
     advisory_id: str
@@ -290,8 +303,10 @@ def later_fixes(
     provenance = vulnerable["provenance"]
     own_ids = {provenance["advisory_id"], *provenance["aliases"]}
     fixed_at = parse_time(provenance["fix_committed_at"])
-    function, path = provenance["excerpt_function"], provenance["file_path"]
-    post_fix_code = group["post_fix"]["input"]["code"]
+    path = provenance["file_path"]
+    names = set(provenance.get("excerpt_functions") or [provenance["excerpt_function"]])
+    post_fix = group["post_fix"]
+    post_fix_blocks = excerpt_blocks(post_fix) if provenance.get("excerpt_functions") else [post_fix["input"]["code"]]
     found: list[LaterFix] = []
     for vuln in package_vulns:
         ids = {vuln.get("id"), *(vuln.get("aliases") or [])}
@@ -322,14 +337,16 @@ def later_fixes(
                         continue
                     anchor = max(hunk.old_start, 1)
                     fn = code.innermost(functions, anchor, anchor + max(hunk.old_count, 1) - 1)
-                    if fn is None or fn.name != function:
+                    if fn is None or fn.name not in names:
                         continue
                     # Same name is not enough (anonymous callbacks, same-named methods of other
-                    # classes): the function the later fix changed must resemble our post-fix code.
+                    # classes): the function the later fix changed must resemble our post-fix code
+                    # (for a v4 combined excerpt: one of its blocks).
                     changed = "\n".join(old_source.splitlines()[fn.start - 1 : fn.end]) + "\n"
-                    similarity = code.jaccard(
-                        code.shingles(code.normalized_tokens(language, changed)),
-                        code.shingles(code.normalized_tokens(language, post_fix_code)),
+                    changed_shingles = code.shingles(code.normalized_tokens(language, changed))
+                    similarity = max(
+                        code.jaccard(changed_shingles, code.shingles(code.normalized_tokens(language, block)))
+                        for block in post_fix_blocks
                     )
                     if similarity >= LATER_FIX_SIMILARITY:
                         found.append(LaterFix(vuln["id"], "later_fix_changes_same_function", sha))
@@ -353,24 +370,58 @@ def audit_population(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [r for r in records if all(c.startswith("audit:") for c in r["quality"]["failed_checks"])]
 
 
-def split_leakage(records: list[dict[str, Any]], threshold: float = 0.7) -> dict[str, str]:
-    """record_id (train side only) -> reason, for advisories/commits/code shared with another split."""
+def patch_fingerprint(record: dict[str, Any]) -> str | None:
+    """sha256 of a vulnerable record's changed lines (whitespace-stripped, order-independent): the same
+    fix applied in another repository (a fork, a vendored copy) has the same fingerprint."""
+    patch = record["target"].get("patch")
+    if record["kind"] != "vulnerable" or not patch:
+        return None
+    removed, added = _changed_lines(patch)
+    lines = sorted("-" + t.strip() for t in removed if t.strip()) + sorted("+" + t.strip() for t in added if t.strip())
+    return hashlib.sha256("\n".join(lines).encode("utf-8")).hexdigest() if lines else None
+
+
+def split_leakage(records: list[dict[str, Any]], threshold: float = 0.7, containment: float | None = None) -> dict[str, str]:
+    """record_id (train side only) -> reason, for advisories/commits/code shared with another split.
+
+    `containment` (Garden v4) adds three checks: a shared vulnerable revision (forks share history), a
+    shared fix fingerprint (`patch_fingerprint`), and a held-out excerpt whose shingles are at least
+    `containment` contained in a training excerpt (a combined multi-function excerpt can contain a
+    held-out function without being similar to it as a whole)."""
+    strict = containment is not None
     accepted = audit_population(records)
     leaks: dict[str, str] = {}
     by_key: dict[str, set[str]] = defaultdict(set)
+
+    def keys(provenance: dict[str, Any]) -> list[str]:
+        found = [provenance["advisory_id"], *provenance["aliases"], provenance["fixed_revision"]]
+        return found + [provenance["vulnerable_revision"]] if strict else found
+
     for record in accepted:
-        provenance = record["provenance"]
-        for key in [provenance["advisory_id"], *provenance["aliases"], provenance["fixed_revision"]]:
+        for key in keys(record["provenance"]):
             by_key[key].add(record["split"])
     for record in accepted:
         if record["split"] != "train":
             continue
         provenance = record["provenance"]
-        for key in [provenance["advisory_id"], *provenance["aliases"], provenance["fixed_revision"]]:
+        for key in keys(provenance):
             others = by_key[key] - {"train"}
             if others:
-                leaks[record["record_id"]] = f"shared_{'commit' if key == provenance['fixed_revision'] else 'advisory'}_with_{sorted(others)[0]}"
+                kind = "commit" if key in {provenance["fixed_revision"], provenance["vulnerable_revision"]} else "advisory"
+                leaks[record["record_id"]] = f"shared_{kind}_with_{sorted(others)[0]}"
                 break
+    if strict:
+        fingerprints: dict[str, set[str]] = defaultdict(set)
+        for record in accepted:
+            fingerprint = patch_fingerprint(record)
+            if fingerprint:
+                fingerprints[fingerprint].add(record["split"])
+        for record in accepted:
+            fingerprint = patch_fingerprint(record)
+            if record["split"] == "train" and record["record_id"] not in leaks and fingerprint:
+                others = fingerprints[fingerprint] - {"train"}
+                if others:
+                    leaks[record["record_id"]] = f"shared_patch_with_{sorted(others)[0]}"
     # The same package published from two repository keys (a moved or renamed repository, a fork that
     # publishes the same package, or an advisory that lists the host package) is one project for
     # leakage purposes, although the repository-level split treats the keys as different. Evaluation
@@ -400,9 +451,16 @@ def split_leakage(records: list[dict[str, Any]], threshold: float = 0.7) -> dict
     for record in accepted:
         if record["split"] != "train" or record["record_id"] in leaks:
             continue
+        mine = prints[record["record_id"]]
         for other in held:
-            if other["input"]["language"] == record["input"]["language"] and code.jaccard(prints[record["record_id"]], prints[other["record_id"]]) >= threshold:
+            if other["input"]["language"] != record["input"]["language"]:
+                continue
+            theirs = prints[other["record_id"]]
+            if code.jaccard(mine, theirs) >= threshold:
                 leaks[record["record_id"]] = f"near_duplicate_of_{other['split']}"
+                break
+            if strict and len(theirs) >= CONTAINMENT_MIN_SHINGLES and len(mine & theirs) / len(theirs) >= containment:
+                leaks[record["record_id"]] = f"contains_{other['split']}_excerpt"
                 break
     return leaks
 
@@ -495,6 +553,7 @@ def run_audit(
     osv_record_dir: Path,
     osv_query: OsvQuery,
     workers: int = 8,
+    containment: float | None = None,
 ) -> dict[str, Any]:
     accepted = audit_population(records)
     groups: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
@@ -558,7 +617,7 @@ def run_audit(
     with ThreadPoolExecutor(max_workers=workers) as pool:
         per_repo = list(pool.map(lambda key: [audit_group(g) for g in by_repo[key]], sorted(by_repo)))
     results = sorted((r for chunk in per_repo for r in chunk), key=lambda r: r["group_id"])
-    leakage = split_leakage(records)
+    leakage = split_leakage(records, containment=containment)
     exclusions = audit_exclusions(results, leakage)
     unique = {(e["record_id"], e["reason"]): e for e in exclusions}
     return {

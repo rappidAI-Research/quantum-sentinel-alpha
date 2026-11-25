@@ -127,3 +127,12 @@ def test_a_modified_checkpoint_adapter_is_refused(tmp_path: Path) -> None:
     (adapter / "adapter_model.safetensors").write_bytes(b"other weights")
     with pytest.raises(ValueError, match="does not match"):
         describe_adapter(adapter, "m/x", "1" * 40)
+
+
+def test_checkpoints_of_two_runs_are_compared_under_one_rule() -> None:
+    a = adapter_run("runs/train/qsa-v4-continue/checkpoints/step-000050/adapter", '{"decision": "no_finding"}')
+    b = adapter_run("runs/train/qsa-v4-fresh/checkpoints/step-000050/adapter", FINDING)
+    result = select(DEVSET, [foundation_run('{"decision": "no_finding"}'), a, b])
+    labels = {r["label"] for r in result["runs"]}
+    assert {"qsa-v4-continue/step-000050", "qsa-v4-fresh/step-000050", "foundation"} == labels
+    assert result["selected"] in labels - {"foundation"}

@@ -59,6 +59,13 @@ class ExtractionSettings:
     member_additions: bool = False  # complete new functions/methods inserted in a class or object body
     version_hunks_as_noise: bool = False  # module-level version-string bumps are not logic changes
     tooling_files_excluded: bool = False  # build/test tooling files are not runtime source
+    # Garden v4 (docs/GARDEN_V4.md). Defaults again reproduce the earlier versions exactly.
+    multi_function_fixes: bool = False  # 2..max_multi_functions changed functions in ONE file: one combined excerpt
+    max_multi_functions: int = 1
+    max_multi_changed_lines: int = 0
+    commit_chains: bool = False  # several fix commits that form one contiguous first-parent chain
+    context_callee_notes: bool = False  # every context names the same-file functions the excerpt calls but does not show
+    max_context_callees: int = 8
 
 
 # Build, packaging and test tooling that is not shipped runtime code (Garden v2, `tooling_files_excluded`).
@@ -123,6 +130,38 @@ def _change_signature(repo: "Repo", parent: str, sha: str, paths: list[str]) -> 
     return tuple(sorted(signature, key=repr))
 
 
+@dataclass(frozen=True)
+class CommitChain(CommitInfo):
+    """A fix made in several consecutive commits (Garden v4): `sha` is the last commit, `parents[0]`
+    the parent of the first, `committed_at` the last commit's date (when the fix was complete)."""
+
+    commits: tuple[str, ...] = ()
+
+
+def commit_chain(infos: list[CommitInfo]) -> CommitChain | None:
+    """The advisory's commits as one contiguous first-parent chain c1 <- c2 <- ... <- cN, or None.
+
+    Contiguous means each commit's first parent is the previous one, so the diff from c1's parent to cN
+    is exactly the union of the listed commits: no unlisted commit lies in between. Merge commits are
+    not accepted (their diff would include the merged branch)."""
+    by_sha = {info.sha: info for info in infos}
+    if len(by_sha) < 2 or any(len(info.parents) != 1 for info in by_sha.values()):
+        return None
+    child_of = {info.parents[0]: info for info in by_sha.values()}
+    if len(child_of) != len(by_sha):
+        return None  # two commits share a parent: branches, not a chain
+    starts = [info for info in by_sha.values() if info.parents[0] not in by_sha]
+    if len(starts) != 1:
+        return None
+    ordered = [starts[0]]
+    while ordered[-1].sha in child_of:
+        ordered.append(child_of[ordered[-1].sha])
+    if len(ordered) != len(by_sha):
+        return None
+    first, last = ordered[0], ordered[-1]
+    return CommitChain(last.sha, (first.parents[0],), last.committed_at, last.authored_at, tuple(i.sha for i in ordered))
+
+
 def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: ExtractionSettings) -> CommitInfo:
     """The one fix commit of an advisory that names several commits in one repository (Garden v3).
 
@@ -135,6 +174,7 @@ def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: Extrac
     Anything else, including a fix split over several different commits, is rejected."""
     allowed_languages = code.ECOSYSTEM_LANGUAGES[candidate["ecosystem"]]
     code_commits: list[tuple[CommitInfo, list[str]]] = []
+    infos: dict[str, CommitInfo] = {}
     for sha in candidate["fix_commits"]:
         try:
             info = repo.ensure_commit(sha)
@@ -143,6 +183,7 @@ def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: Extrac
             changed = repo.changed_files(info.parents[0], info.sha)
         except GitError as exc:
             raise Rejected("unresolvable_commit", str(exc)) from exc
+        infos[info.sha] = info
         runtime = [p for _, p in changed if code.language_of(p) in allowed_languages and is_runtime_source(p, settings)]
         if runtime:
             code_commits.append((info, runtime))
@@ -153,7 +194,10 @@ def resolve_fix_commit(candidate: dict[str, Any], repo: "Repo", settings: Extrac
     if len(code_commits) > 1:
         signatures = {_change_signature(repo, info.parents[0], info.sha, paths) for info, paths in code_commits}
         if len(signatures) != 1:
-            raise Rejected("multi_commit_distinct_changes", str(len(code_commits)))
+            chain = commit_chain(list(infos.values())) if settings.commit_chains else None
+            if chain is None:
+                raise Rejected("multi_commit_distinct_changes", str(len(code_commits)))
+            return chain
     # instants, not strings: offsets differ between commits (2026-06-30T23:45-01:00 is after 2026-07-01T00:30+01:00)
     return min((info for info, _ in code_commits), key=lambda info: (parse_time(info.committed_at), info.sha))
 
@@ -325,9 +369,11 @@ def _locate_changes(repo: Repo, info: CommitInfo, paths: list[str], settings: Ex
                 change.trivial_hunks.append(hunk)
     for path, ranges in additions.items():
         owners = [c for c in result if c.path == path]
-        if len(owners) != 1:
+        # v4: several changed functions of one file share one combined excerpt, so the additions
+        # belong to all of them (they are attached to the first; `_fixed_excerpt` takes the union)
+        if not owners or (len(owners) > 1 and not (settings is not None and settings.multi_function_fixes)):
             raise Rejected("top_level_addition_without_changed_function", path)
-        owners[0].additions.extend(ranges)
+        min(owners, key=lambda c: c.old_function.start).additions.extend(ranges)
     return result
 
 
@@ -335,11 +381,28 @@ def _excerpt(source: str, fn: code.Function) -> str:
     return "\n".join(source.splitlines()[fn.start - 1 : fn.end]) + "\n"
 
 
-def _fixed_excerpt(change: _Change) -> tuple[str, list[list[int]]]:
-    """The fixed function plus any top-level code the fix added, in file order."""
-    lines = change.new_source.splitlines()
-    blocks = [(change.new_function.start, change.new_function.end)]
-    for start, end in change.additions:
+def _blocks_excerpt(source: str, blocks: list[tuple[int, int]]) -> str:
+    """File line ranges joined in file order with one blank line between them (as `_fixed_excerpt`)."""
+    lines = source.splitlines()
+    return "\n\n".join("\n".join(lines[a - 1 : b]) for a, b in sorted(blocks)) + "\n"
+
+
+def _excerpt_line(blocks: list[tuple[int, int]], file_line: int) -> int:
+    """1-based excerpt line of a file line inside one of the blocks of `_blocks_excerpt`."""
+    offset = 0
+    for start, end in sorted(blocks):
+        if start <= file_line <= end:
+            return offset + file_line - start + 1
+        offset += end - start + 2  # the block and the blank separator line
+    raise ValueError(f"line {file_line} is outside the excerpt")
+
+
+def _fixed_excerpt(change: _Change | list[_Change]) -> tuple[str, list[list[int]]]:
+    """The fixed function(s) plus any top-level code the fix added, in file order."""
+    changes = change if isinstance(change, list) else [change]
+    lines = changes[0].new_source.splitlines()
+    blocks = [(c.new_function.start, c.new_function.end) for c in changes]
+    for start, end in (r for c in changes for r in c.additions):
         while start <= end and not lines[start - 1].strip():
             start += 1
         while end >= start and not lines[end - 1].strip():
@@ -380,10 +443,62 @@ def _span(change: _Change) -> tuple[int, int, str]:
     return min(lines), max(lines), kind
 
 
+def _signature(source_lines: list[str], fn: code.Function, limit: int = 100) -> str:
+    """The function's first line without decorators, opening brace or colon (for context notes)."""
+    for line in source_lines[fn.start - 1 : fn.end]:
+        text = line.strip()
+        if text and not text.startswith("@"):
+            text = text.rstrip("{").rstrip().rstrip(":").rstrip()
+            return text if len(text) <= limit else text[: limit - 1] + "…"
+    return fn.name
+
+
+def callee_note(
+    language: str, path: str, source: str, blocks: list[tuple[int, int]], settings: ExtractionSettings
+) -> tuple[str, list[str]]:
+    """Garden v4 context note: the same-file functions the excerpt calls whose bodies are not shown.
+
+    Every record kind gets it, so "a called function is not shown" is never a label cue on its own;
+    only whether the decision depends on that function separates `abstain` from the other labels.
+    Uses the same call resolution as the abstention caller search. Returns the note and the names in
+    the order of their first call (at most `max_context_callees`)."""
+    lines = source.splitlines()
+    excerpts = [(a, b, "\n".join(lines[a - 1 : b]) + "\n") for a, b in sorted(blocks)]
+    found: list[tuple[int, str, str]] = []
+    seen: set[str] = set()
+    for fn in code.find_functions(language, source):
+        if fn.name.startswith("<") or fn.name in seen or any(a <= fn.start <= b or fn.start <= a <= fn.end for a, b, _ in excerpts):
+            continue
+        pattern = re.compile(rf"(?<![\w$]){re.escape(fn.name)}\s*\(")
+        if not any(pattern.search(text) for _, _, text in excerpts):
+            continue
+        receiver = code.method_receiver(language, source, fn)
+        scope = code.enclosing_scope(language, source, fn) if receiver is None else None
+        for a, b, text in excerpts:
+            if scope is not None and not (scope[0] <= a and b <= scope[1]):
+                continue  # a nested function is only reachable inside its enclosing function
+            if not code.calls_outer_function(language, text, fn.name, receiver):
+                continue
+            if receiver == "method":
+                owner = code.owner_class(language, source, fn)
+                if owner is None or code.owner_class(language, source, code.Function("", a, b)) != owner:
+                    continue
+            match = pattern.search(text)
+            assert match is not None
+            found.append((a + text[: match.start()].count("\n"), fn.name, _signature(lines, fn)))
+            seen.add(fn.name)
+            break
+    found.sort()
+    kept = found[: settings.max_context_callees]
+    if not kept:
+        return "", []
+    return f"Defined elsewhere in {path} and not shown: " + "; ".join(f"`{sig}`" for _, _, sig in kept) + ".", [n for _, n, _ in kept]
+
+
 def _context(
-    language: str, path: str, function: str, source: str, settings: ExtractionSettings, extra: str = ""
+    language: str, path: str, function: str, source: str, settings: ExtractionSettings, extra: str = "", names: list[str] | None = None
 ) -> str:
-    head = f"Function `{function}` from {path}."
+    head = f"Functions {', '.join(f'`{n}`' for n in names)} from {path}." if names else f"Function `{function}` from {path}."
     if extra:
         head += " " + extra
     imports = code.import_lines(language, source, limit=settings.max_import_lines)
@@ -406,13 +521,14 @@ def _patch(path: str, before: str, after: str) -> str:
     return "\n".join(diff) + "\n"
 
 
-def _diff_consistent(change: _Change, patch: str) -> bool:
+def _diff_consistent(change: _Change | list[_Change], patch: str) -> bool:
     """The function-level patch must contain exactly the upstream diff's non-blank changed lines."""
-    new_lines = change.new_source.splitlines()
-    hunks = change.hunks + change.trivial_hunks
+    changes = change if isinstance(change, list) else [change]
+    new_lines = changes[0].new_source.splitlines()
+    hunks = [h for c in changes for h in c.hunks + c.trivial_hunks]
     removed = sorted(t for h in hunks for _, t in h.removed if t.strip())
     added = [t for h in hunks for _, t in h.added if t.strip()]
-    added += [new_lines[n - 1] for a, b in change.additions for n in range(a, b + 1) if new_lines[n - 1].strip()]
+    added += [new_lines[n - 1] for c in changes for a, b in c.additions for n in range(a, b + 1) if new_lines[n - 1].strip()]
     body = [line for line in patch.splitlines()[2:] if not line.startswith("@@")]
     patch_removed = sorted(line[1:] for line in body if line.startswith("-") and line[1:].strip())
     patch_added = sorted(line[1:] for line in body if line.startswith("+") and line[1:].strip())
@@ -481,23 +597,33 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     if len(sources) > settings.max_source_files_changed:
         raise Rejected("too_many_source_files")
 
-    changes = _locate_changes(repo, info, [path for _, path in sources], settings)
+    changes = sorted(_locate_changes(repo, info, [path for _, path in sources], settings), key=lambda c: (c.path, c.old_function.start))
     if not changes:
         raise Rejected("no_logic_change")
-    if len(changes) > settings.max_changed_functions:
+    multi = len(changes) > settings.max_changed_functions
+    if multi and not (settings.multi_function_fixes and len(changes) <= settings.max_multi_functions and len({c.path for c in changes}) == 1):
         raise Rejected("multiple_functions_changed", str(len(changes)))
-    change = changes[0]
+    if multi:
+        for before, after in zip(changes, changes[1:]):
+            if after.old_function.start <= before.old_function.end or after.new_function.start <= before.new_function.end:
+                raise Rejected("overlapping_fix_blocks")  # nested functions: one excerpt would contain the other
+    # the primary change carries the label's span: the most removed (replaced) code, then the most changed lines
+    def removed_lines(c: _Change) -> int:
+        return sum(1 for h in c.hunks for n, _ in h.removed if n not in c.old_trivial_lines)
+
+    change = min(changes, key=lambda c: (-removed_lines(c), -sum(h.changed_line_count for h in c.hunks), c.old_function.start)) if multi else changes[0]
     fn, new_fn = change.old_function, change.new_function
-    added_lines = sum(b - a + 1 for a, b in change.additions)
-    changed_lines = sum(h.changed_line_count for h in change.hunks + change.trivial_hunks) + added_lines
-    if changed_lines > settings.max_changed_lines:
+    added_lines = sum(b - a + 1 for c in changes for a, b in c.additions)
+    changed_lines = sum(h.changed_line_count for c in changes for h in c.hunks + c.trivial_hunks) + added_lines
+    if changed_lines > (settings.max_multi_changed_lines if multi else settings.max_changed_lines):
         raise Rejected("fix_too_large", str(changed_lines))
-    for f in (fn, new_fn):
+    for f in (f for c in changes for f in (c.old_function, c.new_function)):
         if not settings.min_function_lines <= f.length <= settings.max_function_lines:
             raise Rejected("function_size_out_of_bounds", str(f.length))
 
-    vulnerable_code = _excerpt(change.old_source, fn)
-    fixed_code, fixed_ranges = _fixed_excerpt(change)
+    vulnerable_blocks = [(c.old_function.start, c.old_function.end) for c in changes]
+    vulnerable_code = _blocks_excerpt(change.old_source, vulnerable_blocks) if multi else _excerpt(change.old_source, fn)
+    fixed_code, fixed_ranges = _fixed_excerpt(changes if multi else change)
     if max(len(vulnerable_code), len(fixed_code)) > settings.max_excerpt_chars:
         raise Rejected("excerpt_too_large")
     if code.normalized_sha256(change.language, vulnerable_code) == code.normalized_sha256(change.language, fixed_code):
@@ -514,7 +640,8 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     language = code.language_of(change.path)
     assert language is not None
     cwe, alternates = candidate["cwe_ids"][0], candidate["cwe_ids"][1:]
-    group = stable_id(candidate["repository_key"], info.sha, change.path, fn.name)
+    names = [c.old_function.name for c in changes]
+    group = stable_id(candidate["repository_key"], info.sha, change.path, "+".join(names) if multi else fn.name)
     lang_tag = {"python": "py", "javascript": "js", "typescript": "ts", "go": "go"}[language]
     base_provenance = {
         "code_source_id": code_source_id,
@@ -539,6 +666,8 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
             "status": "unreviewed",
         },
     }
+    if isinstance(info, CommitChain):
+        base_provenance["fix_commit_chain"] = list(info.commits)
 
     def record(
         kind: str,
@@ -550,7 +679,18 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
         target: dict[str, Any],
         localization: dict[str, Any],
         ranges: list[list[int]] | None = None,
+        functions: list[str] | None = None,
     ) -> dict[str, Any]:
+        provenance = {
+            **base_provenance,
+            "excerpt_revision": revision,
+            "excerpt_function": function.name,
+            "excerpt_file_lines": ranges or [[function.start, function.end]],
+            "content_sha256": hashlib.sha256(excerpt.encode("utf-8")).hexdigest(),
+            "normalized_sha256": code.normalized_sha256(language, excerpt),
+        }
+        if functions:
+            provenance["excerpt_functions"] = functions
         return {
             "schema_version": "1.0",
             "dataset_id": dataset_id,
@@ -561,18 +701,32 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
             "input": {"language": language, "file": change.path, "context": context, "code": excerpt},
             "target": {"decision": decision, **target},
             "localization": localization,
-            "provenance": {
-                **base_provenance,
-                "excerpt_revision": revision,
-                "excerpt_function": function.name,
-                "excerpt_file_lines": ranges or [[function.start, function.end]],
-                "content_sha256": hashlib.sha256(excerpt.encode("utf-8")).hexdigest(),
-                "normalized_sha256": code.normalized_sha256(language, excerpt),
-            },
+            "provenance": provenance,
         }
 
-    context = _context(language, change.path, fn.name, change.old_source, settings)
-    fixed_context = _context(language, change.path, new_fn.name, change.new_source, settings)
+    def note(source: str, blocks: list[tuple[int, int]]) -> tuple[str, list[str]]:
+        return callee_note(language, change.path, source, blocks, settings) if settings.context_callee_notes else ("", [])
+
+    vulnerable_note = note(change.old_source, vulnerable_blocks)[0]
+    fixed_note = note(change.new_source, [(a, b) for a, b in fixed_ranges])[0]
+    new_names = [c.new_function.name for c in changes]
+    context = _context(language, change.path, fn.name, change.old_source, settings, extra=vulnerable_note, names=names if multi else None)
+    fixed_context = _context(language, change.path, new_fn.name, change.new_source, settings, extra=fixed_note, names=new_names if multi else None)
+    localization = {
+        "method": "upstream_fix_diff",
+        "span_kind": span_kind,
+        "file_span": [span_start, span_end],
+        "changed_lines": changed_lines,
+        "fix_added_top_level_lines": added_lines,
+        "diff_consistent": _diff_consistent(changes if multi else change, patch),
+    }
+    if multi:
+        # every changed site, in excerpt lines; the label span is the primary one (see above)
+        sites = [_span(c) for c in changes]
+        localization["sites"] = [[_excerpt_line(vulnerable_blocks, a), _excerpt_line(vulnerable_blocks, b)] for a, b, _ in sites]
+        localization["primary_function_lines"] = fn.length
+    start_line = _excerpt_line(vulnerable_blocks, span_start) if multi else span_start - fn.start + 1
+    end_line = _excerpt_line(vulnerable_blocks, span_end) if multi else span_end - fn.start + 1
     records = [
         record(
             "vulnerable",
@@ -584,20 +738,15 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
             {
                 "cwe": cwe,
                 "alternate_cwes": alternates,
-                "start_line": span_start - fn.start + 1,
-                "end_line": span_end - fn.start + 1,
+                "start_line": start_line,
+                "end_line": end_line,
                 "evidence": candidate["summary"],
                 "evidence_source": "advisory_summary",
                 "patch": patch,
             },
-            {
-                "method": "upstream_fix_diff",
-                "span_kind": span_kind,
-                "file_span": [span_start, span_end],
-                "changed_lines": changed_lines,
-                "fix_added_top_level_lines": added_lines,
-                "diff_consistent": _diff_consistent(change, patch),
-            },
+            localization,
+            [[a, b] for a, b in vulnerable_blocks] if multi else None,
+            names if multi else None,
         ),
         record(
             "post_fix",
@@ -611,21 +760,27 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
                 "alternate_cwes": [],
                 "start_line": None,
                 "end_line": None,
-                "evidence": f"Patched version of this function: the upstream fix for the {cwe} weakness is applied.",
+                "evidence": f"Patched version of {'these functions' if multi else 'this function'}: the upstream fix for the {cwe} weakness is applied.",
                 "evidence_source": "derived_template",
                 "patch": None,
                 "label_scope": f"no {cwe}" + (f"/{'/'.join(alternates)}" if alternates else "") + " weakness after the upstream fix; other weaknesses are not verified",
             },
             {"method": "not_applicable"},
             fixed_ranges,
+            new_names if multi else None,
         ),
     ]
 
-    caller = _find_caller(change, settings)
+    caller = None if multi else _find_caller(change, settings)  # one withheld function per abstention record
     if caller is not None:
         caller_fn, call_line = caller
         caller_code = _excerpt(change.old_source, caller_fn)
-        note = f"`{fn.name}` is defined elsewhere in {change.path}; its body is not included."
+        if settings.context_callee_notes:
+            caller_note, listed = note(change.old_source, [(caller_fn.start, caller_fn.end)])
+            if fn.name not in listed:
+                return records  # the withheld callee must be named like every other not-shown callee
+        else:
+            caller_note = f"`{fn.name}` is defined elsewhere in {change.path}; its body is not included."
         records.append(
             record(
                 "caller_abstention",
@@ -633,7 +788,7 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
                 caller_code,
                 parent,
                 caller_fn,
-                _context(language, change.path, caller_fn.name, change.old_source, settings, extra=note),
+                _context(language, change.path, caller_fn.name, change.old_source, settings, extra=caller_note),
                 {
                     "cwe": None,
                     "alternate_cwes": [],

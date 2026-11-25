@@ -95,6 +95,14 @@ def _order(key: str) -> str:
     return hashlib.sha256(f"{SALT}\x00{key}".encode()).hexdigest()
 
 
+NEW_EXTRACTION_PAIRS_PER_LANGUAGE = 4
+
+
+def _new_extraction(vulnerable: dict[str, Any]) -> bool:
+    provenance = vulnerable["provenance"]
+    return bool(provenance.get("excerpt_functions") or provenance.get("fix_commit_chain"))
+
+
 def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = None) -> list[dict[str, Any]]:
     """Deterministic stratified sample over accepted train/validation groups.
 
@@ -122,7 +130,12 @@ def draw_sample(records: list[dict[str, Any]], repositories: set[str] | None = N
                 if families[family] and len(chosen) < PAIRS_PER_LANGUAGE:
                     chosen.append(families[family].pop(0))
         abstentions = sorted((g for g in by_language[language] if "caller_abstention" in groups[g]), key=_order)[:ABSTENTIONS_PER_LANGUAGE]
-        for item, group_ids in (("pair", chosen), ("abstention", abstentions)):
+        # Garden v4 stratum: labels from the new extraction (combined multi-function excerpts, commit
+        # chains) are checked by hand in every language; earlier versions have none, so their sample is unchanged
+        new_extraction = sorted(
+            (g for g in complete if g not in chosen and _new_extraction(groups[g]["vulnerable"])), key=_order
+        )[:NEW_EXTRACTION_PAIRS_PER_LANGUAGE]
+        for item, group_ids in (("pair", chosen), ("pair", new_extraction), ("abstention", abstentions)):
             for group_id in group_ids:
                 group = groups[group_id]
                 kinds = ("vulnerable", "post_fix") if item == "pair" else ("caller_abstention",)
@@ -205,6 +218,11 @@ def build_package(
         f"- File: `{provenance['file_path']}`",
         "",
     ]
+    if provenance.get("fix_commit_chain"):  # v4: the fix is the combined diff of consecutive commits
+        lines[-1:-1] = [
+            "- Fix made in consecutive commits (the vulnerable revision is the first one's parent): "
+            + ", ".join(f"[{sha[:12]}]({_commit_url(repository, sha)})" for sha in provenance["fix_commit_chain"])
+        ]
     if item["item"] == "pair":
         vulnerable, fixed = records[item["record_ids"][0]], records[item["record_ids"][1]]
         target = vulnerable["target"]
@@ -220,7 +238,11 @@ def build_package(
             "",
             f"## Vulnerable excerpt (`>>` marks the labelled span; [file at the vulnerable revision]({_blob_url(repository, provenance['vulnerable_revision'], provenance['file_path'], provenance['excerpt_file_lines'])}))",
             "",
-            f"Function `{provenance['excerpt_function']}`. Context given to the model:",
+            (
+                f"Functions {', '.join(f'`{n}`' for n in provenance['excerpt_functions'])} (one combined excerpt; the labelled span is in `{provenance['excerpt_function']}`, other changed sites: lines {', '.join(f'{a}-{b}' for a, b in vulnerable['localization'].get('sites', []))}). Context given to the model:"
+                if provenance.get("excerpt_functions")
+                else f"Function `{provenance['excerpt_function']}`. Context given to the model:"
+            ),
             "",
             _fence(vulnerable["input"]["context"]),
             "",

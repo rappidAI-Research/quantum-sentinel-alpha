@@ -106,8 +106,20 @@
           "items": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 2, "maxItems": 2}
         },
         "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-        "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "excerpt_functions": {
+          "description": "Garden v4: every function of a combined multi-function excerpt, in file order; excerpt_function is the primary one (it holds the label span).",
+          "type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}
+        },
+        "fix_commit_chain": {
+          "description": "Garden v4: consecutive fix commits (first to last) whose combined diff is the fix; vulnerable_revision is the first commit's parent, fixed_revision the last commit.",
+          "type": "array", "minItems": 2, "items": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+        }
       }
+    },
+    "evaluation_role": {
+      "description": "Garden v4: what the record may be used for, given the frozen split and the evaluation sets earlier versions already used (docs/GARDEN_V4.md).",
+      "enum": ["training", "retired_development", "development", "previous_holdout", "final_test", "temporal_quarantine"]
     },
     "split": {"enum": ["train", "validation", "holdout_reserved", "temporal_quarantine"]},
     "quality": {

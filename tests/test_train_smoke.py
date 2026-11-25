@@ -241,3 +241,40 @@ def test_patch_task_trains_and_is_recorded(setup, monkeypatch) -> None:
         assert record["patch_prompt_version"] == "sentinel-patch-v1"
     finally:
         garden.cleanup()
+
+
+def test_continued_run_starts_from_the_selected_checkpoint_with_a_new_optimizer(setup, monkeypatch: pytest.MonkeyPatch) -> None:
+    import peft.utils.save_and_load as peft_save
+
+    from sentinel.train.config import InitAdapterSettings
+    from sentinel.train.trainer import InitAdapterMismatch
+
+    config, data = setup
+    root = config.output_dir.parent
+    # the tiny model carries the foundation's name; PEFT must not compare its vocabulary with the Hub's
+    monkeypatch.setattr(peft_save, "check_file_exists_on_hf_hub", lambda *a, **k: None)
+
+    def loader(config):  # as from_pretrained(model_id) names the base model in adapter_config.json
+        model = tiny_model(config.revision)
+        model.config._name_or_path = model.name_or_path = config.model_id
+        return model, CharTokenizer()
+
+    train(config, data, model_loader=loader, log=lambda _: None, project_root=root)
+    source = config.output_dir / "checkpoints" / "step-000004"
+    settings = InitAdapterSettings(f"{config.output_dir.name}/checkpoints/step-000004", 4, config.sha256, data.sha256)
+    continued = dataclasses.replace(
+        config, init_adapter=settings, output_dir=root / "continued", training=dataclasses.replace(config.training, max_steps=2)
+    )
+    run = train(continued, data, model_loader=loader, log=lambda _: None, project_root=root)
+    assert run["status"] == "completed", run.get("error")
+    assert run["init_adapter"]["tensors"] == len(load_file(str(source / "adapter" / "adapter_model.safetensors")))
+    assert run["state"]["step"] == 2  # a new schedule: steps count from zero, the source optimizer is not loaded
+    provenance = json.loads((root / "continued" / "checkpoints" / "step-000002" / "provenance.json").read_text())
+    assert provenance["init_adapter_weights_sha256"] == run["init_adapter"]["weights_sha256"]
+
+    wrong_data = dataclasses.replace(continued, init_adapter=dataclasses.replace(settings, source_data_sha256="0" * 64), output_dir=root / "x")
+    with pytest.raises(InitAdapterMismatch, match="source run"):
+        train(wrong_data, data, model_loader=loader, log=lambda _: None, project_root=root)
+    assert json.loads((root / "x" / "run.json").read_text())["status"] == "failed"
+    with pytest.raises(InitAdapterMismatch):
+        trainer.check_init_adapter(dataclasses.replace(continued, lora=dataclasses.replace(config.lora, rank=8)), root)

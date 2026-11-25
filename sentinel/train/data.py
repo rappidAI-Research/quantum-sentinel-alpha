@@ -127,6 +127,10 @@ def load_training_data(
             raise GovernanceError(f"{rid} is in split {record['split']}, expected {split}")
         if row["provenance"]["repository_key"] in held_out_repos:
             raise GovernanceError(f"{rid} comes from a holdout/quarantine repository")
+        # Garden v4: only training and the retired development set (validation loss) may be loaded
+        role = row.get("evaluation_role")
+        if (role is not None and role not in {"training", "retired_development"}) or record.get("evaluation_role") != role:
+            raise GovernanceError(f"{rid} has evaluation role {role!r}; it is evaluation data, never training data")
         label = row["label"]
         target = record["target"]
         for key in ("decision", "cwe", "alternate_cwes", "start_line", "end_line", "evidence_source"):
