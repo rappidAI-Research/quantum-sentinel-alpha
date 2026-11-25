@@ -271,7 +271,21 @@ def load_index(index_dir: Path) -> dict[str, Any]:
     for row in read_table(index_dir, "file_change"):
         changes[row["hash"]].append(row)
     repositories = {repository_key(r.get("repo_url")): r for r in read_table(index_dir, "repository")}
-    return {"cves": cves, "cwes": cwes, "fixes": fixes, "commits": commits, "changes": changes, "repositories": repositories}
+    by_repository: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for cve_id, rows in fixes.items():
+        for row in rows:
+            key = repository_key(row.get("repo_url"))
+            if key and len(row["hash"]) == 40:
+                by_repository[key].append((cve_id, row["hash"]))
+    return {
+        "cves": cves,
+        "cwes": cwes,
+        "fixes": fixes,
+        "commits": commits,
+        "changes": changes,
+        "repositories": repositories,
+        "fixes_by_repository": dict(by_repository),
+    }
 
 
 def runtime_language_files(changes: list[dict[str, Any]]) -> list[str]:
@@ -279,14 +293,23 @@ def runtime_language_files(changes: list[dict[str, Any]]) -> list[str]:
     return sorted(p for p in paths if code.language_of(p) and code.path_role(p) == "source")
 
 
-def repository_vulns(index: dict[str, Any], repo_key: str) -> list[dict[str, Any]]:
+def repository_vulns(index: dict[str, Any], repo_key: str, path: str | None = None) -> list[dict[str, Any]]:
     """Every CVE MoreFixes links to a fix commit of this repository, as OSV-shaped records whose FIX
-    references are those commits (for the audit's later-fix check; any evidence grade)."""
+    references are those commits (for the audit's later-fix check; any evidence grade). With `path`, only
+    commits whose recorded file changes touch that file (MoreFixes records them for target-language files)."""
+    if "fixes_by_repository" not in index:  # built once: the audit asks for every (repository, file)
+        grouped: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        for cve_id, rows in index["fixes"].items():
+            for row in rows:
+                key = repository_key(row.get("repo_url"))
+                if key and len(row["hash"]) == 40:
+                    grouped[key].append((cve_id, row["hash"]))
+        index["fixes_by_repository"] = dict(grouped)
     by_cve: dict[str, list[str]] = defaultdict(list)
-    for cve_id, rows in index["fixes"].items():
-        for row in rows:
-            if repository_key(row.get("repo_url")) == repo_key and len(row["hash"]) == 40:
-                by_cve[cve_id].append(row["hash"])
+    for cve_id, sha in index["fixes_by_repository"].get(repo_key, []):
+        if path is not None and not any(path in (c.get("new_path"), c.get("old_path")) for c in index["changes"].get(sha, [])):
+            continue
+        by_cve[cve_id].append(sha)
     out = []
     for cve_id, shas in sorted(by_cve.items()):
         cve = index["cves"].get(cve_id, {"cve_id": cve_id})

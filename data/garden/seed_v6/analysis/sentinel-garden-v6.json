@@ -1,0 +1,3290 @@
+{
+  "accepted": {
+    "by_decision": {
+      "abstain": 588,
+      "finding": 2387,
+      "no_finding": 2080
+    },
+    "by_language": {
+      "go": 1205,
+      "javascript": 1578,
+      "python": 1588,
+      "typescript": 684
+    },
+    "coarse_or_multi_cwe_findings": 756,
+    "commit_chain_findings": 14,
+    "context_mentions_unshown_callee": {
+      "abstain": 1.0,
+      "finding": 0.352,
+      "no_finding": 0.353
+    },
+    "distinct_finding_cwes": 222,
+    "excerpt_lines": {
+      "abstain": {
+        "max": 149,
+        "median": 24.0,
+        "n": 588,
+        "p90": 81
+      },
+      "finding": {
+        "max": 242,
+        "median": 26,
+        "n": 2387,
+        "p90": 84
+      },
+      "no_finding": {
+        "max": 245,
+        "median": 30.0,
+        "n": 2080,
+        "p90": 87
+      }
+    },
+    "findings_by_family": {
+      "authn_authz": 264,
+      "code_injection": 53,
+      "command_injection": 128,
+      "crypto_tls_integrity": 77,
+      "deserialization_input_validation": 168,
+      "information_exposure": 174,
+      "other": 286,
+      "path_traversal": 232,
+      "prototype_pollution": 114,
+      "redirect_ssrf": 113,
+      "resource_limits_redos": 335,
+      "sql_injection": 57,
+      "xss_output_encoding": 386
+    },
+    "findings_by_language_and_family": {
+      "go": {
+        "authn_authz": 100,
+        "code_injection": 2,
+        "command_injection": 19,
+        "crypto_tls_integrity": 24,
+        "deserialization_input_validation": 32,
+        "information_exposure": 49,
+        "other": 72,
+        "path_traversal": 55,
+        "redirect_ssrf": 28,
+        "resource_limits_redos": 111,
+        "sql_injection": 14,
+        "xss_output_encoding": 33
+      },
+      "javascript": {
+        "authn_authz": 51,
+        "code_injection": 23,
+        "command_injection": 56,
+        "crypto_tls_integrity": 17,
+        "deserialization_input_validation": 47,
+        "information_exposure": 43,
+        "other": 62,
+        "path_traversal": 50,
+        "prototype_pollution": 76,
+        "redirect_ssrf": 20,
+        "resource_limits_redos": 100,
+        "sql_injection": 23,
+        "xss_output_encoding": 220
+      },
+      "python": {
+        "authn_authz": 87,
+        "code_injection": 22,
+        "command_injection": 38,
+        "crypto_tls_integrity": 32,
+        "deserialization_input_validation": 66,
+        "information_exposure": 61,
+        "other": 123,
+        "path_traversal": 104,
+        "prototype_pollution": 2,
+        "redirect_ssrf": 35,
+        "resource_limits_redos": 84,
+        "sql_injection": 15,
+        "xss_output_encoding": 64
+      },
+      "typescript": {
+        "authn_authz": 26,
+        "code_injection": 6,
+        "command_injection": 15,
+        "crypto_tls_integrity": 4,
+        "deserialization_input_validation": 23,
+        "information_exposure": 21,
+        "other": 29,
+        "path_traversal": 23,
+        "prototype_pollution": 36,
+        "redirect_ssrf": 30,
+        "resource_limits_redos": 40,
+        "sql_injection": 5,
+        "xss_output_encoding": 69
+      }
+    },
+    "findings_top_cwes": {
+      "CWE-1321": 110,
+      "CWE-1333": 54,
+      "CWE-20": 80,
+      "CWE-200": 77,
+      "CWE-22": 196,
+      "CWE-287": 49,
+      "CWE-400": 90,
+      "CWE-601": 63,
+      "CWE-770": 40,
+      "CWE-78": 81,
+      "CWE-79": 361,
+      "CWE-863": 39,
+      "CWE-89": 57,
+      "CWE-918": 47,
+      "CWE-94": 44
+    },
+    "frameworks_in_imports": {
+      "go": {
+        "crypto": 240,
+        "database/sql": 39,
+        "encoding/json": 265,
+        "gin-gonic": 43,
+        "k8s.io": 70,
+        "net/http": 433,
+        "os/exec": 45,
+        "path/filepath": 216
+      },
+      "javascript": {
+        "child_process": 82,
+        "crypto": 45,
+        "express": 107,
+        "fs": 171,
+        "lodash": 68,
+        "path": 168,
+        "react": 12,
+        "url": 84
+      },
+      "python": {
+        "django": 178,
+        "flask": 108,
+        "pickle": 43,
+        "requests": 75,
+        "sqlalchemy": 51,
+        "subprocess": 121,
+        "urllib": 214,
+        "werkzeug": 45
+      },
+      "typescript": {
+        "child_process": 21,
+        "crypto": 40,
+        "express": 38,
+        "fs": 76,
+        "lodash": 19,
+        "path": 93,
+        "react": 23,
+        "url": 60
+      }
+    },
+    "multi_function_findings": 93,
+    "records": 5055,
+    "records_per_repository": {
+      "max": 315,
+      "median": 2.0,
+      "n": 1368,
+      "p90": 6
+    },
+    "repositories": 1368,
+    "span_kind": {
+      "changed_lines": 1376,
+      "insertion_point": 600,
+      "mixed": 212,
+      "query_test_expectation": 199
+    },
+    "span_lines": {
+      "max": 55,
+      "median": 2,
+      "n": 2387,
+      "p90": 8
+    },
+    "top10_repository_share": 0.103
+  },
+  "analysis_version": "1",
+  "by_evaluation_role": {
+    "development": {
+      "by_decision": {
+        "abstain": 27,
+        "finding": 113,
+        "no_finding": 99
+      },
+      "by_language": {
+        "go": 48,
+        "javascript": 82,
+        "python": 69,
+        "typescript": 40
+      },
+      "coarse_or_multi_cwe_findings": 24,
+      "commit_chain_findings": 2,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.442,
+        "no_finding": 0.404
+      },
+      "distinct_finding_cwes": 43,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 121,
+          "median": 35,
+          "n": 27,
+          "p90": 89
+        },
+        "finding": {
+          "max": 130,
+          "median": 31,
+          "n": 113,
+          "p90": 90
+        },
+        "no_finding": {
+          "max": 135,
+          "median": 32,
+          "n": 99,
+          "p90": 103
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 12,
+        "code_injection": 5,
+        "command_injection": 3,
+        "crypto_tls_integrity": 2,
+        "deserialization_input_validation": 7,
+        "information_exposure": 4,
+        "other": 12,
+        "path_traversal": 9,
+        "prototype_pollution": 4,
+        "redirect_ssrf": 8,
+        "resource_limits_redos": 12,
+        "sql_injection": 1,
+        "xss_output_encoding": 34
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 3,
+          "command_injection": 2,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 3,
+          "information_exposure": 3,
+          "other": 2,
+          "path_traversal": 1,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 4,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "code_injection": 2,
+          "command_injection": 1,
+          "deserialization_input_validation": 2,
+          "information_exposure": 1,
+          "other": 4,
+          "path_traversal": 1,
+          "prototype_pollution": 3,
+          "resource_limits_redos": 2,
+          "sql_injection": 1,
+          "xss_output_encoding": 23
+        },
+        "python": {
+          "authn_authz": 8,
+          "code_injection": 1,
+          "deserialization_input_validation": 2,
+          "other": 4,
+          "path_traversal": 5,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 5,
+          "xss_output_encoding": 5
+        },
+        "typescript": {
+          "authn_authz": 1,
+          "code_injection": 2,
+          "other": 2,
+          "path_traversal": 2,
+          "prototype_pollution": 1,
+          "redirect_ssrf": 6,
+          "resource_limits_redos": 1,
+          "xss_output_encoding": 5
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 4,
+        "CWE-20": 5,
+        "CWE-200": 3,
+        "CWE-22": 8,
+        "CWE-285": 2,
+        "CWE-303": 2,
+        "CWE-306": 3,
+        "CWE-400": 3,
+        "CWE-601": 4,
+        "CWE-770": 4,
+        "CWE-78": 2,
+        "CWE-79": 33,
+        "CWE-863": 2,
+        "CWE-913": 3,
+        "CWE-918": 4
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 8,
+          "encoding/json": 19,
+          "net/http": 17,
+          "os/exec": 8,
+          "path/filepath": 19
+        },
+        "javascript": {
+          "child_process": 2,
+          "crypto": 3,
+          "express": 2,
+          "fs": 2,
+          "lodash": 2,
+          "path": 2,
+          "url": 2
+        },
+        "python": {
+          "django": 6,
+          "fastapi": 6,
+          "flask": 7,
+          "jinja2": 6,
+          "requests": 3,
+          "sqlalchemy": 5,
+          "subprocess": 4,
+          "urllib": 11
+        },
+        "typescript": {
+          "child_process": 2,
+          "crypto": 2,
+          "fs": 9,
+          "jsonwebtoken": 2,
+          "path": 14,
+          "url": 10
+        }
+      },
+      "multi_function_findings": 2,
+      "records": 239,
+      "records_per_repository": {
+        "max": 21,
+        "median": 2,
+        "n": 63,
+        "p90": 9
+      },
+      "repositories": 63,
+      "span_kind": {
+        "changed_lines": 68,
+        "insertion_point": 32,
+        "mixed": 13
+      },
+      "span_lines": {
+        "max": 16,
+        "median": 2,
+        "n": 113,
+        "p90": 9
+      },
+      "top10_repository_share": 0.464
+    },
+    "external_benchmark": {
+      "by_decision": {
+        "abstain": 9,
+        "finding": 49,
+        "no_finding": 41
+      },
+      "by_language": {
+        "javascript": 95,
+        "typescript": 4
+      },
+      "coarse_or_multi_cwe_findings": 20,
+      "commit_chain_findings": 0,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.388,
+        "no_finding": 0.293
+      },
+      "distinct_finding_cwes": 21,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 114,
+          "median": 40,
+          "n": 9,
+          "p90": 114
+        },
+        "finding": {
+          "max": 139,
+          "median": 23,
+          "n": 49,
+          "p90": 66
+        },
+        "no_finding": {
+          "max": 146,
+          "median": 26,
+          "n": 41,
+          "p90": 61
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 1,
+        "code_injection": 3,
+        "command_injection": 4,
+        "crypto_tls_integrity": 1,
+        "deserialization_input_validation": 8,
+        "information_exposure": 2,
+        "other": 3,
+        "path_traversal": 7,
+        "prototype_pollution": 6,
+        "redirect_ssrf": 1,
+        "resource_limits_redos": 4,
+        "xss_output_encoding": 9
+      },
+      "findings_by_language_and_family": {
+        "javascript": {
+          "authn_authz": 1,
+          "code_injection": 3,
+          "command_injection": 3,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 8,
+          "information_exposure": 2,
+          "other": 3,
+          "path_traversal": 7,
+          "prototype_pollution": 6,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 4,
+          "xss_output_encoding": 8
+        },
+        "typescript": {
+          "command_injection": 1,
+          "xss_output_encoding": 1
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-116": 1,
+        "CWE-1321": 6,
+        "CWE-1333": 1,
+        "CWE-20": 7,
+        "CWE-200": 1,
+        "CWE-201": 1,
+        "CWE-22": 6,
+        "CWE-352": 1,
+        "CWE-400": 3,
+        "CWE-471": 1,
+        "CWE-502": 1,
+        "CWE-601": 1,
+        "CWE-78": 3,
+        "CWE-79": 7,
+        "CWE-94": 3
+      },
+      "frameworks_in_imports": {
+        "javascript": {
+          "child_process": 6,
+          "crypto": 5,
+          "fs": 21,
+          "koa": 2,
+          "lodash": 4,
+          "path": 23,
+          "url": 7
+        },
+        "typescript": {
+          "express": 2,
+          "fs": 2,
+          "path": 2
+        }
+      },
+      "multi_function_findings": 1,
+      "records": 99,
+      "records_per_repository": {
+        "max": 6,
+        "median": 2,
+        "n": 47,
+        "p90": 3
+      },
+      "repositories": 47,
+      "span_kind": {
+        "changed_lines": 35,
+        "insertion_point": 11,
+        "mixed": 3
+      },
+      "span_lines": {
+        "max": 11,
+        "median": 1,
+        "n": 49,
+        "p90": 5
+      },
+      "top10_repository_share": 0.333
+    },
+    "final_test": {
+      "by_decision": {
+        "abstain": 9,
+        "finding": 42,
+        "no_finding": 40
+      },
+      "by_language": {
+        "go": 2,
+        "javascript": 38,
+        "python": 45,
+        "typescript": 6
+      },
+      "coarse_or_multi_cwe_findings": 9,
+      "commit_chain_findings": 1,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.429,
+        "no_finding": 0.425
+      },
+      "distinct_finding_cwes": 20,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 60,
+          "median": 27,
+          "n": 9,
+          "p90": 60
+        },
+        "finding": {
+          "max": 165,
+          "median": 22.5,
+          "n": 42,
+          "p90": 66
+        },
+        "no_finding": {
+          "max": 167,
+          "median": 26.0,
+          "n": 40,
+          "p90": 83
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 7,
+        "code_injection": 2,
+        "deserialization_input_validation": 3,
+        "information_exposure": 2,
+        "other": 3,
+        "path_traversal": 2,
+        "prototype_pollution": 1,
+        "redirect_ssrf": 2,
+        "resource_limits_redos": 2,
+        "sql_injection": 1,
+        "xss_output_encoding": 17
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "sql_injection": 1
+        },
+        "javascript": {
+          "authn_authz": 2,
+          "deserialization_input_validation": 1,
+          "prototype_pollution": 1,
+          "xss_output_encoding": 14
+        },
+        "python": {
+          "authn_authz": 5,
+          "code_injection": 2,
+          "deserialization_input_validation": 2,
+          "information_exposure": 2,
+          "other": 2,
+          "path_traversal": 1,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 2,
+          "xss_output_encoding": 3
+        },
+        "typescript": {
+          "other": 1,
+          "path_traversal": 1,
+          "redirect_ssrf": 1
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-116": 1,
+        "CWE-1321": 1,
+        "CWE-1333": 1,
+        "CWE-200": 2,
+        "CWE-22": 1,
+        "CWE-276": 1,
+        "CWE-285": 2,
+        "CWE-287": 2,
+        "CWE-601": 2,
+        "CWE-74": 2,
+        "CWE-770": 1,
+        "CWE-79": 16,
+        "CWE-862": 2,
+        "CWE-89": 1,
+        "CWE-94": 2
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "database/sql": 2,
+          "encoding/json": 2
+        },
+        "javascript": {
+          "jsonwebtoken": 2,
+          "lodash": 3
+        },
+        "python": {
+          "aiohttp": 2,
+          "django": 18,
+          "flask": 3,
+          "pickle": 2,
+          "sqlalchemy": 2,
+          "urllib": 13
+        },
+        "typescript": {
+          "fs": 2,
+          "path": 2,
+          "react": 4,
+          "url": 2
+        }
+      },
+      "multi_function_findings": 2,
+      "records": 91,
+      "records_per_repository": {
+        "max": 27,
+        "median": 2.0,
+        "n": 30,
+        "p90": 4
+      },
+      "repositories": 30,
+      "span_kind": {
+        "changed_lines": 33,
+        "insertion_point": 7,
+        "mixed": 2
+      },
+      "span_lines": {
+        "max": 12,
+        "median": 1.0,
+        "n": 42,
+        "p90": 8
+      },
+      "top10_repository_share": 0.593
+    },
+    "previous_holdout": {
+      "by_decision": {
+        "abstain": 58,
+        "finding": 210,
+        "no_finding": 184
+      },
+      "by_language": {
+        "go": 131,
+        "javascript": 80,
+        "python": 150,
+        "typescript": 91
+      },
+      "coarse_or_multi_cwe_findings": 65,
+      "commit_chain_findings": 0,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.39,
+        "no_finding": 0.364
+      },
+      "distinct_finding_cwes": 85,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 126,
+          "median": 23.0,
+          "n": 58,
+          "p90": 110
+        },
+        "finding": {
+          "max": 148,
+          "median": 35.5,
+          "n": 210,
+          "p90": 87
+        },
+        "no_finding": {
+          "max": 149,
+          "median": 40.0,
+          "n": 184,
+          "p90": 86
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 25,
+        "code_injection": 5,
+        "command_injection": 8,
+        "crypto_tls_integrity": 11,
+        "deserialization_input_validation": 15,
+        "information_exposure": 28,
+        "other": 30,
+        "path_traversal": 11,
+        "prototype_pollution": 7,
+        "redirect_ssrf": 9,
+        "resource_limits_redos": 44,
+        "sql_injection": 3,
+        "xss_output_encoding": 14
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 12,
+          "command_injection": 1,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 1,
+          "information_exposure": 9,
+          "other": 8,
+          "path_traversal": 2,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 17,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "authn_authz": 4,
+          "code_injection": 2,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 1,
+          "information_exposure": 5,
+          "other": 7,
+          "path_traversal": 1,
+          "prototype_pollution": 4,
+          "resource_limits_redos": 11,
+          "xss_output_encoding": 2
+        },
+        "python": {
+          "authn_authz": 5,
+          "code_injection": 3,
+          "command_injection": 4,
+          "crypto_tls_integrity": 7,
+          "deserialization_input_validation": 9,
+          "information_exposure": 4,
+          "other": 11,
+          "path_traversal": 6,
+          "redirect_ssrf": 3,
+          "resource_limits_redos": 11,
+          "sql_injection": 2,
+          "xss_output_encoding": 7
+        },
+        "typescript": {
+          "authn_authz": 4,
+          "command_injection": 3,
+          "deserialization_input_validation": 4,
+          "information_exposure": 10,
+          "other": 4,
+          "path_traversal": 2,
+          "prototype_pollution": 3,
+          "redirect_ssrf": 2,
+          "resource_limits_redos": 5,
+          "sql_injection": 1,
+          "xss_output_encoding": 4
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 7,
+        "CWE-1333": 6,
+        "CWE-20": 4,
+        "CWE-200": 10,
+        "CWE-22": 7,
+        "CWE-248": 5,
+        "CWE-347": 6,
+        "CWE-400": 11,
+        "CWE-532": 8,
+        "CWE-770": 4,
+        "CWE-78": 6,
+        "CWE-79": 11,
+        "CWE-862": 4,
+        "CWE-863": 5,
+        "CWE-918": 6
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 19,
+          "database/sql": 3,
+          "encoding/json": 32,
+          "gin-gonic": 2,
+          "grpc": 4,
+          "net/http": 38,
+          "os/exec": 5,
+          "path/filepath": 22
+        },
+        "javascript": {
+          "crypto": 2,
+          "fs": 6,
+          "lodash": 5,
+          "path": 4,
+          "url": 10
+        },
+        "python": {
+          "django": 37,
+          "flask": 7,
+          "jinja2": 5,
+          "pickle": 7,
+          "subprocess": 6,
+          "urllib": 20,
+          "werkzeug": 6,
+          "yaml": 2
+        },
+        "typescript": {
+          "express": 8,
+          "fastify": 3,
+          "fs": 4,
+          "koa": 2,
+          "lodash": 2,
+          "path": 4,
+          "react": 2,
+          "url": 15
+        }
+      },
+      "multi_function_findings": 1,
+      "records": 452,
+      "records_per_repository": {
+        "max": 31,
+        "median": 2,
+        "n": 107,
+        "p90": 8
+      },
+      "repositories": 107,
+      "span_kind": {
+        "changed_lines": 120,
+        "insertion_point": 65,
+        "mixed": 25
+      },
+      "span_lines": {
+        "max": 38,
+        "median": 2.0,
+        "n": 210,
+        "p90": 9
+      },
+      "top10_repository_share": 0.392
+    },
+    "retired_development": {
+      "by_decision": {
+        "abstain": 18,
+        "finding": 72,
+        "no_finding": 59
+      },
+      "by_language": {
+        "go": 51,
+        "javascript": 45,
+        "python": 38,
+        "typescript": 15
+      },
+      "coarse_or_multi_cwe_findings": 18,
+      "commit_chain_findings": 1,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.319,
+        "no_finding": 0.288
+      },
+      "distinct_finding_cwes": 36,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 98,
+          "median": 22.5,
+          "n": 18,
+          "p90": 71
+        },
+        "finding": {
+          "max": 141,
+          "median": 28.0,
+          "n": 72,
+          "p90": 89
+        },
+        "no_finding": {
+          "max": 151,
+          "median": 31,
+          "n": 59,
+          "p90": 102
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 13,
+        "code_injection": 3,
+        "command_injection": 4,
+        "crypto_tls_integrity": 4,
+        "deserialization_input_validation": 7,
+        "information_exposure": 4,
+        "other": 2,
+        "path_traversal": 11,
+        "prototype_pollution": 3,
+        "redirect_ssrf": 1,
+        "resource_limits_redos": 8,
+        "sql_injection": 1,
+        "xss_output_encoding": 11
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 9,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 2,
+          "information_exposure": 1,
+          "path_traversal": 7,
+          "resource_limits_redos": 2,
+          "xss_output_encoding": 3
+        },
+        "javascript": {
+          "authn_authz": 2,
+          "code_injection": 2,
+          "command_injection": 1,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 2,
+          "information_exposure": 1,
+          "other": 1,
+          "path_traversal": 2,
+          "prototype_pollution": 2,
+          "resource_limits_redos": 5,
+          "xss_output_encoding": 4
+        },
+        "python": {
+          "authn_authz": 2,
+          "code_injection": 1,
+          "command_injection": 2,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 2,
+          "information_exposure": 2,
+          "other": 1,
+          "path_traversal": 2,
+          "redirect_ssrf": 1,
+          "sql_injection": 1,
+          "xss_output_encoding": 1
+        },
+        "typescript": {
+          "command_injection": 1,
+          "deserialization_input_validation": 1,
+          "prototype_pollution": 1,
+          "resource_limits_redos": 1,
+          "xss_output_encoding": 3
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-116": 2,
+        "CWE-1321": 3,
+        "CWE-1333": 4,
+        "CWE-20": 3,
+        "CWE-203": 2,
+        "CWE-22": 10,
+        "CWE-269": 2,
+        "CWE-287": 3,
+        "CWE-476": 2,
+        "CWE-502": 2,
+        "CWE-639": 2,
+        "CWE-78": 3,
+        "CWE-79": 8,
+        "CWE-863": 2,
+        "CWE-94": 3
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 6,
+          "encoding/json": 11,
+          "gin-gonic": 4,
+          "gorilla": 2,
+          "grpc": 1,
+          "k8s.io": 6,
+          "net/http": 31,
+          "path/filepath": 16
+        },
+        "javascript": {
+          "child_process": 6,
+          "express": 2,
+          "fs": 8,
+          "lodash": 2,
+          "path": 8,
+          "url": 3
+        },
+        "python": {
+          "django": 2,
+          "fastapi": 2,
+          "jinja2": 2,
+          "sqlalchemy": 5,
+          "starlette": 2,
+          "subprocess": 7,
+          "urllib": 5,
+          "yaml": 4
+        },
+        "typescript": {
+          "child_process": 3,
+          "fs": 3,
+          "path": 7,
+          "react": 2
+        }
+      },
+      "multi_function_findings": 1,
+      "records": 149,
+      "records_per_repository": {
+        "max": 18,
+        "median": 2.0,
+        "n": 56,
+        "p90": 3
+      },
+      "repositories": 56,
+      "span_kind": {
+        "changed_lines": 46,
+        "insertion_point": 19,
+        "mixed": 7
+      },
+      "span_lines": {
+        "max": 26,
+        "median": 2.0,
+        "n": 72,
+        "p90": 11
+      },
+      "top10_repository_share": 0.362
+    },
+    "temporal_quarantine": {
+      "by_decision": {
+        "abstain": 64,
+        "finding": 197,
+        "no_finding": 179
+      },
+      "by_language": {
+        "go": 121,
+        "javascript": 85,
+        "python": 146,
+        "typescript": 88
+      },
+      "coarse_or_multi_cwe_findings": 77,
+      "commit_chain_findings": 3,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.396,
+        "no_finding": 0.402
+      },
+      "distinct_finding_cwes": 76,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 139,
+          "median": 23.5,
+          "n": 64,
+          "p90": 62
+        },
+        "finding": {
+          "max": 203,
+          "median": 34,
+          "n": 197,
+          "p90": 98
+        },
+        "no_finding": {
+          "max": 196,
+          "median": 41,
+          "n": 179,
+          "p90": 104
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 28,
+        "code_injection": 1,
+        "command_injection": 4,
+        "crypto_tls_integrity": 6,
+        "deserialization_input_validation": 16,
+        "information_exposure": 11,
+        "other": 27,
+        "path_traversal": 15,
+        "prototype_pollution": 6,
+        "redirect_ssrf": 5,
+        "resource_limits_redos": 63,
+        "sql_injection": 1,
+        "xss_output_encoding": 14
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 9,
+          "command_injection": 2,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 2,
+          "information_exposure": 3,
+          "other": 7,
+          "path_traversal": 4,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 23,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "authn_authz": 7,
+          "command_injection": 1,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 6,
+          "information_exposure": 1,
+          "other": 5,
+          "path_traversal": 3,
+          "prototype_pollution": 3,
+          "resource_limits_redos": 11,
+          "xss_output_encoding": 2
+        },
+        "python": {
+          "authn_authz": 7,
+          "code_injection": 1,
+          "command_injection": 1,
+          "crypto_tls_integrity": 4,
+          "deserialization_input_validation": 6,
+          "information_exposure": 5,
+          "other": 11,
+          "path_traversal": 5,
+          "resource_limits_redos": 21,
+          "sql_injection": 1,
+          "xss_output_encoding": 1
+        },
+        "typescript": {
+          "authn_authz": 5,
+          "deserialization_input_validation": 2,
+          "information_exposure": 2,
+          "other": 4,
+          "path_traversal": 3,
+          "prototype_pollution": 3,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 8,
+          "xss_output_encoding": 10
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-116": 5,
+        "CWE-129": 4,
+        "CWE-1321": 6,
+        "CWE-1333": 6,
+        "CWE-20": 7,
+        "CWE-200": 5,
+        "CWE-22": 13,
+        "CWE-248": 5,
+        "CWE-400": 13,
+        "CWE-476": 5,
+        "CWE-770": 8,
+        "CWE-79": 9,
+        "CWE-835": 6,
+        "CWE-862": 5,
+        "CWE-863": 7
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 19,
+          "encoding/json": 33,
+          "gin-gonic": 2,
+          "gorilla": 3,
+          "grpc": 3,
+          "k8s.io": 5,
+          "net/http": 48,
+          "path/filepath": 20
+        },
+        "javascript": {
+          "crypto": 9,
+          "fastify": 3,
+          "fs": 12,
+          "lodash": 4,
+          "path": 16,
+          "url": 4
+        },
+        "python": {
+          "aiohttp": 2,
+          "django": 8,
+          "fastapi": 6,
+          "flask": 8,
+          "sqlalchemy": 5,
+          "subprocess": 14,
+          "urllib": 13,
+          "werkzeug": 5
+        },
+        "typescript": {
+          "@angular": 3,
+          "child_process": 1,
+          "crypto": 3,
+          "express": 1,
+          "fs": 4,
+          "path": 4,
+          "url": 4
+        }
+      },
+      "multi_function_findings": 18,
+      "records": 440,
+      "records_per_repository": {
+        "max": 17,
+        "median": 3,
+        "n": 119,
+        "p90": 9
+      },
+      "repositories": 119,
+      "span_kind": {
+        "changed_lines": 118,
+        "insertion_point": 54,
+        "mixed": 25
+      },
+      "span_lines": {
+        "max": 33,
+        "median": 2,
+        "n": 197,
+        "p90": 9
+      },
+      "top10_repository_share": 0.277
+    },
+    "training": {
+      "by_decision": {
+        "abstain": 403,
+        "finding": 1704,
+        "no_finding": 1478
+      },
+      "by_language": {
+        "go": 852,
+        "javascript": 1153,
+        "python": 1140,
+        "typescript": 440
+      },
+      "coarse_or_multi_cwe_findings": 543,
+      "commit_chain_findings": 7,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.335,
+        "no_finding": 0.345
+      },
+      "distinct_finding_cwes": 193,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 149,
+          "median": 23,
+          "n": 403,
+          "p90": 74
+        },
+        "finding": {
+          "max": 242,
+          "median": 23.0,
+          "n": 1704,
+          "p90": 81
+        },
+        "no_finding": {
+          "max": 245,
+          "median": 27.0,
+          "n": 1478,
+          "p90": 85
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 178,
+        "code_injection": 34,
+        "command_injection": 105,
+        "crypto_tls_integrity": 53,
+        "deserialization_input_validation": 112,
+        "information_exposure": 123,
+        "other": 209,
+        "path_traversal": 177,
+        "prototype_pollution": 87,
+        "redirect_ssrf": 87,
+        "resource_limits_redos": 202,
+        "sql_injection": 50,
+        "xss_output_encoding": 287
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 67,
+          "code_injection": 2,
+          "command_injection": 14,
+          "crypto_tls_integrity": 18,
+          "deserialization_input_validation": 24,
+          "information_exposure": 33,
+          "other": 55,
+          "path_traversal": 41,
+          "redirect_ssrf": 22,
+          "resource_limits_redos": 65,
+          "sql_injection": 13,
+          "xss_output_encoding": 27
+        },
+        "javascript": {
+          "authn_authz": 35,
+          "code_injection": 14,
+          "command_injection": 50,
+          "crypto_tls_integrity": 12,
+          "deserialization_input_validation": 27,
+          "information_exposure": 33,
+          "other": 42,
+          "path_traversal": 36,
+          "prototype_pollution": 57,
+          "redirect_ssrf": 19,
+          "resource_limits_redos": 67,
+          "sql_injection": 22,
+          "xss_output_encoding": 167
+        },
+        "python": {
+          "authn_authz": 60,
+          "code_injection": 14,
+          "command_injection": 31,
+          "crypto_tls_integrity": 19,
+          "deserialization_input_validation": 45,
+          "information_exposure": 48,
+          "other": 94,
+          "path_traversal": 85,
+          "prototype_pollution": 2,
+          "redirect_ssrf": 29,
+          "resource_limits_redos": 45,
+          "sql_injection": 11,
+          "xss_output_encoding": 47
+        },
+        "typescript": {
+          "authn_authz": 16,
+          "code_injection": 4,
+          "command_injection": 10,
+          "crypto_tls_integrity": 4,
+          "deserialization_input_validation": 16,
+          "information_exposure": 9,
+          "other": 18,
+          "path_traversal": 15,
+          "prototype_pollution": 28,
+          "redirect_ssrf": 17,
+          "resource_limits_redos": 25,
+          "sql_injection": 4,
+          "xss_output_encoding": 46
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 83,
+        "CWE-1333": 36,
+        "CWE-20": 54,
+        "CWE-200": 55,
+        "CWE-22": 151,
+        "CWE-287": 39,
+        "CWE-400": 59,
+        "CWE-532": 25,
+        "CWE-601": 51,
+        "CWE-77": 36,
+        "CWE-78": 64,
+        "CWE-79": 277,
+        "CWE-89": 50,
+        "CWE-918": 34,
+        "CWE-94": 29
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 188,
+          "database/sql": 34,
+          "encoding/json": 168,
+          "gin-gonic": 35,
+          "k8s.io": 59,
+          "net/http": 299,
+          "os/exec": 31,
+          "path/filepath": 139
+        },
+        "javascript": {
+          "child_process": 68,
+          "crypto": 26,
+          "express": 103,
+          "fs": 122,
+          "lodash": 48,
+          "path": 115,
+          "react": 12,
+          "url": 58
+        },
+        "python": {
+          "django": 107,
+          "flask": 83,
+          "requests": 70,
+          "sqlalchemy": 34,
+          "subprocess": 90,
+          "tornado": 34,
+          "urllib": 152,
+          "werkzeug": 33
+        },
+        "typescript": {
+          "child_process": 15,
+          "crypto": 35,
+          "express": 27,
+          "fs": 52,
+          "lodash": 17,
+          "path": 60,
+          "react": 15,
+          "url": 29
+        }
+      },
+      "multi_function_findings": 68,
+      "records": 3585,
+      "records_per_repository": {
+        "max": 315,
+        "median": 2,
+        "n": 1009,
+        "p90": 6
+      },
+      "repositories": 1009,
+      "span_kind": {
+        "changed_lines": 956,
+        "insertion_point": 412,
+        "mixed": 137,
+        "query_test_expectation": 199
+      },
+      "span_lines": {
+        "max": 55,
+        "median": 2.0,
+        "n": 1704,
+        "p90": 8
+      },
+      "top10_repository_share": 0.134
+    }
+  },
+  "by_source": {
+    "codeql_tool_test": {
+      "by_decision": {
+        "finding": 199,
+        "no_finding": 116
+      },
+      "by_language": {
+        "go": 65,
+        "javascript": 220,
+        "python": 11,
+        "typescript": 19
+      },
+      "coarse_or_multi_cwe_findings": 156,
+      "commit_chain_findings": 0,
+      "context_mentions_unshown_callee": {
+        "finding": 0.035,
+        "no_finding": 0.103
+      },
+      "distinct_finding_cwes": 31,
+      "excerpt_lines": {
+        "abstain": {
+          "max": null,
+          "median": null,
+          "n": 0,
+          "p90": null
+        },
+        "finding": {
+          "max": 39,
+          "median": 6,
+          "n": 199,
+          "p90": 14
+        },
+        "no_finding": {
+          "max": 60,
+          "median": 8.0,
+          "n": 116,
+          "p90": 17
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 1,
+        "code_injection": 1,
+        "command_injection": 28,
+        "crypto_tls_integrity": 4,
+        "deserialization_input_validation": 4,
+        "information_exposure": 15,
+        "other": 16,
+        "path_traversal": 23,
+        "redirect_ssrf": 12,
+        "resource_limits_redos": 13,
+        "sql_injection": 18,
+        "xss_output_encoding": 64
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "command_injection": 6,
+          "crypto_tls_integrity": 3,
+          "deserialization_input_validation": 3,
+          "information_exposure": 2,
+          "other": 3,
+          "redirect_ssrf": 3,
+          "resource_limits_redos": 2,
+          "sql_injection": 2,
+          "xss_output_encoding": 6
+        },
+        "javascript": {
+          "authn_authz": 1,
+          "code_injection": 1,
+          "command_injection": 21,
+          "crypto_tls_integrity": 1,
+          "information_exposure": 9,
+          "other": 12,
+          "path_traversal": 22,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 11,
+          "sql_injection": 14,
+          "xss_output_encoding": 49
+        },
+        "python": {
+          "deserialization_input_validation": 1,
+          "information_exposure": 4,
+          "other": 1,
+          "path_traversal": 1,
+          "sql_injection": 1
+        },
+        "typescript": {
+          "command_injection": 1,
+          "redirect_ssrf": 5,
+          "sql_injection": 1,
+          "xss_output_encoding": 9
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-20": 3,
+        "CWE-22": 19,
+        "CWE-312": 11,
+        "CWE-338": 3,
+        "CWE-400": 7,
+        "CWE-601": 6,
+        "CWE-611": 4,
+        "CWE-640": 2,
+        "CWE-643": 2,
+        "CWE-73": 4,
+        "CWE-754": 3,
+        "CWE-78": 28,
+        "CWE-79": 64,
+        "CWE-89": 18,
+        "CWE-918": 6
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 18,
+          "database/sql": 5,
+          "encoding/json": 8,
+          "gin-gonic": 10,
+          "k8s.io": 1,
+          "net/http": 47,
+          "os/exec": 4,
+          "path/filepath": 3
+        },
+        "javascript": {
+          "axios": 2,
+          "child_process": 18,
+          "express": 81,
+          "fs": 30,
+          "next": 2,
+          "path": 12,
+          "react": 6,
+          "url": 23
+        },
+        "python": {
+          "django": 3,
+          "flask": 2,
+          "jinja2": 1,
+          "lxml": 1,
+          "subprocess": 1
+        },
+        "typescript": {
+          "@angular": 4,
+          "child_process": 1,
+          "next": 2,
+          "react": 1
+        }
+      },
+      "multi_function_findings": 0,
+      "records": 315,
+      "records_per_repository": {
+        "max": 315,
+        "median": 315,
+        "n": 1,
+        "p90": 315
+      },
+      "repositories": 1,
+      "span_kind": {
+        "query_test_expectation": 199
+      },
+      "span_lines": {
+        "max": 9,
+        "median": 1,
+        "n": 199,
+        "p90": 3
+      },
+      "top10_repository_share": 1.0
+    },
+    "ghsa_osv": {
+      "by_decision": {
+        "abstain": 508,
+        "finding": 1785,
+        "no_finding": 1570
+      },
+      "by_language": {
+        "go": 1069,
+        "javascript": 906,
+        "python": 1291,
+        "typescript": 597
+      },
+      "coarse_or_multi_cwe_findings": 526,
+      "commit_chain_findings": 10,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.394,
+        "no_finding": 0.38
+      },
+      "distinct_finding_cwes": 204,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 149,
+          "median": 24.0,
+          "n": 508,
+          "p90": 88
+        },
+        "finding": {
+          "max": 203,
+          "median": 30,
+          "n": 1785,
+          "p90": 88
+        },
+        "no_finding": {
+          "max": 196,
+          "median": 34.0,
+          "n": 1570,
+          "p90": 90
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 218,
+        "code_injection": 44,
+        "command_injection": 90,
+        "crypto_tls_integrity": 66,
+        "deserialization_input_validation": 144,
+        "information_exposure": 133,
+        "other": 212,
+        "path_traversal": 184,
+        "prototype_pollution": 105,
+        "redirect_ssrf": 85,
+        "resource_limits_redos": 298,
+        "sql_injection": 24,
+        "xss_output_encoding": 182
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 96,
+          "code_injection": 2,
+          "command_injection": 12,
+          "crypto_tls_integrity": 20,
+          "deserialization_input_validation": 29,
+          "information_exposure": 44,
+          "other": 63,
+          "path_traversal": 52,
+          "redirect_ssrf": 24,
+          "resource_limits_redos": 102,
+          "sql_injection": 8,
+          "xss_output_encoding": 24
+        },
+        "javascript": {
+          "authn_authz": 30,
+          "code_injection": 20,
+          "command_injection": 34,
+          "crypto_tls_integrity": 13,
+          "deserialization_input_validation": 39,
+          "information_exposure": 19,
+          "other": 30,
+          "path_traversal": 26,
+          "prototype_pollution": 67,
+          "redirect_ssrf": 10,
+          "resource_limits_redos": 80,
+          "sql_injection": 5,
+          "xss_output_encoding": 61
+        },
+        "python": {
+          "authn_authz": 71,
+          "code_injection": 16,
+          "command_injection": 30,
+          "crypto_tls_integrity": 29,
+          "deserialization_input_validation": 54,
+          "information_exposure": 51,
+          "other": 95,
+          "path_traversal": 85,
+          "prototype_pollution": 2,
+          "redirect_ssrf": 28,
+          "resource_limits_redos": 79,
+          "sql_injection": 7,
+          "xss_output_encoding": 49
+        },
+        "typescript": {
+          "authn_authz": 21,
+          "code_injection": 6,
+          "command_injection": 14,
+          "crypto_tls_integrity": 4,
+          "deserialization_input_validation": 22,
+          "information_exposure": 19,
+          "other": 24,
+          "path_traversal": 21,
+          "prototype_pollution": 36,
+          "redirect_ssrf": 23,
+          "resource_limits_redos": 37,
+          "sql_injection": 4,
+          "xss_output_encoding": 48
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 102,
+        "CWE-1333": 53,
+        "CWE-20": 67,
+        "CWE-200": 62,
+        "CWE-22": 159,
+        "CWE-287": 39,
+        "CWE-400": 77,
+        "CWE-601": 49,
+        "CWE-77": 35,
+        "CWE-770": 36,
+        "CWE-78": 47,
+        "CWE-79": 160,
+        "CWE-863": 36,
+        "CWE-918": 33,
+        "CWE-94": 35
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 209,
+          "encoding/json": 243,
+          "gin-gonic": 32,
+          "html/template": 26,
+          "k8s.io": 62,
+          "net/http": 351,
+          "os/exec": 36,
+          "path/filepath": 200
+        },
+        "javascript": {
+          "child_process": 60,
+          "crypto": 36,
+          "express": 10,
+          "fs": 110,
+          "jsonwebtoken": 9,
+          "lodash": 53,
+          "path": 123,
+          "url": 52
+        },
+        "python": {
+          "django": 132,
+          "flask": 82,
+          "requests": 55,
+          "sqlalchemy": 41,
+          "subprocess": 91,
+          "tornado": 35,
+          "urllib": 171,
+          "werkzeug": 40
+        },
+        "typescript": {
+          "child_process": 20,
+          "crypto": 37,
+          "express": 32,
+          "fs": 68,
+          "lodash": 17,
+          "path": 85,
+          "react": 10,
+          "url": 54
+        }
+      },
+      "multi_function_findings": 76,
+      "records": 3863,
+      "records_per_repository": {
+        "max": 31,
+        "median": 2.0,
+        "n": 1120,
+        "p90": 6
+      },
+      "repositories": 1120,
+      "span_kind": {
+        "changed_lines": 1096,
+        "insertion_point": 509,
+        "mixed": 180
+      },
+      "span_lines": {
+        "max": 39,
+        "median": 2,
+        "n": 1785,
+        "p90": 9
+      },
+      "top10_repository_share": 0.056
+    },
+    "morefixes_commit_message": {
+      "by_decision": {
+        "abstain": 10,
+        "finding": 41,
+        "no_finding": 39
+      },
+      "by_language": {
+        "go": 15,
+        "javascript": 30,
+        "python": 43,
+        "typescript": 2
+      },
+      "coarse_or_multi_cwe_findings": 3,
+      "commit_chain_findings": 0,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.439,
+        "no_finding": 0.41
+      },
+      "distinct_finding_cwes": 21,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 89,
+          "median": 24.0,
+          "n": 10,
+          "p90": 89
+        },
+        "finding": {
+          "max": 127,
+          "median": 26,
+          "n": 41,
+          "p90": 75
+        },
+        "no_finding": {
+          "max": 131,
+          "median": 30,
+          "n": 39,
+          "p90": 88
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 1,
+        "code_injection": 1,
+        "crypto_tls_integrity": 3,
+        "deserialization_input_validation": 1,
+        "information_exposure": 2,
+        "other": 9,
+        "path_traversal": 3,
+        "prototype_pollution": 1,
+        "redirect_ssrf": 2,
+        "resource_limits_redos": 2,
+        "sql_injection": 2,
+        "xss_output_encoding": 14
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "information_exposure": 1,
+          "other": 1,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 2,
+          "sql_injection": 1,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "crypto_tls_integrity": 1,
+          "other": 1,
+          "prototype_pollution": 1,
+          "sql_injection": 1,
+          "xss_output_encoding": 9
+        },
+        "python": {
+          "authn_authz": 1,
+          "code_injection": 1,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 1,
+          "information_exposure": 1,
+          "other": 7,
+          "path_traversal": 3,
+          "redirect_ssrf": 1,
+          "xss_output_encoding": 3
+        },
+        "typescript": {
+          "xss_output_encoding": 1
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 1,
+        "CWE-200": 1,
+        "CWE-22": 3,
+        "CWE-226": 1,
+        "CWE-264": 2,
+        "CWE-276": 1,
+        "CWE-295": 2,
+        "CWE-305": 1,
+        "CWE-345": 1,
+        "CWE-476": 2,
+        "CWE-502": 1,
+        "CWE-640": 1,
+        "CWE-79": 14,
+        "CWE-89": 2,
+        "CWE-918": 2
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 4,
+          "database/sql": 2,
+          "encoding/json": 7,
+          "gorilla": 1,
+          "net/http": 7,
+          "os/exec": 3,
+          "path/filepath": 3
+        },
+        "python": {
+          "django": 4,
+          "lxml": 2,
+          "pickle": 4,
+          "subprocess": 6,
+          "tornado": 3,
+          "urllib": 12,
+          "yaml": 2
+        },
+        "typescript": {
+          "react": 2
+        }
+      },
+      "multi_function_findings": 1,
+      "records": 90,
+      "records_per_repository": {
+        "max": 7,
+        "median": 2,
+        "n": 33,
+        "p90": 5
+      },
+      "repositories": 33,
+      "span_kind": {
+        "changed_lines": 25,
+        "insertion_point": 13,
+        "mixed": 3
+      },
+      "span_lines": {
+        "max": 12,
+        "median": 2,
+        "n": 41,
+        "p90": 8
+      },
+      "top10_repository_share": 0.478
+    },
+    "morefixes_ghsa": {
+      "by_decision": {
+        "abstain": 7,
+        "finding": 48,
+        "no_finding": 46
+      },
+      "by_language": {
+        "go": 14,
+        "javascript": 66,
+        "python": 17,
+        "typescript": 4
+      },
+      "coarse_or_multi_cwe_findings": 9,
+      "commit_chain_findings": 0,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.333,
+        "no_finding": 0.348
+      },
+      "distinct_finding_cwes": 25,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 29,
+          "median": 18,
+          "n": 7,
+          "p90": 29
+        },
+        "finding": {
+          "max": 146,
+          "median": 22.0,
+          "n": 48,
+          "p90": 79
+        },
+        "no_finding": {
+          "max": 145,
+          "median": 19.5,
+          "n": 46,
+          "p90": 83
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 4,
+        "crypto_tls_integrity": 2,
+        "information_exposure": 5,
+        "other": 11,
+        "path_traversal": 1,
+        "prototype_pollution": 2,
+        "redirect_ssrf": 2,
+        "resource_limits_redos": 6,
+        "sql_injection": 1,
+        "xss_output_encoding": 14
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "crypto_tls_integrity": 1,
+          "information_exposure": 1,
+          "path_traversal": 1,
+          "resource_limits_redos": 3,
+          "sql_injection": 1
+        },
+        "javascript": {
+          "authn_authz": 4,
+          "crypto_tls_integrity": 1,
+          "information_exposure": 3,
+          "other": 3,
+          "prototype_pollution": 2,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 3,
+          "xss_output_encoding": 14
+        },
+        "python": {
+          "other": 8
+        },
+        "typescript": {
+          "information_exposure": 1,
+          "redirect_ssrf": 1
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-125": 1,
+        "CWE-1321": 2,
+        "CWE-22": 1,
+        "CWE-264": 4,
+        "CWE-327": 1,
+        "CWE-352": 1,
+        "CWE-399": 3,
+        "CWE-400": 3,
+        "CWE-404": 1,
+        "CWE-532": 3,
+        "CWE-538": 1,
+        "CWE-787": 1,
+        "CWE-79": 14,
+        "CWE-89": 1,
+        "CWE-918": 1
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "database/sql": 2,
+          "k8s.io": 2,
+          "net/http": 6,
+          "path/filepath": 4
+        },
+        "javascript": {
+          "child_process": 2,
+          "crypto": 1,
+          "fs": 5,
+          "path": 5,
+          "react": 2,
+          "url": 1
+        },
+        "python": {
+          "django": 2,
+          "flask": 2,
+          "requests": 2
+        },
+        "typescript": {
+          "lodash": 2,
+          "react": 2
+        }
+      },
+      "multi_function_findings": 2,
+      "records": 101,
+      "records_per_repository": {
+        "max": 9,
+        "median": 2,
+        "n": 37,
+        "p90": 5
+      },
+      "repositories": 37,
+      "span_kind": {
+        "changed_lines": 38,
+        "insertion_point": 6,
+        "mixed": 4
+      },
+      "span_lines": {
+        "max": 12,
+        "median": 1.5,
+        "n": 48,
+        "p90": 9
+      },
+      "top10_repository_share": 0.495
+    },
+    "morefixes_nvd": {
+      "by_decision": {
+        "abstain": 63,
+        "finding": 314,
+        "no_finding": 309
+      },
+      "by_language": {
+        "go": 42,
+        "javascript": 356,
+        "python": 226,
+        "typescript": 62
+      },
+      "coarse_or_multi_cwe_findings": 62,
+      "commit_chain_findings": 4,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.306,
+        "no_finding": 0.307
+      },
+      "distinct_finding_cwes": 75,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 128,
+          "median": 21,
+          "n": 63,
+          "p90": 63
+        },
+        "finding": {
+          "max": 242,
+          "median": 26.0,
+          "n": 314,
+          "p90": 85
+        },
+        "no_finding": {
+          "max": 245,
+          "median": 28,
+          "n": 309,
+          "p90": 88
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 40,
+        "code_injection": 7,
+        "command_injection": 10,
+        "crypto_tls_integrity": 2,
+        "deserialization_input_validation": 19,
+        "information_exposure": 19,
+        "other": 38,
+        "path_traversal": 21,
+        "prototype_pollution": 6,
+        "redirect_ssrf": 12,
+        "resource_limits_redos": 16,
+        "sql_injection": 12,
+        "xss_output_encoding": 112
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 4,
+          "command_injection": 1,
+          "information_exposure": 1,
+          "other": 5,
+          "path_traversal": 2,
+          "resource_limits_redos": 2,
+          "sql_injection": 2,
+          "xss_output_encoding": 2
+        },
+        "javascript": {
+          "authn_authz": 16,
+          "code_injection": 2,
+          "command_injection": 1,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 8,
+          "information_exposure": 12,
+          "other": 16,
+          "path_traversal": 2,
+          "prototype_pollution": 6,
+          "redirect_ssrf": 5,
+          "resource_limits_redos": 6,
+          "sql_injection": 3,
+          "xss_output_encoding": 87
+        },
+        "python": {
+          "authn_authz": 15,
+          "code_injection": 5,
+          "command_injection": 8,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 10,
+          "information_exposure": 5,
+          "other": 12,
+          "path_traversal": 15,
+          "redirect_ssrf": 6,
+          "resource_limits_redos": 5,
+          "sql_injection": 7,
+          "xss_output_encoding": 12
+        },
+        "typescript": {
+          "authn_authz": 5,
+          "deserialization_input_validation": 1,
+          "information_exposure": 1,
+          "other": 5,
+          "path_traversal": 2,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 3,
+          "xss_output_encoding": 11
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 5,
+        "CWE-20": 10,
+        "CWE-200": 12,
+        "CWE-22": 14,
+        "CWE-269": 5,
+        "CWE-287": 10,
+        "CWE-352": 6,
+        "CWE-601": 7,
+        "CWE-639": 5,
+        "CWE-78": 6,
+        "CWE-79": 109,
+        "CWE-862": 5,
+        "CWE-89": 12,
+        "CWE-918": 5,
+        "CWE-94": 7
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 9,
+          "database/sql": 4,
+          "encoding/json": 7,
+          "gorilla": 8,
+          "k8s.io": 5,
+          "net/http": 22,
+          "os/exec": 2,
+          "path/filepath": 6
+        },
+        "javascript": {
+          "crypto": 6,
+          "express": 16,
+          "fs": 26,
+          "lodash": 15,
+          "path": 28,
+          "react": 4,
+          "url": 8,
+          "vue": 2
+        },
+        "python": {
+          "django": 37,
+          "fastapi": 7,
+          "flask": 22,
+          "requests": 18,
+          "sqlalchemy": 10,
+          "subprocess": 23,
+          "urllib": 31,
+          "yaml": 11
+        },
+        "typescript": {
+          "@angular": 3,
+          "crypto": 3,
+          "express": 6,
+          "fs": 8,
+          "koa": 4,
+          "path": 8,
+          "react": 8,
+          "url": 6
+        }
+      },
+      "multi_function_findings": 14,
+      "records": 686,
+      "records_per_repository": {
+        "max": 21,
+        "median": 2.0,
+        "n": 226,
+        "p90": 4
+      },
+      "repositories": 226,
+      "span_kind": {
+        "changed_lines": 217,
+        "insertion_point": 72,
+        "mixed": 25
+      },
+      "span_lines": {
+        "max": 55,
+        "median": 2.0,
+        "n": 314,
+        "p90": 9
+      },
+      "top10_repository_share": 0.213
+    }
+  },
+  "by_split": {
+    "holdout_reserved": {
+      "by_decision": {
+        "abstain": 68,
+        "finding": 256,
+        "no_finding": 228
+      },
+      "by_language": {
+        "go": 133,
+        "javascript": 127,
+        "python": 195,
+        "typescript": 97
+      },
+      "coarse_or_multi_cwe_findings": 76,
+      "commit_chain_findings": 1,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.391,
+        "no_finding": 0.368
+      },
+      "distinct_finding_cwes": 88,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 126,
+          "median": 26.0,
+          "n": 68,
+          "p90": 108
+        },
+        "finding": {
+          "max": 165,
+          "median": 33.5,
+          "n": 256,
+          "p90": 85
+        },
+        "no_finding": {
+          "max": 167,
+          "median": 38.5,
+          "n": 228,
+          "p90": 85
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 32,
+        "code_injection": 7,
+        "command_injection": 8,
+        "crypto_tls_integrity": 11,
+        "deserialization_input_validation": 19,
+        "information_exposure": 30,
+        "other": 34,
+        "path_traversal": 13,
+        "prototype_pollution": 9,
+        "redirect_ssrf": 11,
+        "resource_limits_redos": 46,
+        "sql_injection": 4,
+        "xss_output_encoding": 32
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 12,
+          "command_injection": 1,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 1,
+          "information_exposure": 9,
+          "other": 8,
+          "path_traversal": 2,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 17,
+          "sql_injection": 1,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "authn_authz": 6,
+          "code_injection": 2,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 3,
+          "information_exposure": 5,
+          "other": 8,
+          "path_traversal": 1,
+          "prototype_pollution": 6,
+          "resource_limits_redos": 11,
+          "xss_output_encoding": 17
+        },
+        "python": {
+          "authn_authz": 10,
+          "code_injection": 5,
+          "command_injection": 4,
+          "crypto_tls_integrity": 7,
+          "deserialization_input_validation": 11,
+          "information_exposure": 6,
+          "other": 13,
+          "path_traversal": 7,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 13,
+          "sql_injection": 2,
+          "xss_output_encoding": 10
+        },
+        "typescript": {
+          "authn_authz": 4,
+          "command_injection": 3,
+          "deserialization_input_validation": 4,
+          "information_exposure": 10,
+          "other": 5,
+          "path_traversal": 3,
+          "prototype_pollution": 3,
+          "redirect_ssrf": 3,
+          "resource_limits_redos": 5,
+          "sql_injection": 1,
+          "xss_output_encoding": 4
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 9,
+        "CWE-1333": 7,
+        "CWE-200": 12,
+        "CWE-22": 8,
+        "CWE-248": 5,
+        "CWE-347": 6,
+        "CWE-400": 11,
+        "CWE-532": 8,
+        "CWE-601": 5,
+        "CWE-78": 6,
+        "CWE-79": 28,
+        "CWE-862": 6,
+        "CWE-863": 6,
+        "CWE-918": 6,
+        "CWE-94": 6
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 19,
+          "database/sql": 5,
+          "encoding/json": 34,
+          "gin-gonic": 2,
+          "grpc": 4,
+          "net/http": 38,
+          "os/exec": 5,
+          "path/filepath": 22
+        },
+        "javascript": {
+          "crypto": 2,
+          "fs": 6,
+          "jsonwebtoken": 2,
+          "lodash": 8,
+          "path": 4,
+          "url": 12
+        },
+        "python": {
+          "aiohttp": 4,
+          "django": 55,
+          "flask": 10,
+          "jinja2": 5,
+          "pickle": 9,
+          "subprocess": 6,
+          "urllib": 33,
+          "werkzeug": 6
+        },
+        "typescript": {
+          "express": 8,
+          "fastify": 3,
+          "fs": 6,
+          "koa": 2,
+          "lodash": 2,
+          "path": 6,
+          "react": 6,
+          "url": 17
+        }
+      },
+      "multi_function_findings": 3,
+      "records": 552,
+      "records_per_repository": {
+        "max": 31,
+        "median": 2.0,
+        "n": 140,
+        "p90": 7
+      },
+      "repositories": 140,
+      "span_kind": {
+        "changed_lines": 156,
+        "insertion_point": 73,
+        "mixed": 27
+      },
+      "span_lines": {
+        "max": 38,
+        "median": 2.0,
+        "n": 256,
+        "p90": 9
+      },
+      "top10_repository_share": 0.353
+    },
+    "temporal_quarantine": {
+      "by_decision": {
+        "abstain": 64,
+        "finding": 197,
+        "no_finding": 179
+      },
+      "by_language": {
+        "go": 121,
+        "javascript": 85,
+        "python": 146,
+        "typescript": 88
+      },
+      "coarse_or_multi_cwe_findings": 77,
+      "commit_chain_findings": 3,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.396,
+        "no_finding": 0.402
+      },
+      "distinct_finding_cwes": 76,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 139,
+          "median": 23.5,
+          "n": 64,
+          "p90": 62
+        },
+        "finding": {
+          "max": 203,
+          "median": 34,
+          "n": 197,
+          "p90": 98
+        },
+        "no_finding": {
+          "max": 196,
+          "median": 41,
+          "n": 179,
+          "p90": 104
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 28,
+        "code_injection": 1,
+        "command_injection": 4,
+        "crypto_tls_integrity": 6,
+        "deserialization_input_validation": 16,
+        "information_exposure": 11,
+        "other": 27,
+        "path_traversal": 15,
+        "prototype_pollution": 6,
+        "redirect_ssrf": 5,
+        "resource_limits_redos": 63,
+        "sql_injection": 1,
+        "xss_output_encoding": 14
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 9,
+          "command_injection": 2,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 2,
+          "information_exposure": 3,
+          "other": 7,
+          "path_traversal": 4,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 23,
+          "xss_output_encoding": 1
+        },
+        "javascript": {
+          "authn_authz": 7,
+          "command_injection": 1,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 6,
+          "information_exposure": 1,
+          "other": 5,
+          "path_traversal": 3,
+          "prototype_pollution": 3,
+          "resource_limits_redos": 11,
+          "xss_output_encoding": 2
+        },
+        "python": {
+          "authn_authz": 7,
+          "code_injection": 1,
+          "command_injection": 1,
+          "crypto_tls_integrity": 4,
+          "deserialization_input_validation": 6,
+          "information_exposure": 5,
+          "other": 11,
+          "path_traversal": 5,
+          "resource_limits_redos": 21,
+          "sql_injection": 1,
+          "xss_output_encoding": 1
+        },
+        "typescript": {
+          "authn_authz": 5,
+          "deserialization_input_validation": 2,
+          "information_exposure": 2,
+          "other": 4,
+          "path_traversal": 3,
+          "prototype_pollution": 3,
+          "redirect_ssrf": 4,
+          "resource_limits_redos": 8,
+          "xss_output_encoding": 10
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-116": 5,
+        "CWE-129": 4,
+        "CWE-1321": 6,
+        "CWE-1333": 6,
+        "CWE-20": 7,
+        "CWE-200": 5,
+        "CWE-22": 13,
+        "CWE-248": 5,
+        "CWE-400": 13,
+        "CWE-476": 5,
+        "CWE-770": 8,
+        "CWE-79": 9,
+        "CWE-835": 6,
+        "CWE-862": 5,
+        "CWE-863": 7
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 19,
+          "encoding/json": 33,
+          "gin-gonic": 2,
+          "gorilla": 3,
+          "grpc": 3,
+          "k8s.io": 5,
+          "net/http": 48,
+          "path/filepath": 20
+        },
+        "javascript": {
+          "crypto": 9,
+          "fastify": 3,
+          "fs": 12,
+          "lodash": 4,
+          "path": 16,
+          "url": 4
+        },
+        "python": {
+          "aiohttp": 2,
+          "django": 8,
+          "fastapi": 6,
+          "flask": 8,
+          "sqlalchemy": 5,
+          "subprocess": 14,
+          "urllib": 13,
+          "werkzeug": 5
+        },
+        "typescript": {
+          "@angular": 3,
+          "child_process": 1,
+          "crypto": 3,
+          "express": 1,
+          "fs": 4,
+          "path": 4,
+          "url": 4
+        }
+      },
+      "multi_function_findings": 18,
+      "records": 440,
+      "records_per_repository": {
+        "max": 17,
+        "median": 3,
+        "n": 119,
+        "p90": 9
+      },
+      "repositories": 119,
+      "span_kind": {
+        "changed_lines": 118,
+        "insertion_point": 54,
+        "mixed": 25
+      },
+      "span_lines": {
+        "max": 33,
+        "median": 2,
+        "n": 197,
+        "p90": 9
+      },
+      "top10_repository_share": 0.277
+    },
+    "train": {
+      "by_decision": {
+        "abstain": 410,
+        "finding": 1743,
+        "no_finding": 1510
+      },
+      "by_language": {
+        "go": 852,
+        "javascript": 1227,
+        "python": 1140,
+        "typescript": 444
+      },
+      "coarse_or_multi_cwe_findings": 560,
+      "commit_chain_findings": 7,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.336,
+        "no_finding": 0.344
+      },
+      "distinct_finding_cwes": 194,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 149,
+          "median": 23.0,
+          "n": 410,
+          "p90": 75
+        },
+        "finding": {
+          "max": 242,
+          "median": 23,
+          "n": 1743,
+          "p90": 81
+        },
+        "no_finding": {
+          "max": 245,
+          "median": 27.0,
+          "n": 1510,
+          "p90": 85
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 179,
+        "code_injection": 37,
+        "command_injection": 109,
+        "crypto_tls_integrity": 54,
+        "deserialization_input_validation": 117,
+        "information_exposure": 125,
+        "other": 210,
+        "path_traversal": 183,
+        "prototype_pollution": 91,
+        "redirect_ssrf": 88,
+        "resource_limits_redos": 206,
+        "sql_injection": 50,
+        "xss_output_encoding": 294
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 67,
+          "code_injection": 2,
+          "command_injection": 14,
+          "crypto_tls_integrity": 18,
+          "deserialization_input_validation": 24,
+          "information_exposure": 33,
+          "other": 55,
+          "path_traversal": 41,
+          "redirect_ssrf": 22,
+          "resource_limits_redos": 65,
+          "sql_injection": 13,
+          "xss_output_encoding": 27
+        },
+        "javascript": {
+          "authn_authz": 36,
+          "code_injection": 17,
+          "command_injection": 53,
+          "crypto_tls_integrity": 13,
+          "deserialization_input_validation": 32,
+          "information_exposure": 35,
+          "other": 43,
+          "path_traversal": 42,
+          "prototype_pollution": 61,
+          "redirect_ssrf": 20,
+          "resource_limits_redos": 71,
+          "sql_injection": 22,
+          "xss_output_encoding": 173
+        },
+        "python": {
+          "authn_authz": 60,
+          "code_injection": 14,
+          "command_injection": 31,
+          "crypto_tls_integrity": 19,
+          "deserialization_input_validation": 45,
+          "information_exposure": 48,
+          "other": 94,
+          "path_traversal": 85,
+          "prototype_pollution": 2,
+          "redirect_ssrf": 29,
+          "resource_limits_redos": 45,
+          "sql_injection": 11,
+          "xss_output_encoding": 47
+        },
+        "typescript": {
+          "authn_authz": 16,
+          "code_injection": 4,
+          "command_injection": 11,
+          "crypto_tls_integrity": 4,
+          "deserialization_input_validation": 16,
+          "information_exposure": 9,
+          "other": 18,
+          "path_traversal": 15,
+          "prototype_pollution": 28,
+          "redirect_ssrf": 17,
+          "resource_limits_redos": 25,
+          "sql_injection": 4,
+          "xss_output_encoding": 47
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 87,
+        "CWE-1333": 37,
+        "CWE-20": 59,
+        "CWE-200": 56,
+        "CWE-22": 156,
+        "CWE-287": 39,
+        "CWE-400": 62,
+        "CWE-532": 25,
+        "CWE-601": 52,
+        "CWE-77": 37,
+        "CWE-78": 67,
+        "CWE-79": 282,
+        "CWE-89": 50,
+        "CWE-918": 34,
+        "CWE-94": 32
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 188,
+          "database/sql": 34,
+          "encoding/json": 168,
+          "gin-gonic": 35,
+          "k8s.io": 59,
+          "net/http": 299,
+          "os/exec": 31,
+          "path/filepath": 139
+        },
+        "javascript": {
+          "child_process": 74,
+          "crypto": 29,
+          "express": 103,
+          "fs": 139,
+          "lodash": 52,
+          "path": 136,
+          "react": 12,
+          "url": 63
+        },
+        "python": {
+          "django": 107,
+          "flask": 83,
+          "requests": 70,
+          "sqlalchemy": 34,
+          "subprocess": 90,
+          "tornado": 34,
+          "urllib": 152,
+          "werkzeug": 33
+        },
+        "typescript": {
+          "child_process": 15,
+          "crypto": 35,
+          "express": 29,
+          "fs": 54,
+          "lodash": 17,
+          "path": 62,
+          "react": 15,
+          "url": 29
+        }
+      },
+      "multi_function_findings": 69,
+      "records": 3663,
+      "records_per_repository": {
+        "max": 315,
+        "median": 2,
+        "n": 1035,
+        "p90": 6
+      },
+      "repositories": 1035,
+      "span_kind": {
+        "changed_lines": 983,
+        "insertion_point": 421,
+        "mixed": 140,
+        "query_test_expectation": 199
+      },
+      "span_lines": {
+        "max": 55,
+        "median": 2,
+        "n": 1743,
+        "p90": 8
+      },
+      "top10_repository_share": 0.131
+    },
+    "validation": {
+      "by_decision": {
+        "abstain": 46,
+        "finding": 191,
+        "no_finding": 163
+      },
+      "by_language": {
+        "go": 99,
+        "javascript": 139,
+        "python": 107,
+        "typescript": 55
+      },
+      "coarse_or_multi_cwe_findings": 43,
+      "commit_chain_findings": 3,
+      "context_mentions_unshown_callee": {
+        "abstain": 1.0,
+        "finding": 0.403,
+        "no_finding": 0.368
+      },
+      "distinct_finding_cwes": 62,
+      "excerpt_lines": {
+        "abstain": {
+          "max": 121,
+          "median": 33.5,
+          "n": 46,
+          "p90": 81
+        },
+        "finding": {
+          "max": 141,
+          "median": 30,
+          "n": 191,
+          "p90": 89
+        },
+        "no_finding": {
+          "max": 151,
+          "median": 31,
+          "n": 163,
+          "p90": 101
+        }
+      },
+      "findings_by_family": {
+        "authn_authz": 25,
+        "code_injection": 8,
+        "command_injection": 7,
+        "crypto_tls_integrity": 6,
+        "deserialization_input_validation": 16,
+        "information_exposure": 8,
+        "other": 15,
+        "path_traversal": 21,
+        "prototype_pollution": 8,
+        "redirect_ssrf": 9,
+        "resource_limits_redos": 20,
+        "sql_injection": 2,
+        "xss_output_encoding": 46
+      },
+      "findings_by_language_and_family": {
+        "go": {
+          "authn_authz": 12,
+          "command_injection": 2,
+          "crypto_tls_integrity": 3,
+          "deserialization_input_validation": 5,
+          "information_exposure": 4,
+          "other": 2,
+          "path_traversal": 8,
+          "redirect_ssrf": 1,
+          "resource_limits_redos": 6,
+          "xss_output_encoding": 4
+        },
+        "javascript": {
+          "authn_authz": 2,
+          "code_injection": 4,
+          "command_injection": 2,
+          "crypto_tls_integrity": 1,
+          "deserialization_input_validation": 6,
+          "information_exposure": 2,
+          "other": 6,
+          "path_traversal": 4,
+          "prototype_pollution": 6,
+          "resource_limits_redos": 7,
+          "sql_injection": 1,
+          "xss_output_encoding": 28
+        },
+        "python": {
+          "authn_authz": 10,
+          "code_injection": 2,
+          "command_injection": 2,
+          "crypto_tls_integrity": 2,
+          "deserialization_input_validation": 4,
+          "information_exposure": 2,
+          "other": 5,
+          "path_traversal": 7,
+          "redirect_ssrf": 2,
+          "resource_limits_redos": 5,
+          "sql_injection": 1,
+          "xss_output_encoding": 6
+        },
+        "typescript": {
+          "authn_authz": 1,
+          "code_injection": 2,
+          "command_injection": 1,
+          "deserialization_input_validation": 1,
+          "other": 2,
+          "path_traversal": 2,
+          "prototype_pollution": 2,
+          "redirect_ssrf": 6,
+          "resource_limits_redos": 2,
+          "xss_output_encoding": 8
+        }
+      },
+      "findings_top_cwes": {
+        "CWE-1321": 8,
+        "CWE-1333": 4,
+        "CWE-20": 9,
+        "CWE-200": 4,
+        "CWE-22": 19,
+        "CWE-287": 4,
+        "CWE-306": 4,
+        "CWE-400": 4,
+        "CWE-601": 4,
+        "CWE-770": 5,
+        "CWE-78": 5,
+        "CWE-79": 42,
+        "CWE-863": 4,
+        "CWE-918": 5,
+        "CWE-94": 5
+      },
+      "frameworks_in_imports": {
+        "go": {
+          "crypto": 14,
+          "encoding/json": 30,
+          "gin-gonic": 4,
+          "gorilla": 2,
+          "k8s.io": 6,
+          "net/http": 48,
+          "os/exec": 8,
+          "path/filepath": 35
+        },
+        "javascript": {
+          "child_process": 8,
+          "crypto": 5,
+          "express": 4,
+          "fs": 14,
+          "lodash": 4,
+          "path": 12,
+          "url": 5
+        },
+        "python": {
+          "django": 8,
+          "fastapi": 8,
+          "flask": 7,
+          "jinja2": 8,
+          "sqlalchemy": 10,
+          "subprocess": 11,
+          "urllib": 16,
+          "yaml": 6
+        },
+        "typescript": {
+          "child_process": 5,
+          "crypto": 2,
+          "fs": 12,
+          "jsonwebtoken": 2,
+          "path": 21,
+          "react": 2,
+          "url": 10
+        }
+      },
+      "multi_function_findings": 3,
+      "records": 400,
+      "records_per_repository": {
+        "max": 21,
+        "median": 2,
+        "n": 123,
+        "p90": 5
+      },
+      "repositories": 123,
+      "span_kind": {
+        "changed_lines": 119,
+        "insertion_point": 52,
+        "mixed": 20
+      },
+      "span_lines": {
+        "max": 26,
+        "median": 2,
+        "n": 191,
+        "p90": 9
+      },
+      "top10_repository_share": 0.323
+    }
+  },
+  "contamination": {
+    "audit_leakage_exclusions": {
+      "split_leakage_contains_holdout_reserved_excerpt": 1,
+      "split_leakage_near_duplicate": 3,
+      "split_leakage_shared_commit": 1,
+      "split_leakage_shared_package": 16,
+      "split_leakage_shared_patch": 2
+    },
+    "eval_case_rejections": {},
+    "evaluation_records_compared": 3928,
+    "evaluation_records_with_code": 3928,
+    "training_records": 3585,
+    "training_records_sharing": {
+      "contains_held_out_code": 0,
+      "fix_fingerprint": 0,
+      "near_duplicate_code": 0,
+      "package_with_temporal_quarantine": 9
+    },
+    "training_repositories_previously_in_validation_or_holdout": []
+  },
+  "dataset_id": "sentinel-garden-v6",
+  "development_runs": "not available: no run artifacts were given (they live on the GPU machine, not in this repository)",
+  "rejections": {
+    "audit": 1206,
+    "exact_duplicate": 50,
+    "label_conflict_exact": 49,
+    "label_conflict_near": 61,
+    "localization_valid": 98,
+    "near_duplicate": 17,
+    "sibling_rejected": 122,
+    "syntax_well_formed": 15
+  },
+  "shortcut_probes": {
+    "abstention_phrase": {
+      "test": {
+        "abstain_recall_of_rule": 0.0,
+        "abstain_share_among_them": null,
+        "records_with_phrase": 0
+      },
+      "train": {
+        "abstain_recall_of_rule": 0.0,
+        "abstain_share_among_them": null,
+        "records_with_phrase": 0
+      }
+    },
+    "code_tokens_nb": {
+      "pair_accuracy": 0.791,
+      "pairs_with_different_input": 148,
+      "test_accuracy": 0.525,
+      "test_pairs": 156
+    },
+    "context_tokens_nb": {
+      "pair_accuracy": 0.68,
+      "pairs_with_different_input": 25,
+      "test_accuracy": 0.528,
+      "test_pairs": 156
+    },
+    "excerpt_length": {
+      "rule": "finding_if_shorter",
+      "test_accuracy": 0.508,
+      "threshold": 17
+    },
+    "finding_vs_no_finding_test_majority_rate": 0.54,
+    "multi_block_excerpt": {
+      "no_finding_share": 0.87,
+      "test_records": 23
+    },
+    "security_comment": {
+      "abstain": 0.109,
+      "finding": 0.063,
+      "no_finding": 0.067
+    },
+    "surface_features_nb_all_decisions": {
+      "majority_rate": 0.477,
+      "recall_by_decision": {
+        "abstain": 0.522,
+        "finding": 0.607,
+        "no_finding": 0.282
+      },
+      "test_accuracy": 0.465
+    },
+    "surface_features_nb_finding_vs_no_finding": {
+      "majority_rate": 0.54,
+      "recall_by_decision": {
+        "finding": 0.717,
+        "no_finding": 0.35
+      },
+      "test_accuracy": 0.548
+    },
+    "test_records": 400,
+    "train_records": 3663
+  },
+  "source_probe": {
+    "finding_rate_by_source": {
+      "codeql_tool_test": 0.632,
+      "ghsa_osv": 0.462,
+      "morefixes_commit_message": 0.458,
+      "morefixes_ghsa": 0.471,
+      "morefixes_nvd": 0.455
+    },
+    "recall_by_source_kind": {
+      "real": 0.821,
+      "tool": 0.949
+    },
+    "tool_share": 0.086
+  },
+  "training_approved": {
+    "by_decision": {
+      "abstain": 209,
+      "finding": 778,
+      "no_finding": 689
+    },
+    "by_language": {
+      "go": 465,
+      "javascript": 454,
+      "python": 507,
+      "typescript": 250
+    },
+    "coarse_or_multi_cwe_findings": 209,
+    "commit_chain_findings": 5,
+    "context_mentions_unshown_callee": {
+      "abstain": 1.0,
+      "finding": 0.362,
+      "no_finding": 0.357
+    },
+    "distinct_finding_cwes": 145,
+    "excerpt_lines": {
+      "abstain": {
+        "max": 149,
+        "median": 22,
+        "n": 209,
+        "p90": 88
+      },
+      "finding": {
+        "max": 165,
+        "median": 27.0,
+        "n": 778,
+        "p90": 88
+      },
+      "no_finding": {
+        "max": 155,
+        "median": 30,
+        "n": 689,
+        "p90": 90
+      }
+    },
+    "findings_by_family": {
+      "authn_authz": 87,
+      "code_injection": 23,
+      "command_injection": 49,
+      "crypto_tls_integrity": 30,
+      "deserialization_input_validation": 52,
+      "information_exposure": 47,
+      "other": 91,
+      "path_traversal": 90,
+      "prototype_pollution": 62,
+      "redirect_ssrf": 36,
+      "resource_limits_redos": 116,
+      "sql_injection": 14,
+      "xss_output_encoding": 81
+    },
+    "findings_by_language_and_family": {
+      "go": {
+        "authn_authz": 41,
+        "code_injection": 2,
+        "command_injection": 7,
+        "crypto_tls_integrity": 13,
+        "deserialization_input_validation": 10,
+        "information_exposure": 17,
+        "other": 26,
+        "path_traversal": 28,
+        "redirect_ssrf": 11,
+        "resource_limits_redos": 36,
+        "sql_injection": 4,
+        "xss_output_encoding": 12
+      },
+      "javascript": {
+        "authn_authz": 12,
+        "code_injection": 9,
+        "command_injection": 20,
+        "crypto_tls_integrity": 4,
+        "deserialization_input_validation": 12,
+        "information_exposure": 5,
+        "other": 11,
+        "path_traversal": 10,
+        "prototype_pollution": 42,
+        "redirect_ssrf": 7,
+        "resource_limits_redos": 44,
+        "sql_injection": 5,
+        "xss_output_encoding": 38
+      },
+      "python": {
+        "authn_authz": 25,
+        "code_injection": 8,
+        "command_injection": 15,
+        "crypto_tls_integrity": 11,
+        "deserialization_input_validation": 19,
+        "information_exposure": 22,
+        "other": 45,
+        "path_traversal": 42,
+        "prototype_pollution": 1,
+        "redirect_ssrf": 10,
+        "resource_limits_redos": 21,
+        "sql_injection": 3,
+        "xss_output_encoding": 14
+      },
+      "typescript": {
+        "authn_authz": 9,
+        "code_injection": 4,
+        "command_injection": 7,
+        "crypto_tls_integrity": 2,
+        "deserialization_input_validation": 11,
+        "information_exposure": 3,
+        "other": 9,
+        "path_traversal": 10,
+        "prototype_pollution": 19,
+        "redirect_ssrf": 8,
+        "resource_limits_redos": 15,
+        "sql_injection": 2,
+        "xss_output_encoding": 17
+      }
+    },
+    "findings_top_cwes": {
+      "CWE-1321": 61,
+      "CWE-1333": 26,
+      "CWE-20": 22,
+      "CWE-200": 24,
+      "CWE-22": 79,
+      "CWE-287": 23,
+      "CWE-400": 35,
+      "CWE-601": 24,
+      "CWE-77": 24,
+      "CWE-770": 15,
+      "CWE-78": 22,
+      "CWE-79": 73,
+      "CWE-89": 14,
+      "CWE-918": 11,
+      "CWE-94": 19
+    },
+    "frameworks_in_imports": {
+      "go": {
+        "crypto": 100,
+        "encoding/json": 102,
+        "gin-gonic": 14,
+        "html/template": 17,
+        "k8s.io": 55,
+        "net/http": 179,
+        "os/exec": 23,
+        "path/filepath": 86
+      },
+      "javascript": {
+        "child_process": 41,
+        "crypto": 16,
+        "express": 10,
+        "fs": 61,
+        "jsonwebtoken": 7,
+        "lodash": 25,
+        "path": 61,
+        "url": 28
+      },
+      "python": {
+        "django": 46,
+        "flask": 34,
+        "requests": 28,
+        "sqlalchemy": 23,
+        "subprocess": 47,
+        "tornado": 18,
+        "urllib": 79,
+        "werkzeug": 19
+      },
+      "typescript": {
+        "child_process": 13,
+        "crypto": 15,
+        "express": 9,
+        "fs": 31,
+        "lodash": 4,
+        "path": 37,
+        "react": 4,
+        "url": 16
+      }
+    },
+    "multi_function_findings": 31,
+    "records": 1676,
+    "records_per_repository": {
+      "max": 24,
+      "median": 2.0,
+      "n": 584,
+      "p90": 5
+    },
+    "repositories": 584,
+    "span_kind": {
+      "changed_lines": 490,
+      "insertion_point": 215,
+      "mixed": 73
+    },
+    "span_lines": {
+      "max": 39,
+      "median": 2.0,
+      "n": 778,
+      "p90": 8
+    },
+    "top10_repository_share": 0.087
+  }
+}

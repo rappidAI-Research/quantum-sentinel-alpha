@@ -1148,6 +1148,17 @@ def review_packages(config: GardenConfig, log: Any = print) -> list[dict[str, An
     if cohort is None and cohort_path.is_file():
         document = json.loads(cohort_path.read_text(encoding="utf-8"))
         cohort = {r["repository_key"] for r in document["repositories"] if r["proposed_decision"] == "recommended_for_review"}
+    elif cohort is not None and (config.raw.get("query_tests") or (config.raw.get("discovery") or {}).get("morefixes")) and cohort_path.is_file():
+        # Garden v6: the sample also covers what the open decisions would add (recommended and tier B extension
+        # repositories, and the CodeQL tool tests), so the review checks the new sources before they are approved
+        document = json.loads(cohort_path.read_text(encoding="utf-8"))
+        cohort |= {
+            r["repository_key"]
+            for r in document["repositories"] + document.get("extension_repositories", [])
+            if str(r.get("decision_group", "")).startswith(("recommended", "extension:"))
+        }
+        if config.raw.get("query_tests"):
+            cohort.add("github/codeql")
     index = human_review.write_packages(
         records,
         config.workdir / "cache" / "osv",
@@ -1174,12 +1185,13 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
         from sentinel.garden import morefixes
 
         index = morefixes.load_index(morefixes_index_dir(config))
-        cache: dict[str, list[dict[str, Any]]] = {}
+        cache: dict[tuple[str, str], list[dict[str, Any]]] = {}
 
-        def repository_vulns(key: str) -> list[dict[str, Any]]:
-            if key not in cache:
-                cache[key] = morefixes.repository_vulns(index, key)
-            return cache[key]
+        def repository_vulns(key: str, path: str) -> list[dict[str, Any]]:
+            # only fix commits whose recorded changes touch the record's file can change its function
+            if (key, path) not in cache:
+                cache[(key, path)] = morefixes.repository_vulns(index, key, path)
+            return cache[(key, path)]
 
         repository_packages = defaultdict(set)
         for c in candidates:

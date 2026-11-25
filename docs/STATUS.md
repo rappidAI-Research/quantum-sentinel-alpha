@@ -8,6 +8,18 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
 
 ## Completed
 
+### Sentinel Garden v6: sources beyond GHSA/OSV (2026-11-25)
+
+- **Sources** (`docs/GARDEN_V6.md` § 1): MoreFixes (CVE fix commits from NVD and GHSA, Zenodo dump of 2026-06-20) as a discovery index, and CodeQL's security query tests as rule-scoped tool tests. JsVul, PyVul, CVEfixes, Bandit/gosec, SecLLM, Go vulndb and PyPA were checked and not integrated (overlap, missing license, or labels without evidence). The OpenSSF CVE Benchmark is reserved for evaluation; its 99 Garden records are never trained on.
+- **Evidence:** a MoreFixes fix commit must be named by the CVE's NVD references, a GHSA record or its own commit message; 1,501 CVEs with only heuristic fix commits are rejected. Tool-test markers, comments and telling names are removed; one finding per test file (template family).
+- **Negatives:** the later-fix check now covers every known advisory of a repository; it refutes about 10 % of v5's post-fix negatives (160), which are excluded. Tool-test negatives stay pending like defended siblings.
+- **Funnel:** 10,299 candidates + 185 tool-test units; 6,224 records, **5,055 accepted** (v5: 3,898); 222 CWEs among accepted findings.
+- **Authorized today: 1,676 records, 2,153 train examples (184,544 supervised tokens)**, 4 % fewer than v5: 50 v5 records belonged to the OpenSSF benchmark, 15 were refuted.
+- **After the owner decisions** (`data/garden/seed_v6/cohort/`): 2,795 train examples with every decision-ready approval; 3,510 with copyleft repositories as well. 5,000–10,000 are not reachable at this evidence bar (`docs/GARDEN_V6.md` § 7).
+- **Evaluation:** development 239 cases, untouched final test 91 (v5: 9); selection rule v2 with recall ≥ 0.30 and FPR ≤ 0.20 floors.
+- **Training:** fresh adapter, unchanged parameters (`docs/TRAINING_V6.md`, `docs/GPU_RUNBOOK.md` § 15). Not started.
+- **Independent human review:** 147 packages, not performed.
+
 ### Sentinel Garden v5 (2026-11-25)
 
 - **Owner decision:** no training yet, and later only a fresh adapter from Ornith-1.5-9B. The first run's adapter stays as the baseline; the continuation config was removed.

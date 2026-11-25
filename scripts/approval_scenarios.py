@@ -81,6 +81,27 @@ def tool_test_approval(records: list[dict[str, Any]]) -> dict[str, dict[str, Any
     return {}
 
 
+def copyleft_approvals(records: list[dict[str, Any]], approved: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Hypothetical approvals of every repository whose single root license is weak or strong copyleft, bound to
+    that license file, with a placeholder written justification (the gate requires one for non-permissive code).
+    Repositories without any license or with conflicting license files are never included: no permission exists."""
+    out: dict[str, dict[str, Any]] = {}
+    for record in records:
+        key = record["provenance"]["repository_key"]
+        lic = record["provenance"]["license"]
+        if key in approved or key in out or lic["category"] not in {"weak_copyleft", "strong_copyleft"} or len(lic["files"]) != 1:
+            continue
+        out[key] = {
+            "repository_key": key,
+            "decision": "approved_for_training",
+            "license_spdx": lic["detected"],
+            "license_file": lic["files"][0]["path"],
+            "license_file_sha256": lic["files"][0]["sha256"],
+            "non_permissive_justification": "HYPOTHETICAL (scenario only): the owner's written basis for training on copyleft code",
+        }
+    return out
+
+
 def yield_of(config: Any, records: list[dict[str, Any]], sources: dict[str, Any], approvals: dict[str, Any], validated: set[str] | None) -> dict[str, Any]:
     governed = copy.deepcopy(records)
     apply_governance(config, governed, sources, approvals, validated)
@@ -131,6 +152,16 @@ def main(argv: list[str] | None = None) -> int:
         ("3_tool_tests", "+ the CodeQL query-test source and github/codeql (MIT)", s3, a3, None),
         ("4_negative_kinds_validated", "+ defended_sibling and query_test_negative validated by the independent review", s3, a3, {"defended_sibling", "query_test_negative"}),
     ]
+    a5 = {**copyleft_approvals(records, a3), **a3}
+    scenarios.append(
+        (
+            "5_copyleft_with_justification",
+            f"+ the {len(a5) - len(a3)} copyleft repositories (single GPL/LGPL/AGPL/MPL/EPL root license), each with a written justification; never repositories without a license",
+            s3,
+            a5,
+            {"defended_sibling", "query_test_negative"},
+        )
+    )
     result = {"dataset_id": config.dataset_id, "scenarios": []}
     for name, description, sources, approved, validated in scenarios:
         projection = yield_of(config, records, sources, approved, validated)

@@ -236,18 +236,24 @@ def source_probe(records: list[dict[str, Any]]) -> dict[str, Any]:
         return {}
     labelled = [(r, "tool" if source_of(r) == "codeql_tool_test" else "real") for r in records]
     folds = ([x for x in labelled if x[0]["record_id"] < "sg-m"], [x for x in labelled if x[0]["record_id"] >= "sg-m"])
-    correct = total = 0
+    hits: Counter[str] = Counter()
+    seen: Counter[str] = Counter()
     for fit, score in (folds, folds[::-1]):
         if not fit or not score:
             continue
         model = NaiveBayes([(surface_features(r) + [f"lang:{r['input']['language']}"], y) for r, y in fit])
-        correct += sum(1 for r, y in score if model.predict(surface_features(r) + [f"lang:{r['input']['language']}"]) == y)
-        total += len(score)
+        for r, y in score:
+            seen[y] += 1
+            hits[y] += model.predict(surface_features(r) + [f"lang:{r['input']['language']}"]) == y
     rates = {
         source: round(sum(1 for r in group if r["target"]["decision"] == "finding") / len(group), 3)
         for source, group in sorted(_group(records, source_of).items())
     }
-    return {"tool_vs_real_accuracy": round(correct / total, 3) if total else None, "tool_share": round(len(tool) / len(records), 3), "finding_rate_by_source": rates}
+    return {
+        "recall_by_source_kind": {y: round(hits[y] / seen[y], 3) for y in sorted(seen)},  # per class: the tool share is small
+        "tool_share": round(len(tool) / len(records), 3),
+        "finding_rate_by_source": rates,
+    }
 
 
 def _group(records: list[dict[str, Any]], key: Any) -> dict[str, list[dict[str, Any]]]:

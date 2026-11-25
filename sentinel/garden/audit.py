@@ -560,7 +560,7 @@ def run_audit(
     osv_query: OsvQuery,
     workers: int = 8,
     containment: float | None = None,
-    repository_vulns: Callable[[str], list[dict[str, Any]]] | None = None,
+    repository_vulns: Callable[[str, str], list[dict[str, Any]]] | None = None,
     repository_packages: dict[str, set[tuple[str, str]]] | None = None,
 ) -> dict[str, Any]:
     accepted = audit_population(records)
@@ -594,7 +594,7 @@ def run_audit(
                 vulns.extend(found)
         if repository_vulns is not None:
             seen = {v.get("id") for v in vulns}
-            vulns.extend(v for v in repository_vulns(provenance["repository_key"]) if v.get("id") not in seen)
+            vulns.extend(v for v in repository_vulns(provenance["repository_key"], provenance["file_path"]) if v.get("id") not in seen)
         return vulns, unavailable
 
     def audit_group(group_id: str) -> dict[str, Any]:

@@ -1,0 +1,210 @@
+{
+ "dataset_id": "sentinel-garden-v6",
+ "scenarios": [
+  {
+   "decisions": "today's registry and approvals",
+   "repositories": 584,
+   "scenario": "0_current",
+   "train_by_decision": {
+    "abstain": 192,
+    "finding": 712,
+    "no_finding": 634
+   },
+   "train_by_kind": {
+    "caller_abstention": 192,
+    "post_fix": 634,
+    "vulnerable": 712
+   },
+   "train_by_language": {
+    "go": 417,
+    "javascript": 417,
+    "python": 469,
+    "typescript": 235
+   },
+   "train_by_source": {
+    "ghsa_osv": 1538
+   },
+   "train_detection_examples": 1538,
+   "train_examples_total": 2153,
+   "train_patch_examples": 615,
+   "training_approved_records": 1676,
+   "unique_vulnerabilities_in_train": 712,
+   "validation_detection_examples": 138
+  },
+  {
+   "decisions": "+ MoreFixes, NVD and the MoreFixes fix-commit source approved",
+   "repositories": 584,
+   "scenario": "1_real_world_sources",
+   "train_by_decision": {
+    "abstain": 192,
+    "finding": 727,
+    "no_finding": 646
+   },
+   "train_by_kind": {
+    "caller_abstention": 192,
+    "post_fix": 646,
+    "vulnerable": 727
+   },
+   "train_by_language": {
+    "go": 430,
+    "javascript": 420,
+    "python": 480,
+    "typescript": 235
+   },
+   "train_by_source": {
+    "ghsa_osv": 1538,
+    "morefixes_commit_message": 9,
+    "morefixes_ghsa": 6,
+    "morefixes_nvd": 12
+   },
+   "train_detection_examples": 1565,
+   "train_examples_total": 2191,
+   "train_patch_examples": 626,
+   "training_approved_records": 1711,
+   "unique_vulnerabilities_in_train": 727,
+   "validation_detection_examples": 146
+  },
+  {
+   "decisions": "+ the 686 repositories the v6 cohort recommends (tier A and B extension)",
+   "repositories": 648,
+   "scenario": "2_recommended_repositories",
+   "train_by_decision": {
+    "abstain": 212,
+    "finding": 816,
+    "no_finding": 728
+   },
+   "train_by_kind": {
+    "caller_abstention": 212,
+    "post_fix": 728,
+    "vulnerable": 816
+   },
+   "train_by_language": {
+    "go": 443,
+    "javascript": 521,
+    "python": 543,
+    "typescript": 249
+   },
+   "train_by_source": {
+    "ghsa_osv": 1538,
+    "morefixes_commit_message": 19,
+    "morefixes_ghsa": 36,
+    "morefixes_nvd": 163
+   },
+   "train_detection_examples": 1756,
+   "train_examples_total": 2463,
+   "train_patch_examples": 707,
+   "training_approved_records": 1902,
+   "unique_vulnerabilities_in_train": 816,
+   "validation_detection_examples": 146
+  },
+  {
+   "decisions": "+ the CodeQL query-test source and github/codeql (MIT)",
+   "repositories": 649,
+   "scenario": "3_tool_tests",
+   "train_by_decision": {
+    "abstain": 212,
+    "finding": 1015,
+    "no_finding": 728
+   },
+   "train_by_kind": {
+    "caller_abstention": 212,
+    "post_fix": 728,
+    "query_test_finding": 199,
+    "vulnerable": 816
+   },
+   "train_by_language": {
+    "go": 473,
+    "javascript": 666,
+    "python": 551,
+    "typescript": 265
+   },
+   "train_by_source": {
+    "codeql_tool_test": 199,
+    "ghsa_osv": 1538,
+    "morefixes_commit_message": 19,
+    "morefixes_ghsa": 36,
+    "morefixes_nvd": 163
+   },
+   "train_detection_examples": 1955,
+   "train_examples_total": 2662,
+   "train_patch_examples": 707,
+   "training_approved_records": 2101,
+   "unique_vulnerabilities_in_train": 816,
+   "validation_detection_examples": 146
+  },
+  {
+   "decisions": "+ defended_sibling and query_test_negative validated by the independent review",
+   "repositories": 649,
+   "scenario": "4_negative_kinds_validated",
+   "train_by_decision": {
+    "abstain": 212,
+    "finding": 1015,
+    "no_finding": 861
+   },
+   "train_by_kind": {
+    "caller_abstention": 212,
+    "defended_sibling": 17,
+    "post_fix": 728,
+    "query_test_finding": 199,
+    "query_test_negative": 116,
+    "vulnerable": 816
+   },
+   "train_by_language": {
+    "go": 508,
+    "javascript": 749,
+    "python": 562,
+    "typescript": 269
+   },
+   "train_by_source": {
+    "codeql_tool_test": 315,
+    "ghsa_osv": 1549,
+    "morefixes_commit_message": 19,
+    "morefixes_ghsa": 37,
+    "morefixes_nvd": 168
+   },
+   "train_detection_examples": 2088,
+   "train_examples_total": 2795,
+   "train_patch_examples": 707,
+   "training_approved_records": 2234,
+   "unique_vulnerabilities_in_train": 816,
+   "validation_detection_examples": 146
+  },
+  {
+   "decisions": "+ the 215 copyleft repositories (single GPL/LGPL/AGPL/MPL/EPL root license), each with a written justification; never repositories without a license",
+   "repositories": 803,
+   "scenario": "5_copyleft_with_justification",
+   "train_by_decision": {
+    "abstain": 263,
+    "finding": 1244,
+    "no_finding": 1084
+   },
+   "train_by_kind": {
+    "caller_abstention": 263,
+    "defended_sibling": 24,
+    "post_fix": 944,
+    "query_test_finding": 199,
+    "query_test_negative": 116,
+    "vulnerable": 1045
+   },
+   "train_by_language": {
+    "go": 607,
+    "javascript": 927,
+    "python": 756,
+    "typescript": 301
+   },
+   "train_by_source": {
+    "codeql_tool_test": 315,
+    "ghsa_osv": 1803,
+    "morefixes_commit_message": 36,
+    "morefixes_ghsa": 60,
+    "morefixes_nvd": 377
+   },
+   "train_detection_examples": 2591,
+   "train_examples_total": 3510,
+   "train_patch_examples": 919,
+   "training_approved_records": 2737,
+   "unique_vulnerabilities_in_train": 1045,
+   "validation_detection_examples": 146
+  }
+ ]
+}

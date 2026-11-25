@@ -129,8 +129,11 @@ def test_repository_vulns_lists_every_cve_with_a_fix_commit_reference() -> None:
     repo = "https://github.com/acme/app"
     fixes = [{"cve_id": "CVE-2022-0020", "hash": SHA_A, "repo_url": repo}, {"cve_id": "CVE-2022-0021", "hash": SHA_B, "repo_url": "https://github.com/other/x"}]
     index = _index(fixes, [_cve("CVE-2022-0020", [])], {}, {})
+    index["changes"][SHA_A] = [{"hash": SHA_A, "new_path": "src/app.py", "old_path": "src/app.py"}]
     vulns = morefixes.repository_vulns(index, "acme/app")
     assert [v["id"] for v in vulns] == ["CVE-2022-0020"]
+    assert [v["id"] for v in morefixes.repository_vulns(index, "acme/app", "src/app.py")] == ["CVE-2022-0020"]
+    assert morefixes.repository_vulns(index, "acme/app", "src/other.py") == []
     assert {"type": "FIX", "url": f"https://github.com/acme/app/commit/{SHA_A}"} in vulns[0]["references"]
 
 
