@@ -10,7 +10,7 @@ from typing import Any
 
 import pytest
 
-from sentinel.garden import morefixes, querytests
+from sentinel.garden import code, morefixes, querytests
 from sentinel.garden.pipeline import (
     apply_external_benchmark,
     load_config,
@@ -386,3 +386,11 @@ def test_psf_license_is_not_mistaken_for_the_gpl_it_mentions() -> None:
     )
     assert detect_license_text(psf) == "PSF-2.0" and category_of("PSF-2.0") == "permissive"
     assert detect_license_text("GNU GENERAL PUBLIC LICENSE Version 2") == "GPL-2.0"
+
+
+def test_docstrings_of_indented_methods_are_removed() -> None:
+    source = 'class Handler:\n    def show(self, name):\n        """This query is safe."""\n        q = "SELECT %s" % name\n        return db.execute(q)\n'
+    fn = next(f for f in code.find_functions("python", source) if f.name == "show")
+    cleaned, mapping = querytests.clean_excerpt("python", source, fn)
+    assert "safe" not in cleaned and "def show" in cleaned
+    assert mapping[5] == 3  # the return line follows the signature and the assignment

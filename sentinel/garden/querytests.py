@@ -29,6 +29,7 @@ from __future__ import annotations
 import hashlib
 import re
 import subprocess
+import textwrap
 from dataclasses import dataclass, field
 from datetime import UTC
 from pathlib import Path, PurePosixPath
@@ -209,7 +210,8 @@ def clean_excerpt(language: str, source: str, fn: code.Function) -> tuple[str, d
         return None
     drop: set[int] = set()
     if language == "python":
-        drop = {fn.start - 1 + n for n in code.python_docstring_lines(excerpt)}
+        # a method or nested function keeps its indentation: dedent (line numbers are unchanged) or it does not parse
+        drop = {fn.start - 1 + n for n in code.python_docstring_lines(textwrap.dedent(excerpt))}
     kept: list[str] = []
     mapping: dict[int, int] = {}
     for offset, (original, text) in enumerate(zip(lines[fn.start - 1 : fn.end], stripped)):
