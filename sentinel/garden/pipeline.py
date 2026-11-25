@@ -1498,15 +1498,25 @@ def check(config: GardenConfig) -> dict[str, Any]:
     covered = source_approved_advisories(config)
     if covered is not None:
         for row in rows:
+            if row["provenance"]["code_source_id"] != config.code_source_id:
+                continue  # Garden v6: other sources are gated by their own registry entries
             if row["provenance"]["advisory_id"] not in covered and "source_approval_not_extended" not in row["governance"]["blockers"]:
                 raise ValueError(f"{row['record_id']}: candidate outside the approved list without its blocker (rerun curate)")
     history = evaluation_history(config)
+    benchmarks = external_benchmarks(config)
     for row in rows:
         if history is None:
             if "evaluation_role" in row:
                 raise ValueError(f"{row['record_id']}: evaluation role without an `evaluation` section in the config")
             continue
-        if row.get("evaluation_role") != evaluation_role(row, *history):
+        expected = evaluation_role(row, *history)
+        if benchmarks:
+            probe = {"provenance": row["provenance"], "governance": dict(row["governance"]), "evaluation_role": expected}
+            apply_external_benchmark(probe, benchmarks)
+            expected = probe["evaluation_role"]
+            if expected == "external_benchmark" and row["governance"]["approval_status"] != "excluded":
+                raise ValueError(f"{row['record_id']}: external benchmark record must be excluded (rerun curate)")
+        if row.get("evaluation_role") != expected:
             raise ValueError(f"{row['record_id']}: evaluation role differs from the one the split and history give (rerun curate)")
         if row["evaluation_role"] in UNTOUCHED_ROLES and row["governance"]["approval_status"] == "training_approved":
             raise ValueError(f"{row['record_id']}: {row['evaluation_role']} record must never be training-approved")
