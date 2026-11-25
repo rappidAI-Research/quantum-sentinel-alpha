@@ -131,6 +131,10 @@ evaluation:
 # repository under the frozen split policy, and tool tests are exempt from the temporal cutoff only).
 query_tests:
   revision: 4136c26154e3de8f8a301858bafd369ce09e07f9
+  # A test file is one template family (its alert functions are variants of one rule pattern): one finding
+  # per file, every negative. Without the cap 548 findings came from 200 files and the source was 83.5 %
+  # findings against 44 % in real-world records, while surface features recognise a tool test 94 % of the time.
+  max_findings_per_file: 1
 
 # Garden v6: the later-fix check of post-fix and defended-sibling negatives uses every known advisory of the
 # repository (all its packages' OSV advisories and every CVE MoreFixes links to a fix commit there).

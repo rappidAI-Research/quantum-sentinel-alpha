@@ -87,7 +87,7 @@ def composition(records: list[dict[str, Any]]) -> dict[str, Any]:
             for decision in ("finding", "no_finding", "abstain")
         },
         "span_lines": _quantiles([r["target"]["end_line"] - r["target"]["start_line"] + 1 for r in findings]),
-        "span_kind": dict(sorted(Counter(r["localization"].get("span_kind") for r in findings).items())),
+        "span_kind": dict(sorted(Counter(r["localization"].get("span_kind") or r["localization"]["method"] for r in findings).items())),
         "multi_function_findings": sum(1 for r in findings if r["provenance"].get("excerpt_functions")),
         "commit_chain_findings": sum(1 for r in findings if r["provenance"].get("fix_commit_chain")),
         "coarse_or_multi_cwe_findings": sum(1 for r in findings if "coarse_cwe" in r.get("quality", {}).get("flags", []) or r["target"]["alternate_cwes"]),

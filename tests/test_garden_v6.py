@@ -343,3 +343,13 @@ def test_commit_message_naming_the_cve_is_the_weakest_accepted_grade() -> None:
     added, outcomes, _, _ = morefixes.discover_candidates(index, [], SETTINGS, set(), 2, "salt")
     assert [c["fix_evidence"] for c in added] == ["commit_message_reference"] and outcomes == {"candidate_commit_message_reference": 1}
     assert not morefixes.names_advisory("see CVE-2022-00301", ["CVE-2022-0030"])
+
+
+def test_one_finding_per_test_file_every_negative_kept() -> None:
+    def rec(rid: str, kind: str, path: str) -> dict[str, Any]:
+        return {"record_id": rid, "kind": kind, "provenance": {"file_path": path}}
+
+    records = [rec("a", "query_test_finding", "t/x.js"), rec("b", "query_test_finding", "t/x.js"), rec("c", "query_test_finding", "t/y.js"),
+               rec("d", "query_test_negative", "t/x.js"), rec("e", "query_test_negative", "t/x.js")]
+    assert [r["record_id"] for r in querytests.cap_template_families(records, 1)] == ["a", "c", "d", "e"]
+    assert querytests.cap_template_families(records, None) == records

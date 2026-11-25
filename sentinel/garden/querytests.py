@@ -338,6 +338,7 @@ def build_records(
     rejected_cwes: set[str],
     max_cwes: int,
     log: Any = print,
+    max_findings_per_file: int | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """(records, build log rows) for every inline-expectation security test unit at `revision`."""
     from sentinel.garden import build as build_module
@@ -420,7 +421,9 @@ def build_records(
                     "label_scope": f"no {cwes[0]} weakness according to the expectations of CodeQL rule {unit.query.query_id}; other weaknesses are not verified",
                 }
                 localization = {"method": "not_applicable"}
-            group = build_module.stable_id(REPOSITORY_KEY, revision, real_path, fn.name, str(fn.start))
+            # one record per rule: a directory can test several rules on the same file; identical excerpts of
+            # several rules are then exact duplicates (same label) or exact label conflicts (both rejected)
+            group = build_module.stable_id(REPOSITORY_KEY, revision, real_path, fn.name, str(fn.start), unit.query.query_id)
             provenance = {
                 "code_source_id": CODE_SOURCE_ID,
                 "metadata_source_ids": [CODE_SOURCE_ID],
@@ -465,5 +468,29 @@ def build_records(
             )
             count(kind)
         log_rows.append({"advisory_id": f"codeql:{unit.query.query_id}", "repository_key": REPOSITORY_KEY, "test_unit": unit.directory, "outcome": "built" if outcome else "no_usable_function", "records": sum(v for k, v in outcome.items() if k.startswith("query_test")), "detail": dict(sorted(outcome.items()))})
-    records.sort(key=lambda r: r["record_id"])
-    return records, log_rows
+    capped = cap_template_families(records, max_findings_per_file)
+    if len(capped) != len(records):
+        kept: dict[tuple[str, str], int] = {}
+        for record in capped:
+            key = (record["provenance"]["test_unit"], record["provenance"]["advisory_id"])
+            kept[key] = kept.get(key, 0) + 1
+        for row in log_rows:
+            if row["records"]:
+                now = kept.get((row["test_unit"], row["advisory_id"]), 0)
+                row["detail"]["template_family_cap"] = row["records"] - now
+                row["records"] = now
+    capped.sort(key=lambda r: r["record_id"])
+    return capped, log_rows
+
+
+def cap_template_families(records: list[dict[str, Any]], max_findings_per_file: int | None) -> list[dict[str, Any]]:
+    """A test file is one template family: its alert functions are variants of one rule pattern. Keep at most
+    `max_findings_per_file` findings per file (deterministic choice by record id); every negative is kept."""
+    if not max_findings_per_file:
+        return records
+    by_file: dict[str, list[dict[str, Any]]] = {}
+    for record in records:
+        if record["kind"] == "query_test_finding":
+            by_file.setdefault(record["provenance"]["file_path"], []).append(record)
+    kept = {r["record_id"] for group in by_file.values() for r in sorted(group, key=lambda r: r["record_id"])[:max_findings_per_file]}
+    return [r for r in records if r["kind"] != "query_test_finding" or r["record_id"] in kept]

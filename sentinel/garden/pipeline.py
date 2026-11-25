@@ -279,7 +279,9 @@ def build_query_tests(config: GardenConfig, log: Any = print) -> tuple[list[dict
     q = config.raw["query_tests"]
     checkout = querytests.ensure_checkout(config.workdir / "cache", q["revision"], log)
     sel = config.raw["selection"]
-    records, rows = querytests.build_records(checkout, q["revision"], config.extraction, config.dataset_id, set(sel["rejected_cwes"]), sel["max_cwes"], log)
+    records, rows = querytests.build_records(
+        checkout, q["revision"], config.extraction, config.dataset_id, set(sel["rejected_cwes"]), sel["max_cwes"], log, q.get("max_findings_per_file")
+    )
     log(f"build: {len(records)} query-test records from {len(rows)} test units")
     return records, rows
 
