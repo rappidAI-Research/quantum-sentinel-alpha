@@ -66,6 +66,12 @@ class ExtractionSettings:
     commit_chains: bool = False  # several fix commits that form one contiguous first-parent chain
     context_callee_notes: bool = False  # every context names the same-file functions the excerpt calls but does not show
     max_context_callees: int = 8
+    # Garden v5 (docs/GARDEN_V5.md)
+    multi_function_primary_evidence: bool = False  # a combined excerpt's labelled site needs evidence, else rejected
+    context_caller_notes: bool = False  # every context names the same-file functions that call the excerpt
+    max_context_callers: int = 5
+    defended_siblings: bool = False  # unchanged functions that already apply the fix's defence -> scoped no_finding
+    strip_fix_security_comments: bool = False  # comment lines the fix added that talk about security are left out
 
 
 # Build, packaging and test tooling that is not shipped runtime code (Garden v2, `tooling_files_excluded`).
@@ -397,8 +403,8 @@ def _excerpt_line(blocks: list[tuple[int, int]], file_line: int) -> int:
     raise ValueError(f"line {file_line} is outside the excerpt")
 
 
-def _fixed_excerpt(change: _Change | list[_Change]) -> tuple[str, list[list[int]]]:
-    """The fixed function(s) plus any top-level code the fix added, in file order."""
+def _fixed_excerpt(change: _Change | list[_Change], drop: set[int] | None = None) -> tuple[str, list[list[int]]]:
+    """The fixed function(s) plus any top-level code the fix added, in file order (without the `drop` lines)."""
     changes = change if isinstance(change, list) else [change]
     lines = changes[0].new_source.splitlines()
     blocks = [(c.new_function.start, c.new_function.end) for c in changes]
@@ -413,7 +419,8 @@ def _fixed_excerpt(change: _Change | list[_Change]) -> tuple[str, list[list[int]
     for (_, previous_end), (start, _) in zip(blocks, blocks[1:]):
         if start <= previous_end:
             raise Rejected("overlapping_fix_blocks")
-    text = "\n\n".join("\n".join(lines[a - 1 : b]) for a, b in blocks) + "\n"
+    drop = drop or set()
+    text = "\n\n".join("\n".join(lines[n - 1] for n in range(a, b + 1) if n not in drop) for a, b in blocks) + "\n"
     return text, [[a, b] for a, b in blocks]
 
 
@@ -521,14 +528,15 @@ def _patch(path: str, before: str, after: str) -> str:
     return "\n".join(diff) + "\n"
 
 
-def _diff_consistent(change: _Change | list[_Change], patch: str) -> bool:
+def _diff_consistent(change: _Change | list[_Change], patch: str, drop: set[int] | None = None) -> bool:
     """The function-level patch must contain exactly the upstream diff's non-blank changed lines."""
     changes = change if isinstance(change, list) else [change]
     new_lines = changes[0].new_source.splitlines()
     hunks = [h for c in changes for h in c.hunks + c.trivial_hunks]
     removed = sorted(t for h in hunks for _, t in h.removed if t.strip())
-    added = [t for h in hunks for _, t in h.added if t.strip()]
-    added += [new_lines[n - 1] for c in changes for a, b in c.additions for n in range(a, b + 1) if new_lines[n - 1].strip()]
+    drop = drop or set()
+    added = [t for h in hunks for n, t in h.added if t.strip() and n not in drop]
+    added += [new_lines[n - 1] for c in changes for a, b in c.additions for n in range(a, b + 1) if new_lines[n - 1].strip() and n not in drop]
     body = [line for line in patch.splitlines()[2:] if not line.startswith("@@")]
     patch_removed = sorted(line[1:] for line in body if line.startswith("-") and line[1:].strip())
     patch_added = sorted(line[1:] for line in body if line.startswith("+") and line[1:].strip())
@@ -565,6 +573,100 @@ def _find_caller(change: _Change, settings: ExtractionSettings) -> tuple[code.Fu
                 continue  # `self.f()` / `this.f()` in another class reaches that class's `f`
         return caller, number
     return None
+
+
+def _norm_lines(lines: list[str]) -> tuple[str, ...]:
+    return tuple(sorted(t.strip() for t in lines if t.strip()))
+
+
+def primary_site_evidence(changes: list[_Change], advisory_text: str, commit_message: str) -> tuple[_Change, str] | None:
+    """Garden v5: which changed function of a combined excerpt holds the labelled span, and why.
+
+    - the advisory (or else the fix commit message) names exactly one of the changed functions;
+    - every site makes the same edit (same removed and added lines), so any site is the weakness.
+    Otherwise there is no evidence for one location and the fix is not used (never the "largest" one)."""
+    for text, evidence in ((advisory_text, "advisory_names_function"), (commit_message, "commit_message_names_function")):
+        named = [c for c in changes if not c.old_function.name.startswith("<") and re.search(rf"(?<![\w$]){re.escape(c.old_function.name)}(?![\w$])", text)]
+        if len({c.old_function.name for c in named}) == 1:
+            return min(named, key=lambda c: c.old_function.start), evidence
+    edits = {(_norm_lines([t for h in c.hunks for _, t in h.removed]), _norm_lines([t for h in c.hunks for _, t in h.added])) for c in changes}
+    if len(edits) == 1:
+        return min(changes, key=lambda c: c.old_function.start), "identical_change_at_every_site"
+    return None
+
+
+_SECURITY_COMMENT = re.compile(r"(?i)secur|vulnerab|sanitiz|escap|inject|travers|xss|csrf|ssrf|prevent|attack|malicious|untrusted|cve-|ghsa-|exploit|bypass|validat")
+_IMPORT_LINE = re.compile(r"^\s*(import|from|require|use)\b|\brequire\(")
+_CALL_NAME = re.compile(r"(?<![\w$])([A-Za-z_$][\w$]*)\s*\(")
+_NOT_A_GUARD = {"if", "for", "while", "switch", "return", "func", "function", "catch", "elif", "and", "or", "not", "print", "len", "str", "int", "make", "append", "string"}
+
+
+# Names of defensive calls (escaping, sanitizing, path containment, permission checks, constant-time
+# comparison, safe parsers, size limits). Deliberately narrower than the audit's fix-pattern indicators:
+# a guard must name a defence, not merely touch the area (an error type, a getter or a log call never counts).
+_DEFENCE = re.compile(
+    r"(?i)(escape|sanitiz|quote|secure_?filename|safe_?join|safe_?path|is_?safe|validat|verify|"
+    r"check_?(perm|auth|access|owner|path|origin|host|scope|csrf)|authori[sz]|has_?perm|permission|"
+    r"require_?(auth|login|perm|admin|user)|realpath|abspath|normpath|commonpath|is_relative_to|"
+    r"literal_eval|safe_load|compare_digest|timingsafeequal|constanttimecompare|purify|encodeuri|"
+    r"htmlescape|bleach|clean_?html|is_?allowed|allow_?list|deny_?list|whitelist|blacklist|evalsymlinks|"
+    r"islocal|max_?(size|len|length|depth|bytes))"
+)
+_NOT_A_DEFENCE = re.compile(r"(?i)(error|exception|log|warn|print|fail)$|^(get|set|new)[A-Z_]")
+
+
+def fix_guards(vulnerable_code: str, added_lines: list[str], cwe: str) -> list[str]:
+    """Calls the fix added that the vulnerable function never made and that name a defence (`_DEFENCE`),
+    e.g. `secure_filename`, `escape`, `compare_digest`, `checkPermission`."""
+    before = set(_CALL_NAME.findall(vulnerable_code))
+    found = []
+    for line in added_lines:
+        for name in _CALL_NAME.findall(line):
+            if len(name) >= 5 and name not in before and name not in _NOT_A_GUARD and name not in found and _DEFENCE.search(name) and not _NOT_A_DEFENCE.search(name):
+                found.append(name)
+    return found
+
+
+def defended_siblings(change: _Change, guards: list[str], settings: ExtractionSettings) -> list[tuple[code.Function, str]]:
+    """Functions of the fixed file the fix did not touch that already called one of the fix's guards at
+    the vulnerable revision: code the maintainers' own fix treats as the defended form."""
+    if not guards:
+        return []
+    old_lines, new_lines = change.old_source.splitlines(), change.new_source.splitlines()
+    old_by_text = {"\n".join(old_lines[f.start - 1 : f.end]): f for f in code.find_functions(change.language, change.old_source)}
+    touched = [(change.new_function.start, change.new_function.end), *change.additions]
+    found = []
+    for fn in code.find_functions(change.language, change.new_source):
+        if fn.name.startswith("<") or fn.name == change.new_function.name:
+            continue
+        if any(a <= fn.end and fn.start <= b for a, b in touched) or not settings.min_function_lines <= fn.length <= settings.max_function_lines:
+            continue
+        text = "\n".join(new_lines[fn.start - 1 : fn.end])
+        if text not in old_by_text:
+            continue  # changed by the fix (or moved): not evidence of the defended form before the fix
+        guard = next((g for g in guards if re.search(rf"(?<![\w$]){re.escape(g)}\s*\(", text)), None)
+        if guard and code.excerpt_is_well_formed(change.language, text + "\n"):
+            found.append((fn, guard))
+    return found
+
+
+def _callers(language: str, source: str, blocks: list[tuple[int, int]], names: list[str], limit: int) -> list[str]:
+    """Same-file functions outside the excerpt that call one of the excerpt's functions by name."""
+    functions = code.find_functions(language, source)
+    found: list[str] = []
+    for name in names:
+        if name.startswith("<"):
+            continue
+        for line in code.call_lines(language, source, name):
+            if any(a <= line <= b for a, b in blocks):
+                continue
+            caller = code.innermost(functions, line, line)
+            if caller is None or caller.name.startswith("<") or caller.name in found or caller.name in names:
+                continue
+            if any(a <= caller.start <= b for a, b in blocks):
+                continue
+            found.append(caller.name)
+    return sorted(found)[:limit]
 
 
 def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSettings, dataset_id: str, code_source_id: str, metadata_source_ids: list[str]) -> list[dict[str, Any]]:
@@ -611,7 +713,22 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     def removed_lines(c: _Change) -> int:
         return sum(1 for h in c.hunks for n, _ in h.removed if n not in c.old_trivial_lines)
 
-    change = min(changes, key=lambda c: (-removed_lines(c), -sum(h.changed_line_count for h in c.hunks), c.old_function.start)) if multi else changes[0]
+    primary_evidence = None
+    if multi and settings.multi_function_primary_evidence:
+        message = ""
+        if hasattr(repo, "commit_message"):
+            try:
+                message = repo.commit_message(info.sha)
+            except GitError:
+                message = ""
+        found = primary_site_evidence(changes, candidate["summary"], message)
+        if found is None:
+            raise Rejected("multi_function_site_unevidenced", str(len(changes)))
+        change, primary_evidence = found
+    elif multi:
+        change = min(changes, key=lambda c: (-removed_lines(c), -sum(h.changed_line_count for h in c.hunks), c.old_function.start))
+    else:
+        change = changes[0]
     fn, new_fn = change.old_function, change.new_function
     added_lines = sum(b - a + 1 for c in changes for a, b in c.additions)
     changed_lines = sum(h.changed_line_count for c in changes for h in c.hunks + c.trivial_hunks) + added_lines
@@ -621,9 +738,18 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
         if not settings.min_function_lines <= f.length <= settings.max_function_lines:
             raise Rejected("function_size_out_of_bounds", str(f.length))
 
+    # v5: a comment line the fix added that names the weakness ("prevent path traversal") would label the
+    # post-fix excerpt by itself; it is left out of the fixed excerpt (and so of the patch)
+    drop: set[int] = set()
+    if settings.strip_fix_security_comments:
+        for c in changes:
+            for h in c.hunks + c.trivial_hunks:
+                for n, t in h.added:
+                    if n in c.new_noise_lines and _SECURITY_COMMENT.search(t) and not _IMPORT_LINE.match(t):
+                        drop.add(n)
     vulnerable_blocks = [(c.old_function.start, c.old_function.end) for c in changes]
     vulnerable_code = _blocks_excerpt(change.old_source, vulnerable_blocks) if multi else _excerpt(change.old_source, fn)
-    fixed_code, fixed_ranges = _fixed_excerpt(changes if multi else change)
+    fixed_code, fixed_ranges = _fixed_excerpt(changes if multi else change, drop)
     if max(len(vulnerable_code), len(fixed_code)) > settings.max_excerpt_chars:
         raise Rejected("excerpt_too_large")
     if code.normalized_sha256(change.language, vulnerable_code) == code.normalized_sha256(change.language, fixed_code):
@@ -704,12 +830,17 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
             "provenance": provenance,
         }
 
-    def note(source: str, blocks: list[tuple[int, int]]) -> tuple[str, list[str]]:
-        return callee_note(language, change.path, source, blocks, settings) if settings.context_callee_notes else ("", [])
+    def note(source: str, blocks: list[tuple[int, int]], functions: list[str] | None = None) -> tuple[str, list[str]]:
+        text, listed = callee_note(language, change.path, source, blocks, settings) if settings.context_callee_notes else ("", [])
+        if settings.context_caller_notes and functions:
+            callers = _callers(language, source, blocks, functions, settings.max_context_callers)
+            if callers:
+                text = (text + " " if text else "") + "Called in this file by: " + ", ".join(f"`{c}`" for c in callers) + "."
+        return text, listed
 
-    vulnerable_note = note(change.old_source, vulnerable_blocks)[0]
-    fixed_note = note(change.new_source, [(a, b) for a, b in fixed_ranges])[0]
     new_names = [c.new_function.name for c in changes]
+    vulnerable_note = note(change.old_source, vulnerable_blocks, names)[0]
+    fixed_note = note(change.new_source, [(a, b) for a, b in fixed_ranges], new_names)[0]
     context = _context(language, change.path, fn.name, change.old_source, settings, extra=vulnerable_note, names=names if multi else None)
     fixed_context = _context(language, change.path, new_fn.name, change.new_source, settings, extra=fixed_note, names=new_names if multi else None)
     localization = {
@@ -718,13 +849,17 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
         "file_span": [span_start, span_end],
         "changed_lines": changed_lines,
         "fix_added_top_level_lines": added_lines,
-        "diff_consistent": _diff_consistent(changes if multi else change, patch),
+        "diff_consistent": _diff_consistent(changes if multi else change, patch, drop),
     }
+    if drop:
+        localization["fix_comment_lines_left_out"] = len(drop)
     if multi:
         # every changed site, in excerpt lines; the label span is the primary one (see above)
         sites = [_span(c) for c in changes]
         localization["sites"] = [[_excerpt_line(vulnerable_blocks, a), _excerpt_line(vulnerable_blocks, b)] for a, b, _ in sites]
         localization["primary_function_lines"] = fn.length
+        if primary_evidence:
+            localization["primary_evidence"] = primary_evidence
     start_line = _excerpt_line(vulnerable_blocks, span_start) if multi else span_start - fn.start + 1
     end_line = _excerpt_line(vulnerable_blocks, span_end) if multi else span_end - fn.start + 1
     records = [
@@ -771,12 +906,41 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
         ),
     ]
 
+    if settings.defended_siblings and not multi:
+        added = [t for h in change.hunks for n, t in h.added if n not in change.new_trivial_lines]
+        added += [change.new_source.splitlines()[n - 1] for a, b in change.additions for n in range(a, b + 1)]
+        guards = fix_guards(vulnerable_code, added, cwe)
+        for sibling, guard in defended_siblings(change, guards, settings)[:1]:
+            sibling_code = _excerpt(change.new_source, sibling)
+            sibling_note = note(change.new_source, [(sibling.start, sibling.end)], [sibling.name])[0]
+            records.append(
+                record(
+                    "defended_sibling",
+                    "no_finding",
+                    sibling_code,
+                    info.sha,
+                    sibling,
+                    _context(language, change.path, sibling.name, change.new_source, settings, extra=sibling_note),
+                    {
+                        "cwe": None,
+                        "alternate_cwes": [],
+                        "start_line": None,
+                        "end_line": None,
+                        "evidence": f"`{sibling.name}` already applies `{guard}`, the defence the upstream fix for the {cwe} weakness added to `{fn.name}`.",
+                        "evidence_source": "derived_template",
+                        "patch": None,
+                        "label_scope": f"no {cwe} weakness of the kind fixed in `{fn.name}`: the function applies `{guard}`, the defence the maintainers' fix chose, and the fix left it unchanged; other weaknesses are not verified",
+                    },
+                    {"method": "not_applicable", "defence_call": guard, "defended_like": fn.name},
+                )
+            )
+
     caller = None if multi else _find_caller(change, settings)  # one withheld function per abstention record
     if caller is not None:
         caller_fn, call_line = caller
         caller_code = _excerpt(change.old_source, caller_fn)
         if settings.context_callee_notes:
-            caller_note, listed = note(change.old_source, [(caller_fn.start, caller_fn.end)])
+            caller_note, listed = note(change.old_source, [(caller_fn.start, caller_fn.end)], [caller_fn.name])
             if fn.name not in listed:
                 return records  # the withheld callee must be named like every other not-shown callee
         else:

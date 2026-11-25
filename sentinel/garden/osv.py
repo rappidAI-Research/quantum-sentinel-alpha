@@ -22,6 +22,7 @@ _COMMIT_URL = re.compile(
     r"^https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?/(?:pull/\d+/)?commits?/([0-9a-fA-F]{7,40})(?:[/?#].*)?$"
 )
 _REPO_URL = re.compile(r"^https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?/?$")
+_PULL_URL = re.compile(r"^https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?/pull/(\d+)(?:/files|/commits)?/?(?:[?#].*)?$")
 CWE_ID = re.compile(r"^CWE-[1-9][0-9]*$")
 USER_AGENT = "quantum-sentinel-alpha-sentinel-garden/1.0"
 
@@ -99,6 +100,39 @@ def fix_commit_refs(record: dict[str, Any]) -> list[tuple[str, str, str]]:
     return sorted(refs)
 
 
+def pull_request_refs(record: dict[str, Any]) -> list[tuple[str, str, int]]:
+    """Distinct (owner, repo, number) pull-request references (Garden v5: advisories without a fix commit)."""
+    refs: set[tuple[str, str, int]] = set()
+    for reference in record.get("references") or []:
+        match = _PULL_URL.match(str(reference.get("url", "")))
+        if match:
+            refs.add((match.group(1), match.group(2), int(match.group(3))))
+    return sorted(refs)
+
+
+def merged_commit(number: int, commits: list[dict[str, str]]) -> dict[str, Any]:
+    """The default-branch commit that merged pull request `number`, from a commit search result.
+
+    Accepted: exactly one commit whose first message line is GitHub's merge-commit line
+    ("Merge pull request #N from ...") or a squash/rebase title ending in "(#N)". Its first-parent
+    diff is then the pull request's change. Anything else is not guessed."""
+    merge = re.compile(rf"^Merge pull request #{number} from \S+")
+    squash = re.compile(rf"\(#{number}\)\s*$")
+    found = []
+    for commit in commits:
+        line = (commit.get("message") or "").splitlines()[0] if commit.get("message") else ""
+        if merge.match(line):
+            found.append({"commit": commit["sha"], "kind": "merge_commit", "first_line": line[:200]})
+        elif squash.search(line):
+            found.append({"commit": commit["sha"], "kind": "squash_or_rebase", "first_line": line[:200]})
+    unique = {f["commit"]: f for f in found}
+    if not unique:
+        return {"status": "not_found"}
+    if len(unique) > 1:
+        return {"status": "ambiguous", "commits": sorted(unique)}
+    return {"status": "resolved", **next(iter(unique.values()))}
+
+
 def package_repositories(record: dict[str, Any]) -> set[str]:
     repos = set()
     for reference in record.get("references") or []:
@@ -118,6 +152,7 @@ def parse_candidate(
     rejected_cwes: set[str],
     max_cwes: int,
     allow_multiple_fix_commits: bool = False,
+    allow_pull_requests: bool = False,
 ) -> tuple[dict[str, Any] | None, str]:
     """Return (candidate, "ok") or (None, rejection_reason). Pure: no I/O.
 
@@ -149,6 +184,16 @@ def parse_candidate(
         return None, "too_many_cwes"
 
     refs = fix_commit_refs(record)
+    pull_request = None
+    if not refs and allow_pull_requests:
+        # Garden v5: exactly one referenced pull request; discovery resolves it to its merge commit
+        pulls = pull_request_refs(record)
+        if len(pulls) == 1:
+            owner, repo, number = pulls[0]
+            pull_request = number
+            refs = [(owner, repo, "0" * 40)]  # placeholder; replaced by the resolved commit
+        elif pulls:
+            return None, "multiple_pull_requests"
     if not refs:
         return None, "no_fix_commit"
     full = [r for r in refs if len(r[2]) == 40]
@@ -187,4 +232,7 @@ def parse_candidate(
     }
     if fix_commits:
         candidate["fix_commits"] = fix_commits
+    if pull_request is not None:
+        candidate["fix_commit"] = None
+        candidate["fix_pull_request"] = {"number": pull_request}
     return candidate, "ok"

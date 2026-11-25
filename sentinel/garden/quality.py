@@ -27,7 +27,7 @@ RECORD_SCHEMA_PATH = PROJECT_ROOT / "data" / "schemas" / "garden_record.schema.j
 CONTAINMENT_THRESHOLD = 0.8
 CONTAINMENT_MIN_SHINGLES = 20
 
-KIND_DECISION = {"vulnerable": "finding", "post_fix": "no_finding", "caller_abstention": "abstain"}
+KIND_DECISION = {"vulnerable": "finding", "post_fix": "no_finding", "caller_abstention": "abstain", "defended_sibling": "no_finding"}
 
 # High-confidence secret patterns only; a hit rejects the record (it is never redacted in place).
 SECRET_PATTERNS = {
@@ -185,7 +185,7 @@ def check_record(record: dict[str, Any], validator: Draft202012Validator, reject
             failed.append("localization_absent")
         if not target.get("label_scope"):
             failed.append("label_scope_present")
-        expected_revision = prov["fixed_revision"] if record["kind"] == "post_fix" else prov["vulnerable_revision"]
+        expected_revision = prov["fixed_revision"] if record["kind"] in {"post_fix", "defended_sibling"} else prov["vulnerable_revision"]
         if prov["excerpt_revision"] != expected_revision:
             failed.append("revision_consistent")
     if record["kind"] == "caller_abstention":
