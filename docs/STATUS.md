@@ -22,9 +22,10 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
     - a new negative kind, defended siblings (30 accepted), pending until its human-review sample validates it.
   - **Shortcuts:** the security-comment cue is gone (6.7 % vs 6.9 %). Surface features predict finding vs no_finding 2.3 points above chance (v4: 6.4).
   - **Funnel:**
-    - 4,831 records, 3,898 accepted, **1,467 authorized**;
-    - 1,869 train examples (156 k supervised tokens).
-    - With the owner's decision-ready approvals (85 repositories, the source extension, the sibling kind): up to 2,260.
+    - 4,831 records, 3,898 accepted;
+    - **1,741 authorized** after the owner's approvals of 2026-11-25 (85 repositories, source extension to the v5 list);
+    - **2,249 train examples** (193 k supervised tokens); ready for the fresh training run.
+    - The defended-sibling kind (11 more train records) waits for its independent human review.
     - 5,000–10,000 are not reachable at this quality bar; the measured reasons are in `docs/GARDEN_V5.md` § 6.
   - **Contamination:** 0 shared identities or near-duplicates with any v1–v5 evaluation set.
   - **Evaluation:**

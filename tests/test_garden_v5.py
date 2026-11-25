@@ -105,10 +105,14 @@ def test_defended_siblings_need_a_validated_kind() -> None:
     assert validated["governance"]["approval_status"] == "training_approved"
 
 
-def test_v5_config_keeps_v3_approval_scope() -> None:
-    config = pipeline.load_config(Path(__file__).resolve().parents[1] / "configs" / "garden" / "seed_v5.yaml")
+def test_v5_source_approval_covers_exactly_the_extended_list() -> None:
+    # owner decision of 2026-11-25: the source approvals were extended from the v3 list to the v5 list
+    root = Path(__file__).resolve().parents[1]
+    config = pipeline.load_config(root / "configs" / "garden" / "seed_v5.yaml")
     covered = pipeline.source_approved_advisories(config)
-    assert covered is not None and len(covered) == 7751
+    v5 = {json.loads(line)["advisory_id"] for line in (root / "data" / "garden" / "seed_v5" / "candidates.jsonl").read_text().splitlines()}
+    assert covered == v5 and len(covered) == 8727
+    assert "af72c35d" in (root / "data" / "registry.yaml").read_text()
     assert pipeline.unvalidated_negative_kinds(config) == {"defended_sibling"}
 
 

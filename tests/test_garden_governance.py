@@ -75,22 +75,27 @@ def test_committed_approvals_are_documented_human_decisions() -> None:
 
     approvals = load_approvals()  # schema-validated
     root = Path(__file__).resolve().parents[1]
-    recommended: dict[str, dict] = {}
-    queue: dict[str, dict] = {}
-    for version in ("seed_v2", "seed_v3"):  # an approval rests on a clean inspection in some dataset version
+    # every clean inspection that recommended a repository, with that version's queue entry (a repository can
+    # be recommended in several versions, and a later version may see it relicensed, e.g. canonical/lxd)
+    inspections: dict[str, list[tuple[dict, dict]]] = {}
+    for version in ("seed_v2", "seed_v3", "seed_v5"):
         data = root / "data" / "garden" / version
-        queue.update({json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()})
+        queue = {json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()}
         cohort = json.loads((data / "cohort" / "training_cohort.json").read_text())
         for r in cohort["repositories"] + cohort.get("extension_repositories", []):
             if r["proposed_decision"] == "recommended_for_review":
-                recommended.setdefault(r["repository_key"], r)
+                inspections.setdefault(r["repository_key"], []).append((r, queue[r["repository_key"]]))
     for key, entry in approvals.items():
         reviewer = f" {entry['reviewer'].lower()} "
         assert not any(marker in reviewer for marker in AI_REVIEWER), f"{key}: an AI assistant cannot be the reviewer"
-        assert key in recommended, f"{key}: approved without a clean cohort inspection"
-        assert queue[key]["tier"] in {"A", "B"} and queue[key]["license_detected"] == entry["license_spdx"]
-        assert entry["license_file_sha256"] == recommended[key]["license_file_sha256"]
-        assert set(entry.get("additional_license_file_sha256s", [])) <= set(recommended[key].get("additional_license_file_sha256s", []))
+        assert key in inspections, f"{key}: approved without a clean cohort inspection"
+        assert any(
+            queue["tier"] in {"A", "B"}
+            and queue["license_detected"] == entry["license_spdx"]
+            and entry["license_file_sha256"] == recommended["license_file_sha256"]
+            and set(entry.get("additional_license_file_sha256s", [])) <= set(recommended.get("additional_license_file_sha256s", []))
+            for recommended, queue in inspections[key]
+        ), f"{key}: the approval does not match the inspection that recommended it"
 
 
 def test_unreviewed_repository_is_pending_not_approved() -> None:

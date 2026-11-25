@@ -18,17 +18,13 @@ Prepared on 2026-11-25; nothing has been trained.
 
 | | Examples | Detection / patch | Tokens (median / max / total) | Supervised tokens |
 | --- | ---: | --- | --- | ---: |
-| train | 1,869 | 1,331 / 538 | 773 / 3,064 / 1.77 M | 155,736 |
-| validation (retired v3 development set; loss only) | 191 | 136 / 55 | 818 / 2,692 / 0.19 M | 17,808 |
+| train | 2,249 | 1,600 / 649 | 802 / 3,064 / 2.14 M | 192,708 |
+| validation (retired v3 development set; loss only) | 198 | 141 / 57 | 808 / 2,692 / 0.19 M | 18,243 |
 
+- The table is after the owner's approvals of 2026-11-25 (`docs/TRAINING_AUTHORIZATION.md`).
 - 0 examples are dropped at 4,096 tokens, so the sequence length stays.
-- 2 epochs at an effective batch of 16 are 234 optimizer steps, the same as the first run, whose best checkpoint was at 1.7 epochs. That gives no reason for more epochs or a larger rank.
-
-**Recompute after your decisions.** The approval decisions in `docs/GARDEN_V5.md` change only the data:
-- up to 2,260 train examples, with the same parameters;
-- then `curate`, `materialize` and this dry run again;
-- the number of steps follows from the data.
-- Train after those decisions: training now would repeat the first run's data almost unchanged.
+- 2 epochs at an effective batch of 16 are 282 optimizer steps, against 234 in the first run, whose best checkpoint was at 1.7 epochs. With 20 % more data than that run, nothing argues for more epochs or a larger rank. The parameters therefore stay as they are.
+- **Ready to train:** follow `docs/GPU_RUNBOOK.md` § 14.
 
 ## Selection and test
 

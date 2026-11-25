@@ -4,15 +4,17 @@
 
 ## Summary: the funnel
 
+> **Update 2026-11-25 (owner decision, `docs/TRAINING_AUTHORIZATION.md`):** the 85 recommended repositories are approved and the source approval covers the v5 candidate list. Training data now: **1,741 authorized records, 2,249 train examples (+16 % over v4, +20 % over the first run), 192,708 supervised tokens**. Still pending: 1,049 records of repositories that were not recommended, 22 defended siblings (kind not validated), 9 with a changed license file. The tables below describe the state before the decision.
+
 | Stage | v4 | **v5** | What decides it |
 | --- | ---: | ---: | --- |
 | Discovered candidates | 7,751 | **8,727** | 7,751 frozen v3 candidates (byte-identical) + 976 new: 377 pull-request fixes, 599 over the old repository cap |
 | Fixes built into records | 2,257 | **2,096** | +177 from the new candidates (68 of them pull-request fixes); −338 combined excerpts without evidence for the labelled site (below) |
 | Records built / accepted | 5,065 / 4,047 | **4,831 / 3,898** | unchanged quality checks and audit (fixed point) |
 | Accepted findings / hard negatives / abstentions | 1,903 / 1,674 / 470 | 1,786 / 1,603 / 509 | 30 hard negatives are defended siblings (new kind) |
-| **Authorized (training-approved) records** | 1,524 | **1,467** | owner approvals: repositories, sources, negative kinds |
-| **Training examples** (train: detection + patch) | 1,943 | **1,869** (1,331 + 538) | + 191 validation examples (validation loss only) |
-| **Supervised tokens per epoch** | 167 k | **156 k** (155,736) | of 1.77 M tokens; 0 examples dropped at 4,096 |
+| **Authorized (training-approved) records** | 1,524 | **1,741** | after the owner's approvals of 2026-11-25 (85 repositories, source extension); before them 1,467 |
+| **Training examples** (train: detection + patch) | 1,943 | **2,249** (1,600 + 649) | + 198 validation examples (validation loss only) |
+| **Supervised tokens per epoch** | 167 k | **193 k** (192,708) | of 2.14 M tokens; 0 examples dropped at 4,096 |
 | Independent human review | not performed | **not performed** (80 packages ready) | a person outside the implementation |
 
 **The authorized training set did not grow.** Two things explain it:

@@ -8,15 +8,15 @@
 # v1-v4 stay unchanged.
 schema_version: "1.0"
 dataset_id: sentinel-garden-v5
-# v5: the source approvals in data/registry.yaml name the Garden v3 candidate list. Records of any other
-# candidate stay pending (`source_approval_not_extended`) until the owner extends the approval and this
-# entry names the extended list.
+# v5: the source approvals in data/registry.yaml name the candidate list they cover. Records of any other
+# candidate stay pending (`source_approval_not_extended`). On 2026-11-25 the owner extended the approvals
+# from the Garden v3 list to this dataset's list (docs/TRAINING_AUTHORIZATION.md).
 governance:
   # heuristic negative kinds stay pending until their independent review sample validates them
   validated_negative_kinds: []
   source_approval_covers:
-    path: data/garden/seed_v3/candidates.jsonl
-    sha256: 535494cb12bb20a54ff2e3b1bffbcd51a5f9f557b3f2827fdcc735f8f5927061
+    path: data/garden/seed_v5/candidates.jsonl
+    sha256: af72c35dfc220aa1406aac7571156bcd7262234bb541951d81bd8962f8d479bf
 
 # Registry entries this dataset depends on (data/registry.yaml). A record is training-eligible
 # only if every one of them is production_approved AND its repository is approved.
