@@ -14,10 +14,11 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
 - **Evidence:** a MoreFixes fix commit must be named by the CVE's NVD references, a GHSA record or its own commit message; 1,501 CVEs with only heuristic fix commits are rejected. Tool-test markers, comments and telling names are removed; one finding per test file (template family).
 - **Negatives:** the later-fix check now covers every known advisory of a repository; it refutes about 10 % of v5's post-fix negatives (160), which are excluded. Tool-test negatives stay pending like defended siblings.
 - **Funnel:** 10,299 candidates + 185 tool-test units; 6,224 records, **5,055 accepted** (v5: 3,898); 222 CWEs among accepted findings.
-- **Authorized today: 1,676 records, 2,153 train examples (184,544 supervised tokens)**, 4 % fewer than v5: 50 v5 records belonged to the OpenSSF benchmark, 15 were refuted.
-- **After the owner decisions** (`data/garden/seed_v6/cohort/`): 2,795 train examples with every decision-ready approval; 3,510 with copyleft repositories as well. 5,000–10,000 are not reachable at this evidence bar (`docs/GARDEN_V6.md` § 7).
+- **Owner decision (2026-11-25):** the four new sources and 93 repositories (including `github/codeql`) are approved (`docs/TRAINING_AUTHORIZATION.md`). Before it, a license-detector bug (PSF read as GPL) was fixed.
+- **Authorized: 2,170 records, 2,758 train examples (2,024 detection + 734 patch; +23 % over v5), 233,463 supervised tokens.** 50 v5 records were reserved for the OpenSSF benchmark and 15 refuted by the stricter check.
+- **Still open:** the two negative kinds wait for the independent human review (2,891 examples with them); copyleft repositories need a written basis each (3,595 with them); unlicensed repositories cannot be approved. 5,000–10,000 are not reachable at this evidence bar (`docs/GARDEN_V6.md` § 7).
 - **Evaluation:** development 239 cases, untouched final test 91 (v5: 9); selection rule v2 with recall ≥ 0.30 and FPR ≤ 0.20 floors.
-- **Training:** fresh adapter, unchanged parameters (`docs/TRAINING_V6.md`, `docs/GPU_RUNBOOK.md` § 15). Not started.
+- **Training:** fresh adapter, unchanged parameters, ready to start on the GPU machine (`docs/TRAINING_V6.md`, `docs/GPU_RUNBOOK.md` § 15). Not started.
 - **Independent human review:** 147 packages, not performed.
 
 ### Sentinel Garden v5 (2026-11-25)

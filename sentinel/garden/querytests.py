@@ -87,6 +87,7 @@ class TestUnit:
     directory: str  # repository-relative
     query: Query
     results: list[Result] = field(default_factory=list)
+    qlref: str = ""  # repository-relative path of the .qlref that defines this unit (one directory can hold several)
 
 
 def ensure_checkout(cache: Path, revision: str, log: Any = print) -> Path:
@@ -176,7 +177,7 @@ def discover_units(checkout: Path, log: Any = print) -> list[TestUnit]:
                 continue
             expected = qlref.with_suffix(".expected")
             results = parse_expected(expected.read_text(encoding="utf-8"), query.kind) if expected.is_file() else []
-            units.append(TestUnit(language_root, str(qlref.parent.relative_to(checkout)), query, results))
+            units.append(TestUnit(language_root, str(qlref.parent.relative_to(checkout)), query, results, str(qlref.relative_to(checkout))))
     log(f"querytests: {len(units)} inline-expectation security test units")
     return units
 
@@ -353,7 +354,7 @@ def build_records(
     for unit in discover_units(checkout, log):
         root = LANGUAGE_ROOTS[unit.language_root]
         query_text = (checkout / root / "src" / unit.query.path).read_text(encoding="utf-8")
-        qlref = next((checkout / unit.directory).glob("*.qlref"))
+        qlref = checkout / unit.qlref  # this unit's own rule reference and expected results, never a sibling rule's
         expected = qlref.with_suffix(".expected")
         unit_sha = hashlib.sha256(
             (query_text + "\x00" + qlref.read_text(encoding="utf-8") + "\x00" + (expected.read_text(encoding="utf-8") if expected.is_file() else "")).encode("utf-8")

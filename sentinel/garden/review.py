@@ -52,6 +52,15 @@ _FAMILY = [
 ]
 
 
+
+def advisory_url(advisory_id: str) -> str | None:
+    """GHSA advisories link to GitHub, CVEs (Garden v6 MoreFixes) to NVD; tool-test rules have no advisory page."""
+    if advisory_id.startswith("GHSA-"):
+        return f"https://github.com/advisories/{advisory_id}"
+    if advisory_id.startswith("CVE-"):
+        return f"https://nvd.nist.gov/vuln/detail/{advisory_id}"
+    return None
+
 def license_families(value: str) -> set[str]:
     """Coarse license families named in an SPDX expression or free-text license string."""
     families = set()
@@ -192,7 +201,7 @@ def _evidence_urls(evidence: dict[str, Any]) -> list[str]:
     for key in evidence["registry_licenses"]:
         ecosystem, package = key.split(":", 1)
         urls.append(f"https://deps.dev/{DEPSDEV_SYSTEM[ecosystem]}/{urllib.parse.quote(package, safe='')}")
-    urls += [f"https://github.com/advisories/{advisory}" for advisory in evidence["advisories"]]
+    urls += [advisory_url(advisory) for advisory in evidence["advisories"] if advisory_url(advisory)]
     return urls
 
 

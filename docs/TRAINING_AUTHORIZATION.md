@@ -126,3 +126,32 @@ Result (verified):
 - `python -m sentinel.train --config configs/train/qlora_ornith15_9b_v5.yaml --dry-run --check-tokens` passes.
 - `materialize` rebuilds exactly these records.
 - Holdout, temporal-quarantine and development records stay excluded by the gate and the evaluation roles.
+
+## Decision of 2026-11-25, later (Garden v6)
+
+Decided by Jonas Cikemgil (project owner): "Ich erteile meine Freigabe jetzt schon für alles" for the Garden v6 decision package (`docs/GARDEN_V6.md`, `data/garden/seed_v6/cohort/`). The AI engineering assistant prepared the entries; it is not a reviewer.
+
+1. **Sources** (`data/registry.yaml`), now `production_approved`:
+   - `morefixes` (Zenodo record 20776007, CC-BY-4.0; metadata only, attribution in `docs/GARDEN_V6.md`);
+   - `nvd-cve` (the CVE records contained in that dump);
+   - `morefixes-cve-fix-commits` (fix commits named by NVD references, a GHSA record or the commit's own message; every record keeps its grade);
+   - `codeql-query-tests` (github/codeql@4136c26, MIT; the CodeQL CLI is never run or redistributed).
+
+   The GHSA/OSV approvals stay bound to the Garden v5 candidate list; the eval-only and research-reference entries are unchanged.
+2. **Repositories** (`data/garden/approvals.yaml`): **93 repositories**, inspected at every used revision:
+   - 14 tier A `recommended`, 79 tier B `extension` (formal questions only), among them `github/codeql` (MIT);
+   - each approval is bound to the sha256 of the recorded license file.
+   - Two corrections made before the inspection (`docs/GARDEN_V6.md` § 6): the license detector no longer reads the PSF license as GPL-2.0 (its history table names the GPL), and in the v6 cohort an additional license file whose own license is permissive (an Apache NOTICE, CPython's PSF license for derived CodeQL test code) is a confirmed fact with redistribution-only obligations, not an open question.
+3. **Not covered, and not coverable by a permission:**
+   - **The two heuristic negative kinds** (defended siblings, CodeQL tool-test negatives; 151 accepted records, `governance.validated_negative_kinds` stays empty). Whether their labels are right is a quality question that the independent human review answers, as the owner's brief requires.
+   - **The independent human review** of the 147 packages: only a person outside the implementation can do it.
+   - **Copyleft repositories** (214; GPL/LGPL/AGPL/MPL/EPL): the gate requires a written basis per repository (`non_permissive_justification`), which a blanket approval does not state. With it they would add about 700 train examples (`approval_scenarios.json`, scenario 5).
+   - **Repositories without a license or with an unknown or conflicting one:** no permission exists that could be granted.
+   - **97 clarification cases** (350 records) whose question is which license applies at all (another license in the package metadata or registry, a root license outside the tier A list such as CPython's PSF-2.0, license files that differ between revisions), and 21 records whose license file differs from the approved one.
+
+Result (verified):
+- `curate` gives **2,170 training-approved records** from 666 repositories (Garden v5: 1,741 from 605).
+- That is **2,758 training examples** (2,024 detection + 734 patch; +23 % over Garden v5) and 204 validation examples.
+- 233,463 supervised tokens per epoch (of 2.56 M); 0 examples dropped at 4,096 tokens.
+- `python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6.yaml --dry-run --check-tokens` passes.
+- Holdout, temporal-quarantine, development, external-benchmark and tool-test-negative records stay excluded or pending.

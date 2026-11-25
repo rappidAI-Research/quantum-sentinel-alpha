@@ -243,6 +243,7 @@ def extension_entry(key: str, entry: dict[str, Any], records: list[dict[str, Any
 def build(config_path: Path, inspect: bool, extension: bool = False) -> dict[str, Any]:
     config = load_config(config_path)
     pilot.CACHE = config.workdir / "cache" / "git"  # the selected dataset's own upstream cache
+    pilot.PERMISSIVE_ADDITIONAL_LICENSES_OK = bool(config.raw.get("query_tests") or (config.raw.get("discovery") or {}).get("morefixes"))
     data = config.committed_dir
     out = data / "cohort"
     rows = _jsonl(data / "manifest.jsonl")

@@ -78,7 +78,7 @@ def test_committed_approvals_are_documented_human_decisions() -> None:
     # every clean inspection that recommended a repository, with that version's queue entry (a repository can
     # be recommended in several versions, and a later version may see it relicensed, e.g. canonical/lxd)
     inspections: dict[str, list[tuple[dict, dict]]] = {}
-    for version in ("seed_v2", "seed_v3", "seed_v5"):
+    for version in ("seed_v2", "seed_v3", "seed_v5", "seed_v6"):
         data = root / "data" / "garden" / version
         queue = {json.loads(line)["repository_key"]: json.loads(line) for line in (data / "review" / "review_queue.jsonl").read_text().splitlines() if line.strip()}
         cohort = json.loads((data / "cohort" / "training_cohort.json").read_text())

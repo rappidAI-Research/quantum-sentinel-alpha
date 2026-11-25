@@ -5,6 +5,23 @@ repositories:
   # tier B: registry_unavailable
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {}
+  - repository_key: matrix-org/matrix-hookshot
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/matrix-org/matrix-hookshot
+      - https://github.com/matrix-org/matrix-hookshot/blob/e51d8210233ac759e7f7dfebc2c4f1bf6ce94802/LICENSE
+    notes: ""
+
+  # tier B: registry_unavailable
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {}
   - repository_key: mintplex-labs/vector-admin
     decision: "<REQUIRED: approved_for_training | blocked>"
     license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
@@ -408,21 +425,4 @@ repositories:
     evidence_urls:
       - https://github.com/spbu-se/spbu_se_site
       - https://github.com/spbu-se/spbu_se_site/blob/5ad623eb0405260763046343c5785bc588d8a57d/LICENSE
-    notes: ""
-
-  # tier B: registry_unrecognised
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'PyPI:ihatemoney': ['non-standard']}
-  - repository_key: spiral-project/ihatemoney
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected BSD-2-Clause>"
-    license_file: LICENSE
-    license_file_sha256: 1be23b957a1eae91befc43b6dba4ac729117bb851c1cf529d2b1b23fe341ed93
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/spiral-project/ihatemoney
-      - https://github.com/spiral-project/ihatemoney/blob/8d77cf5d5646e1d2d8ded13f0660638f57e98471/LICENSE
     notes: ""

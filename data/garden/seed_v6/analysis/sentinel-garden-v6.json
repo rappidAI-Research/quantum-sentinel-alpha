@@ -3092,199 +3092,200 @@
   },
   "training_approved": {
     "by_decision": {
-      "abstain": 209,
-      "finding": 778,
-      "no_finding": 689
+      "abstain": 240,
+      "finding": 1117,
+      "no_finding": 813
     },
     "by_language": {
-      "go": 465,
-      "javascript": 454,
-      "python": 507,
-      "typescript": 250
+      "go": 549,
+      "javascript": 724,
+      "python": 614,
+      "typescript": 283
     },
-    "coarse_or_multi_cwe_findings": 209,
-    "commit_chain_findings": 5,
+    "coarse_or_multi_cwe_findings": 393,
+    "commit_chain_findings": 6,
     "context_mentions_unshown_callee": {
       "abstain": 1.0,
-      "finding": 0.362,
-      "no_finding": 0.357
+      "finding": 0.303,
+      "no_finding": 0.358
     },
-    "distinct_finding_cwes": 145,
+    "distinct_finding_cwes": 161,
     "excerpt_lines": {
       "abstain": {
         "max": 149,
-        "median": 22,
-        "n": 209,
-        "p90": 88
+        "median": 22.5,
+        "n": 240,
+        "p90": 81
       },
       "finding": {
         "max": 165,
-        "median": 27.0,
-        "n": 778,
-        "p90": 88
+        "median": 21,
+        "n": 1117,
+        "p90": 82
       },
       "no_finding": {
         "max": 155,
-        "median": 30,
-        "n": 689,
+        "median": 31,
+        "n": 813,
         "p90": 90
       }
     },
     "findings_by_family": {
-      "authn_authz": 87,
-      "code_injection": 23,
-      "command_injection": 49,
-      "crypto_tls_integrity": 30,
-      "deserialization_input_validation": 52,
-      "information_exposure": 47,
-      "other": 91,
-      "path_traversal": 90,
-      "prototype_pollution": 62,
-      "redirect_ssrf": 36,
-      "resource_limits_redos": 116,
-      "sql_injection": 14,
-      "xss_output_encoding": 81
+      "authn_authz": 101,
+      "code_injection": 28,
+      "command_injection": 80,
+      "crypto_tls_integrity": 39,
+      "deserialization_input_validation": 65,
+      "information_exposure": 76,
+      "other": 131,
+      "path_traversal": 123,
+      "prototype_pollution": 68,
+      "redirect_ssrf": 57,
+      "resource_limits_redos": 142,
+      "sql_injection": 34,
+      "xss_output_encoding": 173
     },
     "findings_by_language_and_family": {
       "go": {
-        "authn_authz": 41,
+        "authn_authz": 44,
         "code_injection": 2,
-        "command_injection": 7,
-        "crypto_tls_integrity": 13,
-        "deserialization_input_validation": 10,
-        "information_exposure": 17,
-        "other": 26,
-        "path_traversal": 28,
-        "redirect_ssrf": 11,
-        "resource_limits_redos": 36,
-        "sql_injection": 4,
-        "xss_output_encoding": 12
+        "command_injection": 13,
+        "crypto_tls_integrity": 17,
+        "deserialization_input_validation": 14,
+        "information_exposure": 24,
+        "other": 32,
+        "path_traversal": 30,
+        "redirect_ssrf": 17,
+        "resource_limits_redos": 43,
+        "sql_injection": 7,
+        "xss_output_encoding": 18
       },
       "javascript": {
-        "authn_authz": 12,
-        "code_injection": 9,
-        "command_injection": 20,
-        "crypto_tls_integrity": 4,
-        "deserialization_input_validation": 12,
-        "information_exposure": 5,
-        "other": 11,
-        "path_traversal": 10,
-        "prototype_pollution": 42,
-        "redirect_ssrf": 7,
-        "resource_limits_redos": 44,
-        "sql_injection": 5,
-        "xss_output_encoding": 38
+        "authn_authz": 19,
+        "code_injection": 12,
+        "command_injection": 42,
+        "crypto_tls_integrity": 6,
+        "deserialization_input_validation": 15,
+        "information_exposure": 23,
+        "other": 28,
+        "path_traversal": 34,
+        "prototype_pollution": 47,
+        "redirect_ssrf": 14,
+        "resource_limits_redos": 60,
+        "sql_injection": 19,
+        "xss_output_encoding": 107
       },
       "python": {
-        "authn_authz": 25,
-        "code_injection": 8,
-        "command_injection": 15,
-        "crypto_tls_integrity": 11,
-        "deserialization_input_validation": 19,
-        "information_exposure": 22,
-        "other": 45,
-        "path_traversal": 42,
+        "authn_authz": 27,
+        "code_injection": 10,
+        "command_injection": 17,
+        "crypto_tls_integrity": 14,
+        "deserialization_input_validation": 25,
+        "information_exposure": 26,
+        "other": 62,
+        "path_traversal": 49,
         "prototype_pollution": 1,
-        "redirect_ssrf": 10,
-        "resource_limits_redos": 21,
-        "sql_injection": 3,
-        "xss_output_encoding": 14
+        "redirect_ssrf": 13,
+        "resource_limits_redos": 23,
+        "sql_injection": 5,
+        "xss_output_encoding": 19
       },
       "typescript": {
-        "authn_authz": 9,
+        "authn_authz": 11,
         "code_injection": 4,
-        "command_injection": 7,
+        "command_injection": 8,
         "crypto_tls_integrity": 2,
         "deserialization_input_validation": 11,
         "information_exposure": 3,
         "other": 9,
         "path_traversal": 10,
-        "prototype_pollution": 19,
-        "redirect_ssrf": 8,
-        "resource_limits_redos": 15,
-        "sql_injection": 2,
-        "xss_output_encoding": 17
+        "prototype_pollution": 20,
+        "redirect_ssrf": 13,
+        "resource_limits_redos": 16,
+        "sql_injection": 3,
+        "xss_output_encoding": 29
       }
     },
     "findings_top_cwes": {
-      "CWE-1321": 61,
-      "CWE-1333": 26,
-      "CWE-20": 22,
-      "CWE-200": 24,
-      "CWE-22": 79,
-      "CWE-287": 23,
-      "CWE-400": 35,
-      "CWE-601": 24,
+      "CWE-1321": 65,
+      "CWE-1333": 27,
+      "CWE-20": 29,
+      "CWE-200": 32,
+      "CWE-22": 107,
+      "CWE-287": 27,
+      "CWE-400": 43,
+      "CWE-601": 34,
       "CWE-77": 24,
-      "CWE-770": 15,
-      "CWE-78": 22,
-      "CWE-79": 73,
-      "CWE-89": 14,
-      "CWE-918": 11,
-      "CWE-94": 19
+      "CWE-770": 16,
+      "CWE-78": 52,
+      "CWE-79": 165,
+      "CWE-89": 34,
+      "CWE-918": 22,
+      "CWE-94": 24
     },
     "frameworks_in_imports": {
       "go": {
-        "crypto": 100,
-        "encoding/json": 102,
-        "gin-gonic": 14,
-        "html/template": 17,
-        "k8s.io": 55,
-        "net/http": 179,
-        "os/exec": 23,
-        "path/filepath": 86
+        "crypto": 123,
+        "database/sql": 19,
+        "encoding/json": 127,
+        "gorilla": 17,
+        "k8s.io": 60,
+        "net/http": 228,
+        "os/exec": 27,
+        "path/filepath": 89
       },
       "javascript": {
-        "child_process": 41,
+        "child_process": 54,
         "crypto": 16,
-        "express": 10,
-        "fs": 61,
-        "jsonwebtoken": 7,
-        "lodash": 25,
-        "path": 61,
-        "url": 28
+        "express": 67,
+        "fs": 96,
+        "lodash": 29,
+        "path": 89,
+        "react": 11,
+        "url": 45
       },
       "python": {
-        "django": 46,
-        "flask": 34,
-        "requests": 28,
+        "django": 55,
+        "flask": 39,
+        "pickle": 20,
+        "requests": 37,
         "sqlalchemy": 23,
-        "subprocess": 47,
-        "tornado": 18,
-        "urllib": 79,
-        "werkzeug": 19
+        "subprocess": 53,
+        "urllib": 92,
+        "werkzeug": 22
       },
       "typescript": {
-        "child_process": 13,
+        "@angular": 7,
+        "child_process": 14,
         "crypto": 15,
         "express": 9,
-        "fs": 31,
-        "lodash": 4,
-        "path": 37,
-        "react": 4,
+        "fs": 34,
+        "path": 40,
+        "react": 7,
         "url": 16
       }
     },
-    "multi_function_findings": 31,
-    "records": 1676,
+    "multi_function_findings": 39,
+    "records": 2170,
     "records_per_repository": {
-      "max": 24,
+      "max": 199,
       "median": 2.0,
-      "n": 584,
+      "n": 666,
       "p90": 5
     },
-    "repositories": 584,
+    "repositories": 666,
     "span_kind": {
-      "changed_lines": 490,
-      "insertion_point": 215,
-      "mixed": 73
+      "changed_lines": 577,
+      "insertion_point": 254,
+      "mixed": 87,
+      "query_test_expectation": 199
     },
     "span_lines": {
       "max": 39,
-      "median": 2.0,
-      "n": 778,
-      "p90": 8
+      "median": 2,
+      "n": 1117,
+      "p90": 7
     },
-    "top10_repository_share": 0.087
+    "top10_repository_share": 0.159
   }
 }

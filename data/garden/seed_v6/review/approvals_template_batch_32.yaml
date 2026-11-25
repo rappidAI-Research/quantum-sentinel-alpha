@@ -2,6 +2,23 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
+  # tier B: registry_unrecognised
+  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'npm:gladys': ['CC-BY-NC-SA-3.0']}
+  - repository_key: gladysassistant/gladys
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: c1f68a27bd604582900120f403fb3b4fe661e21743af5ad3ad3a77b394409f86
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/GladysAssistant/Gladys
+      - https://github.com/GladysAssistant/Gladys/blob/344ad9b8ca3078d9292dd95f2dd7b9172bc6ebbe/LICENSE
+    notes: ""
+
   # tier B: registry_disagrees
   # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'Go:goauthentik.io': ['BSD-2-Clause', 'CC-BY-4.0', 'MIT']}
@@ -408,21 +425,4 @@ repositories:
     evidence_urls:
       - https://github.com/marcbachmann/node-html-pdf
       - https://github.com/marcbachmann/node-html-pdf/blob/c12d6977778014139183c9f8da7579fd7ac65362/LICENSE
-    notes: ""
-
-  # tier B: registry_unavailable
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {}
-  - repository_key: matrix-org/matrix-hookshot
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/matrix-org/matrix-hookshot
-      - https://github.com/matrix-org/matrix-hookshot/blob/e51d8210233ac759e7f7dfebc2c4f1bf6ce94802/LICENSE
     notes: ""

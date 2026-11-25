@@ -28,6 +28,9 @@ def _norm(text: str) -> str:
 
 def detect_license_text(text: str) -> str:
     t = _norm(text)
+    # the PSF license reproduces CPython's history, whose table names the GNU GPL: check it first
+    if "python software foundation license version 2" in t or ("python software foundation" in t and "psf license agreement" in t):
+        return "PSF-2.0"
     if "gnu affero general public license" in t:
         return "AGPL-3.0"
     if "gnu lesser general public license" in t or "gnu library general public license" in t:

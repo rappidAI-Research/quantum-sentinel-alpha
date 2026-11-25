@@ -9,8 +9,8 @@ schema_version: "1.0"
 dataset_id: sentinel-garden-v6
 # The GHSA/OSV source approvals cover the Garden v5 candidate list (decision of 2026-11-25,
 # docs/TRAINING_AUTHORIZATION.md). v6 records of the new sources depend on their own registry entries
-# (morefixes, nvd-cve, morefixes-cve-fix-commits, codeql-query-tests), which are not approved: those
-# records stay pending (`source_not_approved:<id>`) until the owner decides (data/garden/seed_v6/cohort/).
+# (morefixes, nvd-cve, morefixes-cve-fix-commits, codeql-query-tests), approved by the owner later on
+# 2026-11-25; their repositories still need their own approvals (data/garden/approvals.yaml).
 governance:
   # heuristic negative kinds stay pending until their independent review sample validates them
   # (defended_sibling: v5; query_test_negative: v6, rule-scoped)

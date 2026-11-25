@@ -3,14 +3,14 @@
  "config": "configs/garden/seed_v6.yaml",
  "dataset_id": "sentinel-garden-v6",
  "decision_groups": {
-  "clarify:notice_or_additional_license_file": 37,
+  "clarify:notice_or_additional_license_file": 28,
   "clarify:notice_or_additional_license_file+package_metadata_names_another_license": 1,
   "clarify:package_metadata_names_another_license": 9,
-  "recommended:Apache-2.0": 137,
+  "recommended:Apache-2.0": 145,
   "recommended:BSD-2-Clause": 10,
   "recommended:BSD-3-Clause": 31,
   "recommended:ISC": 8,
-  "recommended:MIT": 356
+  "recommended:MIT": 357
  },
  "excluded": [
   {
@@ -161,27 +161,26 @@
  ],
  "extension": "tier B repositories whose open questions are formal, inspected like tier A (--extension)",
  "extension_decision_groups": {
-  "clarify_extension:license_changed_between_revisions+notice_or_additional_license_file": 1,
+  "clarify_extension:license_changed_between_revisions": 1,
   "clarify_extension:license_changed_between_revisions+notice_or_additional_license_file+package_metadata_names_another_license": 1,
   "clarify_extension:license_changed_between_revisions+notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive": 1,
-  "clarify_extension:license_file_not_constant": 4,
-  "clarify_extension:license_file_not_constant+notice_or_additional_license_file": 1,
+  "clarify_extension:license_file_not_constant": 5,
   "clarify_extension:license_file_not_constant+package_metadata_names_another_license": 1,
-  "clarify_extension:notice_or_additional_license_file": 22,
-  "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license": 6,
-  "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+registry_names_other_license": 1,
-  "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive": 4,
-  "clarify_extension:notice_or_additional_license_file+registry_names_other_license": 2,
-  "clarify_extension:notice_or_additional_license_file+root_license_not_single_permissive": 2,
-  "clarify_extension:package_metadata_names_another_license": 5,
-  "clarify_extension:package_metadata_names_another_license+registry_names_other_license": 1,
-  "clarify_extension:registry_names_other_license": 18,
-  "extension:license_text_updated": 22,
+  "clarify_extension:notice_or_additional_license_file": 11,
+  "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license": 5,
+  "clarify_extension:notice_or_additional_license_file+registry_names_other_license": 1,
+  "clarify_extension:notice_or_additional_license_file+root_license_not_single_permissive": 1,
+  "clarify_extension:package_metadata_names_another_license": 6,
+  "clarify_extension:package_metadata_names_another_license+registry_names_other_license": 2,
+  "clarify_extension:package_metadata_names_another_license+root_license_not_single_permissive": 4,
+  "clarify_extension:registry_names_other_license": 19,
+  "clarify_extension:root_license_not_single_permissive": 2,
+  "extension:license_text_updated": 24,
   "extension:license_text_updated+no_registry_crosscheck": 2,
-  "extension:license_text_updated+registry_lists_bundled_licenses": 2,
-  "extension:no_registry_crosscheck": 92,
+  "extension:license_text_updated+registry_lists_bundled_licenses": 4,
+  "extension:no_registry_crosscheck": 95,
   "extension:other_permissive_Unlicense": 3,
-  "extension:registry_lists_bundled_licenses": 23
+  "extension:registry_lists_bundled_licenses": 27
  },
  "extension_excluded": [
   {
@@ -3042,12 +3041,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/cert-manager/cert-manager': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/cert-manager/cert-manager': ['Apache-2.0', 'BSD-3-Clause', 'MIT']}",
+    "pkg/issuer/acme/dns/util/LICENSE at 31a995ecaea6 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "pkg/issuer/acme/dns/util/LICENSE at 9a73a0b38530 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-129"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:registry_lists_bundled_licenses",
    "evidence": {
     "paths": [
      "pkg/issuer/acme/dns/util/wait.go"
@@ -3099,11 +3101,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "pkg/issuer/acme/dns/util/LICENSE at 31a995ecaea6 (detected MIT) may add terms; check which code it covers",
-    "pkg/issuer/acme/dns/util/LICENSE at 9a73a0b38530 (detected MIT) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-caller-abstention-0668e04e76af3d59",
     "sg-go-post-fix-c44186c7297d6edc",
@@ -3237,12 +3236,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'Go:code.cloudfoundry.org/gorouter': ['Apache-2.0', 'BSD-2-Clause-Views', 'BSD-3-Clause', 'MIT']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:code.cloudfoundry.org/gorouter': ['Apache-2.0', 'BSD-2-Clause-Views', 'BSD-3-Clause', 'MIT']}",
+    "NOTICE at a658664ae1e3 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at b1b5c44e050f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-20"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:registry_lists_bundled_licenses",
    "evidence": {
     "paths": [
      "common/secure/crypto.go"
@@ -3292,11 +3294,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at a658664ae1e3 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at b1b5c44e050f (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-post-fix-d3c790523fb0d206",
     "sg-go-vulnerable-120d0ac98945e372"
@@ -3417,13 +3416,18 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as MIT in every version used (1 version(s))",
-    "package registry (deps.dev): agrees {'npm:code-server': ['MIT']}"
+    "package registry (deps.dev): agrees {'npm:code-server': ['MIT']}",
+    "ThirdPartyNotices.txt at 31d5823d1071 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "ThirdPartyNotices.txt at 47d6d3ada5aa is an additional MIT license file (permissive; obligations on redistribution only)",
+    "ThirdPartyNotices.txt at 605c3c63670c is an additional MIT license file (permissive; obligations on redistribution only)",
+    "ThirdPartyNotices.txt at dded82bb4712 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-441",
     "CWE-79"
    ],
-   "decision_group": "clarify_extension:license_file_not_constant+notice_or_additional_license_file",
+   "decision_group": "clarify_extension:license_file_not_constant",
    "evidence": {
     "license_variants": {
      "problem": "LICENSE is missing at 31d5823d1071"
@@ -3544,11 +3548,7 @@
     "keep the copyright and permission notice with any redistributed copy of the code"
    ],
    "open_questions": [
-    "LICENSE is missing at 31d5823d1071",
-    "ThirdPartyNotices.txt at 31d5823d1071 (detected MIT) may add terms; check which code it covers",
-    "ThirdPartyNotices.txt at 47d6d3ada5aa (detected MIT) may add terms; check which code it covers",
-    "ThirdPartyNotices.txt at 605c3c63670c (detected MIT) may add terms; check which code it covers",
-    "ThirdPartyNotices.txt at dded82bb4712 (detected MIT) may add terms; check which code it covers"
+    "LICENSE is missing at 31d5823d1071"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
@@ -3706,12 +3706,19 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE.md detected as Apache-2.0 in every version used (2 version(s))",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/concourse/concourse': ['Apache-2.0', 'BSD-3-Clause']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/concourse/concourse': ['Apache-2.0', 'BSD-3-Clause']}",
+    "NOTICE.md at 091671e19b37 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "skymarshal/NOTICE at 091671e19b37 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE.md at 095f8811af19 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE.md at 38cb4cc025e5 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "skymarshal/NOTICE at 38cb4cc025e5 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE.md at ac60be5f0435 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-601"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:license_text_updated+registry_lists_bundled_licenses",
    "evidence": {
     "license_variants": {
      "variants": {
@@ -3807,15 +3814,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE.md at 091671e19b37 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE.md at 095f8811af19 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE.md at 38cb4cc025e5 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE.md at ac60be5f0435 (detected Apache-2.0) may add terms; check which code it covers",
-    "skymarshal/NOTICE at 091671e19b37 (detected Apache-2.0) may add terms; check which code it covers",
-    "skymarshal/NOTICE at 38cb4cc025e5 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-caller-abstention-5021cd70d9072d0b",
     "sg-go-caller-abstention-696950258d508ed7",
@@ -4788,14 +4788,20 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 5 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/cubefs/cubefs': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'HPND']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/cubefs/cubefs': ['Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'HPND']}",
+    "NOTICE at 45442918591d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 8dccce6ac8df is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 972f0275ee8d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at c21d034d2fcd is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at f9ea047b8635 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-200",
     "CWE-203",
     "CWE-532"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:registry_lists_bundled_licenses",
    "evidence": {
     "paths": [
      "blobstore/access/server.go",
@@ -4917,14 +4923,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 45442918591d (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 8dccce6ac8df (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 972f0275ee8d (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at c21d034d2fcd (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at f9ea047b8635 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-caller-abstention-dcbc78b5fd75575b",
     "sg-go-post-fix-0f8e73baa66cc748",
@@ -8220,12 +8220,16 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE, LICENSE.external detected as multiple:Apache-2.0|MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): agrees {'PyPI:fonttools': ['MIT']}"
+    "package registry (deps.dev): agrees {'PyPI:fonttools': ['MIT']}",
+    "LICENSE at 74240afc35bf is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE.external at 74240afc35bf is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE at 9f61271dc1ca is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE.external at 9f61271dc1ca is an additional Apache-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-611"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive",
+   "decision_group": "clarify_extension:package_metadata_names_another_license+root_license_not_single_permissive",
    "evidence": {
     "paths": [
      "Lib/fontTools/subset/svg.py"
@@ -8302,10 +8306,6 @@
     "see the license text"
    ],
    "open_questions": [
-    "LICENSE at 74240afc35bf (detected MIT) may add terms; check which code it covers",
-    "LICENSE at 9f61271dc1ca (detected MIT) may add terms; check which code it covers",
-    "LICENSE.external at 74240afc35bf (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.external at 9f61271dc1ca (detected Apache-2.0) may add terms; check which code it covers",
     "root license multiple:Apache-2.0|MIT is not a single permissive license",
     "setup.py at 74240afc35bf declares license 'MIT', root license is multiple:Apache-2.0|MIT",
     "setup.py at 9f61271dc1ca declares license 'MIT', root license is multiple:Apache-2.0|MIT"
@@ -10169,10 +10169,12 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as MIT, identical at all 1 used revisions",
-    "package registry (deps.dev): unavailable {}"
+    "package registry (deps.dev): unavailable {}",
+    "python/ql/test/LICENSE-PSF.md at 4136c26154e3 is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:no_registry_crosscheck",
    "evidence": {
     "paths": [
      "go/ql/test/query-tests/Security/CWE-020/IncompleteHostnameRegexp/IncompleteHostnameRegexp.go",
@@ -10414,7 +10416,7 @@
         "sha256": "684fe870c1e3b3d45b975a5a83f22ebfcef7fe5cf2bfa1c0dce4bbf6c8d8b60d"
        },
        "python/ql/test/LICENSE-PSF.md": {
-        "detected": "GPL-2.0",
+        "detected": "PSF-2.0",
         "sha256": "ad7f2651ab8fabf67a9a1f0ef644ba4365e59ba4cc3409ae5a74505383a84740"
        }
       },
@@ -10442,10 +10444,8 @@
    "obligations": [
     "keep the copyright and permission notice with any redistributed copy of the code"
    ],
-   "open_questions": [
-    "python/ql/test/LICENSE-PSF.md at 4136c26154e3 (detected GPL-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-query-test-finding-03e4917c8eb1594b",
     "sg-go-query-test-finding-05065184b4fe3124",
@@ -11511,14 +11511,17 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as MIT in every version used (2 version(s))",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/gofiber/fiber': ['MIT'], 'Go:github.com/gofiber/fiber/v2': ['BSD-3-Clause', 'MIT'], 'Go:github.com/gofiber/fiber/v2/middleware/session': None, 'Go:github.com/gofiber/fiber/v3': ['MIT']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/gofiber/fiber': ['MIT'], 'Go:github.com/gofiber/fiber/v2': ['BSD-3-Clause', 'MIT'], 'Go:github.com/gofiber/fiber/v2/middleware/session': None, 'Go:github.com/gofiber/fiber/v3': ['MIT']}",
+    "internal/schema/LICENSE at d15355116c37 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "internal/schema/LICENSE at e115c08b8f05 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-129",
     "CWE-290",
     "CWE-74"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:license_text_updated+registry_lists_bundled_licenses",
    "evidence": {
     "license_variants": {
      "variants": {
@@ -11638,11 +11641,8 @@
    "obligations": [
     "keep the copyright and permission notice with any redistributed copy of the code"
    ],
-   "open_questions": [
-    "internal/schema/LICENSE at d15355116c37 (detected BSD-3-Clause) may add terms; check which code it covers",
-    "internal/schema/LICENSE at e115c08b8f05 (detected BSD-3-Clause) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-post-fix-00c156bcde0e8929",
     "sg-go-post-fix-cc9602fb9efd6572",
@@ -13003,12 +13003,17 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE-APACHE, LICENSE-MIT detected as multiple:Apache-2.0|MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): agrees {'Go:github.com/ipld/go-codec-dagpb': ['Apache-2.0', 'MIT']}"
+    "package registry (deps.dev): agrees {'Go:github.com/ipld/go-codec-dagpb': ['Apache-2.0', 'MIT']}",
+    "LICENSE-APACHE at a17ace35cc76 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at a17ace35cc76 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE-APACHE at fa6d623cbc0d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at fa6d623cbc0d is an additional MIT license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-119"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+root_license_not_single_permissive",
+   "decision_group": "clarify_extension:root_license_not_single_permissive",
    "evidence": {
     "paths": [
      "unmarshal.go"
@@ -13059,10 +13064,6 @@
     "see the license text"
    ],
    "open_questions": [
-    "LICENSE-APACHE at a17ace35cc76 (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE-APACHE at fa6d623cbc0d (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE-MIT at a17ace35cc76 (detected MIT) may add terms; check which code it covers",
-    "LICENSE-MIT at fa6d623cbc0d (detected MIT) may add terms; check which code it covers",
     "root license multiple:Apache-2.0|MIT is not a single permissive license"
    ],
    "proposed_decision": "needs_clarification",
@@ -13976,14 +13977,20 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as Apache-2.0 in every version used (2 version(s))",
-    "package registry (deps.dev): agrees {'npm:mathjs': ['Apache-2.0']}"
+    "package registry (deps.dev): agrees {'npm:mathjs': ['Apache-2.0']}",
+    "NOTICE at 4a9378789a50 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 8d2d48d81b3c is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at a2858e266ad2 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at a60f3c8d9dd7 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at ecb80514e80b is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-88",
     "CWE-915",
     "CWE-94"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:license_text_updated",
    "evidence": {
     "license_variants": {
      "variants": {
@@ -14173,14 +14180,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 4a9378789a50 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 8d2d48d81b3c (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at a2858e266ad2 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at a60f3c8d9dd7 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at ecb80514e80b (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-js-caller-abstention-ab4178bcab64ceb7",
     "sg-js-post-fix-1deb90d540c5a8aa",
@@ -19667,14 +19668,19 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as Apache-2.0 in every version used (1 version(s))",
-    "package registry (deps.dev): unavailable {}"
+    "package registry (deps.dev): unavailable {}",
+    "LICENSE at 16accff90f25 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE at 40a7beeddac9 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE at c0f13e56a20f is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE at ed4cd2eebedd is an additional MIT license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-113",
     "CWE-226",
     "CWE-295"
    ],
-   "decision_group": "clarify_extension:license_changed_between_revisions+notice_or_additional_license_file",
+   "decision_group": "clarify_extension:license_changed_between_revisions",
    "evidence": {
     "license_variants": {
      "variants": {
@@ -19770,10 +19776,6 @@
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
    "open_questions": [
-    "LICENSE at 16accff90f25 (detected MIT) may add terms; check which code it covers",
-    "LICENSE at 40a7beeddac9 (detected MIT) may add terms; check which code it covers",
-    "LICENSE at c0f13e56a20f (detected MIT) may add terms; check which code it covers",
-    "LICENSE at ed4cd2eebedd (detected MIT) may add terms; check which code it covers",
     "the license file changed in substance between revisions: {'1914bfb950be8d576ce9e49c8a0e51c9f2402560fe3c19093e69bc1306a56e9e': 'MIT', 'e8952eed60812e85784e715b056f63b37de0a10aa4a7f618fb33c5ea24944887': 'Apache-2.0', 'f03bb390a37e7307755222af39ebd550f797e90d2e7c7e4d62eb1095767f4594': 'MIT'}"
    ],
    "proposed_decision": "needs_clarification",
@@ -20865,12 +20867,17 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
-    "package registry (deps.dev): unavailable {}"
+    "package registry (deps.dev): unavailable {}",
+    "NOTICE at 0186d7eae0e1 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 68453ff14ad1 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 944b55738e7f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 9634086efc6d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-79"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:no_registry_crosscheck",
    "evidence": {
     "paths": [
      "modules/luci-mod-system/htdocs/luci-static/resources/view/system/sshkeys.js"
@@ -20970,13 +20977,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 0186d7eae0e1 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 68453ff14ad1 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 944b55738e7f (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 9634086efc6d (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-js-post-fix-577cf6f62219a28c",
     "sg-js-post-fix-7ecb1d6bc6bde162",
@@ -21775,12 +21777,16 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE-ISC, LICENSE-MIT detected as multiple:ISC|MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): agrees {'npm:@phun-ky/defaults-deep': ['ISC AND MIT']}"
+    "package registry (deps.dev): agrees {'npm:@phun-ky/defaults-deep': ['ISC AND MIT']}",
+    "LICENSE-ISC at 1141f9aedab9 is an additional ISC license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at 1141f9aedab9 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE-ISC at 807dba930f87 is an additional ISC license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at 807dba930f87 is an additional MIT license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-1321"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive",
+   "decision_group": "clarify_extension:package_metadata_names_another_license+root_license_not_single_permissive",
    "evidence": {
     "paths": [
      "src/utils/merge-with.ts"
@@ -21841,10 +21847,6 @@
     "see the license text"
    ],
    "open_questions": [
-    "LICENSE-ISC at 1141f9aedab9 (detected ISC) may add terms; check which code it covers",
-    "LICENSE-ISC at 807dba930f87 (detected ISC) may add terms; check which code it covers",
-    "LICENSE-MIT at 1141f9aedab9 (detected MIT) may add terms; check which code it covers",
-    "LICENSE-MIT at 807dba930f87 (detected MIT) may add terms; check which code it covers",
     "package.json at 1141f9aedab9 declares license 'MIT AND ISC', root license is multiple:ISC|MIT",
     "package.json at 807dba930f87 declares license 'MIT AND ISC', root license is multiple:ISC|MIT",
     "root license multiple:ISC|MIT is not a single permissive license"
@@ -22581,7 +22583,21 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as multiple:Apache-2.0|BSD-3-Clause in every version used (1 version(s))",
-    "package registry (deps.dev): agrees {'PyPI:cryptography': ['Apache-2.0 OR BSD-3-Clause']}"
+    "package registry (deps.dev): agrees {'PyPI:cryptography': ['Apache-2.0 OR BSD-3-Clause']}",
+    "LICENSE.APACHE at 138da90c8450 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at 138da90c8450 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.PSF at 138da90c8450 is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.APACHE at 21ac453a1afe is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at 21ac453a1afe is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.APACHE at 5012bedaef2d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at 5012bedaef2d is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.APACHE at b924696b2e87 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at b924696b2e87 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.APACHE at d6951dca25de is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at d6951dca25de is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.PSF at d6951dca25de is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.APACHE at f09c261ca10a is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE.BSD at f09c261ca10a is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-20",
@@ -22895,20 +22911,6 @@
     "LICENSE at b924696b2e87 (detected unknown) may add terms; check which code it covers",
     "LICENSE at d6951dca25de (detected unknown) may add terms; check which code it covers",
     "LICENSE at f09c261ca10a (detected unknown) may add terms; check which code it covers",
-    "LICENSE.APACHE at 138da90c8450 (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.APACHE at 21ac453a1afe (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.APACHE at 5012bedaef2d (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.APACHE at b924696b2e87 (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.APACHE at d6951dca25de (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.APACHE at f09c261ca10a (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE.BSD at 138da90c8450 (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.BSD at 21ac453a1afe (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.BSD at 5012bedaef2d (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.BSD at b924696b2e87 (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.BSD at d6951dca25de (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.BSD at f09c261ca10a (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.PSF at 138da90c8450 (detected PSF-2.0) may add terms; check which code it covers",
-    "LICENSE.PSF at d6951dca25de (detected PSF-2.0) may add terms; check which code it covers",
     "pyproject.toml at 5012bedaef2d declares license 'Apache-2.0 OR BSD-3-Clause', root license is multiple:Apache-2.0|BSD-3-Clause",
     "pyproject.toml at f09c261ca10a declares license 'Apache-2.0 OR BSD-3-Clause', root license is multiple:Apache-2.0|BSD-3-Clause",
     "root license multiple:Apache-2.0|BSD-3-Clause is not a single permissive license",
@@ -23689,12 +23691,16 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE, LICENSE-THIRD-PARTY detected as multiple:BSD-3-Clause|MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): unavailable {}"
+    "package registry (deps.dev): unavailable {}",
+    "LICENSE at 673902988525 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE-THIRD-PARTY at 673902988525 is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE at 69fdd3649e2f is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE-THIRD-PARTY at 69fdd3649e2f is an additional PSF-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-20"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive",
+   "decision_group": "clarify_extension:package_metadata_names_another_license+root_license_not_single_permissive",
    "evidence": {
     "paths": [
      "bot/exts/filters/filtering.py"
@@ -23716,7 +23722,7 @@
         "sha256": "ff404d8c7b0fe456ab873143d0846d0466a200e678d211fc7b79d3addff6877a"
        },
        "LICENSE-THIRD-PARTY": {
-        "detected": "BSD-3-Clause",
+        "detected": "PSF-2.0",
         "sha256": "17b83896cdf9fbdf285289acc3e81dce6d29608e96c59f17876ae5f924878030"
        }
       }
@@ -23736,7 +23742,7 @@
         "sha256": "ff404d8c7b0fe456ab873143d0846d0466a200e678d211fc7b79d3addff6877a"
        },
        "LICENSE-THIRD-PARTY": {
-        "detected": "BSD-3-Clause",
+        "detected": "PSF-2.0",
         "sha256": "17b83896cdf9fbdf285289acc3e81dce6d29608e96c59f17876ae5f924878030"
        }
       }
@@ -23755,10 +23761,6 @@
     "see the license text"
    ],
    "open_questions": [
-    "LICENSE at 673902988525 (detected MIT) may add terms; check which code it covers",
-    "LICENSE at 69fdd3649e2f (detected MIT) may add terms; check which code it covers",
-    "LICENSE-THIRD-PARTY at 673902988525 (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE-THIRD-PARTY at 69fdd3649e2f (detected BSD-3-Clause) may add terms; check which code it covers",
     "pyproject.toml at 673902988525 declares license 'MIT', root license is multiple:BSD-3-Clause|MIT",
     "pyproject.toml at 69fdd3649e2f declares license 'MIT', root license is multiple:BSD-3-Clause|MIT",
     "root license multiple:BSD-3-Clause|MIT is not a single permissive license"
@@ -23792,16 +23794,163 @@
   {
    "additional_license_file_sha256s": [],
    "advisories": [
+    "CVE-2025-15367",
+    "CVE-2026-1502",
+    "CVE-2026-6019"
+   ],
+   "confirmed_evidence": [
+    "root license file(s) LICENSE detected as PSF-2.0, identical at all 6 used revisions",
+    "package registry (deps.dev): unavailable {}",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
+   ],
+   "cwes": [
+    "CWE-116",
+    "CWE-77",
+    "CWE-93"
+   ],
+   "decision_group": "clarify_extension:root_license_not_single_permissive",
+   "evidence": {
+    "paths": [
+     "Lib/http/client.py",
+     "Lib/http/cookies.py",
+     "Lib/poplib.py"
+    ],
+    "problems": [],
+    "revisions": {
+     "05ed7ce7ae9e17c23a04085b2539fe6d6d3cef69": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     },
+     "266247c9a609f148a1e6abdec94ff5ad807b8557": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     },
+     "76b3923d688c0efc580658476c5f525ec8735104": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     },
+     "ad3c5b7958b890382f431a53349320cb7c84d405": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     },
+     "b234a2b67539f787e191d2ef19a7cbdce32874e7": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     },
+     "f25509e78e8be6ea73c811ac2b8c928c28841b9f": {
+      "inspection": "complete",
+      "license_files_on_record_paths": {},
+      "package_metadata": [],
+      "root_notice_and_license_files": {
+       "LICENSE": {
+        "detected": "PSF-2.0",
+        "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+       }
+      }
+     }
+    },
+    "source_state_sha256": "bb47bd42c634ff948f020e6443fd1b4b84c97d6e76b1ae2c760fabaf9d0102f1"
+   },
+   "languages": [
+    "python"
+   ],
+   "license_file": "LICENSE",
+   "license_file_sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231",
+   "license_file_url": "https://github.com/python/cpython/blob/76b3923d688c0efc580658476c5f525ec8735104/LICENSE",
+   "license_spdx_detected": "PSF-2.0",
+   "obligations": [
+    "see the license text"
+   ],
+   "open_questions": [
+    "root license PSF-2.0 is not a single permissive license"
+   ],
+   "proposed_decision": "needs_clarification",
+   "record_ids": [
+    "sg-py-caller-abstention-5437e9c0ba4ad7e4",
+    "sg-py-caller-abstention-c46664b8c1989b5b",
+    "sg-py-post-fix-635fa2d36b8ee8fd",
+    "sg-py-post-fix-b325cb29cdee45a4",
+    "sg-py-post-fix-bd862251de1c4cc0",
+    "sg-py-vulnerable-1561391847dbf374",
+    "sg-py-vulnerable-605c07ba99fa06c1",
+    "sg-py-vulnerable-dd1c5cd14dfbd864"
+   ],
+   "records": {
+    "abstain": 2,
+    "finding": 3,
+    "no_finding": 3
+   },
+   "registry_finding": "unavailable",
+   "registry_licenses": {},
+   "repository_key": "python/cpython",
+   "revisions": [
+    "05ed7ce7ae9e17c23a04085b2539fe6d6d3cef69",
+    "266247c9a609f148a1e6abdec94ff5ad807b8557",
+    "76b3923d688c0efc580658476c5f525ec8735104",
+    "ad3c5b7958b890382f431a53349320cb7c84d405",
+    "b234a2b67539f787e191d2ef19a7cbdce32874e7",
+    "f25509e78e8be6ea73c811ac2b8c928c28841b9f"
+   ],
+   "splits": [
+    "train"
+   ],
+   "tier": "B",
+   "tier_reasons": [
+    "other_permissive_license:PSF-2.0",
+    "registry_unavailable"
+   ],
+   "url": "https://github.com/python/cpython"
+  },
+  {
+   "additional_license_file_sha256s": [],
+   "advisories": [
     "GHSA-47fc-vmwq-366v"
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as BSD-3-Clause, identical at all 2 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'PyPI:torch': ['Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND ISC AND MIT AND Zlib AND Apache-2.0 WITH LLVM-exception']}"
+    "package registry (deps.dev): lists_root_and_others {'PyPI:torch': ['Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND ISC AND MIT AND Zlib AND Apache-2.0 WITH LLVM-exception']}",
+    "NOTICE at 767f6aa49fe2 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at fbbf3687453a is an additional Apache-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-77"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license",
+   "decision_group": "clarify_extension:package_metadata_names_another_license",
    "evidence": {
     "paths": [
      "torch/jit/annotations.py"
@@ -23870,8 +24019,6 @@
     "keep the copyright notice, conditions and disclaimer with any redistributed copy; no endorsement using the authors' names"
    ],
    "open_questions": [
-    "NOTICE at 767f6aa49fe2 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at fbbf3687453a (detected Apache-2.0) may add terms; check which code it covers",
     "setup.py at 767f6aa49fe2 declares license 'BSD-3', root license is BSD-3-Clause",
     "setup.py at fbbf3687453a declares license 'BSD-3', root license is BSD-3-Clause"
    ],
@@ -23913,12 +24060,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): unavailable {'PyPI:binwalk': []}"
+    "package registry (deps.dev): unavailable {'PyPI:binwalk': []}",
+    "NOTICE.md at a555eb1fa6ed is an additional MIT license file (permissive; obligations on redistribution only)",
+    "NOTICE.md at cddfede79597 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-22"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:no_registry_crosscheck",
    "evidence": {
     "paths": [
      "src/binwalk/plugins/unpfs.py"
@@ -23978,11 +24128,8 @@
    "obligations": [
     "keep the copyright and permission notice with any redistributed copy of the code"
    ],
-   "open_questions": [
-    "NOTICE.md at a555eb1fa6ed (detected MIT) may add terms; check which code it covers",
-    "NOTICE.md at cddfede79597 (detected MIT) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-post-fix-20d497e950792b5c",
     "sg-py-vulnerable-79b45a8c0f5bdbdc"
@@ -24119,7 +24266,14 @@
    ],
    "confirmed_evidence": [
     "root license file LICENSE detected as Apache-2.0 in every version used (4 version(s))",
-    "package registry (deps.dev): agrees {'PyPI:salt': ['Apache-2.0']}"
+    "package registry (deps.dev): agrees {'PyPI:salt': ['Apache-2.0']}",
+    "NOTICE at 2d85ff848c4d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 41d834bf800d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 5ff18fd0ecec is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at accf3c2b0a02 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at c4ad23f0f313 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at e39116fb87bf is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-19",
@@ -24128,7 +24282,7 @@
     "CWE-613",
     "CWE-770"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:license_text_updated",
    "evidence": {
     "license_variants": {
      "variants": {
@@ -25254,15 +25408,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 2d85ff848c4d (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 41d834bf800d (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 5ff18fd0ecec (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at accf3c2b0a02 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at c4ad23f0f313 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at e39116fb87bf (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-caller-abstention-b698cbb02d002715",
     "sg-py-post-fix-22fd290cd2488d35",
@@ -26464,12 +26611,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/sigstore/policy-controller': ['Apache-2.0', 'BSD-2-Clause', 'BSD-2-Clause-Views', 'BSD-3-Clause', 'ISC', 'MIT', 'MPL-2.0']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/sigstore/policy-controller': ['Apache-2.0', 'BSD-2-Clause', 'BSD-2-Clause-Views', 'BSD-3-Clause', 'ISC', 'MIT', 'MPL-2.0']}",
+    "COPYRIGHT.txt at 658eb32899fb is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "COPYRIGHT.txt at e852af36fb7d is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-347"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file",
+   "decision_group": "extension:registry_lists_bundled_licenses",
    "evidence": {
     "paths": [
      "pkg/webhook/validator.go"
@@ -26519,11 +26669,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "COPYRIGHT.txt at 658eb32899fb (detected Apache-2.0) may add terms; check which code it covers",
-    "COPYRIGHT.txt at e852af36fb7d (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-caller-abstention-9e7a6c4297c2741a",
     "sg-go-post-fix-dfa546effceb1ca3",
@@ -26943,12 +27090,14 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Unlicense, identical at all 2 used revisions",
-    "package registry (deps.dev): names_other_license {'npm:@stablelib/cbor': ['MIT']}"
+    "package registry (deps.dev): names_other_license {'npm:@stablelib/cbor': ['MIT']}",
+    "packages/cbor/LICENSE at 0f153a63b755 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "packages/cbor/LICENSE at 66167351414c is an additional MIT license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-1321"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+registry_names_other_license",
+   "decision_group": "clarify_extension:package_metadata_names_another_license+registry_names_other_license",
    "evidence": {
     "paths": [
      "packages/cbor/cbor.ts"
@@ -27011,8 +27160,6 @@
     "none (public-domain dedication)"
    ],
    "open_questions": [
-    "packages/cbor/LICENSE at 0f153a63b755 (detected MIT) may add terms; check which code it covers",
-    "packages/cbor/LICENSE at 66167351414c (detected MIT) may add terms; check which code it covers",
     "packages/cbor/package.json at 0f153a63b755 declares license 'MIT', root license is Unlicense",
     "packages/cbor/package.json at 66167351414c declares license 'MIT', root license is Unlicense",
     "the package registry names another license: {'npm:@stablelib/cbor': ['MIT']}"
@@ -27796,7 +27943,13 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE-APACHE-2.0, LICENSE-LBNL.md, LICENSE.md detected as multiple:Apache-2.0|BSD-3-Clause, identical at all 2 used revisions",
-    "package registry (deps.dev): lists_root_and_others {'Go:github.com/sylabs/singularity': ['BSD-3-Clause', 'ISC'], 'Go:github.com/sylabs/singularity/v4': ['BSD-3-Clause', 'ISC']}"
+    "package registry (deps.dev): lists_root_and_others {'Go:github.com/sylabs/singularity': ['BSD-3-Clause', 'ISC'], 'Go:github.com/sylabs/singularity/v4': ['BSD-3-Clause', 'ISC']}",
+    "LICENSE-APACHE-2.0 at 6e59f31cb97f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-LBNL.md at 6e59f31cb97f is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.md at 6e59f31cb97f is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE-APACHE-2.0 at d52ae9d13979 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-LBNL.md at d52ae9d13979 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)",
+    "LICENSE.md at d52ae9d13979 is an additional BSD-3-Clause license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-20"
@@ -27870,12 +28023,6 @@
    "open_questions": [
     "COPYRIGHT.md at 6e59f31cb97f (detected unknown) may add terms; check which code it covers",
     "COPYRIGHT.md at d52ae9d13979 (detected unknown) may add terms; check which code it covers",
-    "LICENSE-APACHE-2.0 at 6e59f31cb97f (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE-APACHE-2.0 at d52ae9d13979 (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE-LBNL.md at 6e59f31cb97f (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE-LBNL.md at d52ae9d13979 (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.md at 6e59f31cb97f (detected BSD-3-Clause) may add terms; check which code it covers",
-    "LICENSE.md at d52ae9d13979 (detected BSD-3-Clause) may add terms; check which code it covers",
     "root license multiple:Apache-2.0|BSD-3-Clause is not a single permissive license"
    ],
    "proposed_decision": "needs_clarification",
@@ -28224,12 +28371,16 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE, LICENSE-MIT detected as multiple:Apache-2.0|MIT, identical at all 2 used revisions",
-    "package registry (deps.dev): agrees {'PyPI:tuf': ['Apache-2.0 OR MIT']}"
+    "package registry (deps.dev): agrees {'PyPI:tuf': ['Apache-2.0 OR MIT']}",
+    "LICENSE at 2977188139d0 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at 2977188139d0 is an additional MIT license file (permissive; obligations on redistribution only)",
+    "LICENSE at b913d88ad46a is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "LICENSE-MIT at b913d88ad46a is an additional MIT license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-347"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+package_metadata_names_another_license+root_license_not_single_permissive",
+   "decision_group": "clarify_extension:package_metadata_names_another_license+root_license_not_single_permissive",
    "evidence": {
     "paths": [
      "tuf/sig.py"
@@ -28298,10 +28449,6 @@
     "see the license text"
    ],
    "open_questions": [
-    "LICENSE at 2977188139d0 (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE at b913d88ad46a (detected Apache-2.0) may add terms; check which code it covers",
-    "LICENSE-MIT at 2977188139d0 (detected MIT) may add terms; check which code it covers",
-    "LICENSE-MIT at b913d88ad46a (detected MIT) may add terms; check which code it covers",
     "root license multiple:Apache-2.0|MIT is not a single permissive license",
     "setup.py at 2977188139d0 declares license 'MIT License', root license is multiple:Apache-2.0|MIT",
     "setup.py at b913d88ad46a declares license 'MIT License', root license is multiple:Apache-2.0|MIT"
@@ -28639,13 +28786,18 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
-    "package registry (deps.dev): names_other_license {'Go:github.com/treeverse/lakefs': ['BSD-3-Clause', 'MIT']}"
+    "package registry (deps.dev): names_other_license {'Go:github.com/treeverse/lakefs': ['BSD-3-Clause', 'MIT']}",
+    "NOTICE at 1c8adab852da is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 286b9aaedb23 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 3edc1d4163ab is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at cbc106275357 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-200",
     "CWE-22"
    ],
-   "decision_group": "clarify_extension:notice_or_additional_license_file+registry_names_other_license",
+   "decision_group": "clarify_extension:registry_names_other_license",
    "evidence": {
     "paths": [
      "pkg/api/controller.go",
@@ -28727,10 +28879,6 @@
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
    "open_questions": [
-    "NOTICE at 1c8adab852da (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 286b9aaedb23 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 3edc1d4163ab (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at cbc106275357 (detected Apache-2.0) may add terms; check which code it covers",
     "the package registry names another license: {'Go:github.com/treeverse/lakefs': ['BSD-3-Clause', 'MIT']}"
    ],
    "proposed_decision": "needs_clarification",
@@ -31810,34 +31958,34 @@
  ],
  "if_extension_is_also_approved": {
   "by_decision": {
-   "abstain": 213,
-   "finding": 818,
-   "no_finding": 734
+   "abstain": 251,
+   "finding": 1176,
+   "no_finding": 995
   },
   "by_language": {
-   "go": 472,
-   "javascript": 515,
-   "python": 513,
-   "typescript": 265
+   "go": 609,
+   "javascript": 879,
+   "python": 631,
+   "typescript": 303
   },
   "by_split": {
-   "train": 1596,
-   "validation": 169
+   "train": 2217,
+   "validation": 205
   },
   "by_split_and_decision": {
-   "train/abstain": 193,
-   "train/finding": 737,
-   "train/no_finding": 666,
-   "validation/abstain": 20,
-   "validation/finding": 81,
-   "validation/no_finding": 68
+   "train/abstain": 225,
+   "train/finding": 1079,
+   "train/no_finding": 913,
+   "validation/abstain": 26,
+   "validation/finding": 97,
+   "validation/no_finding": 82
   },
   "cwe": {
    "CWE-113": 1,
    "CWE-116": 6,
    "CWE-117": 1,
    "CWE-1188": 2,
-   "CWE-119": 2,
+   "CWE-119": 3,
    "CWE-120": 2,
    "CWE-1236": 1,
    "CWE-1240": 1,
@@ -31847,100 +31995,107 @@
    "CWE-1285": 1,
    "CWE-1287": 1,
    "CWE-1289": 1,
-   "CWE-129": 2,
+   "CWE-129": 4,
    "CWE-130": 1,
-   "CWE-1321": 67,
-   "CWE-1333": 26,
+   "CWE-1321": 72,
+   "CWE-1333": 27,
    "CWE-1336": 3,
    "CWE-1385": 1,
    "CWE-168": 1,
    "CWE-172": 1,
    "CWE-173": 1,
    "CWE-177": 2,
-   "CWE-178": 4,
+   "CWE-178": 5,
    "CWE-179": 1,
    "CWE-183": 1,
    "CWE-184": 3,
    "CWE-185": 2,
+   "CWE-189": 1,
+   "CWE-19": 2,
    "CWE-190": 3,
    "CWE-193": 3,
-   "CWE-20": 28,
-   "CWE-200": 25,
+   "CWE-20": 33,
+   "CWE-200": 34,
    "CWE-201": 2,
    "CWE-202": 1,
-   "CWE-203": 5,
+   "CWE-203": 7,
    "CWE-208": 3,
-   "CWE-209": 2,
-   "CWE-212": 1,
-   "CWE-22": 85,
+   "CWE-209": 3,
+   "CWE-212": 2,
+   "CWE-22": 96,
    "CWE-228": 1,
    "CWE-23": 1,
    "CWE-241": 1,
-   "CWE-248": 6,
+   "CWE-248": 7,
+   "CWE-254": 2,
+   "CWE-264": 2,
    "CWE-266": 2,
-   "CWE-269": 7,
+   "CWE-269": 8,
    "CWE-276": 5,
    "CWE-280": 2,
-   "CWE-285": 6,
-   "CWE-287": 22,
+   "CWE-285": 7,
+   "CWE-287": 26,
    "CWE-29": 3,
-   "CWE-290": 2,
+   "CWE-290": 3,
    "CWE-294": 1,
-   "CWE-295": 7,
+   "CWE-295": 9,
+   "CWE-305": 1,
    "CWE-306": 5,
-   "CWE-307": 2,
+   "CWE-307": 3,
    "CWE-311": 3,
-   "CWE-312": 2,
+   "CWE-312": 3,
    "CWE-319": 1,
-   "CWE-327": 2,
+   "CWE-327": 3,
    "CWE-330": 3,
    "CWE-338": 2,
-   "CWE-345": 2,
+   "CWE-345": 3,
    "CWE-346": 3,
-   "CWE-347": 10,
+   "CWE-347": 11,
    "CWE-348": 1,
-   "CWE-352": 10,
+   "CWE-352": 12,
    "CWE-362": 2,
    "CWE-367": 2,
    "CWE-369": 1,
-   "CWE-377": 2,
+   "CWE-377": 3,
    "CWE-379": 1,
    "CWE-384": 2,
    "CWE-395": 1,
-   "CWE-400": 35,
+   "CWE-399": 4,
+   "CWE-400": 38,
+   "CWE-401": 1,
    "CWE-402": 1,
-   "CWE-404": 1,
+   "CWE-404": 2,
    "CWE-41": 1,
-   "CWE-434": 2,
+   "CWE-434": 3,
    "CWE-436": 1,
    "CWE-440": 1,
    "CWE-441": 1,
    "CWE-444": 4,
    "CWE-471": 2,
-   "CWE-476": 8,
+   "CWE-476": 11,
    "CWE-489": 1,
    "CWE-494": 1,
-   "CWE-502": 7,
+   "CWE-502": 9,
    "CWE-521": 2,
-   "CWE-522": 6,
-   "CWE-532": 8,
+   "CWE-522": 7,
+   "CWE-532": 11,
    "CWE-538": 1,
-   "CWE-552": 2,
+   "CWE-552": 3,
    "CWE-573": 1,
-   "CWE-59": 6,
+   "CWE-59": 7,
    "CWE-598": 1,
-   "CWE-601": 24,
+   "CWE-601": 28,
    "CWE-61": 1,
-   "CWE-613": 2,
+   "CWE-613": 4,
    "CWE-617": 2,
    "CWE-627": 1,
    "CWE-636": 1,
-   "CWE-639": 5,
+   "CWE-639": 8,
    "CWE-643": 1,
    "CWE-646": 1,
    "CWE-662": 1,
    "CWE-665": 1,
-   "CWE-668": 2,
+   "CWE-668": 4,
    "CWE-669": 1,
    "CWE-670": 2,
    "CWE-674": 2,
@@ -31951,87 +32106,89 @@
    "CWE-704": 1,
    "CWE-706": 3,
    "CWE-73": 2,
-   "CWE-732": 3,
-   "CWE-74": 9,
+   "CWE-732": 4,
+   "CWE-74": 11,
    "CWE-749": 1,
-   "CWE-754": 2,
-   "CWE-755": 3,
+   "CWE-754": 3,
+   "CWE-755": 4,
    "CWE-76": 2,
    "CWE-77": 24,
-   "CWE-770": 15,
-   "CWE-78": 25,
-   "CWE-787": 1,
-   "CWE-79": 78,
+   "CWE-770": 17,
+   "CWE-78": 27,
+   "CWE-787": 2,
+   "CWE-79": 112,
    "CWE-829": 1,
    "CWE-834": 1,
-   "CWE-835": 5,
+   "CWE-835": 6,
    "CWE-842": 1,
    "CWE-862": 7,
    "CWE-863": 7,
-   "CWE-88": 3,
-   "CWE-89": 14,
+   "CWE-88": 4,
+   "CWE-89": 17,
+   "CWE-90": 1,
    "CWE-913": 2,
-   "CWE-915": 1,
-   "CWE-918": 12,
+   "CWE-915": 3,
+   "CWE-918": 17,
    "CWE-922": 1,
+   "CWE-93": 1,
    "CWE-939": 1,
-   "CWE-94": 21,
+   "CWE-94": 25,
    "CWE-942": 1,
    "CWE-95": 2,
    "CWE-96": 1
   },
   "cwe_family": {
-   "authn_authz": 88,
-   "code_injection": 26,
-   "command_injection": 52,
-   "crypto_tls_integrity": 31,
-   "deserialization_input_validation": 58,
-   "information_exposure": 49,
-   "other": 93,
-   "path_traversal": 98,
-   "prototype_pollution": 68,
-   "redirect_ssrf": 37,
-   "resource_limits_redos": 117,
-   "sql_injection": 14,
-   "xss_output_encoding": 87
+   "authn_authz": 101,
+   "code_injection": 30,
+   "command_injection": 55,
+   "crypto_tls_integrity": 37,
+   "deserialization_input_validation": 68,
+   "information_exposure": 65,
+   "other": 117,
+   "path_traversal": 110,
+   "prototype_pollution": 75,
+   "redirect_ssrf": 46,
+   "resource_limits_redos": 135,
+   "sql_injection": 17,
+   "xss_output_encoding": 121
   },
   "patch_examples_by_split": {
-   "train": 635,
-   "validation": 68
+   "train": 757,
+   "validation": 82
   },
-  "record_ids_sha256": "3967c4266fdc9c8be5126ee5c7d8a4061251ee72b4ee9340d56a31f5fa975c8e",
-  "records": 1765,
-  "repositories": 613
+  "record_ids_sha256": "14c13ac81f2932c9b4c0d70b9627677d32ab7ed2c33b7f7f5893ef4793068bcd",
+  "records": 2422,
+  "repositories": 706
  },
  "if_recommended_are_approved": {
   "by_decision": {
-   "abstain": 171,
-   "finding": 677,
-   "no_finding": 614
+   "abstain": 179,
+   "finding": 712,
+   "no_finding": 646
   },
   "by_language": {
-   "go": 335,
-   "javascript": 454,
-   "python": 427,
-   "typescript": 246
+   "go": 355,
+   "javascript": 475,
+   "python": 458,
+   "typescript": 249
   },
   "by_split": {
-   "train": 1339,
-   "validation": 123
+   "train": 1403,
+   "validation": 134
   },
   "by_split_and_decision": {
-   "train/abstain": 156,
-   "train/finding": 620,
-   "train/no_finding": 563,
-   "validation/abstain": 15,
-   "validation/finding": 57,
-   "validation/no_finding": 51
+   "train/abstain": 162,
+   "train/finding": 650,
+   "train/no_finding": 591,
+   "validation/abstain": 17,
+   "validation/finding": 62,
+   "validation/no_finding": 55
   },
   "cwe": {
    "CWE-113": 1,
    "CWE-116": 4,
    "CWE-1188": 2,
-   "CWE-119": 1,
+   "CWE-119": 2,
    "CWE-120": 2,
    "CWE-1236": 1,
    "CWE-1240": 1,
@@ -32042,46 +32199,49 @@
    "CWE-1289": 1,
    "CWE-129": 2,
    "CWE-130": 1,
-   "CWE-1321": 59,
-   "CWE-1333": 24,
+   "CWE-1321": 62,
+   "CWE-1333": 25,
    "CWE-1336": 2,
    "CWE-1385": 1,
    "CWE-168": 1,
    "CWE-172": 1,
    "CWE-173": 1,
    "CWE-177": 2,
-   "CWE-178": 4,
+   "CWE-178": 5,
    "CWE-179": 1,
    "CWE-183": 1,
    "CWE-184": 3,
+   "CWE-189": 1,
    "CWE-190": 2,
    "CWE-193": 2,
-   "CWE-20": 25,
-   "CWE-200": 18,
+   "CWE-20": 26,
+   "CWE-200": 20,
    "CWE-201": 2,
    "CWE-202": 1,
    "CWE-203": 4,
    "CWE-208": 3,
    "CWE-209": 2,
    "CWE-212": 1,
-   "CWE-22": 63,
+   "CWE-22": 65,
    "CWE-228": 1,
    "CWE-23": 1,
    "CWE-241": 1,
    "CWE-248": 6,
+   "CWE-264": 2,
    "CWE-269": 4,
    "CWE-276": 5,
    "CWE-280": 1,
    "CWE-285": 5,
-   "CWE-287": 18,
+   "CWE-287": 19,
    "CWE-29": 3,
    "CWE-290": 1,
    "CWE-294": 1,
    "CWE-295": 6,
+   "CWE-305": 1,
    "CWE-306": 4,
    "CWE-307": 2,
    "CWE-311": 3,
-   "CWE-312": 1,
+   "CWE-312": 2,
    "CWE-319": 1,
    "CWE-327": 2,
    "CWE-330": 3,
@@ -32093,11 +32253,12 @@
    "CWE-362": 2,
    "CWE-367": 2,
    "CWE-369": 1,
-   "CWE-377": 2,
+   "CWE-377": 3,
    "CWE-379": 1,
    "CWE-384": 2,
    "CWE-395": 1,
-   "CWE-400": 31,
+   "CWE-399": 3,
+   "CWE-400": 32,
    "CWE-402": 1,
    "CWE-404": 1,
    "CWE-434": 2,
@@ -32106,19 +32267,19 @@
    "CWE-441": 1,
    "CWE-444": 4,
    "CWE-471": 1,
-   "CWE-476": 6,
+   "CWE-476": 8,
    "CWE-489": 1,
    "CWE-494": 1,
    "CWE-502": 7,
    "CWE-521": 2,
-   "CWE-522": 6,
+   "CWE-522": 7,
    "CWE-532": 6,
    "CWE-538": 1,
    "CWE-552": 1,
    "CWE-59": 4,
    "CWE-601": 20,
    "CWE-61": 1,
-   "CWE-613": 2,
+   "CWE-613": 3,
    "CWE-617": 2,
    "CWE-627": 1,
    "CWE-636": 1,
@@ -32146,7 +32307,7 @@
    "CWE-770": 15,
    "CWE-78": 14,
    "CWE-787": 1,
-   "CWE-79": 69,
+   "CWE-79": 73,
    "CWE-829": 1,
    "CWE-834": 1,
    "CWE-835": 4,
@@ -32154,38 +32315,40 @@
    "CWE-863": 7,
    "CWE-88": 1,
    "CWE-89": 11,
+   "CWE-90": 1,
    "CWE-915": 1,
-   "CWE-918": 10,
+   "CWE-918": 12,
    "CWE-922": 1,
+   "CWE-93": 1,
    "CWE-939": 1,
-   "CWE-94": 19,
+   "CWE-94": 20,
    "CWE-95": 2,
    "CWE-96": 1
   },
   "cwe_family": {
-   "authn_authz": 67,
-   "code_injection": 22,
+   "authn_authz": 68,
+   "code_injection": 23,
    "command_injection": 36,
-   "crypto_tls_integrity": 29,
-   "deserialization_input_validation": 54,
-   "information_exposure": 38,
-   "other": 77,
-   "path_traversal": 72,
-   "prototype_pollution": 60,
-   "redirect_ssrf": 31,
-   "resource_limits_redos": 105,
+   "crypto_tls_integrity": 30,
+   "deserialization_input_validation": 56,
+   "information_exposure": 41,
+   "other": 89,
+   "path_traversal": 74,
+   "prototype_pollution": 63,
+   "redirect_ssrf": 33,
+   "resource_limits_redos": 109,
    "sql_injection": 11,
-   "xss_output_encoding": 75
+   "xss_output_encoding": 79
   },
   "patch_examples_by_split": {
-   "train": 538,
-   "validation": 51
+   "train": 563,
+   "validation": 55
   },
-  "record_ids_sha256": "e5d692db04ffb39f390a8f40570e81b4bb63540428e4791fd21cd27046ce36d2",
-  "records": 1462,
-  "repositories": 542
+  "record_ids_sha256": "29534df6e3236a48663f96be238328ad35ddfe294515c1c697bfc32d3126ca02",
+  "records": 1537,
+  "repositories": 551
  },
- "manifest_sha256": "8c05d92f1461dc68fddeac378da5863a89f4998a11f4a3891d5574409b9929c3",
+ "manifest_sha256": "ca7b9cd43c4c99515ecf269d842cb99d4a5f1ab39de3a436eb38febc41ffee54",
  "repositories": [
   {
    "advisories": [
@@ -38084,7 +38247,9 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:aws-cdk-aws-codebuild': ['Apache-2.0'], 'PyPI:aws-cdk-lib': ['Apache-2.0'], 'npm:aws-cdk': ['Apache-2.0'], 'npm:aws-cdk-lib': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:aws-cdk-aws-codebuild': ['Apache-2.0'], 'PyPI:aws-cdk-lib': ['Apache-2.0'], 'npm:aws-cdk': ['Apache-2.0'], 'npm:aws-cdk-lib': ['Apache-2.0']}",
+    "packages/aws-cdk-lib/NOTICE at 4bee768f07e7 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "packages/aws-cdk-lib/NOTICE at e5740c01a5f5 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-863"
@@ -38169,9 +38334,7 @@
    ],
    "open_questions": [
     "NOTICE at 4bee768f07e7 (detected unknown) may add terms; check which code it covers",
-    "NOTICE at e5740c01a5f5 (detected unknown) may add terms; check which code it covers",
-    "packages/aws-cdk-lib/NOTICE at 4bee768f07e7 (detected Apache-2.0) may add terms; check which code it covers",
-    "packages/aws-cdk-lib/NOTICE at e5740c01a5f5 (detected Apache-2.0) may add terms; check which code it covers"
+    "NOTICE at e5740c01a5f5 (detected unknown) may add terms; check which code it covers"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
@@ -38212,7 +38375,9 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:aws-sam-cli': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:aws-sam-cli': ['Apache-2.0']}",
+    "THIRD-PARTY-LICENSES at 42ba2f712a8f is an additional MIT license file (permissive; obligations on redistribution only)",
+    "THIRD-PARTY-LICENSES at 462b4e07b873 is an additional MIT license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-22"
@@ -38295,9 +38460,7 @@
    ],
    "open_questions": [
     "NOTICE at 42ba2f712a8f (detected unknown) may add terms; check which code it covers",
-    "NOTICE at 462b4e07b873 (detected unknown) may add terms; check which code it covers",
-    "THIRD-PARTY-LICENSES at 42ba2f712a8f (detected MIT) may add terms; check which code it covers",
-    "THIRD-PARTY-LICENSES at 462b4e07b873 (detected MIT) may add terms; check which code it covers"
+    "NOTICE at 462b4e07b873 (detected unknown) may add terms; check which code it covers"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
@@ -38956,12 +39119,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as MIT, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:gunicorn': ['MIT']}"
+    "package registry (deps.dev) agrees: {'PyPI:gunicorn': ['MIT']}",
+    "NOTICE at 1e10a02e73c8 is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 52088be726b1 is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-93"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:MIT",
    "evidence": {
     "paths": [
      "gunicorn/http/wsgi.py"
@@ -38987,7 +39153,7 @@
         "sha256": "41c5551cfed61dba2192f0b85fa9f7c039d7861f75e9a70054a1576c77bfafc6"
        },
        "NOTICE": {
-        "detected": "MIT",
+        "detected": "PSF-2.0",
         "sha256": "496c4f4548437fd9b819fbe758b872918455984aa308b8f111d959341a021d25"
        }
       }
@@ -39011,7 +39177,7 @@
         "sha256": "41c5551cfed61dba2192f0b85fa9f7c039d7861f75e9a70054a1576c77bfafc6"
        },
        "NOTICE": {
-        "detected": "MIT",
+        "detected": "PSF-2.0",
         "sha256": "496c4f4548437fd9b819fbe758b872918455984aa308b8f111d959341a021d25"
        }
       }
@@ -39029,11 +39195,8 @@
    "obligations": [
     "keep the copyright and permission notice with any redistributed copy of the code"
    ],
-   "open_questions": [
-    "NOTICE at 1e10a02e73c8 (detected MIT) may add terms; check which code it covers",
-    "NOTICE at 52088be726b1 (detected MIT) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-caller-abstention-6a4f88cdf837397c",
     "sg-py-post-fix-808eea394cc89df2",
@@ -44272,12 +44435,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'npm:dexie': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'npm:dexie': ['Apache-2.0']}",
+    "NOTICE at 1d655a69b9f2 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at b350b8cbc8a9 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-1321"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "src/functions/utils.ts"
@@ -44337,11 +44503,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 1d655a69b9f2 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at b350b8cbc8a9 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-ts-caller-abstention-480c9d6b1454fd93",
     "sg-ts-post-fix-ab09fdd5ca92b8a6",
@@ -51618,12 +51781,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'Go:github.com/go-vela/compiler': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'Go:github.com/go-vela/compiler': ['Apache-2.0']}",
+    "NOTICE at adf85cc6f434 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at f1ace5f8a05c is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-200"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "template/native/render.go"
@@ -51673,11 +51839,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at adf85cc6f434 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at f1ace5f8a05c (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-post-fix-597212e980ab216b",
     "sg-go-vulnerable-7eae2283f3a515f8"
@@ -54851,12 +55014,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:label-studio': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:label-studio': ['Apache-2.0']}",
+    "NOTICE at 501142cb815a is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at ad2980473121 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-918"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "label_studio/data_import/uploader.py"
@@ -54916,11 +55082,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 501142cb815a (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at ad2980473121 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-post-fix-27fbda7dcd4ada2d",
     "sg-py-vulnerable-9238492081032cb5"
@@ -55836,12 +55999,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:horovod': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:horovod': ['Apache-2.0']}",
+    "NOTICE at 655353fc345b is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at b96ecae4dc69 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-377"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "horovod/runner/js_run.py"
@@ -55909,11 +56075,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 655353fc345b (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at b96ecae4dc69 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-caller-abstention-9ed92055382397d4",
     "sg-py-post-fix-9be9b44c940f77c6",
@@ -56204,12 +56367,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:label-studio': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:label-studio': ['Apache-2.0']}",
+    "NOTICE at 54f454e3abfe is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 8cf6958e1e27 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-79"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "label_studio/projects/views.py"
@@ -56269,11 +56435,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 54f454e3abfe (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 8cf6958e1e27 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-py-post-fix-a9fb7fc4c81f317d",
     "sg-py-vulnerable-a89ed3eec73c9628"
@@ -59494,12 +59657,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'npm:jsoneditor': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'npm:jsoneditor': ['Apache-2.0']}",
+    "NOTICE at 092e386cf49f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at c33544bf7de6 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-1333"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "src/js/util.js"
@@ -59559,11 +59725,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 092e386cf49f (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at c33544bf7de6 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-js-post-fix-469b471c1c17763c",
     "sg-js-vulnerable-ee78e32d4b8be248"
@@ -65506,7 +65669,11 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 4 used revisions",
-    "package registry (deps.dev) agrees: {'PyPI:marimo': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'PyPI:marimo': ['Apache-2.0']}",
+    "marimo/third_party_licenses.txt at 78489d4621dc is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "marimo/third_party_licenses.txt at c24d4806398f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "marimo/third_party_licenses.txt at dc35cdfecf4f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "marimo/third_party_licenses.txt at fdd55c8cf626 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-306",
@@ -65653,11 +65820,7 @@
     "marimo/third_party.txt at 78489d4621dc (detected unknown) may add terms; check which code it covers",
     "marimo/third_party.txt at c24d4806398f (detected unknown) may add terms; check which code it covers",
     "marimo/third_party.txt at dc35cdfecf4f (detected unknown) may add terms; check which code it covers",
-    "marimo/third_party.txt at fdd55c8cf626 (detected unknown) may add terms; check which code it covers",
-    "marimo/third_party_licenses.txt at 78489d4621dc (detected Apache-2.0) may add terms; check which code it covers",
-    "marimo/third_party_licenses.txt at c24d4806398f (detected Apache-2.0) may add terms; check which code it covers",
-    "marimo/third_party_licenses.txt at dc35cdfecf4f (detected Apache-2.0) may add terms; check which code it covers",
-    "marimo/third_party_licenses.txt at fdd55c8cf626 (detected Apache-2.0) may add terms; check which code it covers"
+    "marimo/third_party.txt at fdd55c8cf626 (detected unknown) may add terms; check which code it covers"
    ],
    "proposed_decision": "needs_clarification",
    "record_ids": [
@@ -75137,12 +75300,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'Go:github.com/open-telemetry/opentelemetry-collector-contrib/extension/bearertokenauthextension': ['Apache-2.0'], 'Go:github.com/open-telemetry/opentelemetry-collector-contrib/receiver/awsfirehosereceiver': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'Go:github.com/open-telemetry/opentelemetry-collector-contrib/extension/bearertokenauthextension': ['Apache-2.0'], 'Go:github.com/open-telemetry/opentelemetry-collector-contrib/receiver/awsfirehosereceiver': ['Apache-2.0']}",
+    "NOTICE at 234eadd91ae4 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at 371bf6afbd7c is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-200"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "receiver/awsfirehosereceiver/receiver.go"
@@ -75192,11 +75358,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "NOTICE at 234eadd91ae4 (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at 371bf6afbd7c (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-caller-abstention-db429cb16fdc5546",
     "sg-go-post-fix-78eda253fd7f1cd1",
@@ -75913,7 +76076,9 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 12 used revisions",
-    "package registry (deps.dev) agrees: {'Go:github.com/openfga/openfga': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'Go:github.com/openfga/openfga': ['Apache-2.0']}",
+    "NOTICE at 58dbe665b1ea is an additional PSF-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at cdf2c76ea34b is an additional PSF-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-281",
@@ -76074,7 +76239,7 @@
         "sha256": "1c46d7b2bed94d457d745f28cabeb31f8d6c81dd9035bc5d24039989ee1e1bff"
        },
        "NOTICE": {
-        "detected": "AGPL-3.0",
+        "detected": "PSF-2.0",
         "sha256": "aeee909bd4f7ab95c6eff05ab7e41410749f37519f5949b967aad6f65f20b432"
        }
       }
@@ -76134,7 +76299,7 @@
         "sha256": "1c46d7b2bed94d457d745f28cabeb31f8d6c81dd9035bc5d24039989ee1e1bff"
        },
        "NOTICE": {
-        "detected": "AGPL-3.0",
+        "detected": "PSF-2.0",
         "sha256": "aeee909bd4f7ab95c6eff05ab7e41410749f37519f5949b967aad6f65f20b432"
        }
       }
@@ -76177,10 +76342,8 @@
     "NOTICE at 1bb5eddf4a3d (detected GPL-2.0) may add terms; check which code it covers",
     "NOTICE at 244302e7a8b9 (detected GPL-2.0) may add terms; check which code it covers",
     "NOTICE at 504b7cc3bcb1 (detected GPL-2.0) may add terms; check which code it covers",
-    "NOTICE at 58dbe665b1ea (detected AGPL-3.0) may add terms; check which code it covers",
     "NOTICE at 9ea5ac2af4b8 (detected GPL-2.0) may add terms; check which code it covers",
     "NOTICE at b332a8cb29ab (detected GPL-2.0) may add terms; check which code it covers",
-    "NOTICE at cdf2c76ea34b (detected AGPL-3.0) may add terms; check which code it covers",
     "NOTICE at e5960d4eba92 (detected GPL-2.0) may add terms; check which code it covers"
    ],
    "proposed_decision": "needs_clarification",
@@ -82629,7 +82792,9 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'Go:zotregistry.dev/zot': ['Apache-2.0'], 'Go:zotregistry.dev/zot/v2': ['Apache-2.0'], 'Go:zotregistry.io/zot': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'Go:zotregistry.dev/zot': ['Apache-2.0'], 'Go:zotregistry.dev/zot/v2': ['Apache-2.0'], 'Go:zotregistry.io/zot': ['Apache-2.0']}",
+    "NOTICE at 8a99a3ed231f is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "NOTICE at af4a46b331a4 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)"
    ],
    "cwes": [
     "CWE-532"
@@ -82693,8 +82858,6 @@
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
    "open_questions": [
-    "NOTICE at 8a99a3ed231f (detected Apache-2.0) may add terms; check which code it covers",
-    "NOTICE at af4a46b331a4 (detected Apache-2.0) may add terms; check which code it covers",
     "THIRD-PARTY-LICENSES.md at 8a99a3ed231f (detected unknown) may add terms; check which code it covers",
     "THIRD-PARTY-LICENSES.md at af4a46b331a4 (detected unknown) may add terms; check which code it covers"
    ],
@@ -89411,12 +89574,15 @@
    ],
    "confirmed_evidence": [
     "root license file(s) LICENSE detected as Apache-2.0, identical at all 2 used revisions",
-    "package registry (deps.dev) agrees: {'Go:github.com/sigstore/sigstore': ['Apache-2.0']}"
+    "package registry (deps.dev) agrees: {'Go:github.com/sigstore/sigstore': ['Apache-2.0']}",
+    "COPYRIGHT.txt at 8ec410a2993e is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "COPYRIGHT.txt at deef0ee6b9d5 is an additional Apache-2.0 license file (permissive; obligations on redistribution only)",
+    "no NOTICE file and no other license file at the root or on the paths of the used files, at every used revision"
    ],
    "cwes": [
     "CWE-22"
    ],
-   "decision_group": "clarify:notice_or_additional_license_file",
+   "decision_group": "recommended:Apache-2.0",
    "evidence": {
     "paths": [
      "pkg/tuf/client.go"
@@ -89466,11 +89632,8 @@
    "obligations": [
     "keep the license and any NOTICE file with any redistributed copy of the code; state changes (Apache-2.0 \u00a74)"
    ],
-   "open_questions": [
-    "COPYRIGHT.txt at 8ec410a2993e (detected Apache-2.0) may add terms; check which code it covers",
-    "COPYRIGHT.txt at deef0ee6b9d5 (detected Apache-2.0) may add terms; check which code it covers"
-   ],
-   "proposed_decision": "needs_clarification",
+   "open_questions": [],
+   "proposed_decision": "recommended_for_review",
    "record_ids": [
     "sg-go-post-fix-8f055fe60274240c",
     "sg-go-vulnerable-35fd80be727cacae"
@@ -99660,7 +99823,7 @@
    "url": "https://github.com/zmievsa/cadwyn"
   }
  ],
- "review_queue_sha256": "5c024f0fc3750c873a3e9b43d87ffbda78b7170376df2dda2809a9daf37389fe",
+ "review_queue_sha256": "bc1257f7065097044d4a0502abe043c6fa8a57a8c0b7d189329f350fc16b40fb",
  "selection": "every tier A repository of the review queue with accepted train/validation records",
  "status": "PROPOSAL - not an approval; see COHORT_REVIEW.md"
 }

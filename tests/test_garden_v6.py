@@ -356,3 +356,33 @@ def test_one_finding_per_test_file_every_negative_kept() -> None:
                rec("d", "query_test_negative", "t/x.js"), rec("e", "query_test_negative", "t/x.js")]
     assert [r["record_id"] for r in querytests.cap_template_families(records, 1)] == ["a", "c", "d", "e"]
     assert querytests.cap_template_families(records, None) == records
+
+
+def test_a_unit_hashes_its_own_rule_files_when_a_directory_tests_several_rules(tmp_path: Path) -> None:
+    root = _codeql_checkout(tmp_path)
+    test_dir = root / "python/ql/test/query-tests/Security/CWE-089-SqlInjection"
+    # a second rule in the same directory whose file name sorts first
+    (root / "python/ql/src/Security/CWE-089/AaOther.ql").write_text(QUERY.replace("py/sql-injection", "py/aa-other"))
+    (test_dir / "AaOther.qlref").write_text("query: Security/CWE-089/AaOther.ql\npostprocess: utils/test/InlineExpectationsTestQuery.ql\n")
+    (test_dir / "AaOther.expected").write_text("#select\n")
+    subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
+    subprocess.run(["git", "-C", str(root), "-c", "user.name=t", "-c", "user.email=t@example.invalid", "commit", "-q", "-m", "t2"], check=True)
+    revision = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+    config = load_config(ROOT / "configs/garden/seed_v6.yaml")
+    records, _ = querytests.build_records(root, revision, config.extraction, "sentinel-garden-v6", set(), 2, log=lambda *a: None)
+    import hashlib
+
+    expected_text = (root / "python/ql/src/Security/CWE-089/SqlInjection.ql").read_text() + "\x00" + (test_dir / "SqlInjection.qlref").read_text() + "\x00" + (test_dir / "SqlInjection.expected").read_text()
+    sql = [r for r in records if r["provenance"]["query_id"] == "py/sql-injection"]
+    assert sql and {r["provenance"]["osv_record_sha256"] for r in sql} == {hashlib.sha256(expected_text.encode()).hexdigest()}
+
+
+def test_psf_license_is_not_mistaken_for_the_gpl_it_mentions() -> None:
+    from sentinel.garden.licenses import category_of, detect_license_text
+
+    psf = (
+        "A. HISTORY OF THE SOFTWARE\nMost Python releases have also been GPL-compatible; the GNU General Public License is named here.\n"
+        "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n1. This LICENSE AGREEMENT is between the Python Software Foundation (\"PSF\") ..."
+    )
+    assert detect_license_text(psf) == "PSF-2.0" and category_of("PSF-2.0") == "permissive"
+    assert detect_license_text("GNU GENERAL PUBLIC LICENSE Version 2") == "GPL-2.0"

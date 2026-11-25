@@ -2,6 +2,23 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
+  # tier B: registry_unavailable
+  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
+  # registry (deps.dev): {'Go:github.com/modelcontextprotocol/registry': []}
+  - repository_key: modelcontextprotocol/registry
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/modelcontextprotocol/registry
+      - https://github.com/modelcontextprotocol/registry/blob/78b7bbde07948049b916d76b4769faee461ff930/LICENSE
+    notes: ""
+
   # tier B: registry_disagrees
   # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
   # registry (deps.dev): {'npm:@modelcontextprotocol/client': ['Apache-2.0'], 'npm:@modelcontextprotocol/express': ['Apache-2.0'], 'npm:@modelcontextprotocol/hono': ['Apache-2.0'], 'npm:@modelcontextprotocol/node': ['Apache-2.0'], 'npm:@modelcontextprotocol/sdk': ['MIT'], 'npm:@modelcontextprotocol/server': ['Apache-2.0'], 'npm:@modelcontextprotocol/server-legacy': ['Apache-2.0']}
@@ -408,21 +425,4 @@ repositories:
     evidence_urls:
       - https://github.com/apache/tomee
       - https://github.com/apache/tomee/blob/b8bbf50c23ce97dd64f3a5d77f78f84e47579863/LICENSE
-    notes: ""
-
-  # tier B: registry_unavailable
-  # records: 2 {'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {'Go:github.com/apache/trafficcontrol': []}
-  - repository_key: apache/trafficcontrol
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
-    license_file: LICENSE
-    license_file_sha256: 8ad2451abc32e3911b4ca502ff0302df2f6ce8c45f72f3630f6ce5c543c11694
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/apache/trafficcontrol
-      - https://github.com/apache/trafficcontrol/blob/f780aff77a52d52a37b4d1cc3e8e801c0b557356/LICENSE
     notes: ""

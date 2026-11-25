@@ -5,11 +5,12 @@ import pytest
 from sentinel.data.registry import load_registry, validate_registry
 
 
-GARDEN_SOURCES = {"ghsa-osv-fix-commits", "osv", "github-advisory-db"}
+GARDEN_SOURCES = {"ghsa-osv-fix-commits", "osv", "github-advisory-db", "morefixes", "nvd-cve", "morefixes-cve-fix-commits", "codeql-query-tests"}
 
 
 def test_registry_is_valid_and_default_deny() -> None:
-    """Only the three Sentinel Garden sources may be approved (decided 2026-11-15, docs/TRAINING_AUTHORIZATION.md);
+    """Only the Sentinel Garden sources the owner approved may be approved (the three GHSA/OSV sources on 2026-11-15, the
+    four Garden v6 sources on 2026-11-25; docs/TRAINING_AUTHORIZATION.md);
     every other source stays unapproved, and every approval names a reviewer and a pinned revision."""
     registry = load_registry()
     validate_registry(registry)

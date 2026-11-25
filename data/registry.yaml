@@ -161,24 +161,25 @@ sources:
       additionally requires a per-repository approval in data/garden/approvals.yaml. A source-level
       approval here does not approve any repository.
 
-  # ---- Garden v6 (2026-11-25): new sources. None is approved; the owner decides (data/garden/seed_v6/cohort/OWNER_DECISION.md).
+  # ---- Garden v6 (2026-11-25): new sources. morefixes, nvd-cve, morefixes-cve-fix-commits and codeql-query-tests approved by
+  # Jonas Cikemgil on 2026-11-25 (docs/TRAINING_AUTHORIZATION.md); the eval-only and research-reference entries stay as they are.
   - source_id: morefixes
     role: metadata
     revision: "Zenodo record 20776007, dump-2026-06-20.sql.gz (md5 bdff6120f1e65626c77d42656162316e), CVEs up to 2026-06-02"
     license: CC-BY-4.0
-    license_status: review_required
-    terms_status: review_required
+    license_status: reviewed
+    terms_status: approved_for_project
     redistribution_status: not_redistributed
     removal_status: ready
     pii_risk: low
-    production_approved: false
+    production_approved: true
     owner: rappidAI Research
-    reviewer: null
+    reviewer: Jonas Cikemgil
     evidence_urls:
       - https://zenodo.org/records/20776007
       - https://github.com/JafarAkhondali/Morefixes
     notes: >-
-      Discovery index only (CVE -> repository -> fix commit, CWE classification). Only the metadata tables are
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Discovery index only (CVE -> repository -> fix commit, CWE classification). Only the metadata tables are
       read; MoreFixes' code, diffs and method tables are never used, the code comes from the pinned upstream commit.
       Fix commits that only MoreFixes' mining links to a CVE (Prospector score) are not used; a candidate needs a fix
       commit named by the CVE's own NVD references. CC-BY-4.0 requires attribution (docs/GARDEN_V6.md). Commit
@@ -188,37 +189,37 @@ sources:
     role: metadata
     revision: "CVE records as contained in MoreFixes dump-2026-06-20 (NVD data up to 2026-06-02)"
     license: NVD data (U.S. government work); CVE content under the CVE Program terms of use
-    license_status: review_required
-    terms_status: review_required
+    license_status: reviewed
+    terms_status: approved_for_project
     redistribution_status: not_redistributed
     removal_status: ready
     pii_risk: low
-    production_approved: false
+    production_approved: true
     owner: rappidAI Research
-    reviewer: null
+    reviewer: Jonas Cikemgil
     evidence_urls:
       - https://nvd.nist.gov/general/FAQ-Sections/General-FAQs
       - https://www.cve.org/Legal/TermsOfUse
     notes: >-
-      CVE description (evidence text of a finding), CWE classification, publication date and references (the
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. CVE description (evidence text of a finding), CWE classification, publication date and references (the
       evidence that ties the fix commit to the CVE) of MoreFixes candidates.
 
   - source_id: morefixes-cve-fix-commits
     role: train_candidate
     revision: "sentinel-garden-v6 MoreFixes candidates (candidate_set garden-v6-morefixes in data/garden/seed_v6/candidates.jsonl)"
     license: upstream repository license, per repository (recorded per record by Sentinel Garden)
-    license_status: review_required
-    terms_status: review_required
+    license_status: reviewed
+    terms_status: approved_for_project
     redistribution_status: not_redistributed
     removal_status: ready
     pii_risk: low
-    production_approved: false
+    production_approved: true
     owner: rappidAI Research
-    reviewer: null
+    reviewer: Jonas Cikemgil
     evidence_urls:
       - https://github.com/rappidAI-Research/quantum-sentinel-alpha/blob/main/docs/GARDEN_V6.md
     notes: >-
-      Function-level vulnerable/fixed code resolved by Sentinel Garden from upstream fix commits named by a CVE's
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Function-level vulnerable/fixed code resolved by Sentinel Garden from upstream fix commits named by a CVE's
       NVD references (discovered via the morefixes index). Same build, quality checks and audit as
       ghsa-osv-fix-commits; training use additionally requires a per-repository approval.
 
@@ -226,18 +227,18 @@ sources:
     role: train_candidate
     revision: "github/codeql@4136c26154e3de8f8a301858bafd369ce09e07f9, <lang>/ql/test/query-tests/Security (inline-expectation tests)"
     license: MIT
-    license_status: review_required
-    terms_status: review_required
+    license_status: reviewed
+    terms_status: approved_for_project
     redistribution_status: not_redistributed
     removal_status: ready
     pii_risk: low
-    production_approved: false
+    production_approved: true
     owner: rappidAI Research
-    reviewer: null
+    reviewer: Jonas Cikemgil
     evidence_urls:
       - https://github.com/github/codeql/blob/main/LICENSE
     notes: >-
-      Rule-scoped tool-test records: a query expectation states what one rule reports, not that code is secure.
+      Approved for training on 2026-11-25 by Jonas Cikemgil (project owner) for Sentinel Garden v6; decision record docs/TRAINING_AUTHORIZATION.md. Not redistributed: code excerpts and source data are not republished by this project. Rule-scoped tool-test records: a query expectation states what one rule reports, not that code is secure.
       Only the repository's MIT-licensed test and query files are read; the CodeQL CLI (separate terms) is never
       run or redistributed. Test markers, comments and docstrings are removed from the model input.
 

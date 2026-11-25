@@ -150,6 +150,19 @@ repositories:
   - https://github.com/bsv-blockchain/ts-sdk
   - https://github.com/bsv-blockchain/ts-sdk/blob/d8cf6930028372079d977138ae9eaa03ae2f50bb/LICENSE.txt
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: cert-manager/cert-manager
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/cert-manager/cert-manager
+  - https://github.com/cert-manager/cert-manager/blob/9a73a0b3853035827edd37ac463e4803ba10327d/LICENSE
+  notes: tier B extension, group extension:registry_lists_bundled_licenses
 - repository_key: chatwoot/chatwoot
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -163,6 +176,19 @@ repositories:
   - https://github.com/chatwoot/chatwoot
   - https://github.com/chatwoot/chatwoot/blob/dd1fe4f93a6fbafa1d1eed87ac7d4143e701ec08/LICENSE
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: cloudfoundry/gorouter
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: e4440ec3a892c40690bb57add9d19fd83a03f6f6919e8cf3d072df8c2bbfbb7a
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/cloudfoundry/gorouter
+  - https://github.com/cloudfoundry/gorouter/blob/b1b5c44e050f73b399b379ca63a42a2c5780a83f/LICENSE
+  notes: tier B extension, group extension:registry_lists_bundled_licenses
 - repository_key: cloudfoundry/php-buildpack
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
@@ -189,6 +215,21 @@ repositories:
   - https://github.com/coderedcorp/coderedcms
   - https://github.com/coderedcorp/coderedcms/blob/06006cec23a723bc7d76df75ce2c2d795a447902/LICENSE
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: concourse/concourse
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE.md
+  license_file_sha256: fb843c0ea6dbcc13648368ec0bd474de0d273f8edb0b07925985b6255e91b521
+  additional_license_file_sha256s:
+  - a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/concourse/concourse
+  - https://github.com/concourse/concourse/blob/ac60be5f0435b6592f5a4fcc089050d72ad2452c/LICENSE.md
+  notes: tier B extension, group extension:license_text_updated+registry_lists_bundled_licenses
 - repository_key: containers/buildah
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
@@ -270,6 +311,19 @@ repositories:
   evidence_urls:
   - https://github.com/cosmos/cosmos-sdk
   - https://github.com/cosmos/cosmos-sdk/blob/c4a14fa7b6828432fdabdb8b4af68ade9403ce49/LICENSE
+  notes: tier B extension, group extension:registry_lists_bundled_licenses
+- repository_key: cubefs/cubefs
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 20b2a384c46a0a0a1c839e8481fb6f260026c8b3048139cd0f35c863ef5493df
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/cubefs/cubefs
+  - https://github.com/cubefs/cubefs/blob/8dccce6ac8dff3db44d7e9074094c7303a5ff5dd/LICENSE
   notes: tier B extension, group extension:registry_lists_bundled_licenses
 - repository_key: dadrus/heimdall
   decision: '<REQUIRED: approved_for_training | blocked>'
@@ -595,6 +649,19 @@ repositories:
   - https://github.com/getsentry/sentry-javascript
   - https://github.com/getsentry/sentry-javascript/blob/35bdc87dee3498794e34c1ad35dd9927950c8766/LICENSE
   notes: tier B extension, group extension:license_text_updated
+- repository_key: github/codeql
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
+  license_file: LICENSE
+  license_file_sha256: 66056d06b874e3eb6a22f5fff297e1676a23dc43e8c8b81279c1ef33a6a270df
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/github/codeql
+  - https://github.com/github/codeql/blob/4136c26154e3de8f8a301858bafd369ce09e07f9/LICENSE
+  notes: tier B extension, group extension:no_registry_crosscheck
 - repository_key: github/github-mcp-server
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -660,6 +727,21 @@ repositories:
   - https://github.com/godaddy/node-config-shield
   - https://github.com/godaddy/node-config-shield/blob/cdba5d3a7accd661ffbc52e208153464bd0d9da6/LICENSE.txt
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: gofiber/fiber
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
+  license_file: LICENSE
+  license_file_sha256: 5c0e1bfb8a314043331e093c78154cc7870e276ffb64ac6ace6ee0087162b1e4
+  additional_license_file_sha256s:
+  - 6f9a23eff06f16d3d587d6c7ef11ed1788b246f1c7db54b0daecf1b7841e58b8
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/gofiber/fiber
+  - https://github.com/gofiber/fiber/blob/1403cc8292da3220e9316960b4030cc722a0f396/LICENSE
+  notes: tier B extension, group extension:license_text_updated+registry_lists_bundled_licenses
 - repository_key: gogs/gogs
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -884,6 +966,21 @@ repositories:
   evidence_urls:
   - https://github.com/jonschlinkert/set-value
   - https://github.com/jonschlinkert/set-value/blob/95e9d9923f8a8b4a01da1ea138fcc39ec7b6b15f/LICENSE
+  notes: tier B extension, group extension:license_text_updated
+- repository_key: josdejong/mathjs
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 3b0f65a9308588e12b619b2f05c788b4a5f41220006ce563b826b0feb489fd26
+  additional_license_file_sha256s:
+  - 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/josdejong/mathjs
+  - https://github.com/josdejong/mathjs/blob/ecb80514e80bce4e6ec7e71db8ff79954f07c57e/LICENSE
   notes: tier B extension, group extension:license_text_updated
 - repository_key: josh-xt/agixt
   decision: '<REQUIRED: approved_for_training | blocked>'
@@ -1374,6 +1471,19 @@ repositories:
   - https://github.com/openwhyd/openwhyd
   - https://github.com/openwhyd/openwhyd/blob/38707930103dcba49d89d993f56bebd346069640/LICENSE.txt
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: openwrt/luci
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/openwrt/luci
+  - https://github.com/openwrt/luci/blob/0186d7eae0e123a409e9919a83fdfecc7945c984/LICENSE
+  notes: tier B extension, group extension:no_registry_crosscheck
 - repository_key: oroinc/platform
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -1534,6 +1644,19 @@ repositories:
   - https://github.com/pypa/pip
   - https://github.com/pypa/pip/blob/8e227a9be4faa9594e05d02ca05a413a2a4e7735/LICENSE.txt
   notes: tier B extension, group extension:license_text_updated
+- repository_key: refirmlabs/binwalk
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
+  license_file: LICENSE
+  license_file_sha256: 6b78992f9d9f79aa751de4dbed15069ff663b706c4a9f9505c962ace49c9ada0
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/ReFirmLabs/binwalk
+  - https://github.com/ReFirmLabs/binwalk/blob/cddfede795971045d99422bd7a9676c8803ec5ee/LICENSE
+  notes: tier B extension, group extension:no_registry_crosscheck
 - repository_key: sajari/docconv
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -1547,6 +1670,23 @@ repositories:
   - https://github.com/sajari/docconv
   - https://github.com/sajari/docconv/blob/b19021ade3d0b71c89d35cb00eb9e589a121faa5/LICENSE
   notes: tier B extension, group extension:registry_lists_bundled_licenses
+- repository_key: saltstack/salt
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 97b1cbd4cb5e6e7ea1b2f5566ea9ad93f50d82ee5dad657554fab9160f887fcb
+  additional_license_file_sha256s:
+  - 84fc4408303d46d7eec249a97dc5ae32d56cfa38e1a31c6dc077e8e2ba859161
+  - 8f6ce36b4db10b9d60fd83f103d50def97fc6cebccb641c5edf2e6b40f3054de
+  - ed7201e45c87cbcb7bba88c7962dc6ec08f6f4593ebea3a09e7251d2ebfe2a76
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/saltstack/salt
+  - https://github.com/saltstack/salt/blob/41d834bf800d86fc496e4fac2d3875fc2aca7c62/LICENSE
+  notes: tier B extension, group extension:license_text_updated
 - repository_key: samuelcolvin/pydantic
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -1621,6 +1761,19 @@ repositories:
   - https://github.com/shakyShane/eazy-logger
   - https://github.com/shakyShane/eazy-logger/blob/a8baa6fe441d19ffa9916eba367016b7937a28fd/LICENSE
   notes: tier B extension, group extension:no_registry_crosscheck
+- repository_key: sigstore/policy-controller
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/sigstore/policy-controller
+  - https://github.com/sigstore/policy-controller/blob/e852af36fb7d42678b21d7e97503c25bd1fd05c8/LICENSE
+  notes: tier B extension, group extension:registry_lists_bundled_licenses
 - repository_key: spbu-se/spbu_se_site
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'

@@ -2,6 +2,23 @@
 # authorized reviewer after reading the license file at the linked revision; then move the entry into
 # data/garden/approvals.yaml. These templates fail schema validation on purpose until completed.
 repositories:
+  # tier B: license_file_changed_between_revisions, registry_unrecognised
+  # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
+  # registry (deps.dev): {'npm:@typebot.io/js': ['non-standard']}
+  - repository_key: baptistearno/typebot.io
+    decision: "<REQUIRED: approved_for_training | blocked>"
+    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>"
+    license_file: LICENSE
+    license_file_sha256: 29f1802604e2b84e0d67ab2e7efd977fdb602d3791f8275d6bce11dca1665f53
+    terms_status: "<REQUIRED: approved_for_project | blocked>"
+    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
+    reviewer: "<REQUIRED: name of the authorized reviewer>"
+    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
+    evidence_urls:
+      - https://github.com/baptisteArno/typebot.io
+      - https://github.com/baptisteArno/typebot.io/blob/d82b2d47c86ae614a08d4073c669ca64442faff2/LICENSE
+    notes: ""
+
   # tier B: license_file_changed_between_revisions, registry_disagrees
   # records: 4 {'train/post_fix': 2, 'train/vulnerable': 2}
   # registry (deps.dev): {'Go:github.com/astaxie/beego': ['Apache-2.0', 'MIT'], 'Go:github.com/beego/beego': ['Apache-2.0', 'MIT'], 'Go:github.com/beego/beego/v2': ['Apache-2.0', 'MIT']}
@@ -408,21 +425,4 @@ repositories:
     evidence_urls:
       - https://github.com/aws/agentcore-cli
       - https://github.com/aws/agentcore-cli/blob/ae1b932ec91bacdbb7a3521f9f1fc24479a3d504/LICENSE
-    notes: ""
-
-  # tier B: registry_unavailable
-  # records: 3 {'train/caller_abstention': 1, 'train/post_fix': 1, 'train/vulnerable': 1}
-  # registry (deps.dev): {}
-  - repository_key: azure/setup-kubectl
-    decision: "<REQUIRED: approved_for_training | blocked>"
-    license_spdx: "<REQUIRED: reviewer-confirmed SPDX id; detected MIT>"
-    license_file: LICENSE
-    license_file_sha256: 9906940f61b1f0b533fa7d99baf55178b2808fbe113ea51dfbfad8572ccd5f2b
-    terms_status: "<REQUIRED: approved_for_project | blocked>"
-    redistribution_status: "<REQUIRED: not_redistributed | approved | blocked>"
-    reviewer: "<REQUIRED: name of the authorized reviewer>"
-    reviewed_at: "<REQUIRED: YYYY-MM-DD>"
-    evidence_urls:
-      - https://github.com/Azure/setup-kubectl
-      - https://github.com/Azure/setup-kubectl/blob/d449d75495d2b9d1463555bb00ca3dca77a42ab6/LICENSE
     notes: ""

@@ -12,18 +12,18 @@ Prepared on 2026-11-25; nothing has been trained, no AWS resource was started.
 
 | | Examples | Detection / patch | Tokens (median / max / total) | Supervised tokens |
 | --- | ---: | --- | --- | ---: |
-| train (authorized today) | 2,153 | 1,538 / 615 | 804 / 3,064 / 2.06 M | 184,544 |
-| validation (loss only) | 193 | 138 / 55 | 808 / 2,692 / 0.19 M | 17,880 |
-| train after every decision-ready approval (projection) | 2,795 | 2,088 / 707 | 757 / 3,064 / 2.54 M | 230,207 |
-| train with copyleft repositories as well (projection) | 3,510 | 2,591 / 919 | 769 / 3,286 / 3.20 M | 294,613 |
+| train (authorized after the owner's approvals of 2026-11-25) | 2,758 | 2,024 / 734 | 775 / 3,064 / 2.56 M | 233,463 |
+| validation (loss only) | 204 | 146 / 58 | 805 / 2,692 / 0.20 M | 18,692 |
+| train with the two negative kinds validated by the human review (projection) | 2,891 | 2,157 / 734 | 760 / 3,064 / 2.63 M | 238,649 |
+| train with copyleft repositories as well (projection) | 3,595 | 2,652 / 943 | 770 / 3,286 / 3.28 M | 302,052 |
 
-The projections encode the hypothetical training sets of `data/garden/seed_v6/cohort/approval_scenarios.json` with the same tokenizer and rules; nothing is approved.
+The projections encode the hypothetical training sets of `data/garden/seed_v6/cohort/approval_scenarios.json` with the same tokenizer and rules; they are not approved.
 
 **Why the parameters stay as they are.**
 - 0 examples are dropped at 4,096 tokens in every scenario (longest 3,286), so the sequence length stays.
-- 2 epochs at an effective batch of 16 are 270 optimizer steps today, 350 after the decision-ready approvals and 440 with copyleft repositories (first run: 234 steps; its best checkpoint was at 1.7 epochs). A checkpoint every 25 steps gives 11 to 18 checkpoints, within `keep_last_checkpoints: 20`.
-- The data grows by at most 56 % and the composition shifts little: tool tests would be 9–11 % of the train examples, median length falls from 804 to 757 tokens. No measurement argues for a larger rank, a different learning rate or more epochs; changing them would also confound the comparison with the first run.
-- **Train only after the owner decisions** in `data/garden/seed_v6/cohort/OWNER_DECISION.md`. Without them the authorized data is 4 % smaller than Garden v5's (the OpenSSF benchmark reservation and the stricter later-fix check), and training now would mostly repeat the v5 data.
+- 2 epochs at an effective batch of 16 are 346 optimizer steps now (362 with the validated negative kinds, 450 with copyleft repositories; first run: 234 steps, its best checkpoint at 1.7 epochs). A checkpoint every 25 steps gives 14 to 18 checkpoints, within `keep_last_checkpoints: 20`.
+- The data grows by 23 % over Garden v5 (at most 60 % in the projections) and the composition shifts little: tool tests are 7 % of the train examples (199 of 2,758), the median length falls from 802 to 775 tokens. No measurement argues for a larger rank, a different learning rate or more epochs; changing them would also confound the comparison with the first run.
+- **Ready to train** after the owner's approvals of 2026-11-25 (`docs/TRAINING_AUTHORIZATION.md`): follow `docs/GPU_RUNBOOK.md` § 15. The human review can still add the two negative kinds later; that would be a new curate and a new data hash, the config stays.
 
 ## Selection and test
 

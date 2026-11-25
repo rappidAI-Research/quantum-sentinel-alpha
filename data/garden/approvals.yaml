@@ -28,6 +28,8 @@
 # registry_lists_bundled_licenses) approved by Jonas Cikemgil; decision record docs/TRAINING_AUTHORIZATION.md.
 # 2026-11-25: 85 repositories of the Garden v5 cohort (62 tier A recommended, 23 tier B extension) approved by Jonas Cikemgil;
 # decision record docs/TRAINING_AUTHORIZATION.md.
+# 2026-11-25 (later): 93 repositories of the Garden v6 cohort (14 tier A recommended, 79 tier B extension, among them
+# github/codeql for the CodeQL tool tests) approved by Jonas Cikemgil; decision record docs/TRAINING_AUTHORIZATION.md.
 approvals_version: '1.0'
 repositories:
 - repository_key: 9001/copyparty
@@ -8746,3 +8748,1321 @@ repositories:
   - https://github.com/zmievsa/cadwyn/blob/b424ecd57cd8dabbc8fe39b8f8ccafea629c7728/LICENSE
   notes: 'Garden v5 training cohort tier A, group recommended:MIT; inspected at every used revision (data/garden/seed_v5/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil (project
     owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: abrignoni/aleapp
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: b06a819817c119603a135d9f8c40d02142987153be580dc72b28293f2dd17765
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/abrignoni/ALEAPP
+  - https://github.com/abrignoni/ALEAPP/blob/0cafd8fe0027663420eb3d0fa821b2d1a713880d/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: ajenti/ajenti
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 14922f6f74dcfce6ef381638dbe8aa476b27363d17ecd0a0767678231bb60128
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/ajenti/ajenti
+  - https://github.com/ajenti/ajenti/blob/7aa146b724e0e20cfee2c71ca78fafbf53a8767c/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: allegroai/clearml
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: fd68dcb7c7052939a58128b80fdad29b94ee0d93786e1451f245592a14009ce6
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/allegroai/clearml
+  - https://github.com/allegroai/clearml/blob/e506831599bd8e072e5e54266abfccdfbe4be2ac/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: angular/angular.js
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 2512d00ca2899e4b450978a55e17eaeee2d03c1e8ad0d6f46a2ee0324671230f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/angular/angular.js
+  - https://github.com/angular/angular.js/blob/add78e62004e80bb1e16ab2dfe224afa8e513bc3/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:MIT; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil (project
+    owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: awesomestcode/livebot
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/AwesomestCode/LiveBot
+  - https://github.com/AwesomestCode/LiveBot/blob/57505527f838d1e46e8f93d567ba552a30185bfa/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: azure/setup-kubectl
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 9906940f61b1f0b533fa7d99baf55178b2808fbe113ea51dfbfad8572ccd5f2b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Azure/setup-kubectl
+  - https://github.com/Azure/setup-kubectl/blob/d449d75495d2b9d1463555bb00ca3dca77a42ab6/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: benoitc/gunicorn
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 41c5551cfed61dba2192f0b85fa9f7c039d7861f75e9a70054a1576c77bfafc6
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/benoitc/gunicorn
+  - https://github.com/benoitc/gunicorn/blob/1e10a02e73c87dfadc394b361af33864d0e59e24/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:MIT; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil (project
+    owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: bitmessage/pybitmessage
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: COPYING
+  license_file_sha256: 5106d924b17e408734946bcad4d5ace0eb2b6eff1a270181191106090f40382f
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Bitmessage/PyBitmessage
+  - https://github.com/Bitmessage/PyBitmessage/blob/3a8016d31f517775d226aa8b902480f4a3a148a9/COPYING
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cert-manager/cert-manager
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/cert-manager/cert-manager
+  - https://github.com/cert-manager/cert-manager/blob/9a73a0b3853035827edd37ac463e4803ba10327d/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: chatwoot/chatwoot
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: d0ffee67ddcc4b1615e18e88d4a3417d293eac930641d217afaceda9bb089dfc
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/chatwoot/chatwoot
+  - https://github.com/chatwoot/chatwoot/blob/dd1fe4f93a6fbafa1d1eed87ac7d4143e701ec08/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cloudfoundry/gorouter
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: e4440ec3a892c40690bb57add9d19fd83a03f6f6919e8cf3d072df8c2bbfbb7a
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/cloudfoundry/gorouter
+  - https://github.com/cloudfoundry/gorouter/blob/b1b5c44e050f73b399b379ca63a42a2c5780a83f/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cloudfoundry/php-buildpack
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/cloudfoundry/php-buildpack
+  - https://github.com/cloudfoundry/php-buildpack/blob/e2db3ccd4812e0c0aba20720fc51789d981aba67/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: concourse/concourse
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE.md
+  license_file_sha256: fb843c0ea6dbcc13648368ec0bd474de0d273f8edb0b07925985b6255e91b521
+  additional_license_file_sha256s:
+  - a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/concourse/concourse
+  - https://github.com/concourse/concourse/blob/ac60be5f0435b6592f5a4fcc089050d72ad2452c/LICENSE.md
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated+registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json,
+    OWNER_DECISION.md). Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: cubefs/cubefs
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 20b2a384c46a0a0a1c839e8481fb6f260026c8b3048139cd0f35c863ef5493df
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/cubefs/cubefs
+  - https://github.com/cubefs/cubefs/blob/8dccce6ac8dff3db44d7e9074094c7303a5ff5dd/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: debug-js/debug
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 98c970de440dcfc77471610aec2377c9d9b0db2b3be6d1add524a586e1d7f422
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/debug-js/debug
+  - https://github.com/debug-js/debug/blob/4e2150207c568adb9ead8f4c4528016081c88020/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:MIT; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil (project
+    owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: demon1a/discord-recon
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 9b99d3c61faacbea0db166e3990176a021c59cb14ca5d2fd3ffe64a34686faa7
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/DEMON1A/Discord-Recon
+  - https://github.com/DEMON1A/Discord-Recon/blob/26e2a084679679cccdeeabbb6889ce120eff7e50/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: dexie/dexie.js
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/dexie/Dexie.js
+  - https://github.com/dexie/Dexie.js/blob/1d655a69b9f28c3af6fae10cf5c61df387dc689b/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: discourse/discotoc
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 612156eb24a59aa9e6b6c097bf9237f479ce1c5436aab43f501c099b746fd9dd
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/discourse/DiscoTOC
+  - https://github.com/discourse/DiscoTOC/blob/f80c215a283cd045d2a371403e6eba88b2911192/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: discourse/discourse-encrypt
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: dcf9e4ee543d8456297b4845631478fd5100ed1eda9f8049fc973ccc1cb60495
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/discourse/discourse-encrypt
+  - https://github.com/discourse/discourse-encrypt/blob/9c75810af9a474d7edaec67dea66f852c0ba1f4e/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: discourse/discourse-footnote
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 790382af3c4956ef0bb3962262d61e304f35d87a54e8546ca185e6bd429beff5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/discourse/discourse-footnote
+  - https://github.com/discourse/discourse-footnote/blob/796617e0131277011207541313522cd1946661ab/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: discourse/discourse-placeholder-theme-component
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 4c124434c9a1990ce8adfea1f256f451d804a65856b91ec06f37761317722be5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/discourse/discourse-placeholder-theme-component
+  - https://github.com/discourse/discourse-placeholder-theme-component/blob/a62f711d5600e4e5d86f342d52932cb6221672e7/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: distribution/distribution
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/distribution/distribution
+  - https://github.com/distribution/distribution/blob/f4a500caf68169dccb0b54cb90523e68ee1ac2be/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: dw/mitogen
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: 3c85a0ec6e7b60a0ebef4470e78e940c169806b9721c379b00986beed943f36c
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/dw/mitogen
+  - https://github.com/dw/mitogen/blob/5924af1566763e48c42028399ea0cd95c457b3dc/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: ecnepsnai/web
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 649506a1195e29e73a54e52850d3601f1285029cdd3f2a15baac7e148a98f17c
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/ecnepsnai/web
+  - https://github.com/ecnepsnai/web/blob/5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: ekacnet/grafanacubism-panel
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: a1e4e62d5997437e58925ade0d5fbe4049f040445034d57e26ade0645f8fb9d3
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/ekacnet/grafanacubism-panel
+  - https://github.com/ekacnet/grafanacubism-panel/blob/b79cbf7e5eb3225bb204bcef274e15e6b19d9926/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: emberjs/ember.js
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 48a3fdd362384d3cddea6c1638b4fd211b2704290ed27175ef42a9f86efd880d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/emberjs/ember.js
+  - https://github.com/emberjs/ember.js/blob/45ee8df2a0efc0afe233d6b9b17045782a2e6b2d/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: federatedai/fate
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/FederatedAI/FATE
+  - https://github.com/FederatedAI/FATE/blob/6feccf6d752184a6f9365d56a76fe627983e7139/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: flarum/sticky
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: cd1590731f363d3354e3aa5f32b34a2c38b5283a6276d28c9cf8d16d93badcd5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/flarum/sticky
+  - https://github.com/flarum/sticky/blob/7ebd30462bd405c4c0570b93a6d48710e6c3db19/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: frappe/frappe
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: bc6001a54ffcc4ab520424d7dbb85b293578efcdcb7d8f8055e00dddf942e5d7
+  additional_license_file_sha256s:
+  - b03bbdca4e0a302fa057efd028e49d23909f27b1c3ad3897719b0c59ec325c35
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/frappe/frappe
+  - https://github.com/frappe/frappe/blob/22cac9dd240dc1fa00d4bab7e3887b70faf22bd1/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: fumon/trello-octometric
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.md
+  license_file_sha256: 7d421da40ccc45c7000607177ea781be9a00f3512aba5dc45dcebd8dc932dfda
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Fumon/trello-octometric
+  - https://github.com/Fumon/trello-octometric/blob/a1f1754933fbf21e2221fbc671c81a47de6a04ef/LICENSE.md
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: getgrav/grav-plugin-admin
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 87d34bb568d48fa71f41e8a2bf53c3984ab592e2fd4ac120352124b5d1abbef2
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/getgrav/grav-plugin-admin
+  - https://github.com/getgrav/grav-plugin-admin/blob/99f653296504f1d6408510dd2f6f20a45a26f9b0/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: github/codeql
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 66056d06b874e3eb6a22f5fff297e1676a23dc43e8c8b81279c1ef33a6a270df
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/github/codeql
+  - https://github.com/github/codeql/blob/4136c26154e3de8f8a301858bafd369ce09e07f9/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: gladysassistant/gladys
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c1f68a27bd604582900120f403fb3b4fe661e21743af5ad3ad3a77b394409f86
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/GladysAssistant/Gladys
+  - https://github.com/GladysAssistant/Gladys/blob/344ad9b8ca3078d9292dd95f2dd7b9172bc6ebbe/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: go-vela/compiler
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 5b0782b87db51dd1338da4e0698aa8638dfed580ca3a941ded09c0fd17bd5f8c
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/go-vela/compiler
+  - https://github.com/go-vela/compiler/blob/f1ace5f8a05c95c4d02264556e38a959ee2d9bda/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: goauthentik/authentik
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: bcf8a408c1e07975835399bcafa455c2d173fcd86a2dc0c79dcb88bc2bda94bc
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/goauthentik/authentik
+  - https://github.com/goauthentik/authentik/blob/1852e97b0e950d36301ccbaa3fabdf5e429cb072/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: gofiber/fiber
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 5c0e1bfb8a314043331e093c78154cc7870e276ffb64ac6ace6ee0087162b1e4
+  additional_license_file_sha256s:
+  - 6f9a23eff06f16d3d587d6c7ef11ed1788b246f1c7db54b0daecf1b7841e58b8
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/gofiber/fiber
+  - https://github.com/gofiber/fiber/blob/1403cc8292da3220e9316960b4030cc722a0f396/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated+registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json,
+    OWNER_DECISION.md). Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: golang/gddo
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: dfffb9ec737eaba985243e95a549bd8c3a4d462032cfe603e2a6704c346427b6
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/golang/gddo
+  - https://github.com/golang/gddo/blob/daffe1f90ec57f8ed69464f9094753fc6452e983/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: hashicorp/vault-action
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: c5a9731f27974b768cbeab43c1435d6982963a2171ef4f24e3737dd58049ab1d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/hashicorp/vault-action
+  - https://github.com/hashicorp/vault-action/blob/3526e1be65cf8faf42d6088bc5da8bff596c718a/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: heartexlabs/label-studio
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: ca656b15c1e22468c7798df4356660755fb1ccd12d7ee0bade82bd65e3038e1b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/heartexlabs/label-studio
+  - https://github.com/heartexlabs/label-studio/blob/501142cb815ac964b0c600c491885b67386870c2/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: horovod/horovod
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: a6e008935baefc04230afe344cea6c809530e78a25d64575176e0b22336e2311
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/horovod/horovod
+  - https://github.com/horovod/horovod/blob/b96ecae4dc69fc0a83c7c2d3f1dde600c20a1b41/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: humansignal/label-studio
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: ca656b15c1e22468c7798df4356660755fb1ccd12d7ee0bade82bd65e3038e1b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/HumanSignal/label-studio
+  - https://github.com/HumanSignal/label-studio/blob/8cf6958e1e27ef6a03ed287e674470975d340885/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: its-a-feature/apfell
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE
+  license_file_sha256: a2fbc79682f3a71f3976615369eb410541376420d691c20fa1bd7afe76803042
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/its-a-feature/Apfell
+  - https://github.com/its-a-feature/Apfell/blob/5fc64502bc008388514f2b5d1160b677e3b4a7f3/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jakowenko/double-take
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: f4ea427c27a406dc88880d265997f25f3c8f9d49a9da3910b9f51fbb5ce5a5c4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/jakowenko/double-take
+  - https://github.com/jakowenko/double-take/blob/e11de9dd6b4ea6b7ec9a5607a920d48961e9fa50/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jenkinsci/jenkins
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.txt
+  license_file_sha256: 0599d996b7b64a61ff60fabb4b69dc807b6d396abbc6d2ddb43c3dc36204b89d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/jenkinsci/jenkins
+  - https://github.com/jenkinsci/jenkins/blob/7366cc50106442a021c5178cd101057ecc08f2c2/LICENSE.txt
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jenkinsci/zap-pipeline-plugin
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 70ab3c70701128776e715ff1da35ae5a3e335a5cfd020103fa713386aab4ffe2
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/jenkinsci/zap-pipeline-plugin
+  - https://github.com/jenkinsci/zap-pipeline-plugin/blob/bca4b087c66ead39398f54cdadc27c515e8ede31/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jonschlinkert/set-value
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 35bdd8a44339719441900fb50fbefc5e2dca1ca662cbaed7a687de842c8b70f2
+  additional_license_file_sha256s:
+  - e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/jonschlinkert/set-value
+  - https://github.com/jonschlinkert/set-value/blob/95e9d9923f8a8b4a01da1ea138fcc39ec7b6b15f/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: josdejong/jsoneditor
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/josdejong/jsoneditor
+  - https://github.com/josdejong/jsoneditor/blob/092e386cf49f2a1450625617da8e0137ed067c3e/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: josdejong/mathjs
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 3b0f65a9308588e12b619b2f05c788b4a5f41220006ce563b826b0feb489fd26
+  additional_license_file_sha256s:
+  - 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/josdejong/mathjs
+  - https://github.com/josdejong/mathjs/blob/ecb80514e80bce4e6ec7e71db8ff79954f07c57e/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: jtojnar/pengu
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: f300388f93335bf40043dfc95bc19d168a77137030e18ad78d96ea1982dbd4dc
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/jtojnar/pengu
+  - https://github.com/jtojnar/pengu/blob/aea66f12b8cdfc3c8c50ad6a9c89d8307e9d0a91/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: kenny2github/kenny2automate
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 8b9aadb92eda633365edb982d868c043da0a4d33ce3f44e72d78f26e227bfd5e
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Kenny2github/kenny2automate
+  - https://github.com/Kenny2github/kenny2automate/blob/a947d7ce408687b587c7e6dfd6026f7c4ee31ac2/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: kkos/oniguruma
+  decision: approved_for_training
+  license_spdx: BSD-2-Clause
+  license_file: COPYING
+  license_file_sha256: b7255f7a573bb9319aa04071de41a0f5daf33c3d545b9301c484841587730aec
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/kkos/oniguruma
+  - https://github.com/kkos/oniguruma/blob/166a6c3999bf06b4de0ab4ce6b088a468cc4029f/COPYING
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: kubernetes/client-go
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/kubernetes/client-go
+  - https://github.com/kubernetes/client-go/blob/19875a3d5a2e0d4f51c976a9e0662de3c2c011e3/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: langgenius/dify
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: f5e73b381d3b608caa340efa4f821e194d99196a3ad856a6f30688bebb510931
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/langgenius/dify
+  - https://github.com/langgenius/dify/blob/c135ec4b08d946a1a1d3a198a1d72c1ccf47250f/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: linkedin/dustjs
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: c2ca23941173a47795ffa61bf250bdd5739b50fa25fcb738ae0b9c61ea4590d0
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/linkedin/dustjs
+  - https://github.com/linkedin/dustjs/blob/ddb6523832465d38c9d80189e9de60519ac307c3/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: localsend/localsend
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 2929a8aaa77b5c5338794ed024969e722cd4804eb3ce4c407e7345bd925de251
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/localsend/localsend
+  - https://github.com/localsend/localsend/blob/8f3cec85aa29b2b13fed9b2f8e499e1ac9b0504c/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mandatoryprogrammer/xsshunter-express
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: dc7593610bbbfeda20277c9d0cafda1d345dbacbb602c68801d5ae5c2eaa6504
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/mandatoryprogrammer/xsshunter-express
+  - https://github.com/mandatoryprogrammer/xsshunter-express/blob/56bb44ed9024849f64173f71583ecb7d873baba0/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: marcbachmann/node-html-pdf
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 2d68484a9bfceb7c8fb06d555aaf842408018fff521914261264b32b8b44c5e2
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/marcbachmann/node-html-pdf
+  - https://github.com/marcbachmann/node-html-pdf/blob/c12d6977778014139183c9f8da7579fd7ac65362/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: matrix-org/matrix-hookshot
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/matrix-org/matrix-hookshot
+  - https://github.com/matrix-org/matrix-hookshot/blob/e51d8210233ac759e7f7dfebc2c4f1bf6ce94802/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: microsoft/go-crypto-openssl
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/microsoft/go-crypto-openssl
+  - https://github.com/microsoft/go-crypto-openssl/blob/104fe7f6912788d2ad44602f77a0a0a62f1f259f/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mintplex-labs/anything-llm
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 782d2dc18a1ed9028ca992520f42b2e0b6187807da0d14455b8ae608e2e5692e
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Mintplex-Labs/anything-llm
+  - https://github.com/Mintplex-Labs/anything-llm/blob/21ce03087145a4261c1de03b056fba639f699c09/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mintplex-labs/vector-admin
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 782d2dc18a1ed9028ca992520f42b2e0b6187807da0d14455b8ae608e2e5692e
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Mintplex-Labs/vector-admin
+  - https://github.com/Mintplex-Labs/vector-admin/blob/a581b8177dd6be719a5ef6d3ce4b1e939636bb41/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mitmproxy/mitmproxy
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: cc4ab04ed7180af6c0ede7147f9ec2aa05212c088d7b3c8e38bbffe91c9c8f82
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/mitmproxy/mitmproxy
+  - https://github.com/mitmproxy/mitmproxy/blob/71c9234057922bc29b9734ec408d712113d294d2/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:MIT; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil (project
+    owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: mrvladus/errands
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 6a13dd0186cd67d3533ead401ea891f7864388eb72f9d4b5bc76ade8adb040a0
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/mrvladus/Errands
+  - https://github.com/mrvladus/Errands/blob/04e567b432083fc798ea2249363ea6c83ff01099/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: netdisco/netdisco
+  decision: approved_for_training
+  license_spdx: BSD-3-Clause
+  license_file: LICENSE.md
+  license_file_sha256: 27e3b9a865eaa2891672a672be295bcfef3413a10083dd1a34e136ededa68915
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/netdisco/netdisco
+  - https://github.com/netdisco/netdisco/blob/39562e0633a2472d50f7f33e69c36da4ad1fbfa3/LICENSE.md
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: nuxt/framework
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 4255aa706619b67d47ab6e90e36024708ce56dbd557566abb24fc041c7184005
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/nuxt/framework
+  - https://github.com/nuxt/framework/blob/19a2cd14929ca9b55720cb81f71687830a9e59a4/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: open-telemetry/opentelemetry-collector-contrib
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/open-telemetry/opentelemetry-collector-contrib
+  - https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/371bf6afbd7cfa3253fa1674f5444064e86ef0ac/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openstack/barbican
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 11a63a698852308ff930fb86565c3d2ecca8e036596c2ae355c6c5b77b8dd3e6
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/openstack/barbican
+  - https://github.com/openstack/barbican/blob/1cd585c721b1966e5582adc800090d01d8b6fbad/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openstack/cinder
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/openstack/cinder
+  - https://github.com/openstack/cinder/blob/ba785eef5f515b869c0d68016e84bb74f76ab45e/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openwhyd/openwhyd
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE.txt
+  license_file_sha256: ce36b6638b8dcf9bc7340129cf521189e920d9acf5d657ba033cd74de18b74c5
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/openwhyd/openwhyd
+  - https://github.com/openwhyd/openwhyd/blob/38707930103dcba49d89d993f56bebd346069640/LICENSE.txt
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: openwrt/luci
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/openwrt/luci
+  - https://github.com/openwrt/luci/blob/0186d7eae0e123a409e9919a83fdfecc7945c984/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: oroinc/platform
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 59142b5a826cb3999002bff08dff98fd9015b5bac678f3218371ce30202eb3f8
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/oroinc/platform
+  - https://github.com/oroinc/platform/blob/62c26936b3adee9c20255dcd9f8ee5c299b464a9/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: owasp/nodegoat
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/OWASP/NodeGoat
+  - https://github.com/OWASP/NodeGoat/blob/4a4d1db74c63fb4ff8d366551c3af006c25ead12/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: parisneo/lollms-webui
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: db4ddcb996cac891a7b56e6cb2c6045c56a16eabc0320d322f92d1af38bd26ee
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/parisneo/lollms-webui
+  - https://github.com/parisneo/lollms-webui/blob/dcc078cbe20d2a9640b0942a622134b0e3fa6e48/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: pinterest/querybook
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/pinterest/querybook
+  - https://github.com/pinterest/querybook/blob/bc620dabaaf13ff1dcb30af0b46a490403fb9908/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: podium-lib/proxy
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 3251049174b997a49590b70612cc72643822715f635b49b2e9586d46062898b4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/podium-lib/proxy
+  - https://github.com/podium-lib/proxy/blob/9698a40df081217ce142d4de71f929baaa339cdf/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: polonel/trudesk
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 6fd736edf0309d1376d8921bfac9a61dbcc02e4974af7cab9b53faf9ba2c4e04
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/polonel/trudesk
+  - https://github.com/polonel/trudesk/blob/ae904d37eaa38bffebfbfe8e949c0385c63e3263/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: pwncollege/dojo
+  decision: approved_for_training
+  license_spdx: BSD-2-Clause
+  license_file: LICENSE
+  license_file_sha256: ad00d4ff987164244eec3766b5a570084ba2f296b9a95222e6f1dd1c6c4c756d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/pwncollege/dojo
+  - https://github.com/pwncollege/dojo/blob/467db0b9ea0d9a929dc89b41f6eb59f7cfc68bef/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: refirmlabs/binwalk
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 6b78992f9d9f79aa751de4dbed15069ff663b706c4a9f9505c962ace49c9ada0
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/ReFirmLabs/binwalk
+  - https://github.com/ReFirmLabs/binwalk/blob/cddfede795971045d99422bd7a9676c8803ec5ee/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: saltstack/salt
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: 97b1cbd4cb5e6e7ea1b2f5566ea9ad93f50d82ee5dad657554fab9160f887fcb
+  additional_license_file_sha256s:
+  - 84fc4408303d46d7eec249a97dc5ae32d56cfa38e1a31c6dc077e8e2ba859161
+  - 8f6ce36b4db10b9d60fd83f103d50def97fc6cebccb641c5edf2e6b40f3054de
+  - ed7201e45c87cbcb7bba88c7962dc6ec08f6f4593ebea3a09e7251d2ebfe2a76
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/saltstack/salt
+  - https://github.com/saltstack/salt/blob/41d834bf800d86fc496e4fac2d3875fc2aca7c62/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: samuelcolvin/pydantic
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 9e3946690ac88b6b73e8f001a0586af13568be8852fd514e4393f39761764387
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/samuelcolvin/pydantic
+  - https://github.com/samuelcolvin/pydantic/blob/7e83fdd2563ffac081db7ecdf1affa65ef38c468/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: sigstore/policy-controller
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/sigstore/policy-controller
+  - https://github.com/sigstore/policy-controller/blob/e852af36fb7d42678b21d7e97503c25bd1fd05c8/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:registry_lists_bundled_licenses; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: sigstore/sigstore
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/sigstore/sigstore
+  - https://github.com/sigstore/sigstore/blob/8ec410a2993ea78083aecf0e473a85453039496e/LICENSE
+  notes: 'Garden v6 training cohort tier A, group recommended:Apache-2.0; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved by Jonas Cikemgil
+    (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: spbu-se/spbu_se_site
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/spbu-se/spbu_se_site
+  - https://github.com/spbu-se/spbu_se_site/blob/5ad623eb0405260763046343c5785bc588d8a57d/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: squidex/squidex
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 93b5ff766b2df011892d4ed661805fca4f967955e415b4572416bc9af5a7d6b1
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/squidex/squidex
+  - https://github.com/squidex/squidex/blob/2da3c41da82eb945832f22bb70dba567ac6ce969/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: sulu/sulu
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 0d2af886b1bf55ac906ff627f095ab8f45e8bca6003934c359b98a9b819a7866
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/sulu/sulu
+  - https://github.com/sulu/sulu/blob/570c78124ae97cb02469141b86ac69d9fb2cb147/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: tencent/mimicmotion
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: b5ca34413710a0f8cbebc205ecf3f557cfe3e03fa0497d864967b8e60067758d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/Tencent/MimicMotion
+  - https://github.com/Tencent/MimicMotion/blob/6907bdcc259a6a048d41a365e840d22274f9256c/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: truefoundry/cognita
+  decision: approved_for_training
+  license_spdx: Apache-2.0
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/truefoundry/cognita
+  - https://github.com/truefoundry/cognita/blob/a78bd065e05a1b30a53a3386cc02e08c317d2243/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: viewvc/viewvc
+  decision: approved_for_training
+  license_spdx: BSD-2-Clause
+  license_file: LICENSE
+  license_file_sha256: 2da1e6f34365df3bcaf5dd784aa6b56e6fa6951a9ae1919596717ed5eaacbf2b
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/viewvc/viewvc
+  - https://github.com/viewvc/viewvc/blob/9dcfc7daa4c940992920d3b2fbd317da20e44aad/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: wekan/wekan
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 9781f6fc345638955b2eab73bc3c8670d741555327b7ad04a768e2877430bd29
+  additional_license_file_sha256s:
+  - 5a052f3dddf6ff7aef9dd09b4e80dbd75a689407a9f3fb6bb7afb38ec2ccf03a
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/wekan/wekan
+  - https://github.com/wekan/wekan/blob/1ee9b2e917104f54c035f6426169a28fedecbdb6/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:license_text_updated+no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md).
+    Approved by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: wwbn/avideo
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: ca14166dd362b55b2df2a0575f7adb0bc6933564006828f5c57c481e7bc22045
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/WWBN/AVideo
+  - https://github.com/WWBN/AVideo/blob/c08694bf6264eb4decceb78c711baee2609b4efd/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: yargs/y18n
+  decision: approved_for_training
+  license_spdx: ISC
+  license_file: LICENSE
+  license_file_sha256: 2034cce3b6fafcddd642c4175e01d3ddfc332a53b9f20fdc46b1466dc89ac469
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/yargs/y18n
+  - https://github.com/yargs/y18n/blob/90401eea9062ad498f4f792e3fff8008c4c193a3/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: yuzutech/kroki
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: be2152bc5dfe4ec0f97fa36e5b9774bd6bd5eb0339511a6fd078cad50f764fb4
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/yuzutech/kroki
+  - https://github.com/yuzutech/kroki/blob/f31093cd8a0a1d6999c43d560f62d1e82d59c77e/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'
+- repository_key: zonetti/zonote
+  decision: approved_for_training
+  license_spdx: MIT
+  license_file: LICENSE
+  license_file_sha256: 6d2b5e3c3cb2c0ec544877dd8e2db9d64452c26e23c55e4bad8f689942fed27d
+  terms_status: approved_for_project
+  redistribution_status: not_redistributed
+  reviewer: Jonas Cikemgil
+  reviewed_at: '2026-11-25'
+  evidence_urls:
+  - https://github.com/zonetti/zonote
+  - https://github.com/zonetti/zonote/blob/8a7c30ebec5dd3addc731550e8697be608412272/LICENSE
+  notes: 'Garden v6 training cohort tier B extension, group extension:no_registry_crosscheck; inspected at every used revision (data/garden/seed_v6/cohort/training_cohort.json, OWNER_DECISION.md). Approved
+    by Jonas Cikemgil (project owner) on 2026-11-25; entry prepared by the AI engineering assistant, which is not a reviewer. Decision record: docs/TRAINING_AUTHORIZATION.md.'

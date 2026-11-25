@@ -666,6 +666,19 @@ repositories:
   - https://github.com/basecamp/trix
   - https://github.com/basecamp/trix/blob/272c7e27e722608732a67108ad3fe7870e233ac8/LICENSE
   notes: ''
+- repository_key: benoitc/gunicorn
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
+  license_file: LICENSE
+  license_file_sha256: 41c5551cfed61dba2192f0b85fa9f7c039d7861f75e9a70054a1576c77bfafc6
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/benoitc/gunicorn
+  - https://github.com/benoitc/gunicorn/blob/1e10a02e73c87dfadc394b361af33864d0e59e24/LICENSE
+  notes: ''
 - repository_key: berriai/litellm
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -1328,6 +1341,19 @@ repositories:
   evidence_urls:
   - https://github.com/debug-js/debug
   - https://github.com/debug-js/debug/blob/4e2150207c568adb9ead8f4c4528016081c88020/LICENSE
+  notes: ''
+- repository_key: dexie/dexie.js
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/dexie/Dexie.js
+  - https://github.com/dexie/Dexie.js/blob/1d655a69b9f28c3af6fae10cf5c61df387dc689b/LICENSE
   notes: ''
 - repository_key: dgilland/pydash
   decision: '<REQUIRED: approved_for_training | blocked>'
@@ -2213,6 +2239,19 @@ repositories:
   - https://github.com/go-resty/resty
   - https://github.com/go-resty/resty/blob/577fed8730d79f583eb48dfc81674164e1fc471e/LICENSE
   notes: ''
+- repository_key: go-vela/compiler
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 5b0782b87db51dd1338da4e0698aa8638dfed580ca3a941ded09c0fd17bd5f8c
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/go-vela/compiler
+  - https://github.com/go-vela/compiler/blob/f1ace5f8a05c95c4d02264556e38a959ee2d9bda/LICENSE
+  notes: ''
 - repository_key: goadesign/goa
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -2486,6 +2525,19 @@ repositories:
   - https://github.com/harttle/liquidjs
   - https://github.com/harttle/liquidjs/blob/5c3522f33928aae66f0fe85c36e1d9015c768fe2/LICENSE
   notes: ''
+- repository_key: heartexlabs/label-studio
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: ca656b15c1e22468c7798df4356660755fb1ccd12d7ee0bade82bd65e3038e1b
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/heartexlabs/label-studio
+  - https://github.com/heartexlabs/label-studio/blob/501142cb815ac964b0c600c491885b67386870c2/LICENSE
+  notes: ''
 - repository_key: helm/helm
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
@@ -2564,6 +2616,19 @@ repositories:
   - https://github.com/home-assistant/core
   - https://github.com/home-assistant/core/blob/598f093bf0fecdefaa3d95d1ddae71317a05321e/LICENSE.md
   notes: ''
+- repository_key: horovod/horovod
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: a6e008935baefc04230afe344cea6c809530e78a25d64575176e0b22336e2311
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/horovod/horovod
+  - https://github.com/horovod/horovod/blob/b96ecae4dc69fc0a83c7c2d3f1dde600c20a1b41/LICENSE
+  notes: ''
 - repository_key: http-party/node-http-proxy
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected MIT>'
@@ -2602,6 +2667,19 @@ repositories:
   evidence_urls:
   - https://github.com/hughsk/flat
   - https://github.com/hughsk/flat/blob/20ef0ef55dfa028caddaedbcb33efbdb04d18e13/LICENSE
+  notes: ''
+- repository_key: humansignal/label-studio
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: ca656b15c1e22468c7798df4356660755fb1ccd12d7ee0bade82bd65e3038e1b
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/HumanSignal/label-studio
+  - https://github.com/HumanSignal/label-studio/blob/8cf6958e1e27ef6a03ed287e674470975d340885/LICENSE
   notes: ''
 - repository_key: hybridgroup/gobot
   decision: '<REQUIRED: approved_for_training | blocked>'
@@ -2992,6 +3070,19 @@ repositories:
   evidence_urls:
   - https://github.com/jonschlinkert/remarkable
   - https://github.com/jonschlinkert/remarkable/blob/49e87b7ae2dc323d83606792a749fb207595249e/LICENSE
+  notes: ''
+- repository_key: josdejong/jsoneditor
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: 1509904280a272780fd69c04b858f512cf216f8e3464a0dd98d8f34416feced9
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/josdejong/jsoneditor
+  - https://github.com/josdejong/jsoneditor/blob/092e386cf49f2a1450625617da8e0137ed067c3e/LICENSE
   notes: ''
 - repository_key: josdejong/typed-function
   decision: '<REQUIRED: approved_for_training | blocked>'
@@ -4553,6 +4644,19 @@ repositories:
   - https://github.com/open-iscsi/rtslib-fb
   - https://github.com/open-iscsi/rtslib-fb/blob/b23d061ee0fa7924d2cdce6194c313b9ee06c468/COPYING
   notes: ''
+- repository_key: open-telemetry/opentelemetry-collector-contrib
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/open-telemetry/opentelemetry-collector-contrib
+  - https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/371bf6afbd7cfa3253fa1674f5444064e86ef0ac/LICENSE
+  notes: ''
 - repository_key: openclarity/kubeclarity
   decision: '<REQUIRED: approved_for_training | blocked>'
   license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
@@ -5839,6 +5943,19 @@ repositories:
   evidence_urls:
   - https://github.com/SignalK/signalk-server
   - https://github.com/SignalK/signalk-server/blob/ead2a03d8994969cafcca0320abee16f0e66e7a9/LICENSE
+  notes: ''
+- repository_key: sigstore/sigstore
+  decision: '<REQUIRED: approved_for_training | blocked>'
+  license_spdx: '<REQUIRED: reviewer-confirmed SPDX id; detected Apache-2.0>'
+  license_file: LICENSE
+  license_file_sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+  terms_status: '<REQUIRED: approved_for_project | blocked>'
+  redistribution_status: '<REQUIRED: not_redistributed | approved | blocked>'
+  reviewer: '<REQUIRED: name of the authorized reviewer>'
+  reviewed_at: '<REQUIRED: YYYY-MM-DD>'
+  evidence_urls:
+  - https://github.com/sigstore/sigstore
+  - https://github.com/sigstore/sigstore/blob/8ec410a2993ea78083aecf0e473a85453039496e/LICENSE
   notes: ''
 - repository_key: sigstore/sigstore-js
   decision: '<REQUIRED: approved_for_training | blocked>'

@@ -1,6 +1,6 @@
 # Sentinel Garden v6
 
-`sentinel-garden-v6` (`configs/garden/seed_v6.yaml`, committed metadata in `data/garden/seed_v6/`) is the first Garden version with label sources beyond GHSA/OSV. Garden v1–v5 are unchanged and reproducible; `check` passes for all six versions.
+`sentinel-garden-v6` (`configs/garden/seed_v6.yaml`, committed metadata in `data/garden/seed_v6/`) is the first Garden version with label sources beyond GHSA/OSV. Garden v1–v5 are unchanged and reproducible; `check` passes for all six versions. The owner approved the new sources and the recommended repositories on 2026-11-25 (§ 6).
 
 ## Summary
 
@@ -11,22 +11,21 @@
 | Records built / accepted | 4,831 / 3,898 | **6,224 / 5,055** | same extraction, quality checks and audit (fixed point after three rounds) |
 | Accepted findings / negatives / abstentions | 1,786 / 1,603 / 509 | **2,387 / 2,080 / 588** | includes 199 tool-test findings and 116 tool-test negatives |
 | Distinct CWEs among accepted findings | 204 | **222** | |
-| **Authorized (training-approved) records** | 1,741 | **1,676** | 50 v5 records belong to the OpenSSF CVE Benchmark (now reserved), 15 were refuted by the stricter later-fix check |
-| **Training examples** (train: detection + patch) | 2,249 | **2,153** (1,538 + 615) | + 193 validation examples |
-| **Supervised tokens per epoch** | 192,708 | **184,544** | of 2.06 M tokens; 0 dropped at 4,096 |
+| **Authorized (training-approved) records** | 1,741 | **2,170** | after the owner's approvals of 2026-11-25 (four sources, 93 repositories including `github/codeql`; `docs/TRAINING_AUTHORIZATION.md`). Before them 1,676: 50 v5 records belong to the OpenSSF CVE Benchmark (now reserved), 15 were refuted by the stricter later-fix check |
+| **Training examples** (train: detection + patch) | 2,249 | **2,758** (2,024 + 734) | **+23 %**; + 204 validation examples |
+| **Supervised tokens per epoch** | 192,708 | **233,463** | of 2.56 M tokens; 0 dropped at 4,096 |
 | Development / untouched final test | 163 / 9 cases | **239 / 91** | new MoreFixes repositories in the validation and holdout buckets |
 | Independent human review | not performed | **not performed** (147 packages ready) | a person outside the implementation |
 
-**The authorized training set did not grow; the dataset did.** Everything the new sources add needs a decision only the owner may take, and v6 is stricter about what was authorized before.
+The authorized train set by source: GHSA/OSV 1,594 detection examples, MoreFixes 231 (171 NVD-referenced, 36 GHSA-referenced, 24 commit-message), CodeQL 199 tool-test findings; 734 patch examples (636 GHSA/OSV, 98 MoreFixes). 848 distinct vulnerabilities and 161 CWEs among the authorized findings.
 
-| Owner decision (cumulative; computed with the real gate in memory) | Train examples (detection + patch) | Supervised tokens |
+What remains open, computed with the real gate in memory:
+
+| Further decision | Train examples (detection + patch) | Supervised tokens |
 | --- | ---: | ---: |
-| today | 1,538 + 615 = **2,153** | 184,544 |
-| + approve the MoreFixes, NVD and MoreFixes fix-commit sources | 1,565 + 626 = 2,191 | |
-| + the 73 recommended repositories without an approval yet (`cohort/OWNER_DECISION.md`) | 1,756 + 707 = 2,463 | |
-| + the CodeQL tool-test source and `github/codeql` (MIT) | 1,955 + 707 = 2,662 | |
-| + validate the two heuristic negative kinds after their human review | 2,088 + 707 = **2,795** | 230,207 |
-| + the 215 copyleft repositories (single GPL/LGPL/AGPL/MPL/EPL root license), each with a written justification; never unlicensed ones | 2,591 + 919 = **3,510** | 294,613 |
+| today (after the approvals of 2026-11-25) | 2,024 + 734 = **2,758** | 233,463 |
+| + validate the two heuristic negative kinds after their independent human review (151 accepted records) | 2,157 + 734 = **2,891** | 238,649 |
+| + the 214 copyleft repositories (single GPL/LGPL/AGPL/MPL/EPL root license), each with a written justification; never unlicensed ones | 2,652 + 943 = **3,595** | 302,052 |
 
 `data/garden/seed_v6/cohort/approval_scenarios.json` has every scenario per kind, source and language.
 
@@ -58,8 +57,8 @@ Feasibility first (language coverage, unique candidates, overlap with Garden v5,
 | Records | 4,831 | 823 | 128 | 105 | 337 (714 functions before the template-family cap) |
 | Accepted | 3,863 | 686 | 101 | 90 | 315 |
 | Accepted findings (= unique vulnerabilities; rules for tool tests) | 1,785 | 314 | 48 | 41 | 199 (71 rules) |
-| Training-approved | 1,676 | 0 | 0 | 0 | 0 |
-| Pending owner decision (accepted) | 1,043 | 536 | 82 | 71 | 315 |
+| Training-approved (after the owner's approvals) | 1,732 | 179 | 36 | 24 | 199 |
+| Still pending (accepted) | 987 | 357 | 46 | 47 | 116 (negatives) |
 
 MoreFixes in detail: the dump lists 78,654 CVEs with candidate fixes; 70,645 have no fix in a target-language runtime file, 4,182 confirm a v5 candidate (written to `morefixes_corroborations.jsonl`, never a second record), 1,501 have only a heuristic fix commit, 754 fail selection (rejected CWE 213, repository cap 158, no specific CWE 149, too many CWEs 90, CVE or commit metadata missing 77, more than 3 fix commits 56, several repositories 11). Of the 1,572 candidates, 30 % yield records (v5 candidates: 24 %); the others fail the same unambiguity rules (change outside a function 249, several changed functions 221, a file added or deleted 118, combined excerpt without evidence 91, too many files 89, …), never a relaxed rule.
 
@@ -115,19 +114,27 @@ The review contract (`quickeval-review-v2`) defines `no_finding` as "the excerpt
 - **External benchmarks stay separate.** OpenSSF CVE Benchmark (function-level cases can be derived from its annotated locations), OWASP Benchmark Python (GPL-3.0, synthetic, evaluation only) and VLoc Bench (repository-level file F1) are never mixed with Garden's function-level scores. Only the OpenSSF exclusion is wired; the two others are documented, not integrated.
 - QuickEval v1 stays a regression check only.
 
-## 6. Governance: what is pending, what your decisions would add
+## 6. Governance: approved, pending, and why
 
-Nothing was approved. New sources and their repositories stay pending (`source_not_approved:<id>`, `repository_not_reviewed`), and so do the two heuristic negative kinds (`negative_kind_not_validated`).
+**Approved by the owner on 2026-11-25** (`docs/TRAINING_AUTHORIZATION.md`): the four v6 sources (`morefixes`, `nvd-cve`, `morefixes-cve-fix-commits`, `codeql-query-tests`) and 93 repositories (14 tier A, 79 tier B extension, including `github/codeql`), each bound to the sha256 of its inspected license file. All three MoreFixes evidence grades are approved; every record keeps its grade, so a grade can be withdrawn later without a rebuild.
 
-**Decision package** (`data/garden/seed_v6/cohort/`):
-- `OWNER_DECISION.md`: the 73 recommended repositories without an approval, each with license, license file and sha256, records and open questions; `proposed_approvals*.yaml`: templates that fail validation until you fill them in;
-- `approval_scenarios.json`: the yield of each cumulative decision (table above);
-- source decisions: `data/registry.yaml` entries `morefixes` (CC-BY-4.0, attribution required), `nvd-cve`, `morefixes-cve-fix-commits` and `codeql-query-tests` (MIT; the CodeQL CLI with its separate terms is never run or redistributed).
+Two corrections were made before the inspection that the approvals rest on:
+- **License detector:** the PSF license reproduces CPython's history, whose table names the GNU GPL, so it was read as GPL-2.0. It is now detected as PSF-2.0 (permissive). Affected: `python/cpython` (8 records) and an additional license file of `github/codeql`.
+- **Additional permissive license files** (v6 cohort only): an extra license file whose own license is permissive (an Apache NOTICE, a vendored MIT file, CPython's PSF license for some derived CodeQL test code) is now a confirmed fact with redistribution-only obligations, not an open question. Earlier cohorts are unchanged.
+
+**Still pending (1,553 accepted records):**
+
+| Blocker | Records | Why a blanket approval does not resolve it |
+| --- | ---: | --- |
+| repository not approved: copyleft | 613 | the gate requires a written basis per repository (`non_permissive_justification`) |
+| repository not approved: no license, unknown or conflicting license | 282 | no permission exists that could be granted |
+| repository not approved: permissive, but a substantive open question or holdout overlap | 504 | another license named by package metadata or registry, a root license outside the tier A list (CPython's PSF-2.0), license files that differ between revisions; or the repository also has holdout records, which the training loader refuses |
+| heuristic negative kinds (defended siblings, tool-test negatives) | 151 | label correctness is decided by the independent human review, not by a permission |
+| license file differs from the approved one | 21 | the approval is bound to the reviewed file |
 
 **Open uncertainties:**
-- `ghsa_reference` and `commit_message_reference` are weaker grades than `nvd_reference`; they can be approved or left out separately (every record carries its grade).
-- 381 of 687 MoreFixes train-split records are in copyleft or unlicensed repositories: the source brings many applications. Repositories without a license can never be approved; copyleft ones only with a written basis.
-- Tool tests: the source-identity cue (above) and rule-scoped negatives.
+- `ghsa_reference` and `commit_message_reference` are weaker grades than `nvd_reference` (60 of the 231 MoreFixes detection examples).
+- Tool tests: the source-identity cue (§ 4) and rule-scoped negatives.
 - The independent human review (147 packages: 88 pairs including 24 from MoreFixes, 16 abstentions, 13 defended siblings, 16 tool-test findings, 14 tool-test negatives) has not been performed.
 
 ## 7. Why not 5,000–10,000 examples, measured
@@ -136,11 +143,11 @@ Nothing was approved. New sources and their repositories stay pending (`source_n
 | --- | --- | --- |
 | Extraction rules for unambiguous labels | 76 % of GHSA and 70 % of MoreFixes candidates yield no record | each rule rejects a case where the vulnerable location or the fix cannot be stated without guessing |
 | Evaluation roles, holdout and quarantine (frozen split) | 1,470 accepted records | never training data by design |
-| Licenses | 381 MoreFixes and 1,026 GHSA train/validation records in unreviewed repositories, most copyleft or unlicensed | public availability is not permission; copyleft needs a written basis, no license means no permission |
-| Owner decisions | 2,047 accepted records pending | sources, repositories, negative kinds |
+| Licenses | 895 accepted records in copyleft or unlicensed repositories | public availability is not permission; copyleft needs a written basis, no license means no permission |
+| Label validation | 151 accepted negatives | pending the independent human review |
 | Sources that would add volume without evidence | heuristic-only MoreFixes fixes (1,501 CVEs), SAST-only datasets, unlabelled function corpora | their labels are not supported by the evidence the brief requires |
 
-With every decision-ready approval the training set is **2,795 examples (+24 % over v5)**; with copyleft repositories as well, **3,510 (+56 %)**. 5,000–10,000 examples at this evidence bar would need fix data of many more vulnerabilities in the four languages than GHSA/OSV and NVD hold today, or a lower bar.
+Authorized today: **2,758 examples (+23 % over v5)**; with the validated negative kinds 2,891; with copyleft repositories as well **3,595 (+60 %)**. 5,000–10,000 examples at this evidence bar would need fix data of many more vulnerabilities in the four languages than GHSA/OSV and NVD hold today, or a lower bar.
 
 ## Reproduce
 
