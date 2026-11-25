@@ -274,9 +274,11 @@ def abstention_validity(abstention: dict[str, Any], vulnerable: dict[str, Any] |
 def excerpt_blocks(record: dict[str, Any]) -> list[str]:
     """The excerpt split into its file blocks (`excerpt_file_lines`; joined by one blank line)."""
     lines = record["input"]["code"].splitlines()
+    ranges = record["provenance"]["excerpt_file_lines"]
+    # Garden v5: lines left out of a block (fix comments) make it shorter than its file range
+    sizes = record["localization"].get("excerpt_block_lines") or [end - start + 1 for start, end in ranges]
     blocks, offset = [], 0
-    for start, end in record["provenance"]["excerpt_file_lines"]:
-        size = end - start + 1
+    for size in sizes:
         blocks.append("\n".join(lines[offset : offset + size]) + "\n")
         offset += size + 1
     return blocks if offset - 1 == len(lines) else [record["input"]["code"]]

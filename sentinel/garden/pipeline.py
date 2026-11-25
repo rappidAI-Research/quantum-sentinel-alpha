@@ -1003,6 +1003,9 @@ def audit(config: GardenConfig, log: Any = print) -> dict[str, Any]:
     if exclusions_path.is_file():
         previous = yaml.safe_load(exclusions_path.read_text(encoding="utf-8")) or {}
         incomplete = {g["records"]["post_fix"] for g in result["groups"] if g.get("later_fix_check") == "incomplete" and "post_fix" in g["records"]}
+        incomplete |= {  # Garden v5: a defended sibling's later-fix check is a hard-negative check too
+            g["records"]["defended_sibling"] for g in result["groups"] if g.get("sibling_later_fix_check") == "incomplete" and "defended_sibling" in g["records"]
+        }
         present = {(e["record_id"], e["reason"]) for e in result["exclusions"]}
         carried = [
             e for e in previous.get("automated") or []

@@ -587,8 +587,10 @@ def primary_site_evidence(changes: list[_Change], advisory_text: str, commit_mes
     Otherwise there is no evidence for one location and the fix is not used (never the "largest" one)."""
     for text, evidence in ((advisory_text, "advisory_names_function"), (commit_message, "commit_message_names_function")):
         named = [c for c in changes if not c.old_function.name.startswith("<") and re.search(rf"(?<![\w$]){re.escape(c.old_function.name)}(?![\w$])", text)]
-        if len({c.old_function.name for c in named}) == 1:
-            return min(named, key=lambda c: c.old_function.start), evidence
+        # exactly one changed FUNCTION: two changed functions with the same name (methods of two types,
+        # closures) are not told apart by a mention of the name
+        if len(named) == 1:
+            return named[0], evidence
     edits = {(_norm_lines([t for h in c.hunks for _, t in h.removed]), _norm_lines([t for h in c.hunks for _, t in h.added])) for c in changes}
     if len(edits) == 1:
         return min(changes, key=lambda c: c.old_function.start), "identical_change_at_every_site"
@@ -853,6 +855,11 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
     }
     if drop:
         localization["fix_comment_lines_left_out"] = len(drop)
+    # with lines left out, a block of the fixed excerpt is shorter than its file range: record the emitted
+    # block lengths so the audit splits the excerpt into the right functions (audit.excerpt_blocks)
+    fixed_localization: dict[str, Any] = {"method": "not_applicable"}
+    if drop:
+        fixed_localization["excerpt_block_lines"] = [sum(1 for n in range(a, b + 1) if n not in drop) for a, b in fixed_ranges]
     if multi:
         # every changed site, in excerpt lines; the label span is the primary one (see above)
         sites = [_span(c) for c in changes]
@@ -900,7 +907,7 @@ def build_records(candidate: dict[str, Any], repo: Repo, settings: ExtractionSet
                 "patch": None,
                 "label_scope": f"no {cwe}" + (f"/{'/'.join(alternates)}" if alternates else "") + " weakness after the upstream fix; other weaknesses are not verified",
             },
-            {"method": "not_applicable"},
+            fixed_localization,
             fixed_ranges,
             new_names if multi else None,
         ),

@@ -201,3 +201,26 @@ def test_primary_site_evidence_needs_one_named_function() -> None:
     assert primary_site_evidence([a, b], "flaw in load and store", "") is None
     assert primary_site_evidence([a, b], "flaw in store", "")[1] == "advisory_names_function"
     assert json.dumps(primary_site_evidence([a, b], "", "fix load")[1]) == '"commit_message_names_function"'
+
+
+def test_a_name_shared_by_two_changed_functions_is_no_evidence() -> None:
+    from types import SimpleNamespace
+
+    def change(start: int, removed: str) -> SimpleNamespace:
+        hunk = SimpleNamespace(removed=[(1, removed)], added=[(1, removed + "!")])
+        return SimpleNamespace(old_function=SimpleNamespace(name="ParseBody", start=start), hunks=[hunk])
+
+    assert primary_site_evidence([change(1, "a"), change(20, "b")], "bug in ParseBody", "") is None
+    assert primary_site_evidence([change(1, "a"), change(20, "a")], "bug in ParseBody", "")[1] == "identical_change_at_every_site"
+
+
+def test_block_boundaries_survive_left_out_fix_comments() -> None:
+    from sentinel.garden.audit import excerpt_blocks
+
+    new = NEW.replace('''    query = "SELECT count(*) FROM orders WHERE status = ?"''', '''    # prevent SQL injection
+    query = "SELECT count(*) FROM orders WHERE status = ?"''')
+    fixed = _build(OLD, new, _single(summary="SQL injection in count_orders"))["post_fix"]
+    assert "prevent SQL injection" not in fixed["input"]["code"]
+    blocks = excerpt_blocks(fixed)
+    assert len(blocks) == 2 and blocks[1].startswith("def count_orders")
+    assert fixed["localization"]["excerpt_block_lines"] == [4, 3]
