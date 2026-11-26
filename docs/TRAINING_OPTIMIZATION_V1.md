@@ -205,4 +205,5 @@ The basis is measured: V6 took 2.4 h for 346 steps with 14 evaluations and 14 ch
 | `sentinel/eval/{backends,run_model,runner,select_checkpoint}.py`, `data/schemas/eval_run.schema.json` | Calibrated decoding with provenance |
 | `configs/train/qlora_ornith15_9b_v6_to1_*.yaml` | E1–E4 |
 | `tests/test_training_optimization.py` | Tests for all of the above |
+| `scripts/to1_gpu.sh` | The whole GPU sequence in one resumable command (`DRY_RUN=1` prints it) |
 | `docs/GPU_RUNBOOK.md` § 16 | Commands |

@@ -417,6 +417,19 @@ The adapters stay private (no publication of weights). Verify both archives agai
 
 Analysis, hypotheses and the fixed calibration and screening protocol: `docs/TRAINING_OPTIMIZATION_V1.md`. Same instance and storage as § 15. **Approved by the owner on 2026-11-26** (`docs/TRAINING_AUTHORIZATION.md`): E0–E4 and calibrated candidates. Order: E0 (no training) and its report; then E1–E4, one after another; then selection over all runs; the final test last and once. Never score `final_test` or the reserved holdout with `decision_scores`, and never choose a bias, checkpoint or setting on them.
 
+**One command.** `scripts/to1_gpu.sh all` runs steps 0–8 below in order, under `nohup` or `tmux`. Its stages are `check`, `e0`, `train`, `evaluate <experiment>`, `select` and `final`.
+- A rerun skips finished outputs and resumes an interrupted training run from its last checkpoint.
+- The final test runs once (`runs/eval/to1-final.done`).
+- `DRY_RUN=1 scripts/to1_gpu.sh all` prints every command without running it.
+
+The step-by-step commands follow.
+
+```bash
+cd ~/quantum-sentinel-alpha && . .venv/bin/activate && DRY_RUN=1 scripts/to1_gpu.sh all 2>&1 | less
+nohup scripts/to1_gpu.sh all > runs/to1.log 2>&1 &
+tail -f runs/to1.log
+```
+
 **0. Variables, code, the V6 run's identity.**
 
 ```bash

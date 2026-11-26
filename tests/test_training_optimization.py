@@ -589,3 +589,27 @@ def test_diagnostics_read_every_step_from_the_training_log() -> None:
     history = run_history(run_from_log("\n".join(lines)), 126, 175, 1.0)
     assert history["logged_steps"] == 50 and history["clipped_steps"] == 1
     assert history["validation_loss"] == [{"step": 150, "validation_loss": 0.39678}]
+
+
+def test_gpu_pipeline_script_never_scores_or_calibrates_on_test_sets() -> None:
+    """scripts/to1_gpu.sh (runbook § 16) in DRY_RUN: every stage in order, and the final test and holdout
+    appear only in the final stage, never in decision scores, calibration, screening or selection."""
+    import shutil
+    import subprocess
+
+    if shutil.which("bash") is None:
+        pytest.skip("bash not available")
+    result = subprocess.run(["bash", str(ROOT / "scripts/to1_gpu.sh"), "all"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"},
+                            capture_output=True, text=True, timeout=60, check=True)
+    lines = result.stderr.splitlines()
+    commands = [line for line in lines if line.startswith("+ ")]
+    final_stage = next(i for i, line in enumerate(commands) if "final_test and holdout_reserved" in line)
+    for line in commands[:final_stage]:
+        assert "final_test" not in line and "holdout" not in line, line
+    trained = [line.split("--config ")[1].split()[0] for line in commands if "sentinel.train --config" in line and "--dry-run" not in line]
+    assert trained == [f"configs/train/qlora_ornith15_9b_v6_to1_{e}.yaml" for e in ("baseline_dense", "decision_w10", "detection_only", "lr5e-5")]
+    calibration_sources = [line.split("--records ")[1].split()[0] for line in commands if "--records " in line]
+    assert calibration_sources and set(calibration_sources) == {"artifacts/garden/seed_v6/validation.jsonl"}
+    assert any("--quantization bnb-4bit" in line for line in commands) and any("select_checkpoint --rule 2" in line for line in commands)
+    for config in trained:
+        assert (ROOT / config).is_file()
