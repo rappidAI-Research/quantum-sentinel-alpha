@@ -558,6 +558,7 @@ def test_selection_accepts_per_checkpoint_calibrated_biases_with_provenance_only
     by_label = {r["label"]: r for r in result["runs"]}
     assert set(by_label) == {"step-000150", "step-000150+calibrated", "step-000175+calibrated"}
     assert by_label["step-000150+calibrated"]["finding_logit_bias"] == 2.0 and "selected_finding_logit_bias" in result
+    assert by_label["step-000150+calibrated"]["calibration"] == CALIBRATION["path"] and "selected_calibration" in result
     with pytest.raises(Refused, match="no calibration"):
         select(devset, [greedy, {**calibrated, "calibration": None}])
     with pytest.raises(Refused, match="generation"):

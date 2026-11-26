@@ -72,6 +72,16 @@ Rule v1 can select a checkpoint whose accuracy comes from one side only: a model
 
 The floors are the first adapter's development results rounded against it (recall 0.349, FPR 0.148). Every run's `failed_conditions` are reported. `--rule 1` reproduces the earlier selections.
 
+### Decision scores and calibrated decoding (Training Optimization v1, protocol fixed on 2026-11-26)
+
+Details and reasons: `docs/TRAINING_OPTIMIZATION_V1.md` § 6. The thresholds of rule v2 do not change. **What changes, once the owner approves:** a checkpoint may also enter selection with a calibrated finding bias.
+
+- **Decision scores** (`python -m sentinel.eval.decision_scores score`): one teacher-forced forward pass per case. They give the log-probabilities of the decision tokens after `{"decision": "`, the finding score `logp(finding) − logp(no)`, and whether greedy generation would reach the same decision. `analyze` reports ROC-AUC, pair outcomes and flips per checkpoint, which separates a moved threshold from lost discrimination. They are a diagnostic and a screen, never a selection metric.
+- **Calibration set:** the training validation split only (`--records <workdir>/validation.jsonl`). Development, final-test, holdout, benchmark and quarantine records are refused, and final-test/holdout exports are never scored.
+- **Bias:** per checkpoint and precision, the bias with the highest recall at FPR ≤ 0.15 on the calibration set (`calibrate --output`). A cross-fitted estimate is reported with it.
+- **Applying it:** `run_model --calibration <file>` applies the bias only to the model it was made for: id, revision, precision and adapter weights hash. The run artifact records the provenance. A bias without provenance (`--finding-logit-bias`, diagnostic) makes a run non-reportable, and `select_checkpoint` refuses it.
+- **Screening:** `screen` passes checkpoints within 3 points of rule v2 (recall ≥ 0.27, FPR ≤ 0.23, greedy or calibrated; at most 8 per run) to full generation runs. Rule v2 then selects among `run_model` artifacts, greedy and calibrated candidates side by side. The final test uses the selected checkpoint's calibration file (`selected_calibration`).
+
 ## Adapter evaluation integrity
 
 An adapter evaluation records three separate checks:

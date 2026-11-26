@@ -192,6 +192,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 "step": step,
                 "adapter": (artifact["model"].get("adapter") or {}).get("path"),
                 "finding_logit_bias": bias,
+                "calibration": (artifact.get("calibration") or {}).get("path"),
                 "reportable": artifact["reportable"],
                 "reportable_blockers": artifact["reportable_blockers"],
                 "eligible": eligible,
@@ -236,6 +237,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         "selected_adapter": selected["adapter"] if selected else None,
         # calibrated decoding: the final test must be run with this same bias (run_model --calibration)
         "selected_finding_logit_bias": selected["finding_logit_bias"] if selected else None,
+        "selected_calibration": selected["calibration"] if selected else None,
         "selected_beats_foundation_decision_accuracy": (
             selected["metrics"]["decision_accuracy"] > foundation["metrics"]["decision_accuracy"] if selected and foundation else None
         ),
