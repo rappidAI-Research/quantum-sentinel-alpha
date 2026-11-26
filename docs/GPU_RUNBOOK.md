@@ -415,7 +415,7 @@ The adapters stay private (no publication of weights). Verify both archives agai
 
 ## 16. Training Optimization v1: decision diagnostics, calibration, controlled runs (**GPU**)
 
-Analysis, hypotheses and the fixed calibration and screening protocol: `docs/TRAINING_OPTIMIZATION_V1.md`. Same instance and storage as § 15. **Every stage needs the owner's approval:** E0 first (no training) and its report; then E1/E2; then E3/E4 if the cause is still open; the final test last and once. Never score `final_test` or the reserved holdout with `decision_scores`, and never choose a bias, checkpoint or setting on them.
+Analysis, hypotheses and the fixed calibration and screening protocol: `docs/TRAINING_OPTIMIZATION_V1.md`. Same instance and storage as § 15. **Approved by the owner on 2026-11-26** (`docs/TRAINING_AUTHORIZATION.md`): E0–E4 and calibrated candidates. Order: E0 (no training) and its report; then E1–E4, one after another; then selection over all runs; the final test last and once. Never score `final_test` or the reserved holdout with `decision_scores`, and never choose a bias, checkpoint or setting on them.
 
 **0. Variables, code, the V6 run's identity.**
 
@@ -481,19 +481,19 @@ done < $TO1/e0/shortlist.tsv
 python -m sentinel.eval.select_checkpoint --rule 2 --devset $DEV/manifest.json runs/eval/dev-v6/runs/*.json $TO1/e0/runs/*.json --output $TO1/e0/selection.json
 ```
 
-`select_checkpoint` accepts a calibrated run only with its calibration provenance, and rule v2 is unchanged. **Stop here and report E0** (§ 7 of the analysis document gives the decision rules). Even if a calibrated V6 checkpoint is eligible, do not run the final test yet.
+`select_checkpoint` accepts a calibrated run only with its calibration provenance, and rule v2 is unchanged. **Write the E0 report** using the decision rules in § 7 of the analysis document, then continue with step 5. Even if a calibrated V6 checkpoint is eligible, do not run the final test yet.
 
-**5. E1–E4 training** (after approval; one run at a time; fresh LoRA, never `init_adapter`). Dry runs first, then the approved configs in sequence:
+**5. E1–E4 training** (approved; one run at a time; fresh LoRA, never `init_adapter`). Dry runs first, then all four configs in sequence:
 
 ```bash
-for E in baseline_dense decision_w10; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml --dry-run --check-tokens || break; done
-nohup sh -c 'for E in baseline_dense decision_w10; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml > runs/train-to1-$E.log 2>&1 || exit 1; done' > /dev/null 2>&1 &
+for E in baseline_dense decision_w10 detection_only lr5e-5; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml --dry-run --check-tokens || break; done
+nohup sh -c 'for E in baseline_dense decision_w10 detection_only lr5e-5; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml > runs/train-to1-$E.log 2>&1 || exit 1; done' > /dev/null 2>&1 &
 tail -f runs/train-to1-baseline_dense.log
 ```
 
-Every evaluation line now carries `validation.decision` (accuracy, recall, FPR, finding rate, mean margins) and `validation.loss_by_task`. E3 and E4 use `detection_only` and `lr5e-5`.
+Every evaluation line now carries `validation.decision` (accuracy, recall, FPR, finding rate, mean margins) and `validation.loss_by_task`. The four runs take about 11–12 hours in total.
 
-**6. Each training run: scores, calibration, screening, generation runs.**
+**6. Each training run: scores, calibration, screening, generation runs** (repeat with `E=baseline_dense`, `decision_w10`, `detection_only`, `lr5e-5`).
 
 ```bash
 E=decision_w10; R=runs/train/qsa-qlora-ornith15-9b-v6-to1-$E; O=$TO1/$E; mkdir -p $O/calibration $O/runs
@@ -518,7 +518,7 @@ For `baseline_dense` (E1), the swing's position relative to the epoch boundary (
 python -m sentinel.eval.select_checkpoint --rule 2 --devset $DEV/manifest.json runs/eval/dev-v6/runs/*.json $TO1/*/runs/*.json --output $TO1/selection.json
 ```
 
-**8. Final test, once, after the owner's approval of the selection.** The selected checkpoint is run with its calibration file, if it has one:
+**8. Final test, once, after selection over all runs (approved on 2026-11-26).** The selected checkpoint is run with its calibration file, if it has one:
 
 ```bash
 SEL=$(python -c "import json; print(json.load(open('$TO1/selection.json'))['selected_adapter'])")

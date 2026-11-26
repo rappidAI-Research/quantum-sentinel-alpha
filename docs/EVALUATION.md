@@ -74,7 +74,7 @@ The floors are the first adapter's development results rounded against it (recal
 
 ### Decision scores and calibrated decoding (Training Optimization v1, protocol fixed on 2026-11-26)
 
-Details and reasons: `docs/TRAINING_OPTIMIZATION_V1.md` § 6. The thresholds of rule v2 do not change. **What changes, once the owner approves:** a checkpoint may also enter selection with a calibrated finding bias.
+Details and reasons: `docs/TRAINING_OPTIMIZATION_V1.md` § 6. The thresholds of rule v2 do not change. **What changes (approved by the owner on 2026-11-26, `docs/TRAINING_AUTHORIZATION.md`):** a checkpoint may also enter selection with a calibrated finding bias.
 
 - **Decision scores** (`python -m sentinel.eval.decision_scores score`): one teacher-forced forward pass per case. They give the log-probabilities of the decision tokens after `{"decision": "`, the finding score `logp(finding) − logp(no)`, and whether greedy generation would reach the same decision. `analyze` reports ROC-AUC, pair outcomes and flips per checkpoint, which separates a moved threshold from lost discrimination. They are a diagnostic and a screen, never a selection metric.
 - **Calibration set:** the training validation split only (`--records <workdir>/validation.jsonl`). Development, final-test, holdout, benchmark and quarantine records are refused, and final-test/holdout exports are never scored.

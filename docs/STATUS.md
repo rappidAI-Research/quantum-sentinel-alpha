@@ -26,12 +26,13 @@ Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off re
   - optional decision-token and patch-task weights (default = the V6 loss exactly);
   - validation decision metrics during training;
   - four one-variable experiment configs.
-- **Next (needs approval):**
+- **Owner decision (2026-11-26):** calibrated candidates in selection, the GPU experiments E0–E4 and the merge are approved (`docs/TRAINING_AUTHORIZATION.md`).
+- **Next (on the GPU machine, `docs/GPU_RUNBOOK.md` § 16):**
   1. E0: no training, about 1.5–3 GPU hours.
-  2. E1/E2: dense control and decision weight 10.
-  3. E3/E4: detection only and LR 5e-5.
+  2. E1–E4: dense control, decision weight 10, detection only, LR 5e-5.
+  3. Selection over all runs and the final test, once.
 
-  All of E0–E4 is about 20–25 GPU hours. Leading hypothesis: the decision threshold moved while the ranking was preserved. E0 tests it.
+  All of it is about 20–25 GPU hours. Leading hypothesis: the decision threshold moved while the ranking was preserved. E0 tests it.
 
 ### Sentinel Garden v6: sources beyond GHSA/OSV (2026-11-25)
 

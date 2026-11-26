@@ -20,7 +20,7 @@ Every statement is labeled:
    A fifth limitation is that training ran on an NF4 base while evaluation used bf16. Its effect is not measured.
 3. **Leading hypothesis (H1): the decision threshold moved; the ranking may not have.** From step 150 to step 175 the number of flagged cases fell from 97 to 16 of 212. True positives went from 65 to 14 and false positives from 32 to 2. Validation loss improved by 0.003 over the same steps. The four reported operating points are compatible with a threshold shift at unchanged or better discrimination. They cannot tell this apart from lost discrimination (§ 4.2).
 4. **The first experiment, E0, needs no training.** It produces decision scores of all 14 V6 checkpoints, their ROC-AUC, pair outcomes and flips, and a bf16 versus NF4 comparison. It also calibrates each checkpoint's finding bias on the training validation split. It costs about 1.5–3 GPU hours and either confirms H1 or rules it out.
-5. **Training experiments E1–E4 each change one variable** against V6: denser checkpoints, decision-token weight 10, detection only, or learning rate 5e-5. Each starts from a fresh adapter on the pinned foundation. They wait for E0 and for the owner's approval.
+5. **Training experiments E1–E4 each change one variable** against V6: denser checkpoints, decision-token weight 10, detection only, or learning rate 5e-5. Each starts from a fresh adapter on the pinned foundation. All of E0–E4 and calibrated candidates were approved by the owner on 2026-11-26.
 
 ## 2. Reported V6 results and what follows arithmetically
 
@@ -153,7 +153,7 @@ Scoring refuses final-test and holdout exports.
 4. **Selection:** rule v2, unchanged (invalid ≤ 0.02, recall ≥ 0.30, FPR ≤ 0.20, reportable, then decision accuracy). It is applied to `run_model` artifacts, with greedy and calibrated candidates side by side. If nothing is eligible, nothing is selected.
 5. **Final test:** once, with the selected checkpoint and, if calibrated, the same calibration file. `final_test` and the reserved holdout are never scored with `decision_scores` and never used to choose a bias, a checkpoint or a training setting.
 
-**Owner decision needed:** admitting calibrated candidates changes the decoding policy of the evaluation. The thresholds stay the same. It applies only once this PR is approved.
+**Owner decision (2026-11-26):** calibrated candidates are admitted (`docs/TRAINING_AUTHORIZATION.md`). This changes the decoding policy of the evaluation; the thresholds stay the same.
 
 ## 7. Experiment matrix
 
@@ -167,12 +167,12 @@ Every training run: a fresh LoRA on `ornith-ai/Ornith-1.5-9B@489cb97…` (never 
 | **E3** | `tasks: [detection]` | H4 | 254 / 26 | as E2 | Confounded by design: fewer steps, and no patch validation loss. A clear gain points to interference; the follow-up would then test `patch_task_weight` < 1, not dropping patch supervision. |
 | **E4** | `learning_rate: 5.0e-5` | H5 | 346 / 35 | swing size between neighbouring checkpoints; underfitting | Steadier at equal or better rule v2 results → keep the lower rate. |
 
-**Order:**
-1. Run E0 and report the results to the owner.
-2. Run E1 and E2.
-3. Run E3 and E4 if E1/E2 leave the cause open.
+**Order** (E0–E4 approved by the owner on 2026-11-26):
+1. Run E0 and write its report.
+2. Train and evaluate E1, E2, E3 and E4, one after another.
+3. Select over all runs under rule v2.
 
-The final test is used once, after the planned experiments, on the one checkpoint selected over all of them.
+The final test is used once, after all experiments, on the one checkpoint selected over all of them. Every experiment informs the analysis, whichever decision rule applies.
 
 **Why weight 10 for E2.** A finding reply of 52 tokens then gives the decision token 10/61 ≈ 16 % of the example's loss instead of 1.9 %, and a no_finding reply of 36 tokens 10/45 ≈ 22 %. The remaining tokens still dominate, so CWE, lines and evidence keep their supervision.
 
