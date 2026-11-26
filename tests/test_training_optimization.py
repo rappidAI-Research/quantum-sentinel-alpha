@@ -177,6 +177,7 @@ def test_default_objective_is_the_models_own_loss() -> None:
 
 
 def test_decision_token_weight_reweights_exactly_one_token() -> None:
+    pytest.importorskip("torch")
     import torch.nn.functional as F
 
     from sentinel.train.config import ObjectiveSettings
@@ -372,7 +373,7 @@ def eval_case() -> dict[str, Any]:
 
 
 def test_hf_decision_scorer_reads_the_three_decision_tokens() -> None:
-    import torch
+    torch = pytest.importorskip("torch")
 
     backend = FakeBackend()
     scored = ds.HFDecisionScorer(backend)(eval_case())
@@ -392,7 +393,7 @@ def test_hf_decision_scorer_reads_the_three_decision_tokens() -> None:
 
 
 def test_biased_decoding_forces_the_decision_only_when_greedy_would_start_a_decision(monkeypatch: pytest.MonkeyPatch) -> None:
-    import torch
+    torch = pytest.importorskip("torch")
 
     from sentinel.eval.backends import HFBackend
 
@@ -654,3 +655,58 @@ def test_review_round_1_zero_bias_double_quant_and_final_comparison(monkeypatch:
     assert any("without a matching calibration" in p for p in problems)
     other_policy = {**calibrated, "generation": {**calibrated["generation"], "max_new_tokens": 7}}
     assert any("generation differs" in p for p in compare.comparability(greedy, other_policy)[0])
+
+
+def _adapter_dir(root: Path, name: str, revision: str, tensors: dict[str, list[int]]) -> Path:
+    import struct
+
+    adapter = root / name / "adapter"
+    adapter.mkdir(parents=True)
+    (adapter / "adapter_config.json").write_text(json.dumps({"base_model_name_or_path": "ornith-ai/Ornith-1.5-9B", "revision": revision}), encoding="utf-8")
+    header = json.dumps({n: {"dtype": "BF16", "shape": shape, "data_offsets": [0, 0]} for n, shape in tensors.items()}).encode()
+    (adapter / "adapter_model.safetensors").write_bytes(struct.pack("<Q", len(header)) + header)
+    return adapter
+
+
+def test_review_round_2_every_adapter_is_checked_before_and_after_it_is_swapped_in(tmp_path: Path) -> None:
+    """Several adapters per base load: each one is refused before loading if it was trained for another base
+    revision, and after the swap its active LoRA parameters must be exactly its file's tensors."""
+    rev = "a" * 40
+    lora = {"base_model.model.layers.0.q_proj.lora_A.weight": [16, 64], "base_model.model.layers.0.q_proj.lora_B.weight": [64, 16]}
+    good = _adapter_dir(tmp_path, "good", rev, lora)
+    other_base = _adapter_dir(tmp_path, "other", "b" * 40, lora)
+    identities = ds.check_adapters([good], "ornith-ai/Ornith-1.5-9B", rev)
+    assert identities[0]["weights_sha256"] == ds.adapter_digest(good)
+    with pytest.raises(ValueError, match="revision"):
+        ds.check_adapters([good, other_base], "ornith-ai/Ornith-1.5-9B", rev)
+
+    class Parameter:
+        def __init__(self, shape: list[int]) -> None:
+            self.shape, self.dtype = shape, "torch.float32"
+
+        def numel(self) -> int:
+            return math.prod(self.shape)
+
+    class PeftModel:
+        def __init__(self, loaded: dict[str, list[int]]) -> None:
+            self.loaded, self.calls = loaded, []
+
+        def load_adapter(self, path: str, adapter_name: str) -> None:
+            self.calls.append(("load", adapter_name))
+
+        def set_adapter(self, name: str) -> None:
+            self.calls.append(("set", name))
+
+        def delete_adapter(self, name: str) -> None:
+            self.calls.append(("delete", name))
+
+        def named_parameters(self):
+            yield "base_model.model.layers.0.q_proj.base_layer.weight", Parameter([64, 64])
+            for n, shape in self.loaded.items():
+                yield n.replace(".weight", ".adapter1.weight"), Parameter(shape)
+
+    model = PeftModel(lora)
+    assert ds.swap_adapter(model, good, "adapter1", "default")["ok"]
+    assert model.calls == [("load", "adapter1"), ("set", "adapter1"), ("delete", "default")]
+    with pytest.raises(RuntimeError, match="do not match"):
+        ds.swap_adapter(PeftModel({next(iter(lora)): [16, 64]}), good, "adapter1", "default")  # a tensor missing

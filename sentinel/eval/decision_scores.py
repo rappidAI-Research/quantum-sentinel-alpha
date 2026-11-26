@@ -458,6 +458,29 @@ def score_outputs(output: Path, adapters: list[Path | None]) -> list[Path]:
     return paths
 
 
+def check_adapters(adapters: list[Path | None], model_id: str, revision: str | None) -> list[dict[str, Any] | None]:
+    """The identity of every adapter, checked before the base model is loaded: trained for exactly this model
+    and revision, and a checkpoint's files unchanged since the trainer wrote them (`describe_adapter`)."""
+    from sentinel.eval.backends import describe_adapter
+
+    return [describe_adapter(adapter, model_id, revision) if adapter else None for adapter in adapters]
+
+
+def swap_adapter(model: Any, adapter: Path, name: str, previous: str) -> dict[str, Any]:
+    """Load `adapter` into the loaded PEFT model as `name`, make it the active one, drop `previous`, and verify
+    that the active LoRA parameters are exactly the adapter file's tensors (as `HFBackend.load` does)."""
+    from sentinel.eval.backends import adapter_file_tensors, verify_parameters
+
+    model.load_adapter(str(adapter), adapter_name=name)
+    model.set_adapter(name)
+    model.delete_adapter(previous)
+    tensors = adapter_file_tensors(adapter / "adapter_model.safetensors")
+    verification = verify_parameters(model.named_parameters(), tensors, adapter_name=name)["adapter_verification"]
+    if not verification["ok"]:
+        raise RuntimeError(f"{adapter}: the loaded LoRA parameters do not match the adapter file: {verification}")
+    return verification
+
+
 def adapter_digest(adapter: Path) -> str | None:
     weights = adapter / "adapter_model.safetensors"
     return hashlib.sha256(weights.read_bytes()).hexdigest() if weights.is_file() else None
@@ -511,15 +534,18 @@ def main(argv: list[str] | None = None) -> int:
         refuse_protected_cases(cases)
         adapters: list[Path | None] = list(args.adapter) or [None]
         outputs = score_outputs(args.output, adapters)
+        identities = check_adapters(adapters, args.model, args.revision)  # every adapter, before 9B parameters load
         backend = HFBackend(args.model, args.revision, RuntimeSettings(device=args.device, dtype=args.dtype, quantization=args.quantization), GenerationSettings(), adapters[0])
         backend.load()
+        first = backend.describe()
+        if adapters[0] is not None and not (first.get("adapter_verification") or {}).get("ok"):
+            raise SystemExit(f"{adapters[0]}: the loaded LoRA parameters do not match the adapter file: {first.get('adapter_verification')}")
         active = "default"
         for index, adapter in enumerate(adapters):
+            verification = first.get("adapter_verification")
             if index:  # swap the LoRA weights on the loaded base model (PEFT), instead of reloading 9B parameters
                 name = f"adapter{index}"
-                backend._model.load_adapter(str(adapter), adapter_name=name)
-                backend._model.set_adapter(name)
-                backend._model.delete_adapter(active)
+                verification = swap_adapter(backend._model, Path(str(adapter)), name, active)
                 active = name
             rows = score_rows(cases, HFDecisionScorer(backend))
             document = {
@@ -527,11 +553,18 @@ def main(argv: list[str] | None = None) -> int:
                 "model": {
                     "id": args.model,
                     "revision": args.revision,
-                    "adapter": {"path": str(adapter), "adapter_model_sha256": adapter_digest(adapter)} if adapter else None,
+                    "adapter": {
+                        "path": str(adapter),
+                        "adapter_model_sha256": (identities[index] or {})["weights_sha256"],
+                        "base_revision": (identities[index] or {})["base_revision"],
+                        "verification": verification,
+                    }
+                    if adapter
+                    else None,
                     "quantization": args.quantization,
                     "dtype": args.dtype,
                 },
-                "backend": backend.describe() if index == 0 else {"loaded_with": "the first adapter's base model, adapter swapped in place"},
+                "backend": first if index == 0 else {"loaded_with": "the first adapter's base model, adapter swapped in place and verified"},
                 "cases": {"path": str(source), "sha256": hashlib.sha256(source.read_bytes()).hexdigest(), "count": len(cases), "kind": "development" if args.cases else "calibration"},
                 "decision_token_ids": decision_token_ids(backend._tokenizer),
                 "summary": summarize(rows),
