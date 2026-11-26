@@ -426,3 +426,41 @@ def test_biased_decoding_forces_the_decision_only_when_greedy_would_start_a_deci
     assert backend._biased_decision_prefix(prompt) == prefix + [ids["finding"]]
     backend.generation = GenerationSettings(finding_logit_bias=0.5)
     assert backend._biased_decision_prefix(prompt) == prefix + [ids["no_finding"]]
+
+
+def test_calibration_uses_the_validation_split_and_never_protected_sets() -> None:
+    record = {
+        "record_id": "sg-python-vulnerable-0001",
+        "split": "validation",
+        "evaluation_role": "retired_development",
+        "pair_id": "pair-1",
+        "input": {"language": "python", "file": "app.py", "context": "Function `f`", "code": "def f(x):\n    return eval(x)\n"},
+        "target": {"decision": "finding", "cwe": "CWE-95", "start_line": 2, "end_line": 2, "alternate_cwes": []},
+        "provenance": {
+            "code_source_id": "ghsa_osv",
+            "repository": "example/app",
+            "excerpt_revision": "0" * 40,
+            "file_path": "app.py",
+            "license": {"detected": "MIT", "status": "reviewed"},
+        },
+    }
+    cases = ds.calibration_cases([record])
+    assert cases[0]["source_kind"] == "calibration" and cases[0]["case_id"] == record["record_id"]
+    for role in ("development", "final_test", "previous_holdout", "external_benchmark"):
+        with pytest.raises(ValueError, match="validation"):
+            ds.calibration_cases([{**record, "evaluation_role": role}])
+    with pytest.raises(ValueError, match="validation"):
+        ds.calibration_cases([{**record, "split": "train"}])
+    with pytest.raises(ValueError, match="final-test"):
+        ds.refuse_protected_cases([{"case_id": "x", "source_kind": "private_holdout"}])
+    ds.refuse_protected_cases([{"case_id": "x", "source_kind": "development"}])
+
+
+def test_score_outputs_name_each_checkpoint_and_refuse_collisions(tmp_path: Path) -> None:
+    single = ds.score_outputs(tmp_path / "base.json", [None])
+    assert single == [tmp_path / "base.json"]
+    run = "runs/train/qsa-qlora-ornith15-9b-v6"
+    paths = ds.score_outputs(tmp_path, [Path(f"{run}/checkpoints/step-000150"), Path(f"{run}/checkpoints/step-000175")])
+    assert [p.name for p in paths] == ["qsa-qlora-ornith15-9b-v6__step-000150.json", "qsa-qlora-ornith15-9b-v6__step-000175.json"]
+    with pytest.raises(ValueError, match="same output"):
+        ds.score_outputs(tmp_path, [Path(f"{run}/checkpoints/step-000150"), Path(f"{run}/checkpoints/step-000150")])

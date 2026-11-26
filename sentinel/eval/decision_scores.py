@@ -1,8 +1,9 @@
 """Decision scores: how strongly a model prefers finding / no_finding / abstain, case by case.
 
-    # GPU: one teacher-forced forward pass per case (no generation)
+    # GPU: one teacher-forced forward pass per case (no generation); several --adapter share one base model
     python -m sentinel.eval.decision_scores score --model ornith-ai/Ornith-1.5-9B --revision <sha> \\
-        [--adapter <checkpoint>/adapter] [--quantization none|bnb-4bit] --cases <dev.eval_cases.jsonl> --output <scores.json>
+        [--adapter <checkpoint>/adapter ...] [--quantization none|bnb-4bit] \\
+        (--cases <dev.eval_cases.jsonl> | --records <workdir>/validation.jsonl) --output <scores.json | directory>
     # CPU: compare checkpoints (scores and/or run_model artifacts), pairs, flips, operating points
     python -m sentinel.eval.decision_scores analyze <scores-or-runs...> --cases <dev.eval_cases.jsonl> --output <analysis.json>
     # CPU: choose a finding-logit bias on a CALIBRATION set (never the set the choice is evaluated on)
@@ -330,18 +331,59 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+# evaluation roles a calibration set may never come from: what selection or the final test is measured on
+PROTECTED_ROLES = {"development", "final_test", "previous_holdout", "external_benchmark", "temporal_quarantine"}
+
+
+def calibration_cases(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Eval cases from Garden records of the training validation split (the calibration set). Records of
+    the development set, a final test, a holdout, an external benchmark or quarantine are refused."""
+    from sentinel.garden import render
+
+    refused = sorted({r["record_id"] for r in records if r.get("split") != "validation" or r.get("evaluation_role") in PROTECTED_ROLES})
+    if refused:
+        raise ValueError(f"{len(refused)} records are not training-validation records (first: {refused[:3]}); calibrate on validation.jsonl only")
+    return [{**render.to_eval_case(r), "source_kind": "calibration"} for r in records]
+
+
+def refuse_protected_cases(cases: list[dict[str, Any]]) -> None:
+    """Final-test and holdout exports (`source_kind: private_holdout`) are never scored for optimization."""
+    protected = [c["case_id"] for c in cases if c.get("source_kind") == "private_holdout"]
+    if protected:
+        raise ValueError(f"{len(protected)} final-test/holdout cases (first: {protected[:3]}); decision scores are for the development and calibration sets only")
+
+
+def score_outputs(output: Path, adapters: list[Path | None]) -> list[Path]:
+    """Where `score` writes each model's file: `output` itself for one model, `<output>/<run>__step-NNNNNN.json`
+    for several adapters. Checked before the model is loaded, so two adapters never overwrite each other."""
+    if len(adapters) == 1:
+        return [output]
+    paths = [output / (label_of({"model": {"adapter": {"path": str(a)}}}, Path(str(a))).replace("/", "__") + ".json") for a in adapters]
+    duplicates = sorted({str(p) for p in paths if paths.count(p) > 1})
+    if duplicates:
+        raise ValueError(f"adapters map to the same output file: {duplicates}")
+    return paths
+
+
+def adapter_digest(adapter: Path) -> str | None:
+    weights = adapter / "adapter_model.safetensors"
+    return hashlib.sha256(weights.read_bytes()).hexdigest() if weights.is_file() else None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = parser.add_subparsers(dest="command", required=True)
     score = sub.add_parser("score", help="teacher-forced decision scores of one model (GPU)")
     score.add_argument("--model", required=True)
     score.add_argument("--revision", required=True)
-    score.add_argument("--adapter", type=Path)
-    score.add_argument("--cases", type=Path, required=True)
+    score.add_argument("--adapter", type=Path, action="append", default=[], help="repeat to score several checkpoints on one loaded base model")
+    source = score.add_mutually_exclusive_group(required=True)
+    source.add_argument("--cases", type=Path, help="eval cases (the development set)")
+    source.add_argument("--records", type=Path, help="Garden records of the training validation split (calibration set)")
     score.add_argument("--quantization", default="none", choices=("none", "bnb-4bit"), help="bnb-4bit = the NF4 base the adapter was trained on")
     score.add_argument("--dtype", default="bfloat16")
     score.add_argument("--device", default="auto")
-    score.add_argument("--output", type=Path, required=True)
+    score.add_argument("--output", type=Path, required=True, help="a file for one model, a directory for several adapters")
     an = sub.add_parser("analyze", help="compare score files and/or run_model artifacts (CPU)")
     an.add_argument("inputs", nargs="+", type=Path)
     an.add_argument("--cases", type=Path, required=True)
@@ -355,23 +397,42 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "score":
         from sentinel.eval.backends import GenerationSettings, HFBackend, RuntimeSettings
 
-        cases = _read_jsonl(args.cases)
-        backend = HFBackend(args.model, args.revision, RuntimeSettings(device=args.device, dtype=args.dtype, quantization=args.quantization), GenerationSettings(), args.adapter)
+        source = args.cases or args.records
+        cases = _read_jsonl(args.cases) if args.cases else calibration_cases(_read_jsonl(args.records))
+        refuse_protected_cases(cases)
+        adapters: list[Path | None] = list(args.adapter) or [None]
+        outputs = score_outputs(args.output, adapters)
+        backend = HFBackend(args.model, args.revision, RuntimeSettings(device=args.device, dtype=args.dtype, quantization=args.quantization), GenerationSettings(), adapters[0])
         backend.load()
-        rows = score_rows(cases, HFDecisionScorer(backend))
-        document = {
-            "scores_version": SCORES_VERSION,
-            "model": {"id": args.model, "revision": args.revision, "adapter": {"path": str(args.adapter)} if args.adapter else None, "quantization": args.quantization, "dtype": args.dtype},
-            "backend": backend.describe(),
-            "cases": {"path": str(args.cases), "sha256": hashlib.sha256(args.cases.read_bytes()).hexdigest(), "count": len(cases)},
-            "decision_token_ids": decision_token_ids(backend._tokenizer),
-            "summary": summarize(rows),
-            "rows": rows,
-        }
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(document, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-        g, s = document["summary"]["greedy"], document["summary"]["scores"]
-        print(f"{args.output}: recall {g['recall']}, FPR {g['false_positive_rate']}, AUC {s['auc_finding_vs_no_finding']}, generation-equivalent {s['greedy_matches_generation_conditions']}")
+        active = "default"
+        for index, adapter in enumerate(adapters):
+            if index:  # swap the LoRA weights on the loaded base model (PEFT), instead of reloading 9B parameters
+                name = f"adapter{index}"
+                backend._model.load_adapter(str(adapter), adapter_name=name)
+                backend._model.set_adapter(name)
+                backend._model.delete_adapter(active)
+                active = name
+            rows = score_rows(cases, HFDecisionScorer(backend))
+            document = {
+                "scores_version": SCORES_VERSION,
+                "model": {
+                    "id": args.model,
+                    "revision": args.revision,
+                    "adapter": {"path": str(adapter), "adapter_model_sha256": adapter_digest(adapter)} if adapter else None,
+                    "quantization": args.quantization,
+                    "dtype": args.dtype,
+                },
+                "backend": backend.describe() if index == 0 else {"loaded_with": "the first adapter's base model, adapter swapped in place"},
+                "cases": {"path": str(source), "sha256": hashlib.sha256(source.read_bytes()).hexdigest(), "count": len(cases), "kind": "development" if args.cases else "calibration"},
+                "decision_token_ids": decision_token_ids(backend._tokenizer),
+                "summary": summarize(rows),
+                "rows": rows,
+            }
+            output = outputs[index]
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(json.dumps(document, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+            g, s = document["summary"]["greedy"], document["summary"]["scores"]
+            print(f"{output}: recall {g['recall']}, FPR {g['false_positive_rate']}, AUC {s['auc_finding_vs_no_finding']}, generation-equivalent {s['greedy_matches_generation_conditions']}")
         return 0
     if args.command == "analyze":
         result = analyze(args.inputs, _read_jsonl(args.cases), args.max_fpr)
