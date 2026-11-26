@@ -7,9 +7,9 @@ dependencies are imported lazily so validation and scoring stay lightweight.
 from __future__ import annotations
 
 import copy
-import math
 import importlib.util
 import json
+import math
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
