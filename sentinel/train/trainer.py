@@ -25,10 +25,13 @@ from typing import Any, Callable
 from sentinel.eval.patch import PATCH_PROMPT_VERSION
 from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.hf_revision import reset_cuda_peak_memory
-from sentinel.train.config import PROJECT_ROOT, TrainConfig, matching_modules
-from sentinel.train.data import EncodedExample, TrainingData, batches, encode_all, pad_batch
+from sentinel.train.config import PROJECT_ROOT, ObjectiveSettings, TrainConfig, matching_modules
+from sentinel.train.data import IGNORE_INDEX, EncodedExample, TrainingData, batches, encode_all, pad_batch
 
-RUN_VERSION = "2"  # 2: checksummed checkpoints loaded with weights_only, window-mean loss, task mix recorded
+# 2: checksummed checkpoints loaded with weights_only, window-mean loss, task mix recorded
+# 3: validation reports loss per task and decision metrics; optional decision-token / task loss weights
+RUN_VERSION = "3"
+DECISIONS = ("finding", "no_finding", "abstain")
 EXIT_FAILED = 1
 EXIT_GOVERNANCE = 2
 EXIT_OOM = 3
@@ -360,22 +363,114 @@ def load_checkpoint(model: Any, optimizer: Any, scheduler: Any, path: Path) -> R
     return RunState(**json.loads((path / "state.json").read_text(encoding="utf-8")))
 
 
-def evaluate_loss(model: Any, examples: list[EncodedExample], micro_batch_size: int, pad_id: int) -> float | None:
+def decision_token_ids(examples: list[EncodedExample]) -> dict[str, int]:
+    """The token that decides each class, read from the training examples themselves (it must be one token
+    per class, the same in every example)."""
+    seen: dict[str, set[int]] = {}
+    for e in examples:
+        if e.decision is not None and e.decision_index is not None:
+            seen.setdefault(e.decision, set()).add(e.input_ids[e.decision_index])
+    inconsistent = {d: sorted(t) for d, t in seen.items() if len(t) != 1}
+    if inconsistent:
+        raise ValueError(f"a decision is spelled with different first tokens: {inconsistent}")
+    ids = {d: next(iter(t)) for d, t in seen.items()}
+    if len(set(ids.values())) != len(ids):
+        raise ValueError(f"decisions share their first token: {ids}")
+    return ids
+
+
+def example_losses(logits: Any, labels: Any, batch: list[EncodedExample], decision_token_weight: float = 1.0) -> list[tuple[Any, int]]:
+    """(mean token loss, supervised tokens) of every example of a micro-batch. The decisive decision token
+    of a detection example counts `decision_token_weight` times; 1.0 gives the plain mean token loss."""
+    import torch
+    import torch.nn.functional as F
+
+    out = []
+    for row, example in enumerate(batch):
+        shifted = labels[row, 1:]
+        positions = (shifted != IGNORE_INDEX).nonzero(as_tuple=True)[0]
+        ce = F.cross_entropy(logits[row, :-1][positions].float(), shifted[positions], reduction="none")
+        weights = torch.ones_like(ce)
+        if decision_token_weight != 1.0 and example.decision_index is not None:
+            # the token at input position i is predicted by the logits at i - 1
+            weights[positions == example.decision_index - 1] = decision_token_weight
+        out.append(((weights * ce).sum() / weights.sum(), int(positions.numel())))
+    return out
+
+
+def objective_loss(model: Any, inputs: dict[str, Any], batch: list[EncodedExample], objective: ObjectiveSettings | None) -> Any:
+    """The training loss of one micro-batch. Without an objective (or with both weights 1.0) it is the
+    model's own mean token loss, exactly as before Training Optimization v1."""
+    import torch
+
+    if objective is None or objective.is_default():
+        return model(**inputs).loss
+    logits = model(input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"]).logits
+    losses = example_losses(logits, inputs["labels"], batch, objective.decision_token_weight)
+    weighted = [loss * (objective.patch_task_weight if e.task == "patch" else 1.0) for (loss, _), e in zip(losses, batch)]
+    return torch.stack(weighted).mean()
+
+
+def decision_summary(rows: list[tuple[str, str, float]]) -> dict[str, Any]:
+    """rows: (expected, predicted, finding-minus-no_finding logit margin) of the validation detection examples."""
+    positives = [r for r in rows if r[0] == "finding"]
+    negatives = [r for r in rows if r[0] == "no_finding"]
+    tp = sum(1 for r in positives if r[1] == "finding")
+    fp = sum(1 for r in negatives if r[1] == "finding")
+    return {
+        "examples": len(rows),
+        "accuracy": round(sum(1 for r in rows if r[0] == r[1]) / len(rows), 4) if rows else None,
+        "recall": round(tp / len(positives), 4) if positives else None,
+        "false_positive_rate": round(fp / len(negatives), 4) if negatives else None,
+        "finding_rate": round(sum(1 for r in rows if r[1] == "finding") / len(rows), 4) if rows else None,
+        "mean_finding_margin": round(sum(r[2] for r in rows) / len(rows), 4) if rows else None,
+        "mean_finding_margin_on_findings": round(sum(r[2] for r in positives) / len(positives), 4) if positives else None,
+        "mean_finding_margin_on_negatives": round(sum(r[2] for r in negatives) / len(negatives), 4) if negatives else None,
+    }
+
+
+def evaluate_validation(model: Any, examples: list[EncodedExample], micro_batch_size: int, pad_id: int, decision_ids: dict[str, int] | None = None) -> dict[str, Any]:
+    """Validation loss (token-weighted over all tasks, as before) plus what it hides: the loss of each task
+    and the teacher-forced decisions of the detection examples (argmax of the decision tokens)."""
     import torch
 
     if not examples:
-        return None
+        return {"validation_loss": None}
     model.eval()
     total, tokens = 0.0, 0
+    by_task: dict[str, list[float]] = {}
+    decisions: list[tuple[str, str, float]] = []
     with torch.no_grad():
         for batch in batches(examples, micro_batch_size, epoch=0, seed=0):
             inputs = _to_tensors(batch, pad_id, model.device)
             count = int((inputs["labels"][:, 1:] != -100).sum())
-            loss = model(**inputs).loss
-            total += float(loss) * count
+            out = model(**inputs)
+            total += float(out.loss) * count
             tokens += count
+            for (loss, n), example in zip(example_losses(out.logits, inputs["labels"], batch), batch):
+                acc = by_task.setdefault(example.task, [0.0, 0])
+                acc[0] += float(loss) * n
+                acc[1] += n
+            if decision_ids and all(d in decision_ids for d in ("finding", "no_finding")):
+                for row, example in enumerate(batch):
+                    if example.decision is None or example.decision_index is None:
+                        continue
+                    logits = out.logits[row, example.decision_index - 1].float()
+                    scores = {d: float(logits[i]) for d, i in decision_ids.items()}
+                    decisions.append((example.decision, max(scores, key=lambda d: scores[d]), scores["finding"] - scores["no_finding"]))
     model.train()
-    return total / tokens if tokens else None
+    result: dict[str, Any] = {
+        "validation_loss": total / tokens if tokens else None,
+        "validation": {"loss_by_task": {task: round(s / n, 5) for task, (s, n) in sorted(by_task.items()) if n}},
+    }
+    if decisions:
+        result["validation"]["decision"] = decision_summary(decisions)
+    return result
+
+
+def evaluate_loss(model: Any, examples: list[EncodedExample], micro_batch_size: int, pad_id: int) -> float | None:
+    """The token-weighted validation loss over all tasks (kept for callers that need only this number)."""
+    return evaluate_validation(model, examples, micro_batch_size, pad_id)["validation_loss"]
 
 
 def _peak_vram_gib() -> float | None:
@@ -476,6 +571,10 @@ def train(
         )
         if not train_examples:
             raise RuntimeError("no training example fits max_seq_len")
+        decision_ids = decision_token_ids(train_examples)
+        run["data"]["decision_token_ids"] = decision_ids
+        if config.objective is not None:
+            run["objective"] = {"decision_token_weight": config.objective.decision_token_weight, "patch_task_weight": config.objective.patch_task_weight}
         pad_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
 
         model, targets = apply_lora(base, config, config.training.gradient_checkpointing)
@@ -523,7 +622,7 @@ def train(
             for index in range(state.batch_in_epoch, len(epoch_batches)):
                 inputs = _to_tensors(epoch_batches[index], pad_id, device)
                 window = accumulation_window(index, len(epoch_batches), config.training.gradient_accumulation_steps)
-                loss = model(**inputs).loss / window
+                loss = objective_loss(model, inputs, epoch_batches[index], config.objective) / window
                 if not math.isfinite(float(loss.detach())):
                     raise RuntimeError(f"non-finite loss at step {state.step + 1} (micro-batch {index} of epoch {state.epoch})")
                 loss.backward()
@@ -557,7 +656,9 @@ def train(
                     log(json.dumps(entry))
                     window_tokens, window_started = 0, time.monotonic()
                 if state.step % config.training.eval_every_steps == 0:
-                    state.evaluations.append({"step": state.step, "validation_loss": evaluate_loss(model, validation_examples, config.training.micro_batch_size, pad_id)})
+                    evaluation = {"step": state.step, **evaluate_validation(model, validation_examples, config.training.micro_batch_size, pad_id, decision_ids)}
+                    state.evaluations.append(evaluation)
+                    log(json.dumps(evaluation))
                 if state.step % config.training.save_every_steps == 0:
                     save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance)
                 if state.step >= total_steps:
@@ -566,7 +667,9 @@ def train(
                 state.epoch += 1
                 state.batch_in_epoch = 0
 
-        state.evaluations.append({"step": state.step, "validation_loss": evaluate_loss(model, validation_examples, config.training.micro_batch_size, pad_id)})
+        evaluation = {"step": state.step, **evaluate_validation(model, validation_examples, config.training.micro_batch_size, pad_id, decision_ids)}
+        state.evaluations.append(evaluation)
+        log(json.dumps(evaluation))
         save_checkpoint(model, optimizer, scheduler, state, output_dir, config.training.keep_last_checkpoints, provenance)
         adapter_keys = save_adapter(model, output_dir / "adapter")
         (output_dir / "adapter" / "training_run.json").write_text(

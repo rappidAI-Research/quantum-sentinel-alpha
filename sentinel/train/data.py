@@ -34,6 +34,7 @@ from sentinel.garden.governance import gate, load_approvals
 from sentinel.garden.pipeline import PROJECT_ROOT, load_config
 
 IGNORE_INDEX = -100
+DECISION_PREFIX = '{"decision": "'  # every detection reply starts with it (sentinel.garden.render)
 
 
 class GovernanceError(RuntimeError):
@@ -245,6 +246,10 @@ class EncodedExample:
     input_ids: list[int]
     labels: list[int]
     task: str = "detection"
+    # detection only: the decision (finding / no_finding / abstain) and the position in input_ids of the token
+    # that decides it, the first reply token after `{"decision": "` (sentinel.eval.decision_scores)
+    decision: str | None = None
+    decision_index: int | None = None
 
 
 def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_len: int, end_of_turn: str) -> EncodedExample | None:
@@ -266,11 +271,20 @@ def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_le
     reply_ids = list(tokenizer(reply["content"] + end_of_turn, add_special_tokens=False)["input_ids"])
     if len(prompt_ids) + len(reply_ids) > max_seq_len:
         return None
+    task = example.get("task", "detection")
+    decision = decision_index = None
+    if task == "detection":
+        decision = str(json.loads(reply["content"])["decision"])
+        prefix = list(tokenizer(DECISION_PREFIX, add_special_tokens=False)["input_ids"])
+        if reply_ids[: len(prefix)] == prefix and len(reply_ids) > len(prefix):
+            decision_index = len(prompt_ids) + len(prefix)
     return EncodedExample(
         record_id=example["record_id"],
         input_ids=prompt_ids + reply_ids,
         labels=[IGNORE_INDEX] * len(prompt_ids) + reply_ids,
-        task=example.get("task", "detection"),
+        task=task,
+        decision=decision,
+        decision_index=decision_index,
     )
 
 

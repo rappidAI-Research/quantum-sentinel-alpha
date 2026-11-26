@@ -7,6 +7,7 @@ dependencies are imported lazily so validation and scoring stay lightweight.
 from __future__ import annotations
 
 import copy
+import math
 import importlib.util
 import json
 import re
@@ -59,15 +60,27 @@ class GenerationSettings:
     top_k: int | None = None
     enable_thinking: bool = False
     seed: int = 0
+    # Training Optimization v1: added to the log-probability of the `finding` decision token before the
+    # decision is taken (the rest of the reply is generated as usual). 0.0 = plain greedy decoding. A non-zero
+    # bias is part of the evaluated model and must be chosen on the training validation split, never on the
+    # development set it is selected on or on a final test (sentinel.eval.decision_scores calibrate).
+    finding_logit_bias: float = 0.0
 
     def __post_init__(self) -> None:
         if self.max_new_tokens < 1:
             raise ValueError("max_new_tokens must be positive")
         if not self.do_sample and any(v is not None for v in (self.temperature, self.top_p, self.top_k)):
             raise ValueError("temperature/top_p/top_k require do_sample=true")
+        if not math.isfinite(self.finding_logit_bias) or abs(self.finding_logit_bias) > 20:
+            raise ValueError("finding_logit_bias must be finite and within [-20, 20]")
+        if self.finding_logit_bias != 0.0 and self.do_sample:
+            raise ValueError("finding_logit_bias is defined for greedy decoding only")
 
     def as_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        settings = asdict(self)
+        if settings["finding_logit_bias"] == 0.0:
+            del settings["finding_logit_bias"]  # plain decoding keeps the generation record of every earlier run
+        return settings
 
 
 @dataclass(frozen=True)
@@ -360,6 +373,13 @@ class HFBackend:
         rendered = self._tokenizer.apply_chat_template(messages, tokenize=False, **template_kwargs)
         inputs = self._tokenizer(rendered, return_tensors="pt", add_special_tokens=False).to(self._model.device)
         prompt_tokens = int(inputs["input_ids"].shape[1])
+        forced: list[int] = []
+        if self.generation.finding_logit_bias != 0.0:
+            forced = self._biased_decision_prefix(inputs["input_ids"])
+            if forced:
+                prefix = torch.tensor([forced], device=self._model.device, dtype=inputs["input_ids"].dtype)
+                inputs = {"input_ids": torch.cat([inputs["input_ids"], prefix], dim=1)}
+                inputs["attention_mask"] = torch.ones_like(inputs["input_ids"])
         with torch.inference_mode():
             output = self._model.generate(**inputs, generation_config=self._generation_config)
         new_tokens = output[0, prompt_tokens:]
@@ -373,6 +393,26 @@ class HFBackend:
             # The template opened a reasoning block; restore the tag so the parser can strip it.
             text = "<think>" + text
         return GenerationResult(text=text, generated_tokens=int(new_tokens.shape[0]), prompt_tokens=prompt_tokens)
+
+    def _biased_decision_prefix(self, prompt_ids: Any) -> list[int]:
+        """`{"decision": "` plus the decision token chosen with the finding bias, when greedy decoding would
+        start the reply with that prefix and a decision token; otherwise [] (the reply is generated unchanged)."""
+        import torch
+
+        from sentinel.eval.decision_scores import decision_token_ids
+        from sentinel.train.data import DECISION_PREFIX
+
+        prefix = list(self._tokenizer(DECISION_PREFIX, add_special_tokens=False)["input_ids"])
+        ids = decision_token_ids(self._tokenizer)
+        tail = torch.tensor([prefix], device=self._model.device, dtype=prompt_ids.dtype)
+        with torch.inference_mode():
+            logits = self._model(input_ids=torch.cat([prompt_ids, tail], dim=1)).logits[0].float()
+        start = int(prompt_ids.shape[1]) - 1
+        if logits[start : start + len(prefix)].argmax(dim=-1).tolist() != prefix or int(logits[-1].argmax()) not in ids.values():
+            return []
+        logprobs = torch.log_softmax(logits[-1], dim=-1)
+        scores = {d: float(logprobs[i]) + (self.generation.finding_logit_bias if d == "finding" else 0.0) for d, i in ids.items()}
+        return prefix + [ids[max(scores, key=lambda d: scores[d])]]
 
     def describe(self) -> dict[str, Any]:
         import torch

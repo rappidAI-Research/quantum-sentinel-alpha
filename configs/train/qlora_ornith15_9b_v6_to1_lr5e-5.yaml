@@ -1,0 +1,47 @@
+# Training Optimization v1, experiment E4: learning rate 5e-5 (V6: 1e-4).
+# A fresh adapter on the pinned foundation, Garden v6 data, same seed and schedule as
+# configs/train/qlora_ornith15_9b_v6.yaml; it differs from that config only in the variable named above and in
+# denser checkpoints and evaluations (observation, no effect on the gradients). docs/TRAINING_OPTIMIZATION_V1.md
+# Run:   python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_lr5e-5.yaml
+schema_version: "1.0"
+run_name: qsa-qlora-ornith15-9b-v6-to1-lr5e-5
+foundation: configs/model/foundation.yaml
+
+data:
+  garden_config: configs/garden/seed_v6.yaml     # Garden v6; train.chat.jsonl / validation.jsonl in its workdir (`materialize`)
+  max_seq_len: 4096          # examples longer than this are dropped and counted, never truncated
+  end_of_turn: "<|im_end|>"  # appended to each assistant reply; must be a single token of the tokenizer
+  tasks: [detection, patch]  # owner decision 2026-11-24: also train patch generation on verified upstream fixes (docs/PATCH_SUPERVISION.md); [detection] for detection only
+
+quantization:
+  mode: nf4                  # nf4 (QLoRA, bitsandbytes 4-bit) | none (bf16 LoRA)
+  double_quant: true
+  compute_dtype: bfloat16
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  # Derived from the real module layout (configs/train/ornith15_9b_linear_modules.txt): all attention,
+  # Gated DeltaNet and MLP projections of the 32 text layers. Excluded: in_proj_a / in_proj_b
+  # (4096 -> 32 gating projections, too small for rank-16 updates), lm_head and every non-text module.
+  target_modules: '^model\.layers\.\d+\.(self_attn\.(q_proj|k_proj|v_proj|o_proj)|linear_attn\.(in_proj_qkv|in_proj_z|out_proj)|mlp\.(gate_proj|up_proj|down_proj))$'
+  expected_target_count: 200 # 8 full-attention x 4 + 24 linear-attention x 3 + 32 MLP x 3
+
+training:
+  seed: 1234
+  learning_rate: 5.0e-5      # Training Optimization v1, experiment E4 (V6: 1.0e-4)
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  num_epochs: 2              # the first run's selected checkpoint was step 200 of 234 (1.7 epochs); more epochs are not assumed to help
+  max_steps: null
+  micro_batch_size: 1
+  gradient_accumulation_steps: 16
+  max_grad_norm: 1.0
+  gradient_checkpointing: true
+  eval_every_steps: 10       # Training Optimization v1: observation only (validation loss per task + decision metrics)
+  save_every_steps: 10       # dense checkpoints around the decision swings; observation only
+  keep_last_checkpoints: 40  # every checkpoint of the run (35-36), about 0.5 GB each
+  logging_every_steps: 1
+
+output_dir: runs/train/qsa-qlora-ornith15-9b-v6-to1-lr5e-5   # Git-ignored; adapter-only outputs

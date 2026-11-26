@@ -36,7 +36,7 @@ from sentinel.eval.runner import check_adapter_prompt, is_immutable_revision, ru
 from sentinel.eval.sandbox import IsolationUnavailable
 
 # Flags that would change the shared bake-off setup; rejected together with --bakeoff.
-SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version")
+SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version", "finding_logit_bias")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -52,6 +52,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--dtype", choices=DTYPES)
     parser.add_argument("--quantization", choices=QUANTIZATION_MODES)
     parser.add_argument("--max-new-tokens", type=int)
+    parser.add_argument(
+        "--finding-logit-bias",
+        type=float,
+        help="calibrated decoding (Training Optimization v1): bias added to the finding decision token; choose it with "
+        "`python -m sentinel.eval.decision_scores calibrate` on the training validation split, never on the evaluated set",
+    )
     parser.add_argument("--limit", type=int, help="smoke test on the first N cases; never reportable")
     parser.add_argument("--allow-unpinned", action="store_true", help="permit a non-reportable run without a pinned revision")
     parser.add_argument(
@@ -110,7 +116,10 @@ def main(argv: list[str] | None = None) -> int:
         cases_path = args.cases
         coding_suite_name = args.coding_suite
         prompt_version = args.prompt_version or PROMPT_VERSION
-        generation = GenerationSettings(**({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}))
+        generation = GenerationSettings(
+            **({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}),
+            **({"finding_logit_bias": args.finding_logit_bias} if args.finding_logit_bias else {}),
+        )
         runtime = RuntimeSettings(
             **{key: value for key in ("device", "dtype", "quantization") if (value := getattr(args, key)) is not None}
         )

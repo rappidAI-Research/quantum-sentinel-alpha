@@ -17,7 +17,7 @@ DEFAULT_TRAIN_CONFIG = PROJECT_ROOT / "configs" / "train" / "qlora_ornith15_9b.y
 # Every linear module of the pinned foundation (scripts/inspect_foundation.py); the LoRA regex is checked against it.
 LINEAR_MODULES = PROJECT_ROOT / "configs" / "train" / "ornith15_9b_linear_modules.txt"
 TOP_KEYS = {"schema_version", "run_name", "foundation", "data", "quantization", "lora", "training", "output_dir"}
-OPTIONAL_TOP_KEYS = {"init_adapter"}
+OPTIONAL_TOP_KEYS = {"init_adapter", "objective"}
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -68,6 +68,22 @@ class TrainingSettings:
 
 
 @dataclass(frozen=True)
+class ObjectiveSettings:
+    """Training Optimization v1 (docs/TRAINING_OPTIMIZATION_V1.md): how the reply tokens are weighted.
+
+    The default objective (no `objective` section, or both weights 1.0) is the mean token loss of each
+    example's reply, as in every run before. `decision_token_weight` multiplies the loss of the one token
+    that decides finding / no_finding / abstain (in a typical detection reply it is about 2 % of the
+    example's loss); `patch_task_weight` multiplies the whole loss of a patch example."""
+
+    decision_token_weight: float = 1.0
+    patch_task_weight: float = 1.0
+
+    def is_default(self) -> bool:
+        return self.decision_token_weight == 1.0 and self.patch_task_weight == 1.0
+
+
+@dataclass(frozen=True)
 class InitAdapterSettings:
     """Continue from an earlier run's checkpoint adapter with a NEW optimizer and schedule (approach A).
 
@@ -94,9 +110,12 @@ class TrainConfig:
     training: TrainingSettings
     output_dir: Path
     init_adapter: InitAdapterSettings | None = None
+    objective: ObjectiveSettings | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        extra = {"init_adapter": asdict(self.init_adapter)} if self.init_adapter else {}
+        extra: dict[str, Any] = {"init_adapter": asdict(self.init_adapter)} if self.init_adapter else {}
+        if self.objective is not None:
+            extra["objective"] = asdict(self.objective)
         return {
             **extra,
             "run_name": self.run_name,
@@ -164,6 +183,14 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
             raise ConfigError("init_adapter.step must be positive and the source hashes 64 lower-case hex characters")
         if int(init_adapter.checkpoint[-6:]) != init_adapter.step:
             raise ConfigError("init_adapter.step does not match the checkpoint directory name")
+    objective = _section(document, "objective", ObjectiveSettings) if "objective" in document else None
+    if objective is not None:
+        weights = (objective.decision_token_weight, objective.patch_task_weight)
+        if not all(isinstance(w, (int, float)) and not isinstance(w, bool) and 0 < float(w) <= 100 for w in weights):
+            raise ConfigError("objective weights must be numbers in (0, 100]")
+        objective = ObjectiveSettings(float(objective.decision_token_weight), float(objective.patch_task_weight))
+        if objective.patch_task_weight != 1.0 and "patch" not in settings.tasks:
+            raise ConfigError("objective.patch_task_weight needs the patch task in data.tasks")
     output_dir = PROJECT_ROOT / document["output_dir"]
     if not str(document["output_dir"]).startswith(("runs/", "artifacts/")):
         raise ConfigError("output_dir must be under the Git-ignored runs/ or artifacts/ directory")
@@ -180,6 +207,7 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
         training=training,
         output_dir=output_dir,
         init_adapter=init_adapter,
+        objective=objective,
     )
 
 
