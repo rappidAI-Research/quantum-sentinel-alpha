@@ -18,6 +18,8 @@ from typing import Any, Protocol
 from sentinel.eval.baseline import detect
 from sentinel.hf_revision import RevisionUnverified, reset_cuda_peak_memory, verify_loaded_revision
 
+# Calibrated decoding: the largest finding bias generation accepts (and calibration may choose).
+MAX_FINDING_LOGIT_BIAS = 20.0
 # bnb-4bit-dq: NF4 with double quantization and the compute dtype, i.e. the base QLoRA adapters are trained on
 QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit", "bnb-4bit-dq")
 
@@ -81,8 +83,8 @@ class GenerationSettings:
             raise ValueError("max_new_tokens must be positive")
         if not self.do_sample and any(v is not None for v in (self.temperature, self.top_p, self.top_k)):
             raise ValueError("temperature/top_p/top_k require do_sample=true")
-        if not math.isfinite(self.finding_logit_bias) or abs(self.finding_logit_bias) > 20:
-            raise ValueError("finding_logit_bias must be finite and within [-20, 20]")
+        if not math.isfinite(self.finding_logit_bias) or abs(self.finding_logit_bias) > MAX_FINDING_LOGIT_BIAS:
+            raise ValueError(f"finding_logit_bias must be finite and within [-{MAX_FINDING_LOGIT_BIAS}, {MAX_FINDING_LOGIT_BIAS}]")
         if self.finding_logit_bias != 0.0 and self.do_sample:
             raise ValueError("finding_logit_bias is defined for greedy decoding only")
 

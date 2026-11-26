@@ -178,7 +178,9 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         seen.add(name)
         metrics = artifact["metrics"]
         failed = _eligible(metrics, rule)
-        eligible = name != "foundation" and artifact["reportable"] and not failed
+        # the foundation (no adapter) is the reference, never a candidate, also when calibrated
+        is_adapter = bool(artifact["model"].get("adapter"))
+        eligible = is_adapter and artifact["reportable"] and not failed
         runs.append(
             {
                 "label": name,
@@ -190,7 +192,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 "reportable": artifact["reportable"],
                 "reportable_blockers": artifact["reportable_blockers"],
                 "eligible": eligible,
-                "failed_conditions": failed if name != "foundation" else [],
+                "failed_conditions": failed if is_adapter else [],
                 "metrics": {key: metrics[key] for _, key in COLUMNS},
                 "counts": {key: metrics[key] for key in ("true_positive", "false_positive", "false_negative", "true_negative", "negative_cases", "positive_cases", "abstain_cases")},
                 **false_positive_analysis(artifact, language or {}),
@@ -206,11 +208,11 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
 
     selected = min(candidates, key=key) if candidates else None
     # the final weights of the selected checkpoint's run: its final adapter, else its latest checkpoint
-    adapters = [r for r in runs if r["label"] != "foundation" and (selected is None or r["run"] == selected["run"])]
+    adapters = [r for r in runs if r["adapter"] and (selected is None or r["run"] == selected["run"])]
     final = next((r for r in adapters if r["step"] is None), None) or (
         max(adapters, key=lambda r: r["step"]) if adapters else None
     )
-    foundation = next((r for r in runs if r["label"] == "foundation"), None)
+    foundation = next((r for r in runs if not r["adapter"] and not r["finding_logit_bias"]), None) or next((r for r in runs if not r["adapter"]), None)
     comparison = None
     if selected and final and selected is not final:
         a, b = selected["_correct"], final["_correct"]
@@ -274,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     except Refused as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 2
-    runs = sorted(result["runs"], key=lambda r: (r["label"] != "foundation", r["run"] or "", r["step"] if r["step"] is not None else float("inf")))
+    runs = sorted(result["runs"], key=lambda r: (bool(r["adapter"]), r["run"] or "", r["step"] if r["step"] is not None else float("inf")))
     print(f"development set: {result['devset']['count']} cases {result['devset']['by_expected_decision']}")
     print("run".ljust(14) + "".join(title.rjust(15) for title, _ in COLUMNS) + "  FP/negatives  eligible")
     for run in runs:

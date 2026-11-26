@@ -161,8 +161,11 @@ def with_bias(row: dict[str, Any], bias: float) -> str:
 def operating_points(rows: list[dict[str, Any]], biases: list[float] | None = None) -> list[dict[str, Any]]:
     """Recall / FPR / precision / accuracy for a range of finding biases (bias 0 = argmax of the three)."""
     if biases is None:
+        from sentinel.eval.backends import MAX_FINDING_LOGIT_BIAS as limit
+
         candidates = sorted({round(max(r["logprob"]["no_finding"], r["logprob"]["abstain"]) - r["logprob"]["finding"], 4) for r in rows})
-        biases = sorted({0.0, *(c + 1e-4 for c in candidates)})
+        # only biases generation accepts (run_model refuses |bias| > limit); the endpoints are candidates too
+        biases = sorted({0.0, -limit, limit, *(b for c in candidates if abs(b := round(c + 1e-4, 4)) <= limit)})
     points = []
     for bias in biases:
         decided = [{**r, "biased": with_bias(r, bias)} for r in rows]

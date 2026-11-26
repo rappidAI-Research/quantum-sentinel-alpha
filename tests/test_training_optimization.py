@@ -723,3 +723,34 @@ def test_review_round_3_forced_decision_tokens_count_toward_the_reply_budget() -
     assert backend._budget_after([]) is backend._generation_config
     continuation = backend._budget_after(list(range(7)))  # 6 prefix tokens + the decision token
     assert continuation.max_new_tokens == 93 and backend._generation_config.max_new_tokens == 100
+
+
+def test_review_round_4_calibrated_bias_stays_in_range_and_a_calibrated_foundation_stays_a_reference(monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.eval import runner
+    from sentinel.eval.backends import MAX_FINDING_LOGIT_BIAS, RuntimeSettings
+    from sentinel.eval.io import case_set_sha256
+    from sentinel.eval.select_checkpoint import select
+    from tests.test_model_runner import CASES, PINNED, FakeBackend
+
+    # margins beyond the generation limit: calibration never picks a bias run_model would refuse
+    rows = [
+        {"case_id": "f", "expected": "finding", "pair_id": "p", "logprob": {"finding": -25.0, "no_finding": 0.0, "abstain": -40.0}},
+        {"case_id": "n", "expected": "no_finding", "pair_id": "p", "logprob": {"finding": -30.0, "no_finding": 0.0, "abstain": -40.0}},
+    ]
+    assert all(abs(p["bias"]) <= MAX_FINDING_LOGIT_BIAS for p in ds.operating_points(rows))
+    chosen = ds.best_bias(rows, 0.15)
+    assert chosen is not None and GenerationSettings(finding_logit_bias=chosen["bias"]).finding_logit_bias == chosen["bias"]
+
+    # a calibrated foundation run is shown as the reference and never selected
+    monkeypatch.setattr(runner, "git_state", lambda: {"commit": "f" * 40, "dirty": False})
+    foundation = runner.run_quickeval(
+        CASES, FakeBackend({}, default='{"decision": "finding", "cwe": "CWE-89", "start_line": 1, "end_line": 2, "evidence": "x"}'),
+        model_id="Qwen/Qwen3.5-4B", revision=PINNED, generation=GenerationSettings(finding_logit_bias=2.0), runtime=RuntimeSettings(),
+        cases_path="eval/sentinelbench/quickeval_v1.jsonl", calibration=CALIBRATION,
+    )
+    adapter = _adapter_artifact(monkeypatch, 150)
+    devset = {"detection": {"cases_sha256": case_set_sha256(CASES), "count": len(CASES), "by_expected_decision": {}}}
+    result = select(devset, [foundation, adapter], rule_version="1")  # rule v1: no floors, so only the foundation guard decides
+    by_label = {r["label"]: r for r in result["runs"]}
+    assert by_label["foundation+calibrated"]["eligible"] is False and by_label["foundation+calibrated"]["failed_conditions"] == []
+    assert result["selected"] == "step-000150" and result["selected_adapter"]
