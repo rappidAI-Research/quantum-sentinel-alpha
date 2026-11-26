@@ -50,6 +50,11 @@ def git_state() -> dict[str, Any]:
 def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> list[str]:
     blockers: list[str] = []
     model = artifact["model"]
+    bias = artifact["generation"].get("finding_logit_bias", 0.0)
+    calibration = artifact.get("calibration")
+    if bias and (not calibration or calibration.get("bias") != bias or calibration["cases"].get("kind") != "calibration"):
+        # a hand-picked bias could have been tuned on the evaluated set itself
+        blockers.append("finding_logit_bias without a matching calibration on the training validation split (diagnostic run)")
     if model["backend"] != "hf":
         blockers.append(f"backend {model['backend']!r} is not a real model")
     if not is_immutable_revision(model["revision"]):
@@ -135,6 +140,7 @@ def run_quickeval(
     coding_suite: CodingRegressionSuite | None = None,
     coding_not_run: dict[str, Any] | None = None,
     prompt_version: str = PROMPT_VERSION,
+    calibration: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     validate_cases(cases)
     check_adapter_prompt(backend, prompt_version)
@@ -219,6 +225,8 @@ def run_quickeval(
         "coding_regression": coding,
         "predictions": records,
     }
+    if calibration is not None:
+        artifact["calibration"] = calibration
     blockers = reportability_blockers(artifact, full_case_set)
     artifact["reportable"] = not blockers
     artifact["reportable_blockers"] = blockers

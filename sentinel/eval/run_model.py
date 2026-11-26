@@ -5,6 +5,7 @@ Direct:   python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --re
 Baseline: python -m sentinel.eval.run_model --bakeoff configs/model/baseline_ornith15.yaml \\
               --candidate ornith15-9b --output runs/eval/ornith15-9b-baseline.json
 Adapter:  add --adapter runs/train/<run>/adapter to evaluate a QLoRA adapter on the same base revision.
+Calibrated decoding: add --calibration <calibration.json> (python -m sentinel.eval.decision_scores calibrate).
 No GPU:   add --backend baseline to exercise the full path with the regex baseline.
 
 The coding-regression suite executes model-generated code, only inside the container sandbox
@@ -16,8 +17,11 @@ coding regression as not_run.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import sys
 from pathlib import Path
+from typing import Any
 
 from sentinel.eval.backends import (
     DTYPES,
@@ -36,7 +40,32 @@ from sentinel.eval.runner import check_adapter_prompt, is_immutable_revision, ru
 from sentinel.eval.sandbox import IsolationUnavailable
 
 # Flags that would change the shared bake-off setup; rejected together with --bakeoff.
-SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version", "finding_logit_bias")
+SHARED_SETUP_FLAGS = ("model", "cases", "device", "dtype", "quantization", "max_new_tokens", "coding_suite", "prompt_version", "finding_logit_bias", "calibration")
+
+
+def load_calibration(path: Path, model_id: str, revision: str | None, runtime: RuntimeSettings, adapter: Path | None) -> tuple[dict[str, Any], float]:
+    """The calibrated finding bias for this exact model setup, and the provenance the artifact records."""
+    from sentinel.eval.decision_scores import adapter_digest, check_calibration
+
+    raw = path.read_bytes()
+    document = json.loads(raw)
+    bias = check_calibration(
+        document,
+        model_id=model_id,
+        revision=revision,
+        quantization=runtime.quantization,
+        dtype=runtime.dtype,
+        adapter_weights_sha256=adapter_digest(adapter) if adapter else None,
+    )
+    provenance = {
+        "path": str(path),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "calibration_version": document["calibration_version"],
+        "bias": bias,
+        "max_fpr": document["max_fpr"],
+        "cases": {k: document["cases"][k] for k in ("path", "sha256", "count", "kind")},
+    }
+    return provenance, bias
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -55,8 +84,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--finding-logit-bias",
         type=float,
-        help="calibrated decoding (Training Optimization v1): bias added to the finding decision token; choose it with "
-        "`python -m sentinel.eval.decision_scores calibrate` on the training validation split, never on the evaluated set",
+        help="diagnostic only: bias added to the finding decision token; such a run is not reportable (use --calibration)",
+    )
+    parser.add_argument(
+        "--calibration",
+        type=Path,
+        help="calibrated decoding (Training Optimization v1): the file of `decision_scores calibrate --output`, made on the "
+        "training validation split for exactly this model; its bias is applied and its provenance recorded",
     )
     parser.add_argument("--limit", type=int, help="smoke test on the first N cases; never reportable")
     parser.add_argument("--allow-unpinned", action="store_true", help="permit a non-reportable run without a pinned revision")
@@ -84,6 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     bakeoff_meta = None
+    calibration = None
     if args.bakeoff:
         conflicting = [f"--{name.replace('_', '-')}" for name in SHARED_SETUP_FLAGS if getattr(args, name) is not None]
         if conflicting:
@@ -116,12 +151,20 @@ def main(argv: list[str] | None = None) -> int:
         cases_path = args.cases
         coding_suite_name = args.coding_suite
         prompt_version = args.prompt_version or PROMPT_VERSION
-        generation = GenerationSettings(
-            **({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}),
-            **({"finding_logit_bias": args.finding_logit_bias} if args.finding_logit_bias else {}),
-        )
         runtime = RuntimeSettings(
             **{key: value for key in ("device", "dtype", "quantization") if (value := getattr(args, key)) is not None}
+        )
+        bias = args.finding_logit_bias
+        if args.calibration:
+            if bias is not None:
+                parser.error("--finding-logit-bias contradicts --calibration (the calibration file carries the bias)")
+            try:
+                calibration, bias = load_calibration(args.calibration, model_id, revision, runtime, args.adapter)
+            except (OSError, ValueError, KeyError) as exc:
+                parser.error(f"--calibration: {exc}")
+        generation = GenerationSettings(
+            **({"max_new_tokens": args.max_new_tokens} if args.max_new_tokens else {}),
+            **({"finding_logit_bias": bias} if bias else {}),
         )
 
     if args.adapter and args.backend != "hf":
@@ -187,6 +230,7 @@ def main(argv: list[str] | None = None) -> int:
         coding_suite=coding_suite,
         coding_not_run=coding_skipped,
         prompt_version=prompt_version,
+        calibration=calibration,
     )
     write_artifact(args.output, artifact)
 

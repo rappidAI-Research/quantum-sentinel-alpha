@@ -7,7 +7,9 @@
     # CPU: compare checkpoints (scores and/or run_model artifacts), pairs, flips, operating points
     python -m sentinel.eval.decision_scores analyze <scores-or-runs...> --cases <dev.eval_cases.jsonl> --output <analysis.json>
     # CPU: choose a finding-logit bias on a CALIBRATION set (never the set the choice is evaluated on)
-    python -m sentinel.eval.decision_scores calibrate <scores.json> --max-fpr 0.15
+    python -m sentinel.eval.decision_scores calibrate <calibration-scores.json> --max-fpr 0.15 --output <calibration.json>
+    # GPU: generation with that bias, provenance recorded in the artifact
+    python -m sentinel.eval.run_model ... --adapter <checkpoint>/adapter --calibration <calibration.json>
 
 Every detection reply starts with `{"decision": "`, and the next token decides the class: `finding`,
 `no` (no_finding) or `ab` (abstain). Scoring appends that prefix to the evaluation prompt (rendered exactly
@@ -24,7 +26,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import re
 from collections import Counter
 from pathlib import Path
@@ -353,6 +354,52 @@ def refuse_protected_cases(cases: list[dict[str, Any]]) -> None:
         raise ValueError(f"{len(protected)} final-test/holdout cases (first: {protected[:3]}); decision scores are for the development and calibration sets only")
 
 
+CALIBRATION_VERSION = "1"
+
+
+def calibration_document(document: dict[str, Any], max_fpr: float) -> dict[str, Any]:
+    """The finding bias chosen on a calibration score file, with what it was chosen on.
+
+    Only a score file of the training validation split (`cases.kind == "calibration"`) is accepted, so the
+    bias is never chosen on the development set or a test set. `run_model --calibration` applies it to the
+    same model (id, revision, precision, adapter weights) and records this provenance in the run artifact."""
+    if (document.get("cases") or {}).get("kind") != "calibration":
+        raise ValueError("calibrate needs a score file of the calibration set (score --records <workdir>/validation.jsonl), not the development set")
+    rows = document["rows"]
+    chosen = best_bias(rows, max_fpr)
+    model = document["model"]
+    return {
+        "calibration_version": CALIBRATION_VERSION,
+        "max_fpr": max_fpr,
+        "bias": chosen["bias"] if chosen else None,
+        "chosen": chosen,
+        "cross_fitted_estimate": cross_fitted_bias(rows, max_fpr),
+        "model": {
+            "id": model["id"],
+            "revision": model["revision"],
+            "quantization": model["quantization"],
+            "dtype": model["dtype"],
+            "adapter_weights_sha256": (model.get("adapter") or {}).get("adapter_model_sha256"),
+        },
+        "cases": document["cases"],
+    }
+
+
+def check_calibration(document: dict[str, Any], *, model_id: str, revision: str | None, quantization: str, dtype: str, adapter_weights_sha256: str | None) -> float:
+    """The calibrated bias, if `document` was made for exactly this model; otherwise ValueError."""
+    if document.get("calibration_version") != CALIBRATION_VERSION:
+        raise ValueError(f"unknown calibration version {document.get('calibration_version')!r}")
+    if (document.get("cases") or {}).get("kind") != "calibration":
+        raise ValueError("the bias was not chosen on the calibration set")
+    if document.get("bias") is None:
+        raise ValueError("the calibration found no bias within its false-positive ceiling")
+    expected = {"id": model_id, "revision": revision, "quantization": quantization, "dtype": dtype, "adapter_weights_sha256": adapter_weights_sha256}
+    different = sorted(k for k, v in expected.items() if document["model"].get(k) != v)
+    if different:
+        raise ValueError(f"calibration was made for another model setup (differs in {', '.join(different)})")
+    return float(document["bias"])
+
+
 def score_outputs(output: Path, adapters: list[Path | None]) -> list[Path]:
     """Where `score` writes each model's file: `output` itself for one model, `<output>/<run>__step-NNNNNN.json`
     for several adapters. Checked before the model is loaded, so two adapters never overwrite each other."""
@@ -392,6 +439,7 @@ def main(argv: list[str] | None = None) -> int:
     cal = sub.add_parser("calibrate", help="choose a finding bias on a calibration score file (CPU)")
     cal.add_argument("scores", type=Path)
     cal.add_argument("--max-fpr", type=float, default=0.15, help="kept below the selection ceiling (0.20) as a margin")
+    cal.add_argument("--output", type=Path, help="calibration file for run_model --calibration")
     args = parser.parse_args(argv)
 
     if args.command == "score":
@@ -446,12 +494,14 @@ def main(argv: list[str] | None = None) -> int:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(result, indent=1, sort_keys=True) + "\n", encoding="utf-8")
         return 0
-    document = json.loads(args.scores.read_text(encoding="utf-8"))
-    rows = document["rows"]
-    chosen = best_bias(rows, args.max_fpr)
-    estimate = cross_fitted_bias(rows, args.max_fpr)
-    print(json.dumps({"calibration_cases": document["cases"], "max_fpr": args.max_fpr, "chosen": chosen, "cross_fitted_estimate": estimate}, indent=1, sort_keys=True))
-    return 0 if chosen is not None and not math.isnan(chosen["bias"]) else 1
+    calibration = calibration_document(json.loads(args.scores.read_text(encoding="utf-8")), args.max_fpr)
+    calibration["scores"] = {"path": str(args.scores), "sha256": hashlib.sha256(args.scores.read_bytes()).hexdigest()}
+    text = json.dumps(calibration, indent=1, sort_keys=True)
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(text + "\n", encoding="utf-8")
+    print(text)
+    return 0 if calibration["bias"] is not None else 1
 
 
 if __name__ == "__main__":

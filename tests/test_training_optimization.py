@@ -464,3 +464,101 @@ def test_score_outputs_name_each_checkpoint_and_refuse_collisions(tmp_path: Path
     assert [p.name for p in paths] == ["qsa-qlora-ornith15-9b-v6__step-000150.json", "qsa-qlora-ornith15-9b-v6__step-000175.json"]
     with pytest.raises(ValueError, match="same output"):
         ds.score_outputs(tmp_path, [Path(f"{run}/checkpoints/step-000150"), Path(f"{run}/checkpoints/step-000150")])
+
+
+# --- calibrated decoding: the bias is chosen on the training validation split and carried with provenance ---
+
+CALIBRATION = {
+    "path": "runs/eval/calibration/step-000150.json",
+    "sha256": "a" * 64,
+    "calibration_version": "1",
+    "bias": 2.0,
+    "max_fpr": 0.15,
+    "cases": {"path": "artifacts/garden/seed_v6/validation.jsonl", "sha256": "b" * 64, "count": 146, "kind": "calibration"},
+}
+
+
+def _score_document(kind: str) -> dict[str, Any]:
+    rows = []
+    for i in range(20):  # finding scores rise with i; positives are the upper half, with overlap
+        expected = "finding" if i % 2 else "no_finding"
+        rows.append({"case_id": f"c{i}", "expected": expected, "pair_id": f"p{i // 2}", "language": "python", "cwe": None,
+                     "logprob": {"finding": -3.0 + i * 0.2 + (0.8 if expected == "finding" else 0.0), "no_finding": -0.5, "abstain": -6.0}})
+    for row in rows:
+        row["decision"] = ds.with_bias(row, 0.0)
+    model = {"id": "ornith-ai/Ornith-1.5-9B", "revision": "c" * 40, "quantization": "none", "dtype": "bfloat16", "adapter": {"path": "x/adapter", "adapter_model_sha256": "d" * 64}}
+    return {"model": model, "cases": {"path": "v.jsonl", "sha256": "e" * 64, "count": len(rows), "kind": kind}, "rows": rows}
+
+
+def test_calibration_is_chosen_on_the_calibration_set_and_bound_to_its_model() -> None:
+    with pytest.raises(ValueError, match="calibration set"):
+        ds.calibration_document(_score_document("development"), 0.15)
+    document = ds.calibration_document(_score_document("calibration"), 0.15)
+    assert document["bias"] is not None and document["chosen"]["false_positive_rate"] <= 0.15
+    setup = {"model_id": "ornith-ai/Ornith-1.5-9B", "revision": "c" * 40, "quantization": "none", "dtype": "bfloat16", "adapter_weights_sha256": "d" * 64}
+    assert ds.check_calibration(document, **setup) == document["bias"]
+    for key, other in (("adapter_weights_sha256", "f" * 64), ("quantization", "bnb-4bit"), ("revision", "0" * 40)):
+        with pytest.raises(ValueError, match=key.split("_")[0]):
+            ds.check_calibration(document, **{**setup, key: other})
+
+
+def test_run_model_loads_a_calibration_only_for_the_adapter_it_was_made_for(tmp_path: Path) -> None:
+    from sentinel.eval.backends import RuntimeSettings
+    from sentinel.eval.run_model import load_calibration
+
+    adapter = tmp_path / "adapter"
+    adapter.mkdir()
+    (adapter / "adapter_model.safetensors").write_bytes(b"weights")
+    document = ds.calibration_document(_score_document("calibration"), 0.15)
+    document["model"]["adapter_weights_sha256"] = ds.adapter_digest(adapter)
+    path = tmp_path / "calibration.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    provenance, bias = load_calibration(path, "ornith-ai/Ornith-1.5-9B", "c" * 40, RuntimeSettings(), adapter)
+    assert bias == document["bias"] == provenance["bias"] and provenance["cases"]["kind"] == "calibration"
+    (adapter / "adapter_model.safetensors").write_bytes(b"other weights")
+    with pytest.raises(ValueError, match="adapter_weights_sha256"):
+        load_calibration(path, "ornith-ai/Ornith-1.5-9B", "c" * 40, RuntimeSettings(), adapter)
+
+
+def _adapter_artifact(monkeypatch: pytest.MonkeyPatch, step: int, bias: float = 0.0, calibration: dict[str, Any] | None = None) -> dict[str, Any]:
+    from sentinel.eval import runner
+    from sentinel.eval.backends import RuntimeSettings
+    from tests.test_adapter_dtypes import VERIFIED, AdapterBackend
+    from tests.test_model_runner import CASES, PINNED
+
+    monkeypatch.setattr(runner, "git_state", lambda: {"commit": "f" * 40, "dirty": False})
+    backend = AdapterBackend({"foundation_parameter_dtypes": {"bfloat16": 100}, "adapter_verification": {**VERIFIED, "ok": True}})
+    backend.answers, backend.default = {}, '{"decision": "no_finding"}'
+    backend.adapter_info = {**backend.adapter_info, "path": f"runs/train/r/checkpoints/step-{step:06d}/adapter"}
+    generation = GenerationSettings(finding_logit_bias=bias) if bias else GenerationSettings()
+    return runner.run_quickeval(CASES, backend, model_id="Qwen/Qwen3.5-4B", revision=PINNED, generation=generation, runtime=RuntimeSettings(),
+                                cases_path="eval/sentinelbench/quickeval_v1.jsonl", calibration=calibration)
+
+
+def test_a_biased_run_is_reportable_only_with_calibration_provenance(monkeypatch: pytest.MonkeyPatch) -> None:
+    calibrated = _adapter_artifact(monkeypatch, 150, 2.0, CALIBRATION)  # schema-valid with the bias and its provenance
+    assert calibrated["generation"]["finding_logit_bias"] == 2.0 and calibrated["calibration"] == CALIBRATION
+    assert not any("finding_logit_bias" in b for b in calibrated["reportable_blockers"])
+    hand_picked = _adapter_artifact(monkeypatch, 150, 2.0)
+    assert any("finding_logit_bias" in b for b in hand_picked["reportable_blockers"]) and not hand_picked["reportable"]
+    mismatched = _adapter_artifact(monkeypatch, 150, 3.0, CALIBRATION)
+    assert not mismatched["reportable"]
+
+
+def test_selection_accepts_per_checkpoint_calibrated_biases_with_provenance_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.eval.io import case_set_sha256
+    from sentinel.eval.select_checkpoint import Refused, select
+    from tests.test_model_runner import CASES
+
+    devset = {"detection": {"cases_sha256": case_set_sha256(CASES), "count": len(CASES), "by_expected_decision": {}}}
+    greedy = _adapter_artifact(monkeypatch, 150)
+    calibrated = _adapter_artifact(monkeypatch, 150, 2.0, CALIBRATION)
+    other = _adapter_artifact(monkeypatch, 175, -1.5, {**CALIBRATION, "bias": -1.5})
+    result = select(devset, [greedy, calibrated, other])
+    by_label = {r["label"]: r for r in result["runs"]}
+    assert set(by_label) == {"step-000150", "step-000150+calibrated", "step-000175+calibrated"}
+    assert by_label["step-000150+calibrated"]["finding_logit_bias"] == 2.0 and "selected_finding_logit_bias" in result
+    with pytest.raises(Refused, match="no calibration"):
+        select(devset, [greedy, {**calibrated, "calibration": None}])
+    with pytest.raises(Refused, match="generation"):
+        select(devset, [greedy, {**calibrated, "generation": {**calibrated["generation"], "max_new_tokens": 7}}])
