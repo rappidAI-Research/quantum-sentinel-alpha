@@ -559,7 +559,7 @@ def test_selection_accepts_per_checkpoint_calibrated_biases_with_provenance_only
     assert set(by_label) == {"step-000150", "step-000150+calibrated", "step-000175+calibrated"}
     assert by_label["step-000150+calibrated"]["finding_logit_bias"] == 2.0 and "selected_finding_logit_bias" in result
     assert by_label["step-000150+calibrated"]["calibration"] == CALIBRATION["path"] and "selected_calibration" in result
-    with pytest.raises(Refused, match="no calibration"):
+    with pytest.raises(Refused, match="without a matching calibration"):
         select(devset, [greedy, {**calibrated, "calibration": None}])
     with pytest.raises(Refused, match="generation"):
         select(devset, [greedy, {**calibrated, "generation": {**calibrated["generation"], "max_new_tokens": 7}}])
@@ -610,6 +610,47 @@ def test_gpu_pipeline_script_never_scores_or_calibrates_on_test_sets() -> None:
     assert trained == [f"configs/train/qlora_ornith15_9b_v6_to1_{e}.yaml" for e in ("baseline_dense", "decision_w10", "detection_only", "lr5e-5")]
     calibration_sources = [line.split("--records ")[1].split()[0] for line in commands if "--records " in line]
     assert calibration_sources and set(calibration_sources) == {"artifacts/garden/seed_v6/validation.jsonl"}
-    assert any("--quantization bnb-4bit" in line for line in commands) and any("select_checkpoint --rule 2" in line for line in commands)
+    assert any("--quantization bnb-4bit-dq" in line for line in commands) and any("select_checkpoint --rule 2" in line for line in commands)
     for config in trained:
         assert (ROOT / config).is_file()
+
+
+def test_review_round_1_zero_bias_double_quant_and_final_comparison(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A calibrated bias of 0.0 is greedy decoding: screening does not run it twice and selection never confuses it
+    with the greedy run. The NF4 scoring mode is the QLoRA training base. The final-test comparison accepts a
+    calibrated winner against the greedy foundation, and only with provenance."""
+    from sentinel.eval import compare
+    from sentinel.eval.backends import quantization_kwargs
+    from sentinel.eval.io import case_set_sha256
+    from sentinel.eval.select_checkpoint import select
+    from tests.test_model_runner import CASES
+
+    # 1. zero bias
+    dev = _score_document("development")
+    dev["model"]["adapter"]["path"] = "runs/train/r/checkpoints/step-000150/adapter"
+    zero = {**ds.calibration_document(_score_document("calibration"), 0.15), "bias": 0.0}
+    assert "calibrated" not in ds.screen([(Path("d.json"), dev)], [(Path("c.json"), zero)])["checkpoints"][0]
+    greedy = _adapter_artifact(monkeypatch, 150)
+    calibrated_zero = _adapter_artifact(monkeypatch, 150, 0.0, {**CALIBRATION, "bias": 0.0})
+    assert calibrated_zero["reportable"] or not any("finding_logit_bias" in b for b in calibrated_zero["reportable_blockers"])
+    devset = {"detection": {"cases_sha256": case_set_sha256(CASES), "count": len(CASES), "by_expected_decision": {}}}
+    labels = {r["label"] for r in select(devset, [greedy, calibrated_zero])["runs"]}
+    assert labels == {"step-000150", "step-000150+calibrated"}
+
+    # 2. the training base: NF4, double quantization, the config's compute dtype
+    v6 = load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6.yaml")
+    assert v6.quantization.mode == "nf4" and v6.quantization.double_quant is True
+    assert quantization_kwargs("bnb-4bit-dq", v6.quantization.compute_dtype) == {
+        "load_in_4bit": True, "bnb_4bit_quant_type": "nf4", "bnb_4bit_compute_dtype": v6.quantization.compute_dtype, "bnb_4bit_use_double_quant": True,
+    }
+    assert quantization_kwargs("bnb-4bit", "bfloat16")["bnb_4bit_use_double_quant"] is False  # earlier runs unchanged
+
+    # 3. final-test comparison: greedy foundation vs calibrated winner
+    calibrated = _adapter_artifact(monkeypatch, 150, 2.0, CALIBRATION)
+    problems, notes = compare.comparability(greedy, calibrated)
+    assert problems == [] and any("calibrated finding bias" in n for n in notes)
+    hand_picked = {**calibrated, "calibration": None}
+    problems, _ = compare.comparability(greedy, hand_picked)
+    assert any("without a matching calibration" in p for p in problems)
+    other_policy = {**calibrated, "generation": {**calibrated["generation"], "max_new_tokens": 7}}
+    assert any("generation differs" in p for p in compare.comparability(greedy, other_policy)[0])

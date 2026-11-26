@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from sentinel.eval.runner import load_artifact
+from sentinel.eval.runner import calibration_problem, decoding_policy, load_artifact
 
 # (section, label, artifact path, preferred direction) - direction is a reading aid only.
 ROWS: tuple[tuple[str, str, tuple[str, ...], str], ...] = (
@@ -80,16 +80,24 @@ def _get(artifact: dict[str, Any], path: tuple[str, ...]) -> Any:
 
 
 def comparability(a: dict[str, Any], b: dict[str, Any]) -> tuple[list[str], list[str]]:
+    def contract(artifact: dict[str, Any], path: tuple[str, ...]) -> Any:
+        # a calibrated finding bias is part of the evaluated model, not of the contract (checked below)
+        return decoding_policy(artifact["generation"]) if path == ("generation",) else _get(artifact, path)
+
     problems = [
-        f"{'.'.join(path)} differs: {_get(a, path)!r} vs {_get(b, path)!r}"
+        f"{'.'.join(path)} differs: {contract(a, path)!r} vs {contract(b, path)!r}"
         for path in CONTRACT_FIELDS
-        if _get(a, path) != _get(b, path)
+        if contract(a, path) != contract(b, path)
     ]
+    problems += [f"{side}: {problem}" for side, artifact in (("a", a), ("b", b)) if (problem := calibration_problem(artifact))]
     notes = [
         f"runtime.{key} differs: {a['runtime'].get(key)!r} vs {b['runtime'].get(key)!r}"
         for key in RUNTIME_FIELDS
         if a["runtime"].get(key) != b["runtime"].get(key)
     ]
+    bias_a, bias_b = (x["generation"].get("finding_logit_bias", 0.0) for x in (a, b))
+    if bias_a != bias_b:
+        notes.append(f"calibrated finding bias: {bias_a} vs {bias_b} (chosen on the training validation split)")
     coding_a, coding_b = a["coding_regression"], b["coding_regression"]
     if coding_a["status"] != coding_b["status"]:
         problems.append(f"coding_regression.status differs: {coding_a['status']} vs {coding_b['status']}")

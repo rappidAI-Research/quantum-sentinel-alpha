@@ -47,14 +47,31 @@ def git_state() -> dict[str, Any]:
     return {"commit": commit, "dirty": None if status is None else bool(status)}
 
 
+def calibration_problem(artifact: dict[str, Any]) -> str | None:
+    """None for plain greedy decoding, or for a finding bias that comes with matching calibration provenance
+    (chosen on the training validation split, `run_model --calibration`); otherwise what is wrong. A
+    calibration whose bias is 0.0 is valid: it is greedy decoding, recorded as calibrated."""
+    bias = artifact["generation"].get("finding_logit_bias", 0.0)
+    calibration = artifact.get("calibration")
+    if not bias and not calibration:
+        return None
+    if not calibration or calibration.get("bias") != bias or (calibration.get("cases") or {}).get("kind") != "calibration":
+        # a hand-picked bias could have been tuned on the evaluated set itself
+        return f"finding_logit_bias {bias} without a matching calibration on the training validation split"
+    return None
+
+
+def decoding_policy(generation: dict[str, Any]) -> dict[str, Any]:
+    """Generation settings without the calibrated finding bias, which is checked through its provenance."""
+    return {key: value for key, value in generation.items() if key != "finding_logit_bias"}
+
+
 def reportability_blockers(artifact: dict[str, Any], full_case_set: bool) -> list[str]:
     blockers: list[str] = []
     model = artifact["model"]
-    bias = artifact["generation"].get("finding_logit_bias", 0.0)
-    calibration = artifact.get("calibration")
-    if bias and (not calibration or calibration.get("bias") != bias or calibration["cases"].get("kind") != "calibration"):
-        # a hand-picked bias could have been tuned on the evaluated set itself
-        blockers.append("finding_logit_bias without a matching calibration on the training validation split (diagnostic run)")
+    problem = calibration_problem(artifact)
+    if problem:
+        blockers.append(f"{problem} (diagnostic run)")
     if model["backend"] != "hf":
         blockers.append(f"backend {model['backend']!r} is not a real model")
     if not is_immutable_revision(model["revision"]):

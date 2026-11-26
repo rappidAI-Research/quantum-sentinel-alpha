@@ -2,7 +2,7 @@
 
     # GPU: one teacher-forced forward pass per case (no generation); several --adapter share one base model
     python -m sentinel.eval.decision_scores score --model ornith-ai/Ornith-1.5-9B --revision <sha> \\
-        [--adapter <checkpoint>/adapter ...] [--quantization none|bnb-4bit] \\
+        [--adapter <checkpoint>/adapter ...] [--quantization none|bnb-4bit-dq] \\
         (--cases <dev.eval_cases.jsonl> | --records <workdir>/validation.jsonl) --output <scores.json | directory>
     # CPU: compare checkpoints (scores and/or run_model artifacts), pairs, flips, operating points
     python -m sentinel.eval.decision_scores analyze <scores-or-runs...> --cases <dev.eval_cases.jsonl> --output <analysis.json>
@@ -427,7 +427,7 @@ def screen(scores: list[tuple[Path, dict[str, Any]]], calibrations: list[tuple[P
         name = label_of(doc, path)
         modes = {"greedy": (None, None)}
         calibration = by_model.get(_model_key(doc["model"]))
-        if calibration and calibration[1].get("bias") is not None:
+        if calibration and calibration[1].get("bias") not in (None, 0.0):  # a bias of 0.0 decodes exactly as greedy
             modes["calibrated"] = (str(calibration[0]), float(calibration[1]["bias"]))
         entry: dict[str, Any] = {"label": name, "adapter": adapter}
         for mode, (calibration_path, bias) in modes.items():
@@ -473,7 +473,10 @@ def main(argv: list[str] | None = None) -> int:
     source = score.add_mutually_exclusive_group(required=True)
     source.add_argument("--cases", type=Path, help="eval cases (the development set)")
     source.add_argument("--records", type=Path, help="Garden records of the training validation split (calibration set)")
-    score.add_argument("--quantization", default="none", choices=("none", "bnb-4bit"), help="bnb-4bit = the NF4 base the adapter was trained on")
+    score.add_argument(
+        "--quantization", default="none", choices=("none", "bnb-4bit", "bnb-4bit-dq"),
+        help="bnb-4bit-dq = the base the QLoRA adapters were trained on (NF4, double quantization, bf16 compute)",
+    )
     score.add_argument("--dtype", default="bfloat16")
     score.add_argument("--device", default="auto")
     score.add_argument("--output", type=Path, required=True, help="a file for one model, a directory for several adapters")

@@ -119,7 +119,7 @@ H1 and H2 exclude each other. H3–H7 can hold together, which is why each exper
 - the logged loss, gradient norm and clipped steps of every step (with `--log`).
 
 **Decision scores (GPU, one forward pass per case).** `python -m sentinel.eval.decision_scores` has four commands:
-- `score` reads the log-probabilities of the three decision tokens after the reply prefix. Several adapters share one loaded base model, and `--quantization bnb-4bit` scores on the training precision.
+- `score` reads the log-probabilities of the three decision tokens after the reply prefix. Several adapters share one loaded base model, and `--quantization bnb-4bit-dq` scores on the training precision (NF4 with double quantization and bf16 compute, as in the V6 config).
 - `analyze` (CPU) reports per checkpoint the AUC, mean scores, pair outcomes, results per language and vulnerability family, and the flips between consecutive checkpoints.
 - `calibrate` (CPU) chooses a finding bias on the calibration set only.
 - `screen` (CPU) applies a shortlist rule fixed in advance before full generation runs (§ 6).

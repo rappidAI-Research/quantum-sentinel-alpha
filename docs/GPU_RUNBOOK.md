@@ -457,7 +457,7 @@ ADAPTERS="$(for c in $RUN/checkpoints/step-*; do printf -- '--adapter %s/adapter
 python -m sentinel.eval.decision_scores score --model $M --revision $REV $ADAPTERS --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-bf16
 python -m sentinel.eval.decision_scores score --model $M --revision $REV $ADAPTERS --records $CAL --output $TO1/e0/cal-bf16
 python -m sentinel.eval.decision_scores score --model $M --revision $REV --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-bf16/foundation.json
-python -m sentinel.eval.decision_scores score --model $M --revision $REV --quantization bnb-4bit \
+python -m sentinel.eval.decision_scores score --model $M --revision $REV --quantization bnb-4bit-dq \
   $(for s in 125 150 175 200; do printf -- '--adapter %s/checkpoints/step-%06d/adapter ' $RUN $s; done) --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-nf4
 ```
 

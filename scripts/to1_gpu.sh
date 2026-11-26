@@ -175,7 +175,7 @@ e0() {
   for s in 125 150 175 200; do
     nf4+=(--adapter "$(printf '%s/checkpoints/step-%06d/adapter' "$RUN" "$s")")
   done
-  score_dir "$O/dev-nf4" --quantization bnb-4bit "${nf4[@]}" --cases "$DEV/dev.eval_cases.jsonl"
+  score_dir "$O/dev-nf4" --quantization bnb-4bit-dq "${nf4[@]}" --cases "$DEV/dev.eval_cases.jsonl"
 
   local generated=(runs/eval/dev-v6/runs/*.json)
   dry && generated=("runs/eval/dev-v6/runs/*.json")

@@ -18,7 +18,17 @@ from typing import Any, Protocol
 from sentinel.eval.baseline import detect
 from sentinel.hf_revision import RevisionUnverified, reset_cuda_peak_memory, verify_loaded_revision
 
-QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit")
+# bnb-4bit-dq: NF4 with double quantization and the compute dtype, i.e. the base QLoRA adapters are trained on
+QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit", "bnb-4bit-dq")
+
+
+def quantization_kwargs(mode: str, dtype: Any) -> dict[str, Any]:
+    """BitsAndBytesConfig arguments of a quantization mode ({} for none)."""
+    if mode == "none":
+        return {}
+    if mode in ("bnb-4bit", "bnb-4bit-dq"):
+        return {"load_in_4bit": True, "bnb_4bit_quant_type": "nf4", "bnb_4bit_compute_dtype": dtype, "bnb_4bit_use_double_quant": mode == "bnb-4bit-dq"}
+    return {"load_in_8bit": True}
 DTYPES = ("bfloat16", "float16", "float32")
 MIN_TRANSFORMERS = "5.12"  # keep in sync with the [model] extra in pyproject.toml
 # The chat template ends an assistant turn with this token. The pinned foundations ship no
@@ -318,12 +328,7 @@ class HFBackend:
         if self.runtime.quantization != "none":
             from transformers import BitsAndBytesConfig
 
-            if self.runtime.quantization == "bnb-4bit":
-                kwargs["quantization_config"] = BitsAndBytesConfig(
-                    load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=dtype
-                )
-            else:
-                kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
+            kwargs["quantization_config"] = BitsAndBytesConfig(**quantization_kwargs(self.runtime.quantization, dtype))
         if self._cuda():
             reset_cuda_peak_memory(torch)  # initializes CUDA and each device's allocator before resetting
 

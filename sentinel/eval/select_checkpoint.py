@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from sentinel.eval.runner import load_artifact
+from sentinel.eval.runner import calibration_problem, decoding_policy, load_artifact
 
 SELECTION_RULE_VERSION = "2"
 # Rule v1 (Garden v3/v4/v5 runs): decision accuracy alone among valid runs. Rule v2 (fixed on 2026-11-25,
@@ -88,9 +88,7 @@ _RUN = re.compile(r"runs/train/([^/]+)/")
 def _comparable(value: Any, path: tuple[str, ...]) -> Any:
     """Generation settings must match, except the calibrated finding bias (Training Optimization v1): it is
     chosen per checkpoint on the training validation split, so each checkpoint may carry its own."""
-    if path == ("generation",) and isinstance(value, dict):
-        return {k: v for k, v in value.items() if k != "finding_logit_bias"}
-    return value
+    return decoding_policy(value) if path == ("generation",) and isinstance(value, dict) else value
 
 
 def label(artifact: dict[str, Any]) -> tuple[str, int | None]:
@@ -156,13 +154,9 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 "holdout and QuickEval runs never enter checkpoint selection"
             )
     for artifact in artifacts:
-        bias = artifact["generation"].get("finding_logit_bias", 0.0)
-        calibration = artifact.get("calibration") or {}
-        if bias and (calibration.get("bias") != bias or (calibration.get("cases") or {}).get("kind") != "calibration"):
-            raise Refused(
-                f"{label(artifact)[0]}: finding_logit_bias {bias} has no calibration on the training validation split "
-                "(run_model --calibration); a bias chosen elsewhere never enters checkpoint selection"
-            )
+        problem = calibration_problem(artifact)
+        if problem:
+            raise Refused(f"{label(artifact)[0]}: {problem} (run_model --calibration); a bias chosen elsewhere never enters checkpoint selection")
     reference = artifacts[0]
     for artifact in artifacts[1:]:
         for path in SHARED:
@@ -177,7 +171,7 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         if several and name != "foundation":
             name = f"{training_run(artifact)}/{name}"
         bias = artifact["generation"].get("finding_logit_bias", 0.0)
-        if bias:
+        if artifact.get("calibration"):  # also with a calibrated bias of 0.0, so it never collides with the greedy run
             name = f"{name}+calibrated"
         if name in seen:
             raise Refused(f"two runs for {name}")
