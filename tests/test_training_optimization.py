@@ -710,3 +710,16 @@ def test_review_round_2_every_adapter_is_checked_before_and_after_it_is_swapped_
     assert model.calls == [("load", "adapter1"), ("set", "adapter1"), ("delete", "default")]
     with pytest.raises(RuntimeError, match="do not match"):
         ds.swap_adapter(PeftModel({next(iter(lora)): [16, 64]}), good, "adapter1", "default")  # a tensor missing
+
+
+def test_review_round_3_forced_decision_tokens_count_toward_the_reply_budget() -> None:
+    import types
+
+    from sentinel.eval.backends import HFBackend
+
+    backend = HFBackend.__new__(HFBackend)
+    backend.generation = GenerationSettings(max_new_tokens=100, finding_logit_bias=2.0)
+    backend._generation_config = types.SimpleNamespace(max_new_tokens=100, do_sample=False)
+    assert backend._budget_after([]) is backend._generation_config
+    continuation = backend._budget_after(list(range(7)))  # 6 prefix tokens + the decision token
+    assert continuation.max_new_tokens == 93 and backend._generation_config.max_new_tokens == 100

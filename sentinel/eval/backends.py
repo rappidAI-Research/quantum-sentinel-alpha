@@ -385,8 +385,11 @@ class HFBackend:
                 prefix = torch.tensor([forced], device=self._model.device, dtype=inputs["input_ids"].dtype)
                 inputs = {"input_ids": torch.cat([inputs["input_ids"], prefix], dim=1)}
                 inputs["attention_mask"] = torch.ones_like(inputs["input_ids"])
-        with torch.inference_mode():
-            output = self._model.generate(**inputs, generation_config=self._generation_config)
+        if forced and len(forced) >= self.generation.max_new_tokens:  # the forced prefix uses the whole budget
+            output = inputs["input_ids"][:, : prompt_tokens + self.generation.max_new_tokens]
+        else:
+            with torch.inference_mode():
+                output = self._model.generate(**inputs, generation_config=self._budget_after(forced))
         new_tokens = output[0, prompt_tokens:]
         if self._cuda() and torch.cuda.is_available():
             torch.cuda.synchronize()
@@ -398,6 +401,15 @@ class HFBackend:
             # The template opened a reasoning block; restore the tag so the parser can strip it.
             text = "<think>" + text
         return GenerationResult(text=text, generated_tokens=int(new_tokens.shape[0]), prompt_tokens=prompt_tokens)
+
+    def _budget_after(self, forced: list[int]) -> Any:
+        """The generation config for the continuation after `forced` reply tokens. They are reply tokens, so they
+        count toward max_new_tokens: a calibrated run gets exactly the budget of a greedy run."""
+        if not forced:
+            return self._generation_config
+        config = copy.deepcopy(self._generation_config)
+        config.max_new_tokens = self.generation.max_new_tokens - len(forced)
+        return config
 
     def _biased_decision_prefix(self, prompt_ids: Any) -> list[int]:
         """`{"decision": "` plus the decision token chosen with the finding bias, when greedy decoding would
