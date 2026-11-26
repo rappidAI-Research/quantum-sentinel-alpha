@@ -155,3 +155,19 @@ Result (verified):
 - 233,463 supervised tokens per epoch (of 2.56 M); 0 examples dropped at 4,096 tokens.
 - `python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6.yaml --dry-run --check-tokens` passes.
 - Holdout, temporal-quarantine, development, external-benchmark and tool-test-negative records stay excluded or pending.
+
+## Decision of 2026-11-26 (Training Optimization v1)
+
+Decided by Jonas Cikemgil (project owner): "Ja ich gebe alles frei. Mache alles auch Nummer 1. Alles was die Qualität steigert", for the decisions listed in PR #21 (`docs/TRAINING_OPTIMIZATION_V1.md`). The AI engineering assistant prepared the entries; it is not a reviewer.
+
+1. **Calibrated candidates in checkpoint selection** (calibration and screening protocol v1, `docs/TRAINING_OPTIMIZATION_V1.md` § 6): admitted. Rule v2's thresholds are unchanged. A bias is chosen only on the training validation split, and only with recorded provenance.
+2. **GPU experiments E0–E4** (`docs/GPU_RUNBOOK.md` § 16): approved.
+   - E0 needs no training.
+   - E1–E4 are each a fresh adapter on the pinned foundation, on the Garden v6 training data authorized on 2026-11-25. No new data.
+   - The final test runs once, after selection over all runs.
+3. **Merging PR #21** once the review is clean and CI is green.
+
+**Not covered:**
+- **New training data.** The two heuristic negative kinds wait for the independent human review. Copyleft repositories need a written basis each, which a blanket approval does not state. Unlicensed repositories cannot be approved.
+- **Publication of adapter weights.**
+

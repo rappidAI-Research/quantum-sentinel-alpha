@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import math
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -17,7 +18,19 @@ from typing import Any, Protocol
 from sentinel.eval.baseline import detect
 from sentinel.hf_revision import RevisionUnverified, reset_cuda_peak_memory, verify_loaded_revision
 
-QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit")
+# Calibrated decoding: the largest finding bias generation accepts (and calibration may choose).
+MAX_FINDING_LOGIT_BIAS = 20.0
+# bnb-4bit-dq: NF4 with double quantization and the compute dtype, i.e. the base QLoRA adapters are trained on
+QUANTIZATION_MODES = ("none", "bnb-8bit", "bnb-4bit", "bnb-4bit-dq")
+
+
+def quantization_kwargs(mode: str, dtype: Any) -> dict[str, Any]:
+    """BitsAndBytesConfig arguments of a quantization mode ({} for none)."""
+    if mode == "none":
+        return {}
+    if mode in ("bnb-4bit", "bnb-4bit-dq"):
+        return {"load_in_4bit": True, "bnb_4bit_quant_type": "nf4", "bnb_4bit_compute_dtype": dtype, "bnb_4bit_use_double_quant": mode == "bnb-4bit-dq"}
+    return {"load_in_8bit": True}
 DTYPES = ("bfloat16", "float16", "float32")
 MIN_TRANSFORMERS = "5.12"  # keep in sync with the [model] extra in pyproject.toml
 # The chat template ends an assistant turn with this token. The pinned foundations ship no
@@ -59,15 +72,27 @@ class GenerationSettings:
     top_k: int | None = None
     enable_thinking: bool = False
     seed: int = 0
+    # Training Optimization v1: added to the log-probability of the `finding` decision token before the
+    # decision is taken (the rest of the reply is generated as usual). 0.0 = plain greedy decoding. A non-zero
+    # bias is part of the evaluated model and must be chosen on the training validation split, never on the
+    # development set it is selected on or on a final test (sentinel.eval.decision_scores calibrate).
+    finding_logit_bias: float = 0.0
 
     def __post_init__(self) -> None:
         if self.max_new_tokens < 1:
             raise ValueError("max_new_tokens must be positive")
         if not self.do_sample and any(v is not None for v in (self.temperature, self.top_p, self.top_k)):
             raise ValueError("temperature/top_p/top_k require do_sample=true")
+        if not math.isfinite(self.finding_logit_bias) or abs(self.finding_logit_bias) > MAX_FINDING_LOGIT_BIAS:
+            raise ValueError(f"finding_logit_bias must be finite and within [-{MAX_FINDING_LOGIT_BIAS}, {MAX_FINDING_LOGIT_BIAS}]")
+        if self.finding_logit_bias != 0.0 and self.do_sample:
+            raise ValueError("finding_logit_bias is defined for greedy decoding only")
 
     def as_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        settings = asdict(self)
+        if settings["finding_logit_bias"] == 0.0:
+            del settings["finding_logit_bias"]  # plain decoding keeps the generation record of every earlier run
+        return settings
 
 
 @dataclass(frozen=True)
@@ -305,12 +330,7 @@ class HFBackend:
         if self.runtime.quantization != "none":
             from transformers import BitsAndBytesConfig
 
-            if self.runtime.quantization == "bnb-4bit":
-                kwargs["quantization_config"] = BitsAndBytesConfig(
-                    load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=dtype
-                )
-            else:
-                kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
+            kwargs["quantization_config"] = BitsAndBytesConfig(**quantization_kwargs(self.runtime.quantization, dtype))
         if self._cuda():
             reset_cuda_peak_memory(torch)  # initializes CUDA and each device's allocator before resetting
 
@@ -360,8 +380,18 @@ class HFBackend:
         rendered = self._tokenizer.apply_chat_template(messages, tokenize=False, **template_kwargs)
         inputs = self._tokenizer(rendered, return_tensors="pt", add_special_tokens=False).to(self._model.device)
         prompt_tokens = int(inputs["input_ids"].shape[1])
-        with torch.inference_mode():
-            output = self._model.generate(**inputs, generation_config=self._generation_config)
+        forced: list[int] = []
+        if self.generation.finding_logit_bias != 0.0:
+            forced = self._biased_decision_prefix(inputs["input_ids"])
+            if forced:
+                prefix = torch.tensor([forced], device=self._model.device, dtype=inputs["input_ids"].dtype)
+                inputs = {"input_ids": torch.cat([inputs["input_ids"], prefix], dim=1)}
+                inputs["attention_mask"] = torch.ones_like(inputs["input_ids"])
+        if forced and len(forced) >= self.generation.max_new_tokens:  # the forced prefix uses the whole budget
+            output = inputs["input_ids"][:, : prompt_tokens + self.generation.max_new_tokens]
+        else:
+            with torch.inference_mode():
+                output = self._model.generate(**inputs, generation_config=self._budget_after(forced))
         new_tokens = output[0, prompt_tokens:]
         if self._cuda() and torch.cuda.is_available():
             torch.cuda.synchronize()
@@ -373,6 +403,35 @@ class HFBackend:
             # The template opened a reasoning block; restore the tag so the parser can strip it.
             text = "<think>" + text
         return GenerationResult(text=text, generated_tokens=int(new_tokens.shape[0]), prompt_tokens=prompt_tokens)
+
+    def _budget_after(self, forced: list[int]) -> Any:
+        """The generation config for the continuation after `forced` reply tokens. They are reply tokens, so they
+        count toward max_new_tokens: a calibrated run gets exactly the budget of a greedy run."""
+        if not forced:
+            return self._generation_config
+        config = copy.deepcopy(self._generation_config)
+        config.max_new_tokens = self.generation.max_new_tokens - len(forced)
+        return config
+
+    def _biased_decision_prefix(self, prompt_ids: Any) -> list[int]:
+        """`{"decision": "` plus the decision token chosen with the finding bias, when greedy decoding would
+        start the reply with that prefix and a decision token; otherwise [] (the reply is generated unchanged)."""
+        import torch
+
+        from sentinel.eval.decision_scores import decision_token_ids
+        from sentinel.train.data import DECISION_PREFIX
+
+        prefix = list(self._tokenizer(DECISION_PREFIX, add_special_tokens=False)["input_ids"])
+        ids = decision_token_ids(self._tokenizer)
+        tail = torch.tensor([prefix], device=self._model.device, dtype=prompt_ids.dtype)
+        with torch.inference_mode():
+            logits = self._model(input_ids=torch.cat([prompt_ids, tail], dim=1)).logits[0].float()
+        start = int(prompt_ids.shape[1]) - 1
+        if logits[start : start + len(prefix)].argmax(dim=-1).tolist() != prefix or int(logits[-1].argmax()) not in ids.values():
+            return []
+        logprobs = torch.log_softmax(logits[-1], dim=-1)
+        scores = {d: float(logprobs[i]) + (self.generation.finding_logit_bias if d == "finding" else 0.0) for d, i in ids.items()}
+        return prefix + [ids[max(scores, key=lambda d: scores[d])]]
 
     def describe(self) -> dict[str, Any]:
         import torch

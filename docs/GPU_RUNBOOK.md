@@ -412,3 +412,146 @@ aws s3 cp ~/qsa-v6-results-$STAMP.tgz s3://<private-bucket>/qsa/v6/ && aws s3 cp
 ```
 
 The adapters stay private (no publication of weights). Verify both archives against the checksum file on the destination before terminating the instance (§ 11); `runs/` is Git-ignored and nothing from it is committed.
+
+## 16. Training Optimization v1: decision diagnostics, calibration, controlled runs (**GPU**)
+
+Analysis, hypotheses and the fixed calibration and screening protocol: `docs/TRAINING_OPTIMIZATION_V1.md`. Same instance and storage as § 15. **Approved by the owner on 2026-11-26** (`docs/TRAINING_AUTHORIZATION.md`): E0–E4 and calibrated candidates. Order: E0 (no training) and its report; then E1–E4, one after another; then selection over all runs; the final test last and once. Never score `final_test` or the reserved holdout with `decision_scores`, and never choose a bias, checkpoint or setting on them.
+
+**One command.** `scripts/to1_gpu.sh all` runs steps 0–8 below in order, under `nohup` or `tmux`. Its stages are `check`, `e0`, `train`, `evaluate <experiment>`, `select` and `final`.
+- A rerun skips finished outputs and resumes an interrupted training run from its last checkpoint.
+- The final test runs once (`runs/eval/to1-final.done`).
+- `DRY_RUN=1 scripts/to1_gpu.sh all` prints every command without running it.
+
+The step-by-step commands follow.
+
+```bash
+cd ~/quantum-sentinel-alpha && . .venv/bin/activate && DRY_RUN=1 scripts/to1_gpu.sh all 2>&1 | less
+nohup scripts/to1_gpu.sh all > runs/to1.log 2>&1 &
+tail -f runs/to1.log
+```
+
+**0. Variables, code, the V6 run's identity.**
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && git log --oneline -1 && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+REV=489cb97981b8654bcfcf30ce1f94ed1b62e07b53; M=ornith-ai/Ornith-1.5-9B; DEV=artifacts/garden/seed_v6/development
+CAL=artifacts/garden/seed_v6/validation.jsonl; RUN=runs/train/qsa-qlora-ornith15-9b-v6; V0=runs/train/qsa-qlora-ornith15-9b-v0; TO1=runs/eval/to1
+python -c "import json; r=json.load(open('$RUN/run.json')); print(r['data']['sha256'], r['config']['sha256'])"
+```
+
+The two hashes must be `51ab4c9d…` (data) and `f9a0edf6…` (config). Otherwise the order reconstruction below describes other data: stop and report.
+
+**1. E0, CPU part: order, schedule, tokens and every logged step of the V6 run.**
+
+```bash
+TOK=$(python -c "from huggingface_hub import snapshot_download as s; print(s('$M', revision='$REV', allow_patterns=['*.json', '*.txt', '*.jinja']))")
+python -m sentinel.train.diagnostics --config configs/train/qlora_ornith15_9b_v6.yaml --tokenizer-dir $TOK --log runs/train-v6.log --window 126-175 --output $TO1/e0/diagnostics.json
+```
+
+The output reports clipped steps and the loss and gradient norm of steps 126–175. `run.json` alone keeps only the last 50 steps.
+
+**2. E0, decision scores (GPU, one forward pass per case, several adapters per base load).** All V6 checkpoints and the first run's `step-000200` on the development set and the calibration set (the training validation split), then the foundation, then NF4 for four checkpoints:
+
+```bash
+ADAPTERS="$(for c in $RUN/checkpoints/step-*; do printf -- '--adapter %s/adapter ' $c; done) --adapter $V0/checkpoints/step-000200/adapter"
+python -m sentinel.eval.decision_scores score --model $M --revision $REV $ADAPTERS --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-bf16
+python -m sentinel.eval.decision_scores score --model $M --revision $REV $ADAPTERS --records $CAL --output $TO1/e0/cal-bf16
+python -m sentinel.eval.decision_scores score --model $M --revision $REV --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-bf16/foundation.json
+python -m sentinel.eval.decision_scores score --model $M --revision $REV --quantization bnb-4bit-dq \
+  $(for s in 125 150 175 200; do printf -- '--adapter %s/checkpoints/step-%06d/adapter ' $RUN $s; done) --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/dev-nf4
+```
+
+Each line reports `generation-equivalent`: the share of cases whose teacher-forced decision is the one greedy generation makes. It should be close to 1.
+
+**3. E0, analysis (CPU).** AUC, mean finding score, pair outcomes, flips between consecutive checkpoints, per language and vulnerability family:
+
+```bash
+python -m sentinel.eval.decision_scores analyze $TO1/e0/dev-bf16/*.json --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/analysis-bf16.json
+python -m sentinel.eval.decision_scores analyze $TO1/e0/dev-nf4/*.json --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/analysis-nf4.json
+python -m sentinel.eval.decision_scores analyze runs/eval/dev-v6/runs/*.json --cases $DEV/dev.eval_cases.jsonl --output $TO1/e0/analysis-generated.json
+```
+
+Read H1/H2 from `analysis-bf16.json`:
+- the AUC of steps 150, 175 and 200;
+- the 150 → 175 flips, their direction and how many pairs flip together.
+
+Read H3 by comparing the same steps in `analysis-nf4.json`.
+
+**4. E0, calibration on the validation split, screening, calibrated generation runs.**
+
+```bash
+mkdir -p $TO1/e0/calibration $TO1/e0/runs
+for f in $TO1/e0/cal-bf16/*.json; do
+  python -m sentinel.eval.decision_scores calibrate $f --max-fpr 0.15 --output $TO1/e0/calibration/$(basename $f) > /dev/null || echo "no bias within FPR 0.15: $f"
+done
+python -m sentinel.eval.decision_scores screen $TO1/e0/dev-bf16/*.json --calibrations $TO1/e0/calibration/*.json --output $TO1/e0/screen.json > $TO1/e0/shortlist.tsv
+cat $TO1/e0/shortlist.tsv
+while IFS=$'\t' read -r mode adapter cal label; do
+  [ "$mode" = calibrated ] || continue  # the greedy V6 runs exist already (§ 15)
+  python -m sentinel.eval.run_model --model $M --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter $adapter --calibration $cal \
+    --output $TO1/e0/runs/${label//\//__}-calibrated.json < /dev/null
+done < $TO1/e0/shortlist.tsv
+python -m sentinel.eval.select_checkpoint --rule 2 --devset $DEV/manifest.json runs/eval/dev-v6/runs/*.json $TO1/e0/runs/*.json --output $TO1/e0/selection.json
+```
+
+`select_checkpoint` accepts a calibrated run only with its calibration provenance, and rule v2 is unchanged. **Write the E0 report** using the decision rules in § 7 of the analysis document, then continue with step 5. Even if a calibrated V6 checkpoint is eligible, do not run the final test yet.
+
+**5. E1–E4 training** (approved; one run at a time; fresh LoRA, never `init_adapter`). Dry runs first, then all four configs in sequence:
+
+```bash
+for E in baseline_dense decision_w10 detection_only lr5e-5; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml --dry-run --check-tokens || break; done
+nohup sh -c 'for E in baseline_dense decision_w10 detection_only lr5e-5; do python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml > runs/train-to1-$E.log 2>&1 || exit 1; done' > /dev/null 2>&1 &
+tail -f runs/train-to1-baseline_dense.log
+```
+
+Every evaluation line now carries `validation.decision` (accuracy, recall, FPR, finding rate, mean margins) and `validation.loss_by_task`. The four runs take about 11–12 hours in total.
+
+**6. Each training run: scores, calibration, screening, generation runs** (repeat with `E=baseline_dense`, `decision_w10`, `detection_only`, `lr5e-5`).
+
+```bash
+E=decision_w10; R=runs/train/qsa-qlora-ornith15-9b-v6-to1-$E; O=$TO1/$E; mkdir -p $O/calibration $O/runs
+A=$(for c in $R/checkpoints/step-*; do printf -- '--adapter %s/adapter ' $c; done)
+python -m sentinel.eval.decision_scores score --model $M --revision $REV $A --cases $DEV/dev.eval_cases.jsonl --output $O/dev-bf16
+python -m sentinel.eval.decision_scores score --model $M --revision $REV $A --records $CAL --output $O/cal-bf16
+for f in $O/cal-bf16/*.json; do python -m sentinel.eval.decision_scores calibrate $f --output $O/calibration/$(basename $f) > /dev/null || echo "no bias: $f"; done
+python -m sentinel.eval.decision_scores analyze $O/dev-bf16/*.json --cases $DEV/dev.eval_cases.jsonl --output $O/analysis.json
+python -m sentinel.eval.decision_scores screen $O/dev-bf16/*.json --calibrations $O/calibration/*.json --output $O/screen.json > $O/shortlist.tsv
+while IFS=$'\t' read -r mode adapter cal label; do
+  python -m sentinel.eval.run_model --model $M --revision $REV --cases $DEV/dev.eval_cases.jsonl --adapter $adapter \
+    $([ "$mode" = calibrated ] && echo --calibration $cal) --output $O/runs/${label//\//__}-$mode.json < /dev/null
+done < $O/shortlist.tsv
+python -m sentinel.train.diagnostics --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml --log runs/train-to1-$E.log --window 150-200 --output $O/diagnostics.json
+```
+
+For `baseline_dense` (E1), the swing's position relative to the epoch boundary (after step 173) is in `analysis.json` (flips between consecutive checkpoints) and in the training log's `validation.decision`. E2–E4 are compared with E1, not with V6.
+
+**7. Selection over all runs** (rule v2, unchanged):
+
+```bash
+python -m sentinel.eval.select_checkpoint --rule 2 --devset $DEV/manifest.json runs/eval/dev-v6/runs/*.json $TO1/*/runs/*.json --output $TO1/selection.json
+```
+
+**8. Final test, once, after selection over all runs (approved on 2026-11-26).** The selected checkpoint is run with its calibration file, if it has one:
+
+```bash
+SEL=$(python -c "import json; print(json.load(open('$TO1/selection.json'))['selected_adapter'])")
+SELCAL=$(python -c "import json; print(json.load(open('$TO1/selection.json'))['selected_calibration'] or '')")
+for SET in final_test holdout_reserved; do
+  python -m sentinel.eval.run_model --model $M --revision $REV --cases artifacts/garden/seed_v6/$SET.eval_cases.jsonl --output runs/eval/$SET-to1/foundation.json
+  python -m sentinel.eval.run_model --model $M --revision $REV --cases artifacts/garden/seed_v6/$SET.eval_cases.jsonl --adapter $SEL ${SELCAL:+--calibration $SELCAL} --output runs/eval/$SET-to1/selected.json
+  python -m sentinel.eval.compare runs/eval/$SET-to1/foundation.json runs/eval/$SET-to1/selected.json
+done
+```
+
+**9. Backup before terminating the instance** (§ 11): scores, analyses, calibrations, run artifacts and adapters. Never case files, foundation weights or Garden exports with code.
+
+```bash
+STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+tar czf ~/qsa-to1-results-$STAMP.tgz $TO1 runs/eval/final_test-to1 runs/eval/holdout_reserved-to1 runs/train-to1-*.log \
+  runs/train/qsa-qlora-ornith15-9b-v6-to1-*/run.json runs/train/qsa-qlora-ornith15-9b-v6-to1-*/checkpoints/*/provenance.json runs/train/qsa-qlora-ornith15-9b-v6-to1-*/checkpoints/*/checksums.json 2>/dev/null
+tar czf ~/qsa-to1-adapters-$STAMP.tgz runs/train/qsa-qlora-ornith15-9b-v6-to1-*/checkpoints/*/adapter runs/train/qsa-qlora-ornith15-9b-v6-to1-*/adapter 2>/dev/null
+sha256sum ~/qsa-to1-*-$STAMP.tgz > ~/qsa-to1-$STAMP.SHA256SUMS
+aws s3 cp ~/qsa-to1-results-$STAMP.tgz s3://<private-bucket>/qsa/to1/ && aws s3 cp ~/qsa-to1-adapters-$STAMP.tgz s3://<private-bucket>/qsa/to1/ && aws s3 cp ~/qsa-to1-$STAMP.SHA256SUMS s3://<private-bucket>/qsa/to1/
+```
+
+Score files contain no code: they hold case ids, labels and log-probabilities. The adapters stay private, and nothing from `runs/` is committed.

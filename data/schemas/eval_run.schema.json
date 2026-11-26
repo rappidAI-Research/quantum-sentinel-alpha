@@ -261,6 +261,12 @@
         },
         "seed": {
           "type": "integer"
+        },
+        "finding_logit_bias": {
+          "description": "Calibrated decoding (Training Optimization v1): added to the finding decision token's logit; absent when 0.",
+          "type": "number",
+          "minimum": -20,
+          "maximum": 20
         }
       }
     },
@@ -486,6 +492,67 @@
           },
           "prompt_tokens": {
             "$ref": "#/$defs/nullable_count"
+          }
+        }
+      }
+    },
+    "calibration": {
+      "description": "Where the finding_logit_bias was chosen (sentinel.eval.decision_scores calibrate): the training validation split, never the evaluated set.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "calibration_version",
+        "bias",
+        "max_fpr",
+        "cases"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "calibration_version": {
+          "type": "string"
+        },
+        "bias": {
+          "type": "number",
+          "minimum": -20,
+          "maximum": 20
+        },
+        "max_fpr": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256",
+            "count",
+            "kind"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "kind": {
+              "const": "calibration"
+            }
           }
         }
       }

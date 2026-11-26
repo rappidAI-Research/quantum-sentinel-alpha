@@ -1,12 +1,38 @@
 # Quantum Sentinel Alpha Status
 
-Last updated: 2026-11-25
+Last updated: 2026-11-26
 
 ## Current phase
 
 Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (PR #13) and the **Ornith-1.5-9B foundation integration** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,464 training-approved records from 533 repositories, i.e. 1,871 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained. The training foundation is now **`ornith-ai/Ornith-1.5-9B@489cb97…`** (docs/FOUNDATION.md), integrated and checked offline against its real files; the GPU procedure is docs/GPU_RUNBOOK.md.
 
 ## Completed
+
+### Training Optimization v1: root cause analysis and controlled experiments (2026-11-26, PR open, nothing trained)
+
+`docs/TRAINING_OPTIMIZATION_V1.md`, `docs/GPU_RUNBOOK.md` § 16.
+- **V6 result (reported):** no checkpoint eligible under rule v2. Step 150 flags 97 of 212 cases (recall 0.575, FPR 0.323), step 175 flags 16 (0.124 / 0.020), and validation loss improves by 0.003 in between.
+- **Audit:** order, shuffling, accumulation, loss normalization, masking, schedule, prompt/template, labels and checkpoint files were all verified; none explains the swing. Steps 151–175 have a normal class mix.
+- **Verified limitations:**
+  - The validation loss is blind to decisions: 0.78 % of its tokens are decision tokens and 65 % are patch tokens.
+  - The decision is 0.87 % of the supervised training tokens.
+  - Checkpoints every 25 steps cannot locate the swing; the epoch boundary after step 173 also falls between 150 and 175.
+  - There was no way to move the decision threshold.
+  - Training ran on an NF4 base and evaluation on bf16; the effect is unmeasured.
+- **Added:**
+  - order/token/log diagnostics;
+  - decision scores (AUC, pairs, flips) with screening;
+  - calibrated decoding with provenance (bias chosen on the training validation split only);
+  - optional decision-token and patch-task weights (default = the V6 loss exactly);
+  - validation decision metrics during training;
+  - four one-variable experiment configs.
+- **Owner decision (2026-11-26):** calibrated candidates in selection, the GPU experiments E0–E4 and the merge are approved (`docs/TRAINING_AUTHORIZATION.md`).
+- **Next (on the GPU machine, `docs/GPU_RUNBOOK.md` § 16):**
+  1. E0: no training, about 1.5–3 GPU hours.
+  2. E1–E4: dense control, decision weight 10, detection only, LR 5e-5.
+  3. Selection over all runs and the final test, once.
+
+  All of it is about 20–25 GPU hours. Leading hypothesis: the decision threshold moved while the ranking was preserved. E0 tests it.
 
 ### Sentinel Garden v6: sources beyond GHSA/OSV (2026-11-25)
 

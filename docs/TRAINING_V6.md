@@ -33,3 +33,5 @@ The projections encode the hypothetical training sets of `data/garden/seed_v6/co
 4. External benchmarks are scored separately and never mixed with these function-level results.
 
 The first run's `step-000200` and the foundation are evaluated on the same sets as references. GPU commands, integrity checks and backup: `docs/GPU_RUNBOOK.md` § 15 (AWS EC2 `g6e.xlarge`, NVIDIA L40S 48 GB).
+
+**After the run (2026-11-26).** No V6 checkpoint met rule v2. The analysis of the swing between steps 150 and 175 and the controlled follow-up experiments are in `docs/TRAINING_OPTIMIZATION_V1.md`. This config stays unchanged as the reference.

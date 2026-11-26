@@ -6,7 +6,9 @@
 Only runs on the development set are accepted: every detection artifact must have been evaluated on
 exactly the case set in the devset manifest (`cases.sha256`), so a holdout or QuickEval run is refused
 and can never influence the choice. All runs must share model, revision, prompt, parser, scorer and
-generation settings. The foundation run (no adapter) is shown as the reference; it is not a candidate.
+generation settings, except a calibrated finding bias (`run_model --calibration`, chosen per checkpoint on the
+training validation split; a bias without that provenance is refused). The foundation run (no adapter) is
+shown as the reference; it is not a candidate.
 
 The rule was fixed before any development result existed (SELECTION_RULE). Patch results are shown
 for information and do not enter the rule. Exit codes: 0 a checkpoint was selected, 1 no eligible
@@ -22,7 +24,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from sentinel.eval.runner import load_artifact
+from sentinel.eval.runner import calibration_problem, decoding_policy, load_artifact
 
 SELECTION_RULE_VERSION = "2"
 # Rule v1 (Garden v3/v4/v5 runs): decision accuracy alone among valid runs. Rule v2 (fixed on 2026-11-25,
@@ -81,6 +83,12 @@ def _get(document: dict[str, Any], path: tuple[str, ...]) -> Any:
 
 
 _RUN = re.compile(r"runs/train/([^/]+)/")
+
+
+def _comparable(value: Any, path: tuple[str, ...]) -> Any:
+    """Generation settings must match, except the calibrated finding bias (Training Optimization v1): it is
+    chosen per checkpoint on the training validation split, so each checkpoint may carry its own."""
+    return decoding_policy(value) if path == ("generation",) and isinstance(value, dict) else value
 
 
 def label(artifact: dict[str, Any]) -> tuple[str, int | None]:
@@ -145,10 +153,14 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
                 f"{artifact['cases']['path']} is not the development set (cases sha256 {artifact['cases']['sha256'][:12]}); "
                 "holdout and QuickEval runs never enter checkpoint selection"
             )
+    for artifact in artifacts:
+        problem = calibration_problem(artifact)
+        if problem:
+            raise Refused(f"{label(artifact)[0]}: {problem} (run_model --calibration); a bias chosen elsewhere never enters checkpoint selection")
     reference = artifacts[0]
     for artifact in artifacts[1:]:
         for path in SHARED:
-            if _get(artifact, path) != _get(reference, path):
+            if _comparable(_get(artifact, path), path) != _comparable(_get(reference, path), path):
                 raise Refused(f"runs differ in {'.'.join(path)}; compare only runs of one model with one contract")
     runs = []
     seen: set[str] = set()
@@ -158,22 +170,29 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         name, step = label(artifact)
         if several and name != "foundation":
             name = f"{training_run(artifact)}/{name}"
+        bias = artifact["generation"].get("finding_logit_bias", 0.0)
+        if artifact.get("calibration"):  # also with a calibrated bias of 0.0, so it never collides with the greedy run
+            name = f"{name}+calibrated"
         if name in seen:
             raise Refused(f"two runs for {name}")
         seen.add(name)
         metrics = artifact["metrics"]
         failed = _eligible(metrics, rule)
-        eligible = name != "foundation" and artifact["reportable"] and not failed
+        # the foundation (no adapter) is the reference, never a candidate, also when calibrated
+        is_adapter = bool(artifact["model"].get("adapter"))
+        eligible = is_adapter and artifact["reportable"] and not failed
         runs.append(
             {
                 "label": name,
                 "run": training_run(artifact),
                 "step": step,
                 "adapter": (artifact["model"].get("adapter") or {}).get("path"),
+                "finding_logit_bias": bias,
+                "calibration": (artifact.get("calibration") or {}).get("path"),
                 "reportable": artifact["reportable"],
                 "reportable_blockers": artifact["reportable_blockers"],
                 "eligible": eligible,
-                "failed_conditions": failed if name != "foundation" else [],
+                "failed_conditions": failed if is_adapter else [],
                 "metrics": {key: metrics[key] for _, key in COLUMNS},
                 "counts": {key: metrics[key] for key in ("true_positive", "false_positive", "false_negative", "true_negative", "negative_cases", "positive_cases", "abstain_cases")},
                 **false_positive_analysis(artifact, language or {}),
@@ -189,11 +208,11 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
 
     selected = min(candidates, key=key) if candidates else None
     # the final weights of the selected checkpoint's run: its final adapter, else its latest checkpoint
-    adapters = [r for r in runs if r["label"] != "foundation" and (selected is None or r["run"] == selected["run"])]
+    adapters = [r for r in runs if r["adapter"] and (selected is None or r["run"] == selected["run"])]
     final = next((r for r in adapters if r["step"] is None), None) or (
         max(adapters, key=lambda r: r["step"]) if adapters else None
     )
-    foundation = next((r for r in runs if r["label"] == "foundation"), None)
+    foundation = next((r for r in runs if not r["adapter"] and not r["finding_logit_bias"]), None) or next((r for r in runs if not r["adapter"]), None)
     comparison = None
     if selected and final and selected is not final:
         a, b = selected["_correct"], final["_correct"]
@@ -212,6 +231,9 @@ def select(devset: dict[str, Any], artifacts: list[dict[str, Any]], language: di
         "runs": runs,
         "selected": selected["label"] if selected else None,
         "selected_adapter": selected["adapter"] if selected else None,
+        # calibrated decoding: the final test must be run with this same bias (run_model --calibration)
+        "selected_finding_logit_bias": selected["finding_logit_bias"] if selected else None,
+        "selected_calibration": selected["calibration"] if selected else None,
         "selected_beats_foundation_decision_accuracy": (
             selected["metrics"]["decision_accuracy"] > foundation["metrics"]["decision_accuracy"] if selected and foundation else None
         ),
@@ -254,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     except Refused as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 2
-    runs = sorted(result["runs"], key=lambda r: (r["label"] != "foundation", r["run"] or "", r["step"] if r["step"] is not None else float("inf")))
+    runs = sorted(result["runs"], key=lambda r: (bool(r["adapter"]), r["run"] or "", r["step"] if r["step"] is not None else float("inf")))
     print(f"development set: {result['devset']['count']} cases {result['devset']['by_expected_decision']}")
     print("run".ljust(14) + "".join(title.rjust(15) for title, _ in COLUMNS) + "  FP/negatives  eligible")
     for run in runs:
@@ -268,7 +290,8 @@ def main(argv: list[str] | None = None) -> int:
     for row in result["patch"]:
         print(f"patch {row['label']}: " + ", ".join(f"{k} {_fmt(v)}" for k, v in row.items() if k != "label"))
     print(f"rule v{result['selection_rule_version']}: {result['selection_rule']}")
-    print(f"selected: {result['selected']} ({result['selected_adapter']})")
+    bias = result["selected_finding_logit_bias"]
+    print(f"selected: {result['selected']} ({result['selected_adapter']})" + (f", calibrated finding bias {bias}" if bias else ""))
     if result["discordant_cases_vs_final"]:
         print(f"case-level vs final adapter: {result['discordant_cases_vs_final']}")
     if args.output:
