@@ -8,6 +8,8 @@
     python -m sentinel.eval.decision_scores analyze <scores-or-runs...> --cases <dev.eval_cases.jsonl> --output <analysis.json>
     # CPU: choose a finding-logit bias on a CALIBRATION set (never the set the choice is evaluated on)
     python -m sentinel.eval.decision_scores calibrate <calibration-scores.json> --max-fpr 0.15 --output <calibration.json>
+    # CPU: shortlist checkpoints (greedy and calibrated) for full generation runs on the development set
+    python -m sentinel.eval.decision_scores screen <dev-scores...> --calibrations <calibration...> --output <screen.json>
     # GPU: generation with that bias, provenance recorded in the artifact
     python -m sentinel.eval.run_model ... --adapter <checkpoint>/adapter --calibration <calibration.json>
 
@@ -400,6 +402,50 @@ def check_calibration(document: dict[str, Any], *, model_id: str, revision: str 
     return float(document["bias"])
 
 
+# Screening (fixed on 2026-11-26, before any Training Optimization v1 result): which checkpoints are worth a
+# full generation run on the development set. A 3-point tolerance around selection rule v2 (recall >= 0.30,
+# FPR <= 0.20) absorbs the small differences between teacher-forced decisions and generation. Screening
+# never selects: rule v2 is applied to run_model artifacts only.
+SCREEN_RULE = {"min_recall": 0.27, "max_false_positive_rate": 0.23, "max_per_run": 8}
+
+
+def _model_key(model: dict[str, Any]) -> tuple[Any, ...]:
+    adapter = model.get("adapter") or {}
+    digest = adapter.get("adapter_model_sha256", model.get("adapter_weights_sha256"))
+    return (model.get("id"), model.get("revision"), model.get("quantization"), model.get("dtype"), digest)
+
+
+def screen(scores: list[tuple[Path, dict[str, Any]]], calibrations: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any]:
+    """Teacher-forced development-set decisions of every checkpoint, greedy and with its calibrated bias (from
+    the calibration file made for the same model setup), and the shortlist for run_model under SCREEN_RULE."""
+    by_model = {_model_key(doc["model"]): (path, doc) for path, doc in calibrations}
+    checkpoints, candidates = [], []
+    for path, doc in scores:
+        if (doc.get("cases") or {}).get("kind") != "development":
+            raise ValueError(f"{path}: screening uses development-set score files only")
+        adapter = (doc["model"].get("adapter") or {}).get("path")
+        name = label_of(doc, path)
+        modes = {"greedy": (None, None)}
+        calibration = by_model.get(_model_key(doc["model"]))
+        if calibration and calibration[1].get("bias") is not None:
+            modes["calibrated"] = (str(calibration[0]), float(calibration[1]["bias"]))
+        entry: dict[str, Any] = {"label": name, "adapter": adapter}
+        for mode, (calibration_path, bias) in modes.items():
+            rows = [{**r, "screened": with_bias(r, bias) if bias is not None else r["decision"]} for r in doc["rows"]]
+            m = decision_metrics(rows, key="screened")
+            entry[mode] = {"bias": bias, **{k: m[k] for k in ("recall", "false_positive_rate", "precision", "decision_accuracy")}}
+            passes = adapter is not None and (m["recall"] or 0.0) >= SCREEN_RULE["min_recall"] and (m["false_positive_rate"] or 0.0) <= SCREEN_RULE["max_false_positive_rate"]
+            entry[mode]["passes"] = passes
+            if passes:
+                candidates.append({"label": name, "run": name.split("/")[0] if "/" in name else "", "mode": mode, "adapter": adapter, "calibration": calibration_path, **entry[mode]})
+        checkpoints.append(entry)
+    shortlist = []
+    for run in sorted({c["run"] for c in candidates}):
+        ranked = sorted((c for c in candidates if c["run"] == run), key=lambda c: (-(c["decision_accuracy"] or 0.0), c["false_positive_rate"], c["label"], c["mode"]))
+        shortlist += ranked[: SCREEN_RULE["max_per_run"]]
+    return {"screen_rule": SCREEN_RULE, "checkpoints": checkpoints, "shortlist": shortlist}
+
+
 def score_outputs(output: Path, adapters: list[Path | None]) -> list[Path]:
     """Where `score` writes each model's file: `output` itself for one model, `<output>/<run>__step-NNNNNN.json`
     for several adapters. Checked before the model is loaded, so two adapters never overwrite each other."""
@@ -440,8 +486,20 @@ def main(argv: list[str] | None = None) -> int:
     cal.add_argument("scores", type=Path)
     cal.add_argument("--max-fpr", type=float, default=0.15, help="kept below the selection ceiling (0.20) as a margin")
     cal.add_argument("--output", type=Path, help="calibration file for run_model --calibration")
+    scr = sub.add_parser("screen", help="shortlist checkpoints for run_model (CPU); prints one line per run to make")
+    scr.add_argument("scores", nargs="+", type=Path, help="development-set score files")
+    scr.add_argument("--calibrations", nargs="*", type=Path, default=[], help="calibration files (decision_scores calibrate --output)")
+    scr.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
 
+    if args.command == "screen":
+        load = lambda paths: [(p, json.loads(p.read_text(encoding="utf-8"))) for p in paths]  # noqa: E731
+        result = screen(load(args.scores), load(args.calibrations))
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(result, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        for c in result["shortlist"]:  # mode, adapter, calibration file ("-" for greedy), label
+            print(f"{c['mode']}\t{c['adapter']}\t{c['calibration'] or '-'}\t{c['label']}")
+        return 0
     if args.command == "score":
         from sentinel.eval.backends import GenerationSettings, HFBackend, RuntimeSettings
 

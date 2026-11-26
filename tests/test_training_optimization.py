@@ -562,3 +562,29 @@ def test_selection_accepts_per_checkpoint_calibrated_biases_with_provenance_only
         select(devset, [greedy, {**calibrated, "calibration": None}])
     with pytest.raises(Refused, match="generation"):
         select(devset, [greedy, {**calibrated, "generation": {**calibrated["generation"], "max_new_tokens": 7}}])
+
+
+def test_screen_shortlists_greedy_and_calibrated_checkpoints_by_the_fixed_rule() -> None:
+    dev = _score_document("development")
+    dev["model"]["adapter"]["path"] = "runs/train/r/checkpoints/step-000150/adapter"
+    calibration = ds.calibration_document(_score_document("calibration"), 0.15)
+    result = ds.screen([(Path("dev/r__step-000150.json"), dev)], [(Path("cal/r__step-000150.json"), calibration)])
+    entry = result["checkpoints"][0]
+    assert entry["label"] == "r/step-000150" and entry["calibrated"]["bias"] == calibration["bias"]
+    for c in result["shortlist"]:
+        assert c["recall"] >= ds.SCREEN_RULE["min_recall"] and c["false_positive_rate"] <= ds.SCREEN_RULE["max_false_positive_rate"]
+        assert (c["mode"] == "calibrated") == (c["calibration"] is not None)
+    other = {**calibration, "model": {**calibration["model"], "adapter_weights_sha256": "0" * 64}}
+    assert "calibrated" not in ds.screen([(Path("d.json"), dev)], [(Path("c.json"), other)])["checkpoints"][0]
+    with pytest.raises(ValueError, match="development"):
+        ds.screen([(Path("c.json"), _score_document("calibration"))], [])
+
+
+def test_diagnostics_read_every_step_from_the_training_log() -> None:
+    from sentinel.train.diagnostics import run_from_log, run_history
+
+    lines = ["loading model", *(json.dumps({"step": s, "epoch": 0, "loss": 0.5, "learning_rate": 1e-4, "grad_norm": 1.5 if s == 150 else 0.4}) for s in range(1, 201))]
+    lines.append(json.dumps({"step": 150, "validation_loss": 0.39678}))
+    history = run_history(run_from_log("\n".join(lines)), 126, 175, 1.0)
+    assert history["logged_steps"] == 50 and history["clipped_steps"] == 1
+    assert history["validation_loss"] == [{"step": 150, "validation_loss": 0.39678}]

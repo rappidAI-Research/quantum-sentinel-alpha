@@ -1,7 +1,7 @@
 """Deterministic training diagnostics (CPU only, no model weights).
 
     python -m sentinel.train.diagnostics --config configs/train/qlora_ornith15_9b_v6.yaml \\
-        [--tokenizer-dir DIR] [--run runs/train/<run>/run.json] [--window 126-175] --output report.json
+        [--tokenizer-dir DIR] [--log runs/train-v6.log | --run runs/train/<run>/run.json] [--window 126-175] --output report.json
 
 Reproduces what a training run saw, from the same governance-checked data and the trainer's own
 ordering (`sentinel.train.data.batches`, accumulation windows aligned to each epoch's start):
@@ -10,7 +10,8 @@ ordering (`sentinel.train.data.batches`, accumulation windows aligned to each ep
 - the learning rate of every step (the trainer's cosine schedule with warmup);
 - with `--tokenizer-dir`: how many supervised tokens each class contributes, where the decision token
   is, and how much of the training objective and of the validation loss it carries;
-- with `--run`: the logged loss, gradient norm and validation loss next to the reconstruction.
+- with `--log` (every step) or `--run` (run.json: last 50 steps): the logged loss, gradient norm, clipped
+  steps and validation results next to the reconstruction.
 
 Nothing here trains, loads weights or reads an evaluation set.
 """
@@ -139,7 +140,25 @@ def run_history(run: dict[str, Any], first: int, last: int, max_grad_norm: float
     }
 
 
-def report(config_path: Path, window: tuple[int, int], tokenizer_dir: Path | None = None, run_path: Path | None = None) -> dict[str, Any]:
+def run_from_log(text: str) -> dict[str, Any]:
+    """The trainer's stdout log (one JSON object per optimizer step and per evaluation) as a run.json-shaped
+    dict: unlike run.json, which keeps the last 50 steps, the log has every step."""
+    history, evaluations = [], []
+    for line in text.splitlines():
+        if not line.startswith("{"):
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if "grad_norm" in entry:
+            history.append(entry)
+        elif "validation_loss" in entry:
+            evaluations.append(entry)
+    return {"state": {"history": history, "evaluations": evaluations}}
+
+
+def report(config_path: Path, window: tuple[int, int], tokenizer_dir: Path | None = None, run_path: Path | None = None, log_path: Path | None = None) -> dict[str, Any]:
     config = load_train_config(config_path)
     data = load_training_data(PROJECT_ROOT / config.data.garden_config, tasks=tuple(config.data.tasks))
     classes = {(e.get("task", "detection"), e["record_id"]): example_class(e) for e in data.train}
@@ -179,7 +198,9 @@ def report(config_path: Path, window: tuple[int, int], tokenizer_dir: Path | Non
             result["warning"] = f"{len(dropped)} train examples exceed max_seq_len; the reconstruction above includes them"
         validation_encoded, _ = encode_all(tokenizer, data.validation, config.data.max_seq_len, config.data.end_of_turn)
         result["tokens"] = {"train": token_report(tokenizer, data.train, train_encoded), "validation": token_report(tokenizer, data.validation, validation_encoded)}
-    if run_path is not None:
+    if log_path is not None:
+        result["run"] = run_history(run_from_log(log_path.read_text(encoding="utf-8")), first, last, t.max_grad_norm)
+    elif run_path is not None:
         result["run"] = run_history(json.loads(run_path.read_text(encoding="utf-8")), first, last, t.max_grad_norm)
     return result
 
@@ -189,11 +210,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--window", default="126-175", help="optimizer steps to inspect, e.g. 126-175")
     parser.add_argument("--tokenizer-dir", type=Path, help="local copy of the pinned tokenizer files (token statistics)")
-    parser.add_argument("--run", type=Path, help="the run's run.json (logged loss and gradient norms)")
+    parser.add_argument("--run", type=Path, help="the run's run.json (last 50 steps' loss and gradient norms, all evaluations)")
+    parser.add_argument("--log", type=Path, help="the trainer's stdout log, e.g. runs/train-v6.log (every step; preferred over --run)")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     first, _, last = args.window.partition("-")
-    result = report(args.config, (int(first), int(last)), args.tokenizer_dir, args.run)
+    result = report(args.config, (int(first), int(last)), args.tokenizer_dir, args.run, args.log)
     text = json.dumps(result, indent=1, sort_keys=True)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -202,6 +224,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"{s['total_steps']} steps, {s['steps_per_epoch']} per epoch (boundary after {s['epoch_boundaries_after_steps']}), last window {s['last_window_of_epoch_micro_batches']} micro-batches")
     for row in result["windows"] + [result["focus_window"]]:
         print(f"steps {row['steps']:>9} epochs {row['epochs']}: " + ", ".join(f"{c} {row['share'][c]:.0%}" for c in CLASSES))
+    if "run" in result:
+        r = result["run"]
+        print(f"logged steps in window: {r['logged_steps']}, clipped (grad_norm > max_grad_norm): {r['clipped_steps']}")
     if "tokens" in result:
         tr = result["tokens"]["train"]
         print(f"decision token: {tr['decision_token_share_of_supervised_tokens']:.2%} of supervised train tokens, mean weight {tr['decision_token_mean_weight_in_its_example']:.2%} inside its example")
