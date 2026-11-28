@@ -1109,3 +1109,23 @@ def test_plateau_metrics_average_the_second_epoch_and_keep_averages_apart() -> N
     plateau = ds.plateau(result)
     assert plateau["r"] == {"from_step": 180, "checkpoints": 2, "mean_auc": 0.72, "mean_discriminated_pairs": 12.0, "mean_changed_decisions_from_step_100": 4.0}
     assert plateau["r/averaged"]["mean_auc"] == 0.8 and "foundation" not in plateau
+
+
+def test_diagnostics_report_a_step_cap_shorter_than_one_epoch(tmp_path: Path) -> None:
+    import yaml
+
+    from sentinel.train import diagnostics
+
+    for name in ("qlora_ornith15_9b_v6_to1_decision_w10.yaml", "qlora_ornith15_9b_v6_to2_pair_rank.yaml"):
+        document = yaml.safe_load((ROOT / "configs/train" / name).read_text())
+        document["training"]["max_steps"] = 1
+        path = ROOT / "configs/train" / f"_capped_{tmp_path.name}.yaml"  # load_train_config resolves paths from the repository
+        path.write_text(yaml.safe_dump(document))
+        try:
+            if not (ROOT / "artifacts/garden/seed_v6/train.jsonl").is_file():
+                pytest.skip("Garden v6 work directory not materialized")
+            result = diagnostics.report(path, (1, 1))
+        finally:
+            path.unlink()
+        schedule = result["schedule"]
+        assert schedule["total_steps"] == 1 and schedule["steps_per_epoch"] in (170, 173) and schedule["last_window_of_epoch_examples"] > 0
