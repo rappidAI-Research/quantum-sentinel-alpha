@@ -1129,3 +1129,29 @@ def test_diagnostics_report_a_step_cap_shorter_than_one_epoch(tmp_path: Path) ->
             path.unlink()
         schedule = result["schedule"]
         assert schedule["total_steps"] == 1 and schedule["steps_per_epoch"] in (170, 173) and schedule["last_window_of_epoch_examples"] > 0
+
+
+def test_an_interrupted_average_leaves_nothing_that_looks_finished(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    torch = pytest.importorskip("torch")
+    safetensors_torch = pytest.importorskip("safetensors.torch")
+    from sentinel.train.average import average
+
+    run = tmp_path / "runs" / "train" / "r"
+    names = ("base_model.model.q.lora_A.weight", "base_model.model.q.lora_B.weight")
+    for step in (10, 20):
+        _write_checkpoint(run, step, {names[0]: torch.ones(2, 6), names[1]: torch.ones(5, 2)})
+    original = safetensors_torch.save_file
+
+    def fail(*args: Any, **kwargs: Any) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(safetensors_torch, "save_file", fail)
+    with pytest.raises(OSError):
+        average(run, 20, 2)
+    target = run / "averaged" / "avg2-step-000020"
+    assert not target.exists()  # only the temporary directory, never a partial adapter under the final name
+    monkeypatch.setattr(safetensors_torch, "save_file", original)
+    adapter = average(run, 20, 2)  # the rerun replaces the leftover and completes
+    assert adapter == target / "adapter" and (target / "checksums.json").is_file() and not target.with_name(target.name + ".tmp").exists()
+    with pytest.raises(FileExistsError):
+        average(run, 20, 2)

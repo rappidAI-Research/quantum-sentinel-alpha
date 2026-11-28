@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -116,11 +117,18 @@ def average(run: Path, end_step: int, window: int, every: int = 10, output: Path
     config = averaged_config(configs)
     tensors = average_tensors([load_file(str(p / "adapter" / "adapter_model.safetensors")) for p in paths])
     target = output or run / "averaged" / f"avg{window}-step-{end_step:06d}"
-    adapter = target / "adapter"
-    adapter.mkdir(parents=True, exist_ok=False)
+    if target.exists():
+        raise FileExistsError(f"{target} already exists")
+    # written completely under a temporary name, then renamed (as trainer.save_checkpoint does): an interrupted
+    # run leaves only `<name>.tmp`, which the next run replaces, never a partial adapter that looks finished
+    tmp = target.with_name(target.name + ".tmp")
+    if tmp.exists():
+        shutil.rmtree(tmp)
+    adapter = tmp / "adapter"
+    adapter.mkdir(parents=True)
     save_file(tensors, str(adapter / "adapter_model.safetensors"), metadata={"format": "pt"})
     (adapter / "adapter_config.json").write_text(json.dumps(config, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (target / "averaging.json").write_text(
+    (tmp / "averaging.json").write_text(
         json.dumps(
             {
                 "averaging_version": AVERAGING_VERSION,
@@ -138,9 +146,10 @@ def average(run: Path, end_step: int, window: int, every: int = 10, output: Path
         + "\n",
         encoding="utf-8",
     )
-    checksums = {name: _sha256(target / name) for name in ("adapter/adapter_model.safetensors", "adapter/adapter_config.json")}
-    (target / "checksums.json").write_text(json.dumps(checksums, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return adapter
+    checksums = {name: _sha256(tmp / name) for name in ("adapter/adapter_model.safetensors", "adapter/adapter_config.json")}
+    (tmp / "checksums.json").write_text(json.dumps(checksums, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp.rename(target)
+    return target / "adapter"
 
 
 def main(argv: list[str] | None = None) -> int:
