@@ -1085,3 +1085,27 @@ def test_v2_gpu_script_keeps_test_sets_out_and_runs_one_experiment_at_a_time() -
     # v1's script still prints exactly its own sequence (it is sourced by v2, not changed in behaviour)
     v1 = subprocess.run(["bash", str(ROOT / "scripts/to1_gpu.sh"), "all"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"}, capture_output=True, text=True, timeout=60, check=True)
     assert "qlora_ornith15_9b_v6_to1_decision_w10.yaml" in v1.stderr and "to2" not in v1.stderr
+
+
+def test_plateau_metrics_average_the_second_epoch_and_keep_averages_apart() -> None:
+    def checkpoint(label: str, auc: float, discriminated: int) -> dict[str, Any]:
+        return {"label": label, "scores": {"auc_finding_vs_no_finding": auc}, "pairs": {"discriminated": discriminated}}
+
+    result = {
+        "checkpoints": [
+            checkpoint("foundation", 0.6, 1),
+            checkpoint("r/step-000170", 0.50, 0),   # before the plateau
+            checkpoint("r/step-000180", 0.70, 10),
+            checkpoint("r/step-000190", 0.74, 14),
+            checkpoint("r/avg5-step-000200", 0.80, 20),
+        ],
+        "flips_between_consecutive": [
+            {"from": "r/step-000090", "to": "r/step-000100", "changed": 50},  # before step 100: not counted
+            {"from": "r/step-000170", "to": "r/step-000180", "changed": 6},
+            {"from": "r/step-000180", "to": "r/step-000190", "changed": 2},
+            {"from": "r/avg5-step-000200", "to": "r/step-000180", "changed": 9},  # across groups: not counted
+        ],
+    }
+    plateau = ds.plateau(result)
+    assert plateau["r"] == {"from_step": 180, "checkpoints": 2, "mean_auc": 0.72, "mean_discriminated_pairs": 12.0, "mean_changed_decisions_from_step_100": 4.0}
+    assert plateau["r/averaged"]["mean_auc"] == 0.8 and "foundation" not in plateau

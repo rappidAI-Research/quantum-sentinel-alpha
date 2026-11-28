@@ -345,6 +345,48 @@ def true_positive_quality(document: dict[str, Any], cases: dict[str, dict[str, A
     return dict(counts)
 
 
+# Pre-registered on 2026-11-28 (docs/TRAINING_OPTIMIZATION_V2.md § 6): compare training settings over the
+# second epoch's plateau, not by one picked checkpoint.
+PLATEAU_FROM_STEP = 180
+SWING_FROM_STEP = 100
+
+
+def plateau(result: dict[str, Any]) -> dict[str, Any]:
+    """Per training run (and separately for its checkpoint averages): the mean ROC-AUC and the mean number of
+    discriminated pairs over checkpoints from PLATEAU_FROM_STEP on, and the mean number of changed decisions
+    between consecutive checkpoints from SWING_FROM_STEP on (the v2 decision metrics)."""
+    def group(label: str) -> tuple[str, int] | None:
+        match = re.search(r"^(?:(.*)/)?((?:avg\d+-)?)step-(\d{6})$", label)
+        return ((match.group(1) or "") + ("/averaged" if match.group(2) else ""), int(match.group(3))) if match else None
+
+    runs: dict[str, dict[str, list[float]]] = {}
+    for checkpoint in result["checkpoints"]:
+        key = group(checkpoint["label"])
+        if key is None or key[1] < PLATEAU_FROM_STEP:
+            continue
+        values = runs.setdefault(key[0], {"auc": [], "pairs": []})
+        auc = (checkpoint.get("scores") or {}).get("auc_finding_vs_no_finding")
+        if auc is not None:
+            values["auc"].append(auc)
+        values["pairs"].append(checkpoint["pairs"]["discriminated"])
+    swings: dict[str, list[int]] = {}
+    for flip in result["flips_between_consecutive"]:
+        before, after = group(flip["from"]), group(flip["to"])
+        if before and after and before[0] == after[0] and before[1] >= SWING_FROM_STEP:
+            swings.setdefault(after[0], []).append(flip["changed"])
+    mean = lambda xs: round(sum(xs) / len(xs), 4) if xs else None  # noqa: E731
+    return {
+        run: {
+            "from_step": PLATEAU_FROM_STEP,
+            "checkpoints": len(values["pairs"]),
+            "mean_auc": mean(values["auc"]),
+            "mean_discriminated_pairs": mean(values["pairs"]),
+            "mean_changed_decisions_from_step_100": mean(swings.get(run, [])),
+        }
+        for run, values in sorted(runs.items())
+    }
+
+
 def analyze(paths: list[Path], cases: list[dict[str, Any]], max_fpr: float = 0.20) -> dict[str, Any]:
     by_id = {c["case_id"]: c for c in cases}
     series = []
@@ -370,6 +412,7 @@ def analyze(paths: list[Path], cases: list[dict[str, Any]], max_fpr: float = 0.2
     ordered = [s for s in series if s["label"] != "foundation"]
     for before, after in zip(ordered, ordered[1:]):
         result["flips_between_consecutive"].append({"from": before["label"], "to": after["label"], **flips(before["rows"], after["rows"])})
+    result["plateau"] = plateau(result)
     return result
 
 
@@ -636,6 +679,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{c['label']:<32} recall {g['recall']}  FPR {g['false_positive_rate']}  AUC {auc}  pairs disc/both+/both-/inv {p['discriminated']}/{p['both_flagged']}/{p['both_missed']}/{p['inverted']}")
         for f in result["flips_between_consecutive"]:
             print(f"{f['from']} -> {f['to']}: {f['changed']} changed, {f['pairs_flipping_together']} pairs together; {f['by_direction']}")
+        for run, values in result["plateau"].items():
+            print(f"plateau {run or '(no run name)'}: {values}")
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(result, indent=1, sort_keys=True) + "\n", encoding="utf-8")
