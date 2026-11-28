@@ -891,6 +891,7 @@ def test_v2_experiment_configs_change_one_variable_against_e2() -> None:
     expected = {
         "qlora_ornith15_9b_v6_to2_pair_rank.yaml": {"objective.pair_rank_weight"},
         "qlora_ornith15_9b_v6_to2_lr5e-5.yaml": {"training.learning_rate"},
+        "qlora_ornith15_9b_v6_to2_pair_rank_lr5e-5.yaml": {"objective.pair_rank_weight", "training.learning_rate"},  # F3: F1 + F2, conditional
     }
     for name, variables in expected.items():
         document = yaml.safe_load((ROOT / "configs/train" / name).read_text())
@@ -1055,3 +1056,32 @@ def test_supervision_audit_measures_shortcuts_targets_and_conflicts(tmp_path: Pa
     assert result["supervision"]["development"]["context_names_code_defined_elsewhere"] == 1.0
     assert result["cwe_coverage"]["development"]["never_trained"] == 0
     assert result["label_conflicts"] == {"within_a_set": 0, "across_sets": 1, "development_code_also_in_train": 1}
+
+
+def test_v2_gpu_script_keeps_test_sets_out_and_runs_one_experiment_at_a_time() -> None:
+    import shutil
+    import subprocess
+
+    if shutil.which("bash") is None:
+        pytest.skip("bash not available")
+
+    def dry(*stage: str) -> list[str]:
+        result = subprocess.run(["bash", str(ROOT / "scripts/to2_gpu.sh"), *stage], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"},
+                                capture_output=True, text=True, timeout=60, check=True)
+        return [line for line in result.stderr.splitlines() if line.startswith("+ ")]
+
+    f0 = dry("f0")
+    for line in f0:
+        assert "final_test" not in line and "holdout" not in line, line
+    assert any("--quantization bnb-4bit-dq" in line for line in f0)  # E2 on its training precision
+    assert [line.split("--end-step ")[1].split()[0] for line in f0 if "sentinel.train.average" in line] == ["200", "250", "300", "346"]
+    assert any("select_checkpoint --rule 2" in line for line in f0) and not any("sentinel.train --config" in line for line in f0)
+    trained = [line for line in dry("train", "pair_rank") if "sentinel.train --config" in line]
+    assert trained and all("qlora_ornith15_9b_v6_to2_pair_rank.yaml" in line for line in trained)
+    for line in dry("evaluate", "lr5e-5") + dry("select"):
+        assert "final_test" not in line and "holdout" not in line, line
+    assert subprocess.run(["bash", str(ROOT / "scripts/to2_gpu.sh"), "train", "everything"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"},
+                          capture_output=True, text=True, timeout=60).returncode == 2
+    # v1's script still prints exactly its own sequence (it is sourced by v2, not changed in behaviour)
+    v1 = subprocess.run(["bash", str(ROOT / "scripts/to1_gpu.sh"), "all"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"}, capture_output=True, text=True, timeout=60, check=True)
+    assert "qlora_ornith15_9b_v6_to1_decision_w10.yaml" in v1.stderr and "to2" not in v1.stderr

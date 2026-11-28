@@ -555,12 +555,21 @@ def main(argv: list[str] | None = None) -> int:
     cal.add_argument("scores", type=Path)
     cal.add_argument("--max-fpr", type=float, default=0.15, help="kept below the selection ceiling (0.20) as a margin")
     cal.add_argument("--output", type=Path, help="calibration file for run_model --calibration")
+    exp = sub.add_parser("cases", help="write the calibration set (training validation split) as eval cases, for analyze (CPU)")
+    exp.add_argument("--records", type=Path, required=True, help="<workdir>/validation.jsonl")
+    exp.add_argument("--output", type=Path, required=True)
     scr = sub.add_parser("screen", help="shortlist checkpoints for run_model (CPU); prints one line per run to make")
     scr.add_argument("scores", nargs="+", type=Path, help="development-set score files")
     scr.add_argument("--calibrations", nargs="*", type=Path, default=[], help="calibration files (decision_scores calibrate --output)")
     scr.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
 
+    if args.command == "cases":
+        cases = calibration_cases(_read_jsonl(args.records))
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text("".join(json.dumps(c, sort_keys=True) + "\n" for c in cases), encoding="utf-8")
+        print(f"{args.output}: {len(cases)} calibration cases")
+        return 0
     if args.command == "screen":
         load = lambda paths: [(p, json.loads(p.read_text(encoding="utf-8"))) for p in paths]  # noqa: E731
         result = screen(load(args.scores), load(args.calibrations))
