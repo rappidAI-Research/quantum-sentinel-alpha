@@ -26,11 +26,22 @@ from sentinel.eval.patch import PATCH_PROMPT_VERSION
 from sentinel.eval.prompt import PROMPT_VERSION
 from sentinel.hf_revision import reset_cuda_peak_memory
 from sentinel.train.config import PROJECT_ROOT, ObjectiveSettings, TrainConfig, matching_modules
-from sentinel.train.data import IGNORE_INDEX, EncodedExample, TrainingData, batches, encode_all, pad_batch
+from sentinel.train.data import (
+    IGNORE_INDEX,
+    EncodedExample,
+    TrainingData,
+    batches,
+    encode_all,
+    example_windows,
+    pad_batch,
+    pair_batches,
+    with_pairs,
+)
 
 # 2: checksummed checkpoints loaded with weights_only, window-mean loss, task mix recorded
 # 3: validation reports loss per task and decision metrics; optional decision-token / task loss weights
-RUN_VERSION = "3"
+# 4: validation reports pair ranking; optional pairwise ranking objective (steps counted in examples)
+RUN_VERSION = "4"
 DECISIONS = ("finding", "no_finding", "abstain")
 EXIT_FAILED = 1
 EXIT_GOVERNANCE = 2
@@ -411,6 +422,45 @@ def objective_loss(model: Any, inputs: dict[str, Any], batch: list[EncodedExampl
     return torch.stack(weighted).mean()
 
 
+def decision_margin(logits: Any, row: int, example: EncodedExample, decision_ids: dict[str, int]) -> Any:
+    """s = logit(finding) - logit(no) at the decision position of a detection example (teacher-forced)."""
+    position = example.decision_index - 1  # the token at input position i is predicted by the logits at i - 1
+    return logits[row, position, decision_ids["finding"]].float() - logits[row, position, decision_ids["no_finding"]].float()
+
+
+def pair_rank_loss(logits: Any, batch: list[EncodedExample], decision_ids: dict[str, int]) -> Any:
+    """softplus(-(s_vulnerable - s_fixed)) for a micro-batch [finding, no_finding] of one vulnerable/fixed pair:
+    it rewards ranking the vulnerable half above its own fix, whatever the global threshold."""
+    import torch.nn.functional as F
+
+    vulnerable, fixed = batch
+    if vulnerable.decision != "finding" or fixed.decision != "no_finding" or not vulnerable.pair_id or vulnerable.pair_id != fixed.pair_id:
+        raise ValueError(f"not a vulnerable/fixed pair micro-batch: {[(e.record_id, e.decision, e.pair_id) for e in batch]}")
+    return F.softplus(-(decision_margin(logits, 0, vulnerable, decision_ids) - decision_margin(logits, 1, fixed, decision_ids)))
+
+
+def pair_objective_loss(model: Any, inputs: dict[str, Any], batch: list[EncodedExample], objective: ObjectiveSettings, decision_ids: dict[str, int]) -> Any:
+    """Training Optimization v2: the SUM over the micro-batch's examples of their objective loss (decision
+    and patch weights as in `objective_loss`), plus pair_rank_weight x the pairwise ranking loss when the
+    micro-batch is a vulnerable/fixed pair. The trainer divides by the number of examples in the step."""
+    logits = model(input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"]).logits
+    losses = example_losses(logits, inputs["labels"], batch, objective.decision_token_weight)
+    total = sum(loss * (objective.patch_task_weight if e.task == "patch" else 1.0) for (loss, _), e in zip(losses, batch))
+    if len(batch) == 2:
+        total = total + objective.pair_rank_weight * pair_rank_loss(logits, batch, decision_ids)
+    return total
+
+
+def pair_ranking(margins: dict[str, dict[str, float]]) -> dict[str, Any]:
+    """Validation pairs: how often the vulnerable half scores above its own fix, and by how much."""
+    gaps = [m["finding"] - m["no_finding"] for m in margins.values() if set(m) == {"finding", "no_finding"}]
+    return {
+        "pairs": len(gaps),
+        "ordered": round(sum(1 for g in gaps if g > 0) / len(gaps), 4) if gaps else None,
+        "mean_gap": round(sum(gaps) / len(gaps), 4) if gaps else None,
+    }
+
+
 def decision_summary(rows: list[tuple[str, str, float]]) -> dict[str, Any]:
     """rows: (expected, predicted, finding-minus-no_finding logit margin) of the validation detection examples."""
     positives = [r for r in rows if r[0] == "finding"]
@@ -440,6 +490,7 @@ def evaluate_validation(model: Any, examples: list[EncodedExample], micro_batch_
     total, tokens = 0.0, 0
     by_task: dict[str, list[float]] = {}
     decisions: list[tuple[str, str, float]] = []
+    pair_margins: dict[str, dict[str, float]] = {}
     with torch.no_grad():
         for batch in batches(examples, micro_batch_size, epoch=0, seed=0):
             inputs = _to_tensors(batch, pad_id, model.device)
@@ -458,6 +509,8 @@ def evaluate_validation(model: Any, examples: list[EncodedExample], micro_batch_
                     logits = out.logits[row, example.decision_index - 1].float()
                     scores = {d: float(logits[i]) for d, i in decision_ids.items()}
                     decisions.append((example.decision, max(scores, key=lambda d: scores[d]), scores["finding"] - scores["no_finding"]))
+                    if example.pair_id:
+                        pair_margins.setdefault(example.pair_id, {})[example.decision] = scores["finding"] - scores["no_finding"]
     model.train()
     result: dict[str, Any] = {
         "validation_loss": total / tokens if tokens else None,
@@ -465,6 +518,8 @@ def evaluate_validation(model: Any, examples: list[EncodedExample], micro_batch_
     }
     if decisions:
         result["validation"]["decision"] = decision_summary(decisions)
+    if pair_margins:
+        result["validation"]["pair_ranking"] = pair_ranking(pair_margins)
     return result
 
 
@@ -571,10 +626,22 @@ def train(
         )
         if not train_examples:
             raise RuntimeError("no training example fits max_seq_len")
+        train_examples, validation_examples = with_pairs(train_examples, data.pairs), with_pairs(validation_examples, data.pairs)
+        run["data"]["pairs"] = {
+            "train": len({e.pair_id for e in train_examples if e.pair_id}),
+            "validation": len({e.pair_id for e in validation_examples if e.pair_id}),
+        }
         decision_ids = decision_token_ids(train_examples)
         run["data"]["decision_token_ids"] = decision_ids
+        pair_mode = config.objective is not None and config.objective.pair_rank_weight > 0
         if config.objective is not None:
-            run["objective"] = {"decision_token_weight": config.objective.decision_token_weight, "patch_task_weight": config.objective.patch_task_weight}
+            run["objective"] = {
+                "decision_token_weight": config.objective.decision_token_weight,
+                "patch_task_weight": config.objective.patch_task_weight,
+                "pair_rank_weight": config.objective.pair_rank_weight,
+            }
+        if pair_mode and not ({"finding", "no_finding"} <= set(decision_ids) and run["data"]["pairs"]["train"]):
+            raise RuntimeError("objective.pair_rank_weight needs vulnerable/fixed pairs in the training data")
         pad_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
 
         model, targets = apply_lora(base, config, config.training.gradient_checkpointing)
@@ -589,9 +656,22 @@ def train(
             init_adapter = check_init_adapter(config, project_root or PROJECT_ROOT)  # resume: weights come from the run's own checkpoint
             run["init_adapter"] = init_adapter
 
-        micro_batches_per_epoch = math.ceil(len(train_examples) / config.training.micro_batch_size)
-        steps_per_epoch = math.ceil(micro_batches_per_epoch / config.training.gradient_accumulation_steps)
-        total_steps = steps_per_epoch * config.training.num_epochs
+        accumulation = config.training.gradient_accumulation_steps
+
+        def epoch_plan(epoch: int) -> tuple[list[list[EncodedExample]], list[tuple[int, int]] | None]:
+            # pair mode: a pair is one micro-batch and a step holds >= `accumulation` examples; otherwise V6's plan
+            if pair_mode:
+                micro = pair_batches(train_examples, epoch, config.training.seed)
+                return micro, example_windows(micro, accumulation)
+            return batches(train_examples, config.training.micro_batch_size, epoch, config.training.seed), None
+
+        if pair_mode:
+            steps_per_epoch = len(epoch_plan(0)[1] or [])
+            total_steps = sum(len(epoch_plan(epoch)[1] or []) for epoch in range(config.training.num_epochs))
+        else:
+            micro_batches_per_epoch = math.ceil(len(train_examples) / config.training.micro_batch_size)
+            steps_per_epoch = math.ceil(micro_batches_per_epoch / accumulation)
+            total_steps = steps_per_epoch * config.training.num_epochs
         if config.training.max_steps is not None:
             total_steps = min(total_steps, config.training.max_steps)
         run["schedule"] = {"steps_per_epoch": steps_per_epoch, "total_steps": total_steps}
@@ -618,11 +698,20 @@ def train(
         window_tokens, window_started = 0, time.monotonic()
         optimizer.zero_grad(set_to_none=True)
         while state.step < total_steps and state.epoch < config.training.num_epochs:
-            epoch_batches = batches(train_examples, config.training.micro_batch_size, state.epoch, config.training.seed)
+            epoch_batches, windows = epoch_plan(state.epoch)
+            examples_in_step: dict[int, int] = {}
+            step_ends: set[int] = set()
+            for start, end in windows or []:
+                for i in range(start, end):
+                    examples_in_step[i] = sum(len(b) for b in epoch_batches[start:end])
+                step_ends.add(end - 1)
             for index in range(state.batch_in_epoch, len(epoch_batches)):
                 inputs = _to_tensors(epoch_batches[index], pad_id, device)
-                window = accumulation_window(index, len(epoch_batches), config.training.gradient_accumulation_steps)
-                loss = objective_loss(model, inputs, epoch_batches[index], config.objective) / window
+                if windows is None:
+                    window = accumulation_window(index, len(epoch_batches), config.training.gradient_accumulation_steps)
+                    loss = objective_loss(model, inputs, epoch_batches[index], config.objective) / window
+                else:
+                    loss = pair_objective_loss(model, inputs, epoch_batches[index], config.objective, decision_ids) / examples_in_step[index]
                 if not math.isfinite(float(loss.detach())):
                     raise RuntimeError(f"non-finite loss at step {state.step + 1} (micro-batch {index} of epoch {state.epoch})")
                 loss.backward()
@@ -630,7 +719,9 @@ def train(
                 accumulated += 1
                 window_tokens += int(inputs["attention_mask"].sum())
                 last_in_epoch = index == len(epoch_batches) - 1
-                if accumulated < config.training.gradient_accumulation_steps and not last_in_epoch:
+                if windows is None and accumulated < config.training.gradient_accumulation_steps and not last_in_epoch:
+                    continue
+                if windows is not None and index not in step_ends:
                     continue
                 grad_norm = float(torch.nn.utils.clip_grad_norm_(model.parameters(), config.training.max_grad_norm))
                 optimizer.step()

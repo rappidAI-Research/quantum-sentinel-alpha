@@ -255,7 +255,7 @@ def test_training_run_with_a_decision_weighted_objective(tmp_path: Path, monkeyp
         run = trainer.train(config, data, model_loader=loader, log=lambda _: None)
     finally:
         garden.cleanup()
-    assert run["status"] == "completed" and run["objective"] == {"decision_token_weight": 10.0, "patch_task_weight": 1.0}
+    assert run["status"] == "completed" and run["objective"] == {"decision_token_weight": 10.0, "patch_task_weight": 1.0, "pair_rank_weight": 0.0}
     assert set(run["data"]["decision_token_ids"]) <= {"finding", "no_finding", "abstain"}
     evaluations = run["state"]["evaluations"]
     assert evaluations and all("loss_by_task" in e["validation"] for e in evaluations)
@@ -754,3 +754,154 @@ def test_review_round_4_calibrated_bias_stays_in_range_and_a_calibrated_foundati
     by_label = {r["label"]: r for r in result["runs"]}
     assert by_label["foundation+calibrated"]["eligible"] is False and by_label["foundation+calibrated"]["failed_conditions"] == []
     assert result["selected"] == "step-000150" and result["selected_adapter"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Training Optimization v2: pairwise ranking on verified vulnerable/fixed train pairs
+# ---------------------------------------------------------------------------------------------
+
+
+def _pair_examples() -> list[EncodedExample]:
+    from sentinel.train.data import with_pairs
+
+    examples = [EncodedExample(record_id=f"single-{i}", input_ids=[1, 2, 3], labels=[1, 2, 3], decision="abstain", decision_index=1) for i in range(10)]
+    pairs = {}
+    for p in range(3):
+        for decision in ("finding", "no_finding"):
+            rid = f"pair{p}-{decision}"
+            examples.append(EncodedExample(record_id=rid, input_ids=[1, 2, 3], labels=[1, 2, 3], decision=decision, decision_index=1))
+            pairs[rid] = f"p{p}"
+    examples.append(EncodedExample(record_id="lone-finding", input_ids=[1], labels=[1], decision="finding", decision_index=1))
+    pairs["lone-finding"] = "p-lone"  # its twin is not in the data: no pair
+    examples.append(EncodedExample(record_id="patch-0", input_ids=[1], labels=[1], task="patch"))
+    return with_pairs(examples, pairs)
+
+
+def test_pair_micro_batches_keep_each_pair_together_and_steps_count_examples() -> None:
+    from sentinel.train.data import complete_pairs, example_windows, pair_batches
+
+    examples = _pair_examples()
+    assert next(e for e in examples if e.record_id == "lone-finding").pair_id is None
+    micro = pair_batches(examples, epoch=0, seed=7)
+    flat = [e.record_id for b in micro for e in b]
+    assert sorted(flat) == sorted(e.record_id for e in examples) and len(flat) == len(set(flat))
+    pairs = [b for b in micro if len(b) == 2]
+    assert len(pairs) == 3 and all(b[0].decision == "finding" and b[1].decision == "no_finding" and b[0].pair_id == b[1].pair_id for b in pairs)
+    # the order is the V6 order, with each pair at the position of its first half
+    v6 = [b[0].record_id for b in batches(examples, 1, 0, 7)]
+    first_seen = [rid for rid in v6 if not rid.startswith("pair") or rid == min((r for r in v6 if r.split("-")[0] == rid.split("-")[0]), key=v6.index)]
+    assert [b[0].record_id if len(b) == 1 else b[0].record_id.split("-")[0] for b in micro] == [r if not r.startswith("pair") else r.split("-")[0] for r in first_seen]
+    assert pair_batches(examples, 0, 7) == micro and pair_batches(examples, 1, 7) != micro
+
+    windows = example_windows(micro, 4)
+    assert windows[0][0] == 0 and windows[-1][1] == len(micro) and all(a[1] == b[0] for a, b in zip(windows, windows[1:]))
+    sizes = [sum(len(b) for b in micro[s:e]) for s, e in windows]
+    assert all(size >= 4 for size in sizes[:-1]) and sum(sizes) == len(examples)
+    # one example per micro-batch: exactly the V6 grouping of gradient_accumulation_steps micro-batches
+    singles = batches(examples, 1, 0, 7)
+    assert example_windows(singles, 4) == [(s, min(s + 4, len(singles))) for s in range(0, len(singles), 4)]
+
+    record = lambda rid, pair, decision: {"record_id": rid, "pair_id": pair, "target": {"decision": decision}}  # noqa: E731
+    found = complete_pairs([record("a", "p1", "finding"), record("b", "p1", "no_finding"), record("c", "p2", "finding"), record("d", "p3", "abstain")])
+    assert found == {"a": "p1", "b": "p1"}
+
+
+def test_pair_rank_loss_rewards_ranking_the_vulnerable_half_above_its_fix() -> None:
+    torch = pytest.importorskip("torch")
+    from sentinel.train.trainer import pair_rank_loss
+
+    ids = {"finding": 3, "no_finding": 4}
+    vulnerable = EncodedExample(record_id="v", input_ids=[0, 1, 2], labels=[0, 1, 2], decision="finding", decision_index=2, pair_id="p")
+    fixed = EncodedExample(record_id="f", input_ids=[0, 1, 2], labels=[0, 1, 2], decision="no_finding", decision_index=2, pair_id="p")
+    logits = torch.zeros(2, 3, 6, requires_grad=True)
+    with torch.no_grad():
+        logits[0, 1, 3], logits[0, 1, 4] = 2.0, 0.5  # s_v = 1.5 (the decision token at 2 is predicted at 1)
+        logits[1, 1, 3], logits[1, 1, 4] = 1.0, 1.0  # s_f = 0.0
+    loss = pair_rank_loss(logits, [vulnerable, fixed], ids)
+    assert float(loss.detach()) == pytest.approx(math.log1p(math.exp(-1.5)), rel=1e-6)
+    loss.backward()
+    assert logits.grad[0, 1, 3] < 0 < logits.grad[1, 1, 3]  # descent raises s_v and lowers s_f
+    with pytest.raises(ValueError, match="pair"):
+        pair_rank_loss(logits, [fixed, vulnerable], ids)
+
+
+def test_pair_rank_weight_is_validated(tmp_path: Path) -> None:
+    import yaml
+
+    base = yaml.safe_load((ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").read_text())
+    for weight, micro, message in ((-1.0, 1, "pair_rank_weight"), (1.0, 2, "micro_batch_size 1")):
+        document = {**base, "objective": {**base["objective"], "pair_rank_weight": weight}, "training": {**base["training"], "micro_batch_size": micro}}
+        path = tmp_path / "c.yaml"
+        path.write_text(yaml.safe_dump(document))
+        with pytest.raises(ConfigError, match=message):
+            load_train_config(path)
+
+
+def test_training_run_with_the_pairwise_ranking_objective(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    pytest.importorskip("torch")
+    pytest.importorskip("peft")
+    import sentinel.train.data as train_data
+    from sentinel.train import trainer
+    from sentinel.train.config import ObjectiveSettings
+    from sentinel.train.data import load_training_data
+    from tests.test_train_smoke import TINY_TARGETS, loader
+    from tests.train_fixtures import GardenWorkdir, approved_registry
+
+    monkeypatch.setattr(trainer, "verify_foundation", lambda config: {"revision": config.revision, "method": "test", "files_sha256": {}})
+    garden = GardenWorkdir()
+    monkeypatch.setattr(train_data, "load_registry", approved_registry)
+    seen: list[list[str]] = []
+    original = trainer.pair_objective_loss
+
+    def spy(model, inputs, batch, objective, decision_ids):
+        seen.append([e.record_id for e in batch])
+        return original(model, inputs, batch, objective, decision_ids)
+
+    monkeypatch.setattr(trainer, "pair_objective_loss", spy)
+    try:
+        data = load_training_data(garden.write().config_path, approvals=garden.approvals)
+        base = load_train_config()
+        config = dataclasses.replace(
+            base,
+            quantization=dataclasses.replace(base.quantization, mode="none", compute_dtype="float32"),
+            lora=dataclasses.replace(base.lora, expected_target_count=TINY_TARGETS),
+            training=dataclasses.replace(
+                base.training, micro_batch_size=1, gradient_accumulation_steps=2, num_epochs=2, max_steps=None, eval_every_steps=1,
+                save_every_steps=100, keep_last_checkpoints=1, gradient_checkpointing=False, learning_rate=1e-3,
+            ),
+            output_dir=tmp_path / "run",
+            objective=ObjectiveSettings(decision_token_weight=10.0, pair_rank_weight=1.0),
+        )
+        run = trainer.train(config, data, model_loader=loader, log=lambda _: None)
+    finally:
+        garden.cleanup()
+    assert run["status"] == "completed" and run["objective"]["pair_rank_weight"] == 1.0
+    assert run["data"]["pairs"] == {"train": 1, "validation": 1}
+    assert any(len(batch) == 2 for batch in seen) and sum(len(b) for b in seen) == 2 * len(data.train)  # every example, both epochs
+    assert run["schedule"]["total_steps"] == run["state"]["step"]
+    assert all(e["validation"]["pair_ranking"]["pairs"] == 1 for e in run["state"]["evaluations"])
+
+
+def test_v2_experiment_configs_change_one_variable_against_e2() -> None:
+    """F1 and F2 differ from E2 (the operational reference, which already has dense checkpoints) only in their
+    variable and in run name and output; E2 and every v1 config stay as they were."""
+    import yaml
+
+    e2 = yaml.safe_load((ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").read_text())
+    expected = {
+        "qlora_ornith15_9b_v6_to2_pair_rank.yaml": {"objective.pair_rank_weight"},
+        "qlora_ornith15_9b_v6_to2_lr5e-5.yaml": {"training.learning_rate"},
+    }
+    for name, variables in expected.items():
+        document = yaml.safe_load((ROOT / "configs/train" / name).read_text())
+        changed = set()
+        for section in set(e2) | set(document):
+            if isinstance(e2.get(section), dict) and isinstance(document.get(section), dict):
+                changed |= {f"{section}.{k}" for k in set(e2[section]) | set(document[section]) if e2[section].get(k) != document[section].get(k)}
+            elif e2.get(section) != document.get(section):
+                changed.add(section)
+        assert changed - {"run_name", "output_dir"} == variables, name
+        assert "to2" in document["run_name"] and document["run_name"] in document["output_dir"] and "init_adapter" not in document
+        load_train_config(ROOT / "configs/train" / name)
+    assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to2_pair_rank.yaml").objective.pair_rank_weight == 1.0
+    assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").objective.pair_rank_weight == 0.0

@@ -78,9 +78,14 @@ class ObjectiveSettings:
 
     decision_token_weight: float = 1.0
     patch_task_weight: float = 1.0
+    # Training Optimization v2 (docs/TRAINING_OPTIMIZATION_V2.md): weight of a pairwise ranking loss on the
+    # verified vulnerable/fixed train pairs, softplus(-(s_vulnerable - s_fixed)) with s = logit(finding) -
+    # logit(no) at the decision position. 0 = off. It needs micro_batch_size 1: the two halves of a pair
+    # then form one micro-batch, and optimizer steps are counted in examples.
+    pair_rank_weight: float = 0.0
 
     def is_default(self) -> bool:
-        return self.decision_token_weight == 1.0 and self.patch_task_weight == 1.0
+        return self.decision_token_weight == 1.0 and self.patch_task_weight == 1.0 and self.pair_rank_weight == 0.0
 
 
 @dataclass(frozen=True)
@@ -115,7 +120,8 @@ class TrainConfig:
     def as_dict(self) -> dict[str, Any]:
         extra: dict[str, Any] = {"init_adapter": asdict(self.init_adapter)} if self.init_adapter else {}
         if self.objective is not None:
-            extra["objective"] = asdict(self.objective)
+            # pair_rank_weight is recorded only when used, so v1 configs keep their recorded settings
+            extra["objective"] = {k: v for k, v in asdict(self.objective).items() if not (k == "pair_rank_weight" and v == 0.0)}
         return {
             **extra,
             "run_name": self.run_name,
@@ -188,9 +194,14 @@ def load_train_config(path: Path = DEFAULT_TRAIN_CONFIG) -> TrainConfig:
         weights = (objective.decision_token_weight, objective.patch_task_weight)
         if not all(isinstance(w, (int, float)) and not isinstance(w, bool) and 0 < float(w) <= 100 for w in weights):
             raise ConfigError("objective weights must be numbers in (0, 100]")
-        objective = ObjectiveSettings(float(objective.decision_token_weight), float(objective.patch_task_weight))
+        pair = objective.pair_rank_weight
+        if not isinstance(pair, (int, float)) or isinstance(pair, bool) or not 0 <= float(pair) <= 100:
+            raise ConfigError("objective.pair_rank_weight must be a number in [0, 100]")
+        objective = ObjectiveSettings(float(objective.decision_token_weight), float(objective.patch_task_weight), float(pair))
         if objective.patch_task_weight != 1.0 and "patch" not in settings.tasks:
             raise ConfigError("objective.patch_task_weight needs the patch task in data.tasks")
+        if objective.pair_rank_weight > 0 and training.micro_batch_size != 1:
+            raise ConfigError("objective.pair_rank_weight needs training.micro_batch_size 1 (a pair forms its own micro-batch)")
     output_dir = PROJECT_ROOT / document["output_dir"]
     if not str(document["output_dir"]).startswith(("runs/", "artifacts/")):
         raise ConfigError("output_dir must be under the Git-ignored runs/ or artifacts/ directory")
