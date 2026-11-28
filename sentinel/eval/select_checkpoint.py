@@ -55,7 +55,7 @@ SELECTION_RULES = {
 SELECTION_RULE = SELECTION_RULES[SELECTION_RULE_VERSION]["text"]
 MAX_INVALID_RATE = 0.02
 SHARED = (("model", "id"), ("model", "revision"), ("contract",), ("generation",), ("cases", "sha256"))
-_STEP = re.compile(r"step-(\d{6})")
+_STEP = re.compile(r"((?:avg\d+-)?)step-(\d{6})")  # avgK-: an exact average of K checkpoints (sentinel.train.average)
 
 COLUMNS = (
     ("decision acc.", "decision_accuracy"),
@@ -98,7 +98,7 @@ def label(artifact: dict[str, Any]) -> tuple[str, int | None]:
         return "foundation", None
     match = _STEP.search(adapter["path"])
     if match:
-        return f"step-{match.group(1)}", int(match.group(1))
+        return f"{match.group(1)}step-{match.group(2)}", int(match.group(2))
     return "final", None
 
 

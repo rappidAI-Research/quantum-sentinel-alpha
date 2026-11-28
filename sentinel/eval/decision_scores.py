@@ -76,6 +76,7 @@ def score_rows(cases: list[dict[str, Any]], scorer: Callable[[dict[str, Any]], d
                 "language": case.get("language"),
                 "pair_id": case.get("pair_id"),
                 "cwe": (case.get("ground_truth") or {}).get("cwe"),
+                "source": ((case.get("provenance") or {}).get("upstream") or {}).get("source_id"),
                 "logprob": {d: round(float(scored["logprob"][d]), 6) for d in DECISIONS},
                 "greedy_in_decisions": greedy in DECISIONS,
                 "prefix_greedy": bool(scored.get("prefix_greedy", True)),
@@ -244,6 +245,7 @@ def summarize(rows: list[dict[str, Any]], max_fpr: float = 0.20) -> dict[str, An
         "greedy": decision_metrics(rows),
         "pairs": pair_outcomes(rows),
         "by_language": breakdown(rows, "language"),
+        "by_source": breakdown(rows, "source") if rows and "source" in rows[0] else None,
         "findings_by_family": breakdown([r for r in family_rows if r["expected"] == "finding"], "family"),
     }
     if rows and "logprob" in rows[0]:
@@ -281,7 +283,7 @@ def flips(before: list[dict[str, Any]], after: list[dict[str, Any]]) -> dict[str
 # Inputs: score files and run_model artifacts
 # --------------------------------------------------------------------------------------------
 
-_STEP = re.compile(r"step-(\d{6})")
+_STEP = re.compile(r"((?:avg\d+-)?)step-(\d{6})")  # avgK-: an exact average of K checkpoints (sentinel.train.average)
 
 
 def label_of(document: dict[str, Any], path: Path) -> str:
@@ -289,7 +291,7 @@ def label_of(document: dict[str, Any], path: Path) -> str:
     match = _STEP.search(adapter) or _STEP.search(path.name)
     if match:
         run = re.search(r"runs/train/([^/]+)/", adapter)
-        return f"{run.group(1) + '/' if run else ''}step-{match.group(1)}"
+        return f"{run.group(1) + '/' if run else ''}{match.group(1)}step-{match.group(2)}"
     return "foundation" if not adapter else Path(adapter).name
 
 
@@ -313,6 +315,36 @@ def rows_from_document(document: dict[str, Any], cases: dict[str, dict[str, Any]
     return rows
 
 
+def true_positive_quality(document: dict[str, Any], cases: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    """Of the findings a run reported correctly: how many also name an accepted CWE, a CWE of the same family,
+    and overlapping lines (strict = CWE and lines). Separates "found the vulnerable function" from "explained
+    it correctly". Run artifacts only (score files have no CWE or lines)."""
+    from sentinel.eval.metrics import _line_overlap, accepted_cwes
+    from sentinel.garden.audit import family_of
+
+    if "predictions" not in document:
+        return None
+    counts: Counter[str] = Counter()
+    for record in document["predictions"]:
+        prediction, case = record["prediction"], cases.get(record["case_id"]) or {}
+        if record["expected_decision"] != "finding" or prediction["decision"] != "finding" or not case:
+            continue
+        truth, finding = case["ground_truth"], prediction["finding"]
+        cwe_ok = finding["cwe"] in accepted_cwes(truth)
+        family = family_of(truth["cwe"])
+        family_ok = cwe_ok or (family != "other" and family_of(finding["cwe"]) == family)
+        located = _line_overlap(truth["start_line"], truth["end_line"], finding["start_line"], finding["end_line"]) > 0.0
+        counts["true_positives"] += 1
+        counts["cwe_accepted"] += int(cwe_ok)
+        counts["cwe_same_family"] += int(family_ok)
+        counts["lines_overlap"] += int(located)
+        counts["strict"] += int(cwe_ok and located)
+        counts["lines_only"] += int(located and not cwe_ok)
+        counts["cwe_only"] += int(cwe_ok and not located)
+        counts["neither"] += int(not cwe_ok and not located)
+    return dict(counts)
+
+
 def analyze(paths: list[Path], cases: list[dict[str, Any]], max_fpr: float = 0.20) -> dict[str, Any]:
     by_id = {c["case_id"]: c for c in cases}
     series = []
@@ -322,11 +354,19 @@ def analyze(paths: list[Path], cases: list[dict[str, Any]], max_fpr: float = 0.2
         unknown = {r["case_id"] for r in rows} - set(by_id)
         if unknown or len(rows) != len(by_id):
             raise ValueError(f"{path} was not made on these cases ({len(rows)} rows, {len(unknown)} unknown)")
-        series.append({"label": label_of(document, path), "kind": "scores" if "rows" in document else "run", "path": str(path), "rows": rows})
+        for row in rows:  # the source of each case (GHSA/OSV, MoreFixes): calibration transfer differs by source
+            row.setdefault("source", ((by_id[row["case_id"]].get("provenance") or {}).get("upstream") or {}).get("source_id"))
+        series.append(
+            {"label": label_of(document, path), "kind": "scores" if "rows" in document else "run", "path": str(path), "rows": rows,
+             "true_positive_quality": true_positive_quality(document, by_id)}
+        )
     series.sort(key=lambda s: (s["label"] != "foundation", s["label"]))
     result = {"cases": len(cases), "checkpoints": [], "flips_between_consecutive": []}
     for item in series:
-        result["checkpoints"].append({"label": item["label"], "kind": item["kind"], "path": item["path"], **summarize(item["rows"], max_fpr)})
+        entry = {"label": item["label"], "kind": item["kind"], "path": item["path"], **summarize(item["rows"], max_fpr)}
+        if item["true_positive_quality"] is not None:
+            entry["true_positive_quality"] = item["true_positive_quality"]
+        result["checkpoints"].append(entry)
     ordered = [s for s in series if s["label"] != "foundation"]
     for before, after in zip(ordered, ordered[1:]):
         result["flips_between_consecutive"].append({"from": before["label"], "to": after["label"], **flips(before["rows"], after["rows"])})

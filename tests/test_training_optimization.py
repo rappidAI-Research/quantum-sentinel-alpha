@@ -905,3 +905,153 @@ def test_v2_experiment_configs_change_one_variable_against_e2() -> None:
         load_train_config(ROOT / "configs/train" / name)
     assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to2_pair_rank.yaml").objective.pair_rank_weight == 1.0
     assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").objective.pair_rank_weight == 0.0
+
+
+def _write_checkpoint(run: Path, step: int, tensors: dict[str, Any], **config_changes: Any) -> None:
+    import hashlib as h
+
+    from safetensors.torch import save_file
+
+    path = run / "checkpoints" / f"step-{step:06d}"
+    (path / "adapter").mkdir(parents=True)
+    save_file(tensors, str(path / "adapter" / "adapter_model.safetensors"))
+    config = {"base_model_name_or_path": "ornith-ai/Ornith-1.5-9B", "revision": "a" * 40, "r": 2, "lora_alpha": 4, "peft_type": "LORA",
+              "task_type": "CAUSAL_LM", "bias": "none", "target_modules": "^q$", "use_rslora": False, "use_dora": False, **config_changes}
+    (path / "adapter" / "adapter_config.json").write_text(json.dumps(config))
+    sums = {n: h.sha256((path / n).read_bytes()).hexdigest() for n in ("adapter/adapter_model.safetensors", "adapter/adapter_config.json")}
+    (path / "checksums.json").write_text(json.dumps(sums))
+
+
+def test_checkpoint_average_is_the_exact_mean_of_the_lora_updates(tmp_path: Path) -> None:
+    torch = pytest.importorskip("torch")
+    pytest.importorskip("safetensors")
+    from safetensors.torch import load_file
+
+    from sentinel.eval.backends import describe_adapter
+    from sentinel.train.average import average, checkpoint_dirs
+
+    run = tmp_path / "runs" / "train" / "r"
+    a_name, b_name = "base_model.model.q.lora_A.weight", "base_model.model.q.lora_B.weight"
+    generator = torch.Generator().manual_seed(0)
+    updates = []
+    for step in (160, 170, 180, 190, 200):
+        a, b = torch.randn(2, 6, generator=generator), torch.randn(5, 2, generator=generator)
+        _write_checkpoint(run, step, {a_name: a, b_name: b})
+        updates.append(b @ a)
+    assert [p.name for p in checkpoint_dirs(run, 200, 5, 10)] == [f"step-{s:06d}" for s in (160, 170, 180, 190, 200)]
+    adapter = average(run, 200, 5)
+    assert adapter == run / "averaged" / "avg5-step-000200" / "adapter"
+    merged = load_file(str(adapter / "adapter_model.safetensors"))
+    config = json.loads((adapter / "adapter_config.json").read_text())
+    assert config["r"] == 10 and config["lora_alpha"] == 20  # alpha / r unchanged: the same scaling
+    assert torch.allclose(merged[b_name] @ merged[a_name], torch.stack(updates).mean(dim=0), atol=1e-5)
+    provenance = json.loads((adapter.parent / "averaging.json").read_text())
+    assert [s["checkpoint"].rsplit("/", 1)[1] for s in provenance["sources"]] == [f"step-{s:06d}" for s in (160, 170, 180, 190, 200)]
+    describe_adapter(adapter, "ornith-ai/Ornith-1.5-9B", "a" * 40)  # identity + checksums like any checkpoint
+
+    # the final checkpoint of a run lies off the grid: the window ends there
+    _write_checkpoint(run, 210, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    _write_checkpoint(run, 216, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    assert [p.name for p in checkpoint_dirs(run, 216, 3, 10)] == ["step-000200", "step-000210", "step-000216"]
+
+    # refused: a checkpoint changed after it was written, a different rank, rsLoRA scaling
+    with pytest.raises(ValueError, match="checksums"):
+        (run / "checkpoints" / "step-000210" / "adapter" / "adapter_config.json").write_text("{}")
+        average(run, 210, 2)
+    other = tmp_path / "runs" / "train" / "other"
+    _write_checkpoint(other, 10, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    _write_checkpoint(other, 20, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)}, r=4)
+    with pytest.raises(ValueError, match="differ"):
+        average(other, 20, 2)
+    rs = tmp_path / "runs" / "train" / "rs"
+    for step in (10, 20):
+        _write_checkpoint(rs, step, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)}, use_rslora=True)
+    with pytest.raises(ValueError, match="use_rslora"):
+        average(rs, 20, 2)
+
+
+def test_averaged_adapters_have_their_own_labels() -> None:
+    from sentinel.eval.select_checkpoint import label
+
+    path = "runs/train/r/averaged/avg5-step-000200/adapter"
+    assert label({"model": {"adapter": {"path": path}}}) == ("avg5-step-000200", 200)
+    assert label({"model": {"adapter": {"path": "runs/train/r/checkpoints/step-000200/adapter"}}}) == ("step-000200", 200)
+    assert ds.label_of({"model": {"adapter": {"path": path}}}, Path("x.json")) == "r/avg5-step-000200"
+    assert [p.name for p in ds.score_outputs(Path("o"), [Path(path), Path("runs/train/r/checkpoints/step-000200/adapter")])] == [
+        "r__avg5-step-000200.json", "r__step-000200.json",
+    ]
+
+
+def test_paired_comparison_counts_changed_decisions_and_tests_the_discordant_split(monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.eval import compare
+
+    assert compare.mcnemar_exact_p(0, 0) == 1.0
+    assert compare.mcnemar_exact_p(10, 0) == pytest.approx(2 / 2**10)
+    assert compare.mcnemar_exact_p(6, 4) == pytest.approx(min(1.0, 2 * sum(math.comb(10, k) for k in range(5)) / 2**10))
+    greedy = _adapter_artifact(monkeypatch, 200)
+    calibrated = _adapter_artifact(monkeypatch, 200, -0.1249, {**CALIBRATION, "bias": -0.1249})
+    same = compare.paired(greedy, calibrated)  # the E2 step-200 question: do the two runs decide every case alike?
+    assert same["identical_decisions"] and same["decisions_differ"] == 0 and same["mcnemar_exact_p"] == 1.0
+    flipped = json.loads(json.dumps(calibrated))
+    record = next(r for r in flipped["predictions"] if r["expected_decision"] == "no_finding")
+    record["prediction"]["decision"] = "abstain"  # B now abstains on one negative A decides correctly
+    result = compare.paired(greedy, flipped)
+    assert result["decisions_differ"] == 1 and not result["identical_decisions"]
+    report = compare.build_report(greedy, calibrated)
+    assert report["paired"]["identical_decisions"] and "identical predictions" in compare.render(report)
+
+
+def test_true_positive_quality_separates_finding_from_explaining() -> None:
+    cases = {
+        "c1": {"case_id": "c1", "ground_truth": {"cwe": "CWE-89", "start_line": 3, "end_line": 4}},
+        "c2": {"case_id": "c2", "ground_truth": {"cwe": "CWE-79", "start_line": 1, "end_line": 1}},
+        "c3": {"case_id": "c3", "ground_truth": {"cwe": "CWE-22", "start_line": 5, "end_line": 6}},
+    }
+    finding = lambda cwe, s, e: {"decision": "finding", "finding": {"cwe": cwe, "start_line": s, "end_line": e}}  # noqa: E731
+    document = {"predictions": [
+        {"case_id": "c1", "expected_decision": "finding", "prediction": finding("CWE-89", 4, 4)},   # strict
+        {"case_id": "c2", "expected_decision": "finding", "prediction": finding("CWE-80", 7, 9)},   # family only (XSS)
+        {"case_id": "c3", "expected_decision": "finding", "prediction": {"decision": "no_finding", "finding": None}},  # missed
+    ]}
+    quality = ds.true_positive_quality(document, cases)
+    assert quality["true_positives"] == 2 and quality["strict"] == 1 and quality["neither"] == 1
+    assert quality["cwe_accepted"] == 1 and quality["lines_overlap"] == 1
+    assert ds.true_positive_quality({"rows": []}, cases) is None
+
+
+def test_supervision_audit_measures_shortcuts_targets_and_conflicts(tmp_path: Path) -> None:
+    from sentinel.train import supervision_audit as sa
+
+    def record(rid: str, decision: str, code: str, pair: str | None = None, kind: str = "vulnerable", **extra: Any) -> dict[str, Any]:
+        return {
+            "record_id": rid, "pair_id": pair, "kind": kind,
+            "input": {"code": code, "context": extra.pop("context", ""), "language": "python"},
+            "target": {"decision": decision, "cwe": "CWE-89" if decision == "finding" else None, "alternate_cwes": [],
+                       "start_line": 1 if decision == "finding" else None, "end_line": 2 if decision == "finding" else None,
+                       "evidence_source": "advisory_summary" if decision == "finding" else None},
+            "localization": extra.pop("localization", {}), "quality": {"flags": extra.pop("flags", [])},
+            "provenance": {"normalized_sha256": extra.pop("norm", rid), "code_source_id": "ghsa-osv-fix-commits", "published": "2025-01-01"},
+        }
+
+    train = [
+        record("v1", "finding", "a\nb", "p1", localization={"span_kind": "insertion_point", "fix_added_top_level_lines": 2}),
+        record("f1", "no_finding", "a\nb\ncheck", "p1", kind="post_fix"),
+        record("t1", "finding", "x", kind="query_test_finding", flags=["coarse_cwe"]),
+    ]
+    development = [
+        record("v2", "finding", "a\nb\nc", "p2", context="Defined elsewhere: helper"),
+        record("f2", "no_finding", "a\nb\nc", "p2", kind="post_fix", norm="v1"),  # the same code as a train finding: a conflict
+    ]
+    for name, rows in (("train.jsonl", train), ("validation.jsonl", []), ("development/records.jsonl", development)):
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / name).write_text("".join(json.dumps(r) + "\n" for r in rows))
+    result = sa.report(tmp_path)
+    shortcut = result["length_shortcut"]["train"]
+    assert shortcut["auc_shorter_is_finding"] == 1.0 and shortcut["fixed_half_longer_in_chars"] == 1.0
+    assert result["length_shortcut"]["development"]["auc_shorter_is_finding"] == 0.5
+    profile = result["supervision"]["train"]
+    assert profile["span_kind"] == {"None": 1, "insertion_point": 1} and profile["fix_adds_code_outside_the_function"] == 0.5
+    assert profile["evidence_source"] == {"advisory_summary": 2} and profile["coarse_cwe"] == 0.5
+    assert result["supervision"]["development"]["context_names_code_defined_elsewhere"] == 1.0
+    assert result["cwe_coverage"]["development"]["never_trained"] == 0
+    assert result["label_conflicts"] == {"within_a_set": 0, "across_sets": 1, "development_code_also_in_train": 1}
