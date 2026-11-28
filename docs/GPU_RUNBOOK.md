@@ -555,3 +555,82 @@ aws s3 cp ~/qsa-to1-results-$STAMP.tgz s3://<private-bucket>/qsa/to1/ && aws s3 
 ```
 
 Score files contain no code: they hold case ids, labels and log-probabilities. The adapters stay private, and nothing from `runs/` is committed.
+
+## 17. Training Optimization v2: F0, pairwise ranking, lower learning rate (**GPU**, not approved yet)
+
+Analysis, pre-registered metrics and decision points: `docs/TRAINING_OPTIMIZATION_V2.md`. Same instance as §§ 15–16. **Nothing in this section is approved yet.** The owner approves each stage, and each stage ends at a decision point (D0–D3) that is reported before the next one starts. The final test runs once over v1 and v2 together, and never from a stage other than `final`.
+
+`scripts/to2_gpu.sh` runs one stage per call and reuses § 16's helpers. Finished outputs are skipped on a rerun, and an interrupted training run resumes. `DRY_RUN=1` prints the commands.
+
+**0. Code and a dry run.** The v1 results must be in place: `runs/eval/to1/{e0,decision_w10,detection_only}`, E2's checkpoints under `runs/train/qsa-qlora-ornith15-9b-v6-to1-decision_w10/checkpoints`, and the training logs `runs/train-to1-*.log`.
+
+```bash
+cd ~/quantum-sentinel-alpha && git pull --ff-only && . .venv/bin/activate && pip install -e '.[train,quant,dev]'
+DRY_RUN=1 scripts/to2_gpu.sh f0 2>&1 | less
+```
+
+**1. F0, no training** (≈ 1.5–2.5 GPU h). It runs the following, then the D0 report:
+- the supervision audit;
+- the v1 score files and run artifacts re-analysed: AUC, pairs, flips, per source, true-positive quality;
+- gradient diagnostics over all steps of E2 and E3;
+- whether E2 step 200 greedy and calibrated decide every case alike;
+- E2 on the NF4 training precision;
+- exact averages of E2 checkpoints, calibrated, screened, generated;
+- selection.
+
+```bash
+nohup scripts/to2_gpu.sh f0 > runs/to2-f0.log 2>&1 &
+cat runs/eval/to2/f0/e2-step200-greedy-vs-calibrated.txt
+python -c "import json; print(json.load(open('runs/eval/to2/f0/decision_w10-dev-scores.json'))['plateau'])"
+python -c "import json; print(json.load(open('runs/eval/to2/f0/avg/analysis.json'))['plateau'])"
+```
+
+If E2 step 200 has no greedy run artifact (it was not shortlisted in v1), generate it first:
+
+```bash
+python -m sentinel.eval.run_model --model ornith-ai/Ornith-1.5-9B --revision 489cb97981b8654bcfcf30ce1f94ed1b62e07b53 --cases artifacts/garden/seed_v6/development/dev.eval_cases.jsonl --adapter runs/train/qsa-qlora-ornith15-9b-v6-to1-decision_w10/checkpoints/step-000200/adapter --output runs/eval/to1/decision_w10/runs/qsa-qlora-ornith15-9b-v6-to1-decision_w10__step-000200-greedy.json
+```
+
+**D0 (report before anything else):**
+- E2's plateau AUC (checkpoints from step 180 on);
+- NF4 against bf16;
+- the averages against the checkpoints;
+- per-source results;
+- true-positive quality;
+- whether the E2 step-200 predictions are identical.
+
+The rules are in `docs/TRAINING_OPTIMIZATION_V2.md` § 6.
+
+**2. F1, pairwise ranking** (after approval; ≈ 3 h training + 2–3 h evaluation):
+
+```bash
+nohup sh -c 'scripts/to2_gpu.sh train pair_rank && scripts/to2_gpu.sh evaluate pair_rank' > runs/to2-f1.log 2>&1 &
+tail -f runs/train-to2-pair_rank.log
+```
+
+Every evaluation line carries `validation.pair_ranking` (the share of the 58 validation pairs ranked correctly, and the mean gap) next to `validation.decision`. **D1:** compare plateau AUC, pair discrimination and the selected rule-v2 candidate with E2. The `plateau` blocks are in `runs/eval/to2/pair_rank/analysis.json` and `runs/eval/to2/f0/decision_w10-dev-scores.json`. `python -m sentinel.eval.compare <E2 run> <F1 run>` gives the paired McNemar p of two selected candidates.
+
+**3. F2, learning rate 5e-5** (after approval; can run before or after F1):
+
+```bash
+nohup sh -c 'scripts/to2_gpu.sh train lr5e-5 && scripts/to2_gpu.sh evaluate lr5e-5' > runs/to2-f2.log 2>&1 &
+```
+
+**D2:** the swing (changed decisions between consecutive checkpoints) and plateau AUC against E2.
+
+**4. F3, only if D1 and D2 both adopt:**
+
+```bash
+nohup sh -c 'scripts/to2_gpu.sh train pair_rank_lr5e-5 && scripts/to2_gpu.sh evaluate pair_rank_lr5e-5' > runs/to2-f3.log 2>&1 &
+```
+
+**5. Selection and the final test**, once, after the plan has ended:
+
+```bash
+scripts/to2_gpu.sh select
+scripts/to2_gpu.sh final
+```
+
+The selection covers V6, v1, v2 and the checkpoint averages under rule v2. `final` refuses to run if `runs/eval/to1-final.done` or `runs/eval/to2-final.done` exists.
+
+**6. Backup** before terminating the instance, as in § 16 step 9. It covers `runs/eval/to2`, `runs/train-to2-*.log`, the v2 runs' `run.json`, provenance and checksums, the adapters, and E2's `averaged/` directory. Adapters stay private and nothing from `runs/` is committed.

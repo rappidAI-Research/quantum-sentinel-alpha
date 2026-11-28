@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -123,6 +124,37 @@ def disagreements(a: dict[str, Any], b: dict[str, Any]) -> list[dict[str, str]]:
     return rows
 
 
+def mcnemar_exact_p(a_only: int, b_only: int) -> float:
+    """Two-sided exact McNemar test on the discordant cases (binomial, p = 0.5): how surprising the split
+    would be if both runs were equally good on these cases."""
+    n = a_only + b_only
+    if n == 0:
+        return 1.0
+    tail = sum(math.comb(n, k) for k in range(min(a_only, b_only) + 1)) / 2**n
+    return min(1.0, 2 * tail)
+
+
+def paired(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
+    """Case-level comparison on the same cases: how many decisions differ at all (0 = identical predictions),
+    how many cases only one run gets right, and the exact McNemar p-value of that split. Information for
+    the decision rules of docs/TRAINING_OPTIMIZATION_V2.md, never a selection criterion."""
+    decisions_b = {record["case_id"]: record["prediction"]["decision"] for record in b["predictions"]}
+    differ = a_only = b_only = 0
+    for record in a["predictions"]:
+        expected, decision_a, decision_b = record["expected_decision"], record["prediction"]["decision"], decisions_b.get(record["case_id"])
+        differ += int(decision_a != decision_b)
+        a_only += int(decision_a == expected and decision_b != expected)
+        b_only += int(decision_b == expected and decision_a != expected)
+    return {
+        "cases": len(a["predictions"]),
+        "decisions_differ": differ,
+        "identical_decisions": differ == 0 and set(decisions_b) == {r["case_id"] for r in a["predictions"]},
+        "a_only_correct": a_only,
+        "b_only_correct": b_only,
+        "mcnemar_exact_p": round(mcnemar_exact_p(a_only, b_only), 4),
+    }
+
+
 def build_report(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     problems, notes = comparability(a, b)
     rows = []
@@ -143,6 +175,7 @@ def build_report(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
         "rows": rows,
         "by_language": language_rows,
         "disagreements": disagreements(a, b) if not problems else [],
+        "paired": paired(a, b) if not problems else None,
     }
 
 
@@ -194,6 +227,13 @@ def render(report: dict[str, Any]) -> str:
         for language, values in report["by_language"].items():
             cells = [f"{v['correct']}/{v['cases']}" if v else "n/a" for v in (values["a"], values["b"])]
             out.append(f"  {language:<28}{cells[0]:>12}{cells[1]:>12}")
+    if report["paired"]:
+        p = report["paired"]
+        out.append(
+            f"\nPaired: {p['decisions_differ']} of {p['cases']} decisions differ"
+            + (" (identical predictions)" if p["identical_decisions"] else "")
+            + f"; only A right {p['a_only_correct']}, only B right {p['b_only_correct']}, exact McNemar p = {p['mcnemar_exact_p']}"
+        )
     if report["disagreements"]:
         out.append(f"\nCases only one run decided correctly ({len(report['disagreements'])}):")
         for row in report["disagreements"]:

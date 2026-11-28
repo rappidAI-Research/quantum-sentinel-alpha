@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -53,6 +53,10 @@ class TrainingData:
     repositories: int
     tasks: tuple[str, ...] = ("detection",)
     examples_by_task: dict[str, dict[str, int]] | None = None
+    # record_id -> pair_id for the members of complete vulnerable/fixed pairs within train and within
+    # validation (both halves present in the same split, governance-checked above). Training Optimization
+    # v2 uses the train pairs for its pairwise ranking objective and the validation pairs for reporting.
+    pairs: dict[str, str] = field(default_factory=dict)
 
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -215,6 +219,7 @@ def load_training_data(
         train_examples += train_patch
         validation_examples += validation_patch
     canonical = json.dumps({"tasks": list(tasks), "train": train_examples, "validation": validation_examples}, sort_keys=True, ensure_ascii=False)
+    pairs = {**complete_pairs(train_records), **complete_pairs(validation_records)}
     return TrainingData(
         train=train_examples,
         validation=validation_examples,
@@ -226,7 +231,19 @@ def load_training_data(
             "train": {"detection": len(chat), "patch": len(train_patch) if "patch" in tasks else 0},
             "validation": {"detection": len(validation), "patch": len(validation_patch) if "patch" in tasks else 0},
         },
+        pairs=pairs,
     )
+
+
+def complete_pairs(records: list[dict[str, Any]]) -> dict[str, str]:
+    """record_id -> pair_id of every vulnerable/fixed pair whose finding and no_finding halves are both in
+    `records` (one split). A half without its twin is no pair."""
+    halves: dict[str, dict[str, str]] = {}
+    for record in records:
+        decision = record["target"]["decision"]
+        if record.get("pair_id") and decision in {"finding", "no_finding"}:
+            halves.setdefault(record["pair_id"], {})[decision] = record["record_id"]
+    return {rid: pair for pair, members in halves.items() if len(members) == 2 for rid in members.values()}
 
 
 # --------------------------------------------------------------------------------------------
@@ -250,6 +267,18 @@ class EncodedExample:
     # that decides it, the first reply token after `{"decision": "` (sentinel.eval.decision_scores)
     decision: str | None = None
     decision_index: int | None = None
+    # detection only: the vulnerable/fixed pair this example belongs to (TrainingData.pairs), else None
+    pair_id: str | None = None
+
+
+def with_pairs(examples: list[EncodedExample], pairs: dict[str, str]) -> list[EncodedExample]:
+    """Attach pair ids to detection examples. A pair stays a pair only if both halves survived encoding."""
+    tagged = [replace(e, pair_id=pairs.get(e.record_id)) if e.task == "detection" and e.decision_index is not None else e for e in examples]
+    sizes: dict[str, int] = {}
+    for e in tagged:
+        if e.pair_id:
+            sizes[e.pair_id] = sizes.get(e.pair_id, 0) + 1
+    return [replace(e, pair_id=None) if e.pair_id and sizes[e.pair_id] != 2 else e for e in tagged]
 
 
 def encode_example(tokenizer: ChatTokenizer, example: dict[str, Any], max_seq_len: int, end_of_turn: str) -> EncodedExample | None:
@@ -303,6 +332,42 @@ def encode_all(tokenizer: ChatTokenizer, examples: list[dict[str, Any]], max_seq
     return kept, dropped
 
 
+def pair_batches(examples: list[EncodedExample], epoch: int, seed: int) -> list[list[EncodedExample]]:
+    """The per-epoch order of `batches(..., micro_batch_size=1)`, except that the two halves of a vulnerable/fixed
+    pair form one micro-batch [finding, no_finding] at the position of whichever half comes first. Used by
+    the pairwise ranking objective (Training Optimization v2), which needs both halves in one forward pass."""
+    order = [batch[0] for batch in batches(examples, 1, epoch, seed)]
+    by_pair: dict[str, dict[str, EncodedExample]] = {}
+    for e in order:
+        if e.pair_id:
+            by_pair.setdefault(e.pair_id, {})[str(e.decision)] = e
+    out: list[list[EncodedExample]] = []
+    placed: set[str] = set()
+    for e in order:
+        if not e.pair_id:
+            out.append([e])
+        elif e.pair_id not in placed:
+            placed.add(e.pair_id)
+            members = by_pair[e.pair_id]
+            out.append([members["finding"], members["no_finding"]])
+    return out
+
+
+def example_windows(micro_batches: list[list[EncodedExample]], examples_per_step: int) -> list[tuple[int, int]]:
+    """Optimizer steps as [start, end) ranges of micro-batches holding at least `examples_per_step` examples
+    each (a pair is never split; the last window of an epoch may be smaller). With one example per
+    micro-batch this is exactly the trainer's grouping of `gradient_accumulation_steps` micro-batches."""
+    windows, start, count = [], 0, 0
+    for index, batch in enumerate(micro_batches):
+        count += len(batch)
+        if count >= examples_per_step:
+            windows.append((start, index + 1))
+            start, count = index + 1, 0
+    if start < len(micro_batches):
+        windows.append((start, len(micro_batches)))
+    return windows
+
+
 def batches(examples: list[EncodedExample], micro_batch_size: int, epoch: int, seed: int) -> list[list[EncodedExample]]:
     """Deterministic per-epoch shuffle (independent of torch), so a resumed run sees the same order."""
     # a vulnerable record can appear once per task, so the task is part of the key
@@ -325,6 +390,10 @@ __all__ = [
     "PROJECT_ROOT",
     "TrainingData",
     "batches",
+    "complete_pairs",
+    "example_windows",
+    "pair_batches",
+    "with_pairs",
     "encode_all",
     "encode_example",
     "load_training_data",

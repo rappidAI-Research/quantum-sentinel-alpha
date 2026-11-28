@@ -82,6 +82,19 @@ Details and reasons: `docs/TRAINING_OPTIMIZATION_V1.md` § 6. The thresholds of 
 - **Applying it:** `run_model --calibration <file>` applies the bias only to the model it was made for: id, revision, precision and adapter weights hash. The run artifact records the provenance. A bias without provenance (`--finding-logit-bias`, diagnostic) makes a run non-reportable, and `select_checkpoint` refuses it.
 - **Screening:** `screen` passes checkpoints within 3 points of rule v2 (recall ≥ 0.27, FPR ≤ 0.23, greedy or calibrated; at most 8 per run) to full generation runs. Rule v2 then selects among `run_model` artifacts, greedy and calibrated candidates side by side. The final test uses the selected checkpoint's calibration file (`selected_calibration`).
 
+### Training Optimization v2 additions (2026-11-28)
+
+Details: `docs/TRAINING_OPTIMIZATION_V2.md`. Rule v2 is unchanged.
+- **Averaged checkpoints.** An exact average of K LoRA checkpoints (`python -m sentinel.train.average`) is evaluated like any checkpoint and labelled `avgK-step-NNNNNN`. The windows are fixed in advance: 5 checkpoints ending at steps 200, 250, 300 and the final step.
+- **Paired comparison.** `python -m sentinel.eval.compare A B` also reports:
+  - how many decisions differ (`identical_decisions`);
+  - the cases only one run gets right;
+  - the exact McNemar p-value of that split.
+
+  This is information for the decision rules, never a selection criterion.
+- **Explaining a finding.** `decision_scores analyze` reports for run artifacts how many true positives also name an accepted CWE, a CWE of the same family, and overlapping lines. It also reports results per source (GHSA/OSV, MoreFixes).
+- **Plateau AUC.** The mean teacher-forced development ROC-AUC over all checkpoints from step 180 on. It compares training settings without the noise of picking one checkpoint (v2 decision points D1–D3).
+
 ## Adapter evaluation integrity
 
 An adapter evaluation records three separate checks:

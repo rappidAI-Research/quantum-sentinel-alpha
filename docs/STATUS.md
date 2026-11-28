@@ -1,12 +1,44 @@
 # Quantum Sentinel Alpha Status
 
-Last updated: 2026-11-26
+Last updated: 2026-11-28
 
 ## Current phase
 
 Phase 0 → 1. Completed milestones: QuickEval + real model runner + bake-off readiness (PR #2), pre-bake-off hardening, **foundation finalization (Qwen3.5-9B)** and **Sentinel Garden** (PR #4), the **QLoRA training pipeline** (PR #5, not run), the **Sentinel Garden seed over the full advisory population** with a quality audit and a rights review queue (PR #6), the **training-readiness hardening** of November 2026 (target integrity, no invented confidence, patch supervision, independent-review packages, checkpoint trust boundary; coding sandbox in a separate PR), the **pilot rights review** (PR #9), **Sentinel Garden v2 with the training-cohort rights review** (PR #10), the **training authorization** (PR #12) and **Sentinel Garden v3** (PR #13) and the **Ornith-1.5-9B foundation integration** (this milestone). The data work for the first training run is complete and **authorized** (`docs/TRAINING_AUTHORIZATION.md`, decisions of 2026-11-15 and 2026-11-24): Garden v3 holds 1,464 training-approved records from 533 repositories, i.e. 1,871 training and 187 validation examples (detection + patch), and `python -m sentinel.train --dry-run` passes. What remains is approved GPU time. No model has been run or trained. The training foundation is now **`ornith-ai/Ornith-1.5-9B@489cb97…`** (docs/FOUNDATION.md), integrated and checked offline against its real files; the GPU procedure is docs/GPU_RUNBOOK.md.
 
 ## Completed
+
+### Training Optimization v2: bottlenecks and a sequential plan (2026-11-28, PR open, nothing trained)
+
+`docs/TRAINING_OPTIMIZATION_V2.md`, `docs/GPU_RUNBOOK.md` § 17.
+- **v1 results (reported):**
+  - E2 (decision weight 10) step 200 calibrated is the selected candidate: accuracy 60.3 %, recall 41.6 %, FPR 15.2 %, strict recall 14.2 %.
+  - E3 (detection only) passes rule v2 only at step 200.
+  - E1 and E4 were not run.
+- **Bottlenecks (derived from the reported operating points; to be confirmed with real AUCs):**
+  - Discrimination: d′ 0.78–0.84 for E2, about AUC 0.72, no better than V3/V6. Recall rose mainly because the threshold moved.
+  - Explanation: the share of true positives with correct CWE and lines is 29–47 % for every model, the foundation included.
+- **Supervision audit (measured):**
+  - all real findings are explained by advisory summaries;
+  - 24–28 % insertion-point targets;
+  - a length shortcut in train only (CodeQL tool tests);
+  - no contradictory labels;
+  - development has more out-of-excerpt context (44 %) and more MoreFixes cases (36 %) than the calibration set.
+- **Added:**
+  - a pairwise ranking objective on the 734 verified train pairs (V6/E2 path unchanged);
+  - exact LoRA checkpoint averaging;
+  - paired comparison with McNemar p;
+  - true-positive quality and per-source analysis;
+  - the supervision audit;
+  - configs F1–F3;
+  - `scripts/to2_gpu.sh`.
+- **Next (needs approval, one stage at a time):**
+  - F0, no training (≈ 2 GPU h);
+  - F1, pair ranking;
+  - F2, LR 5e-5;
+  - F3 only if both pass.
+
+  F0–F2 total ≈ 12–15 GPU h. Assumption: the release targets (AUC ≈ 0.93 needed) are not reachable with this foundation and data by training changes alone.
 
 ### Training Optimization v1: root cause analysis and controlled experiments (2026-11-26, PR open, nothing trained)
 

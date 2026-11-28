@@ -28,7 +28,7 @@ from statistics import median
 from typing import Any
 
 from sentinel.train.config import PROJECT_ROOT, load_train_config
-from sentinel.train.data import DECISION_PREFIX, IGNORE_INDEX, EncodedExample, batches, load_training_data
+from sentinel.train.data import DECISION_PREFIX, IGNORE_INDEX, EncodedExample, batches, example_windows, load_training_data, pair_batches, with_pairs
 
 CLASSES = ("finding", "no_finding", "abstain", "patch")
 
@@ -48,18 +48,29 @@ class OptimizerStep:
 
 
 def optimizer_steps(
-    examples: list[EncodedExample], micro_batch_size: int, accumulation_steps: int, epochs: int, seed: int, max_steps: int | None = None
+    examples: list[EncodedExample],
+    micro_batch_size: int,
+    accumulation_steps: int,
+    epochs: int,
+    seed: int,
+    max_steps: int | None = None,
+    pair_mode: bool = False,
 ) -> list[OptimizerStep]:
     """The examples of every optimizer step, exactly as `trainer.train` groups them: per-epoch shuffle,
-    accumulation windows aligned to the epoch start, a partial last window per epoch."""
+    accumulation windows aligned to the epoch start, a partial last window per epoch. With `pair_mode`
+    (objective.pair_rank_weight > 0) a vulnerable/fixed pair is one micro-batch and steps count examples."""
     steps: list[OptimizerStep] = []
     for epoch in range(epochs):
-        micro = batches(examples, micro_batch_size, epoch, seed)
-        for start in range(0, len(micro), accumulation_steps):
+        if pair_mode:
+            micro = pair_batches(examples, epoch, seed)
+            windows = example_windows(micro, accumulation_steps)
+        else:
+            micro = batches(examples, micro_batch_size, epoch, seed)
+            windows = [(start, start + accumulation_steps) for start in range(0, len(micro), accumulation_steps)]
+        for start, end in windows:
             if max_steps is not None and len(steps) >= max_steps:
                 return steps
-            window = micro[start : start + accumulation_steps]
-            steps.append(OptimizerStep(len(steps) + 1, epoch, [(e.task, e.record_id) for batch in window for e in batch]))
+            steps.append(OptimizerStep(len(steps) + 1, epoch, [(e.task, e.record_id) for batch in micro[start:end] for e in batch]))
     return steps
 
 
@@ -164,10 +175,22 @@ def report(config_path: Path, window: tuple[int, int], tokenizer_dir: Path | Non
     classes = {(e.get("task", "detection"), e["record_id"]): example_class(e) for e in data.train}
     t = config.training
     # ordering needs only (task, record_id); no example is dropped at max_seq_len in the V6 data (checked with --tokenizer-dir)
-    keys = [EncodedExample(record_id=e["record_id"], input_ids=[0], labels=[0], task=e.get("task", "detection")) for e in data.train]
-    steps = optimizer_steps(keys, t.micro_batch_size, t.gradient_accumulation_steps, t.num_epochs, t.seed, t.max_steps)
+    pair_mode = config.objective is not None and config.objective.pair_rank_weight > 0
+    keys = with_pairs(
+        [
+            EncodedExample(
+                record_id=e["record_id"], input_ids=[0], labels=[0], task=e.get("task", "detection"),
+                decision=classes[(e.get("task", "detection"), e["record_id"])], decision_index=1,
+            )
+            for e in data.train
+        ],
+        data.pairs,
+    )
+    steps = optimizer_steps(keys, t.micro_batch_size, t.gradient_accumulation_steps, t.num_epochs, t.seed, t.max_steps, pair_mode)
     total = len(steps)
-    per_epoch = math.ceil(math.ceil(len(keys) / t.micro_batch_size) / t.gradient_accumulation_steps)
+    # the epoch's shape comes from the uncapped first epoch, so a max_steps shorter than an epoch still reports it
+    first_epoch = optimizer_steps(keys, t.micro_batch_size, t.gradient_accumulation_steps, 1, t.seed, None, pair_mode)
+    per_epoch = len(first_epoch)
     first, last = window
     result: dict[str, Any] = {
         "config": str(config.path),
@@ -177,7 +200,9 @@ def report(config_path: Path, window: tuple[int, int], tokenizer_dir: Path | Non
             "steps_per_epoch": per_epoch,
             "total_steps": total,
             "epoch_boundaries_after_steps": [per_epoch * (e + 1) for e in range(t.num_epochs - 1)],
-            "last_window_of_epoch_micro_batches": math.ceil(len(keys) / t.micro_batch_size) - (per_epoch - 1) * t.gradient_accumulation_steps,
+            "last_window_of_epoch_micro_batches": None if pair_mode else math.ceil(len(keys) / t.micro_batch_size) - (per_epoch - 1) * t.gradient_accumulation_steps,
+            "last_window_of_epoch_examples": len(first_epoch[-1].examples),
+            "pair_mode": pair_mode,
             "learning_rate": {str(s): learning_rate(s, total, t.warmup_ratio, t.learning_rate) for s in sorted({1, first, last, *range(25, total + 1, 25), total})},
         },
         "overall_mix": window_mix(steps, classes, 1, total),
@@ -221,7 +246,7 @@ def main(argv: list[str] | None = None) -> int:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text + "\n", encoding="utf-8")
     s = result["schedule"]
-    print(f"{s['total_steps']} steps, {s['steps_per_epoch']} per epoch (boundary after {s['epoch_boundaries_after_steps']}), last window {s['last_window_of_epoch_micro_batches']} micro-batches")
+    print(f"{s['total_steps']} steps, {s['steps_per_epoch']} per epoch (boundary after {s['epoch_boundaries_after_steps']}), last window {s['last_window_of_epoch_examples']} examples" + (" (pairs as one micro-batch)" if s["pair_mode"] else ""))
     for row in result["windows"] + [result["focus_window"]]:
         print(f"steps {row['steps']:>9} epochs {row['epochs']}: " + ", ".join(f"{c} {row['share'][c]:.0%}" for c in CLASSES))
     if "run" in result:

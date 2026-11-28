@@ -255,7 +255,7 @@ def test_training_run_with_a_decision_weighted_objective(tmp_path: Path, monkeyp
         run = trainer.train(config, data, model_loader=loader, log=lambda _: None)
     finally:
         garden.cleanup()
-    assert run["status"] == "completed" and run["objective"] == {"decision_token_weight": 10.0, "patch_task_weight": 1.0}
+    assert run["status"] == "completed" and run["objective"] == {"decision_token_weight": 10.0, "patch_task_weight": 1.0, "pair_rank_weight": 0.0}
     assert set(run["data"]["decision_token_ids"]) <= {"finding", "no_finding", "abstain"}
     evaluations = run["state"]["evaluations"]
     assert evaluations and all("loss_by_task" in e["validation"] for e in evaluations)
@@ -754,3 +754,404 @@ def test_review_round_4_calibrated_bias_stays_in_range_and_a_calibrated_foundati
     by_label = {r["label"]: r for r in result["runs"]}
     assert by_label["foundation+calibrated"]["eligible"] is False and by_label["foundation+calibrated"]["failed_conditions"] == []
     assert result["selected"] == "step-000150" and result["selected_adapter"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Training Optimization v2: pairwise ranking on verified vulnerable/fixed train pairs
+# ---------------------------------------------------------------------------------------------
+
+
+def _pair_examples() -> list[EncodedExample]:
+    from sentinel.train.data import with_pairs
+
+    examples = [EncodedExample(record_id=f"single-{i}", input_ids=[1, 2, 3], labels=[1, 2, 3], decision="abstain", decision_index=1) for i in range(10)]
+    pairs = {}
+    for p in range(3):
+        for decision in ("finding", "no_finding"):
+            rid = f"pair{p}-{decision}"
+            examples.append(EncodedExample(record_id=rid, input_ids=[1, 2, 3], labels=[1, 2, 3], decision=decision, decision_index=1))
+            pairs[rid] = f"p{p}"
+    examples.append(EncodedExample(record_id="lone-finding", input_ids=[1], labels=[1], decision="finding", decision_index=1))
+    pairs["lone-finding"] = "p-lone"  # its twin is not in the data: no pair
+    examples.append(EncodedExample(record_id="patch-0", input_ids=[1], labels=[1], task="patch"))
+    return with_pairs(examples, pairs)
+
+
+def test_pair_micro_batches_keep_each_pair_together_and_steps_count_examples() -> None:
+    from sentinel.train.data import complete_pairs, example_windows, pair_batches
+
+    examples = _pair_examples()
+    assert next(e for e in examples if e.record_id == "lone-finding").pair_id is None
+    micro = pair_batches(examples, epoch=0, seed=7)
+    flat = [e.record_id for b in micro for e in b]
+    assert sorted(flat) == sorted(e.record_id for e in examples) and len(flat) == len(set(flat))
+    pairs = [b for b in micro if len(b) == 2]
+    assert len(pairs) == 3 and all(b[0].decision == "finding" and b[1].decision == "no_finding" and b[0].pair_id == b[1].pair_id for b in pairs)
+    # the order is the V6 order, with each pair at the position of its first half
+    v6 = [b[0].record_id for b in batches(examples, 1, 0, 7)]
+    first_seen = [rid for rid in v6 if not rid.startswith("pair") or rid == min((r for r in v6 if r.split("-")[0] == rid.split("-")[0]), key=v6.index)]
+    assert [b[0].record_id if len(b) == 1 else b[0].record_id.split("-")[0] for b in micro] == [r if not r.startswith("pair") else r.split("-")[0] for r in first_seen]
+    assert pair_batches(examples, 0, 7) == micro and pair_batches(examples, 1, 7) != micro
+
+    windows = example_windows(micro, 4)
+    assert windows[0][0] == 0 and windows[-1][1] == len(micro) and all(a[1] == b[0] for a, b in zip(windows, windows[1:]))
+    sizes = [sum(len(b) for b in micro[s:e]) for s, e in windows]
+    assert all(size >= 4 for size in sizes[:-1]) and sum(sizes) == len(examples)
+    # one example per micro-batch: exactly the V6 grouping of gradient_accumulation_steps micro-batches
+    singles = batches(examples, 1, 0, 7)
+    assert example_windows(singles, 4) == [(s, min(s + 4, len(singles))) for s in range(0, len(singles), 4)]
+
+    record = lambda rid, pair, decision: {"record_id": rid, "pair_id": pair, "target": {"decision": decision}}  # noqa: E731
+    found = complete_pairs([record("a", "p1", "finding"), record("b", "p1", "no_finding"), record("c", "p2", "finding"), record("d", "p3", "abstain")])
+    assert found == {"a": "p1", "b": "p1"}
+
+
+def test_pair_rank_loss_rewards_ranking_the_vulnerable_half_above_its_fix() -> None:
+    torch = pytest.importorskip("torch")
+    from sentinel.train.trainer import pair_rank_loss
+
+    ids = {"finding": 3, "no_finding": 4}
+    vulnerable = EncodedExample(record_id="v", input_ids=[0, 1, 2], labels=[0, 1, 2], decision="finding", decision_index=2, pair_id="p")
+    fixed = EncodedExample(record_id="f", input_ids=[0, 1, 2], labels=[0, 1, 2], decision="no_finding", decision_index=2, pair_id="p")
+    logits = torch.zeros(2, 3, 6, requires_grad=True)
+    with torch.no_grad():
+        logits[0, 1, 3], logits[0, 1, 4] = 2.0, 0.5  # s_v = 1.5 (the decision token at 2 is predicted at 1)
+        logits[1, 1, 3], logits[1, 1, 4] = 1.0, 1.0  # s_f = 0.0
+    loss = pair_rank_loss(logits, [vulnerable, fixed], ids)
+    assert float(loss.detach()) == pytest.approx(math.log1p(math.exp(-1.5)), rel=1e-6)
+    loss.backward()
+    assert logits.grad[0, 1, 3] < 0 < logits.grad[1, 1, 3]  # descent raises s_v and lowers s_f
+    with pytest.raises(ValueError, match="pair"):
+        pair_rank_loss(logits, [fixed, vulnerable], ids)
+
+
+def test_pair_rank_weight_is_validated(tmp_path: Path) -> None:
+    import yaml
+
+    base = yaml.safe_load((ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").read_text())
+    for weight, micro, message in ((-1.0, 1, "pair_rank_weight"), (1.0, 2, "micro_batch_size 1")):
+        document = {**base, "objective": {**base["objective"], "pair_rank_weight": weight}, "training": {**base["training"], "micro_batch_size": micro}}
+        path = tmp_path / "c.yaml"
+        path.write_text(yaml.safe_dump(document))
+        with pytest.raises(ConfigError, match=message):
+            load_train_config(path)
+
+
+def test_training_run_with_the_pairwise_ranking_objective(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    pytest.importorskip("torch")
+    pytest.importorskip("peft")
+    import sentinel.train.data as train_data
+    from sentinel.train import trainer
+    from sentinel.train.config import ObjectiveSettings
+    from sentinel.train.data import load_training_data
+    from tests.test_train_smoke import TINY_TARGETS, loader
+    from tests.train_fixtures import GardenWorkdir, approved_registry
+
+    monkeypatch.setattr(trainer, "verify_foundation", lambda config: {"revision": config.revision, "method": "test", "files_sha256": {}})
+    garden = GardenWorkdir()
+    monkeypatch.setattr(train_data, "load_registry", approved_registry)
+    seen: list[list[str]] = []
+    original = trainer.pair_objective_loss
+
+    def spy(model, inputs, batch, objective, decision_ids):
+        seen.append([e.record_id for e in batch])
+        return original(model, inputs, batch, objective, decision_ids)
+
+    monkeypatch.setattr(trainer, "pair_objective_loss", spy)
+    try:
+        data = load_training_data(garden.write().config_path, approvals=garden.approvals)
+        base = load_train_config()
+        config = dataclasses.replace(
+            base,
+            quantization=dataclasses.replace(base.quantization, mode="none", compute_dtype="float32"),
+            lora=dataclasses.replace(base.lora, expected_target_count=TINY_TARGETS),
+            training=dataclasses.replace(
+                base.training, micro_batch_size=1, gradient_accumulation_steps=2, num_epochs=2, max_steps=None, eval_every_steps=1,
+                save_every_steps=100, keep_last_checkpoints=1, gradient_checkpointing=False, learning_rate=1e-3,
+            ),
+            output_dir=tmp_path / "run",
+            objective=ObjectiveSettings(decision_token_weight=10.0, pair_rank_weight=1.0),
+        )
+        run = trainer.train(config, data, model_loader=loader, log=lambda _: None)
+    finally:
+        garden.cleanup()
+    assert run["status"] == "completed" and run["objective"]["pair_rank_weight"] == 1.0
+    assert run["data"]["pairs"] == {"train": 1, "validation": 1}
+    assert any(len(batch) == 2 for batch in seen) and sum(len(b) for b in seen) == 2 * len(data.train)  # every example, both epochs
+    assert run["schedule"]["total_steps"] == run["state"]["step"]
+    assert all(e["validation"]["pair_ranking"]["pairs"] == 1 for e in run["state"]["evaluations"])
+
+
+def test_v2_experiment_configs_change_one_variable_against_e2() -> None:
+    """F1 and F2 differ from E2 (the operational reference, which already has dense checkpoints) only in their
+    variable and in run name and output; E2 and every v1 config stay as they were."""
+    import yaml
+
+    e2 = yaml.safe_load((ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").read_text())
+    expected = {
+        "qlora_ornith15_9b_v6_to2_pair_rank.yaml": {"objective.pair_rank_weight"},
+        "qlora_ornith15_9b_v6_to2_lr5e-5.yaml": {"training.learning_rate"},
+        "qlora_ornith15_9b_v6_to2_pair_rank_lr5e-5.yaml": {"objective.pair_rank_weight", "training.learning_rate"},  # F3: F1 + F2, conditional
+    }
+    for name, variables in expected.items():
+        document = yaml.safe_load((ROOT / "configs/train" / name).read_text())
+        changed = set()
+        for section in set(e2) | set(document):
+            if isinstance(e2.get(section), dict) and isinstance(document.get(section), dict):
+                changed |= {f"{section}.{k}" for k in set(e2[section]) | set(document[section]) if e2[section].get(k) != document[section].get(k)}
+            elif e2.get(section) != document.get(section):
+                changed.add(section)
+        assert changed - {"run_name", "output_dir"} == variables, name
+        assert "to2" in document["run_name"] and document["run_name"] in document["output_dir"] and "init_adapter" not in document
+        load_train_config(ROOT / "configs/train" / name)
+    assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to2_pair_rank.yaml").objective.pair_rank_weight == 1.0
+    assert load_train_config(ROOT / "configs/train/qlora_ornith15_9b_v6_to1_decision_w10.yaml").objective.pair_rank_weight == 0.0
+
+
+def _write_checkpoint(run: Path, step: int, tensors: dict[str, Any], **config_changes: Any) -> None:
+    import hashlib as h
+
+    from safetensors.torch import save_file
+
+    path = run / "checkpoints" / f"step-{step:06d}"
+    (path / "adapter").mkdir(parents=True)
+    save_file(tensors, str(path / "adapter" / "adapter_model.safetensors"))
+    config = {"base_model_name_or_path": "ornith-ai/Ornith-1.5-9B", "revision": "a" * 40, "r": 2, "lora_alpha": 4, "peft_type": "LORA",
+              "task_type": "CAUSAL_LM", "bias": "none", "target_modules": "^q$", "use_rslora": False, "use_dora": False, **config_changes}
+    (path / "adapter" / "adapter_config.json").write_text(json.dumps(config))
+    sums = {n: h.sha256((path / n).read_bytes()).hexdigest() for n in ("adapter/adapter_model.safetensors", "adapter/adapter_config.json")}
+    (path / "checksums.json").write_text(json.dumps(sums))
+
+
+def test_checkpoint_average_is_the_exact_mean_of_the_lora_updates(tmp_path: Path) -> None:
+    torch = pytest.importorskip("torch")
+    pytest.importorskip("safetensors")
+    from safetensors.torch import load_file
+
+    from sentinel.eval.backends import describe_adapter
+    from sentinel.train.average import average, checkpoint_dirs
+
+    run = tmp_path / "runs" / "train" / "r"
+    a_name, b_name = "base_model.model.q.lora_A.weight", "base_model.model.q.lora_B.weight"
+    generator = torch.Generator().manual_seed(0)
+    updates = []
+    for step in (160, 170, 180, 190, 200):
+        a, b = torch.randn(2, 6, generator=generator), torch.randn(5, 2, generator=generator)
+        _write_checkpoint(run, step, {a_name: a, b_name: b})
+        updates.append(b @ a)
+    assert [p.name for p in checkpoint_dirs(run, 200, 5, 10)] == [f"step-{s:06d}" for s in (160, 170, 180, 190, 200)]
+    adapter = average(run, 200, 5)
+    assert adapter == run / "averaged" / "avg5-step-000200" / "adapter"
+    merged = load_file(str(adapter / "adapter_model.safetensors"))
+    config = json.loads((adapter / "adapter_config.json").read_text())
+    assert config["r"] == 10 and config["lora_alpha"] == 20  # alpha / r unchanged: the same scaling
+    assert torch.allclose(merged[b_name] @ merged[a_name], torch.stack(updates).mean(dim=0), atol=1e-5)
+    provenance = json.loads((adapter.parent / "averaging.json").read_text())
+    assert [s["checkpoint"].rsplit("/", 1)[1] for s in provenance["sources"]] == [f"step-{s:06d}" for s in (160, 170, 180, 190, 200)]
+    describe_adapter(adapter, "ornith-ai/Ornith-1.5-9B", "a" * 40)  # identity + checksums like any checkpoint
+
+    # the final checkpoint of a run lies off the grid: the window ends there
+    _write_checkpoint(run, 210, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    _write_checkpoint(run, 216, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    assert [p.name for p in checkpoint_dirs(run, 216, 3, 10)] == ["step-000200", "step-000210", "step-000216"]
+
+    # refused: a checkpoint changed after it was written, a different rank, rsLoRA scaling
+    with pytest.raises(ValueError, match="checksums"):
+        (run / "checkpoints" / "step-000210" / "adapter" / "adapter_config.json").write_text("{}")
+        average(run, 210, 2)
+    other = tmp_path / "runs" / "train" / "other"
+    _write_checkpoint(other, 10, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)})
+    _write_checkpoint(other, 20, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)}, r=4)
+    with pytest.raises(ValueError, match="differ"):
+        average(other, 20, 2)
+    rs = tmp_path / "runs" / "train" / "rs"
+    for step in (10, 20):
+        _write_checkpoint(rs, step, {a_name: torch.zeros(2, 6), b_name: torch.zeros(5, 2)}, use_rslora=True)
+    with pytest.raises(ValueError, match="use_rslora"):
+        average(rs, 20, 2)
+
+
+def test_averaged_adapters_have_their_own_labels() -> None:
+    from sentinel.eval.select_checkpoint import label
+
+    path = "runs/train/r/averaged/avg5-step-000200/adapter"
+    assert label({"model": {"adapter": {"path": path}}}) == ("avg5-step-000200", 200)
+    assert label({"model": {"adapter": {"path": "runs/train/r/checkpoints/step-000200/adapter"}}}) == ("step-000200", 200)
+    assert ds.label_of({"model": {"adapter": {"path": path}}}, Path("x.json")) == "r/avg5-step-000200"
+    assert [p.name for p in ds.score_outputs(Path("o"), [Path(path), Path("runs/train/r/checkpoints/step-000200/adapter")])] == [
+        "r__avg5-step-000200.json", "r__step-000200.json",
+    ]
+
+
+def test_paired_comparison_counts_changed_decisions_and_tests_the_discordant_split(monkeypatch: pytest.MonkeyPatch) -> None:
+    from sentinel.eval import compare
+
+    assert compare.mcnemar_exact_p(0, 0) == 1.0
+    assert compare.mcnemar_exact_p(10, 0) == pytest.approx(2 / 2**10)
+    assert compare.mcnemar_exact_p(6, 4) == pytest.approx(min(1.0, 2 * sum(math.comb(10, k) for k in range(5)) / 2**10))
+    greedy = _adapter_artifact(monkeypatch, 200)
+    calibrated = _adapter_artifact(monkeypatch, 200, -0.1249, {**CALIBRATION, "bias": -0.1249})
+    same = compare.paired(greedy, calibrated)  # the E2 step-200 question: do the two runs decide every case alike?
+    assert same["identical_decisions"] and same["decisions_differ"] == 0 and same["mcnemar_exact_p"] == 1.0
+    flipped = json.loads(json.dumps(calibrated))
+    record = next(r for r in flipped["predictions"] if r["expected_decision"] == "no_finding")
+    record["prediction"]["decision"] = "abstain"  # B now abstains on one negative A decides correctly
+    result = compare.paired(greedy, flipped)
+    assert result["decisions_differ"] == 1 and not result["identical_decisions"]
+    report = compare.build_report(greedy, calibrated)
+    assert report["paired"]["identical_decisions"] and "identical predictions" in compare.render(report)
+
+
+def test_true_positive_quality_separates_finding_from_explaining() -> None:
+    cases = {
+        "c1": {"case_id": "c1", "ground_truth": {"cwe": "CWE-89", "start_line": 3, "end_line": 4}},
+        "c2": {"case_id": "c2", "ground_truth": {"cwe": "CWE-79", "start_line": 1, "end_line": 1}},
+        "c3": {"case_id": "c3", "ground_truth": {"cwe": "CWE-22", "start_line": 5, "end_line": 6}},
+    }
+    finding = lambda cwe, s, e: {"decision": "finding", "finding": {"cwe": cwe, "start_line": s, "end_line": e}}  # noqa: E731
+    document = {"predictions": [
+        {"case_id": "c1", "expected_decision": "finding", "prediction": finding("CWE-89", 4, 4)},   # strict
+        {"case_id": "c2", "expected_decision": "finding", "prediction": finding("CWE-80", 7, 9)},   # family only (XSS)
+        {"case_id": "c3", "expected_decision": "finding", "prediction": {"decision": "no_finding", "finding": None}},  # missed
+    ]}
+    quality = ds.true_positive_quality(document, cases)
+    assert quality["true_positives"] == 2 and quality["strict"] == 1 and quality["neither"] == 1
+    assert quality["cwe_accepted"] == 1 and quality["lines_overlap"] == 1
+    assert ds.true_positive_quality({"rows": []}, cases) is None
+
+
+def test_supervision_audit_measures_shortcuts_targets_and_conflicts(tmp_path: Path) -> None:
+    from sentinel.train import supervision_audit as sa
+
+    def record(rid: str, decision: str, code: str, pair: str | None = None, kind: str = "vulnerable", **extra: Any) -> dict[str, Any]:
+        return {
+            "record_id": rid, "pair_id": pair, "kind": kind,
+            "input": {"code": code, "context": extra.pop("context", ""), "language": "python"},
+            "target": {"decision": decision, "cwe": "CWE-89" if decision == "finding" else None, "alternate_cwes": [],
+                       "start_line": 1 if decision == "finding" else None, "end_line": 2 if decision == "finding" else None,
+                       "evidence_source": "advisory_summary" if decision == "finding" else None},
+            "localization": extra.pop("localization", {}), "quality": {"flags": extra.pop("flags", [])},
+            "provenance": {"normalized_sha256": extra.pop("norm", rid), "code_source_id": "ghsa-osv-fix-commits", "published": "2025-01-01"},
+        }
+
+    train = [
+        record("v1", "finding", "a\nb", "p1", localization={"span_kind": "insertion_point", "fix_added_top_level_lines": 2}),
+        record("f1", "no_finding", "a\nb\ncheck", "p1", kind="post_fix"),
+        record("t1", "finding", "x", kind="query_test_finding", flags=["coarse_cwe"]),
+    ]
+    development = [
+        record("v2", "finding", "a\nb\nc", "p2", context="Defined elsewhere: helper"),
+        record("f2", "no_finding", "a\nb\nc", "p2", kind="post_fix", norm="v1"),  # the same code as a train finding: a conflict
+    ]
+    for name, rows in (("train.jsonl", train), ("validation.jsonl", []), ("development/records.jsonl", development)):
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / name).write_text("".join(json.dumps(r) + "\n" for r in rows))
+    result = sa.report(tmp_path)
+    shortcut = result["length_shortcut"]["train"]
+    assert shortcut["auc_shorter_is_finding"] == 1.0 and shortcut["fixed_half_longer_in_chars"] == 1.0
+    assert result["length_shortcut"]["development"]["auc_shorter_is_finding"] == 0.5
+    profile = result["supervision"]["train"]
+    assert profile["span_kind"] == {"None": 1, "insertion_point": 1} and profile["fix_adds_code_outside_the_function"] == 0.5
+    assert profile["evidence_source"] == {"advisory_summary": 2} and profile["coarse_cwe"] == 0.5
+    assert result["supervision"]["development"]["context_names_code_defined_elsewhere"] == 1.0
+    assert result["cwe_coverage"]["development"]["never_trained"] == 0
+    assert result["label_conflicts"] == {"within_a_set": 0, "across_sets": 1, "development_code_also_in_train": 1}
+
+
+def test_v2_gpu_script_keeps_test_sets_out_and_runs_one_experiment_at_a_time() -> None:
+    import shutil
+    import subprocess
+
+    if shutil.which("bash") is None:
+        pytest.skip("bash not available")
+
+    def dry(*stage: str) -> list[str]:
+        result = subprocess.run(["bash", str(ROOT / "scripts/to2_gpu.sh"), *stage], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"},
+                                capture_output=True, text=True, timeout=60, check=True)
+        return [line for line in result.stderr.splitlines() if line.startswith("+ ")]
+
+    f0 = dry("f0")
+    for line in f0:
+        assert "final_test" not in line and "holdout" not in line, line
+    assert any("--quantization bnb-4bit-dq" in line for line in f0)  # E2 on its training precision
+    assert [line.split("--end-step ")[1].split()[0] for line in f0 if "sentinel.train.average" in line] == ["200", "250", "300", "346"]
+    assert any("select_checkpoint --rule 2" in line for line in f0) and not any("sentinel.train --config" in line for line in f0)
+    trained = [line for line in dry("train", "pair_rank") if "sentinel.train --config" in line]
+    assert trained and all("qlora_ornith15_9b_v6_to2_pair_rank.yaml" in line for line in trained)
+    for line in dry("evaluate", "lr5e-5") + dry("select"):
+        assert "final_test" not in line and "holdout" not in line, line
+    assert subprocess.run(["bash", str(ROOT / "scripts/to2_gpu.sh"), "train", "everything"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"},
+                          capture_output=True, text=True, timeout=60).returncode == 2
+    # v1's script still prints exactly its own sequence (it is sourced by v2, not changed in behaviour)
+    v1 = subprocess.run(["bash", str(ROOT / "scripts/to1_gpu.sh"), "all"], env={"DRY_RUN": "1", "PATH": "/usr/bin:/bin"}, capture_output=True, text=True, timeout=60, check=True)
+    assert "qlora_ornith15_9b_v6_to1_decision_w10.yaml" in v1.stderr and "to2" not in v1.stderr
+
+
+def test_plateau_metrics_average_the_second_epoch_and_keep_averages_apart() -> None:
+    def checkpoint(label: str, auc: float, discriminated: int) -> dict[str, Any]:
+        return {"label": label, "scores": {"auc_finding_vs_no_finding": auc}, "pairs": {"discriminated": discriminated}}
+
+    result = {
+        "checkpoints": [
+            checkpoint("foundation", 0.6, 1),
+            checkpoint("r/step-000170", 0.50, 0),   # before the plateau
+            checkpoint("r/step-000180", 0.70, 10),
+            checkpoint("r/step-000190", 0.74, 14),
+            checkpoint("r/avg5-step-000200", 0.80, 20),
+        ],
+        "flips_between_consecutive": [
+            {"from": "r/step-000090", "to": "r/step-000100", "changed": 50},  # before step 100: not counted
+            {"from": "r/step-000170", "to": "r/step-000180", "changed": 6},
+            {"from": "r/step-000180", "to": "r/step-000190", "changed": 2},
+            {"from": "r/avg5-step-000200", "to": "r/step-000180", "changed": 9},  # across groups: not counted
+        ],
+    }
+    plateau = ds.plateau(result)
+    assert plateau["r"] == {"from_step": 180, "checkpoints": 2, "mean_auc": 0.72, "mean_discriminated_pairs": 12.0, "mean_changed_decisions_from_step_100": 4.0}
+    assert plateau["r/averaged"]["mean_auc"] == 0.8 and "foundation" not in plateau
+
+
+def test_diagnostics_report_a_step_cap_shorter_than_one_epoch(tmp_path: Path) -> None:
+    import yaml
+
+    from sentinel.train import diagnostics
+
+    for name in ("qlora_ornith15_9b_v6_to1_decision_w10.yaml", "qlora_ornith15_9b_v6_to2_pair_rank.yaml"):
+        document = yaml.safe_load((ROOT / "configs/train" / name).read_text())
+        document["training"]["max_steps"] = 1
+        path = ROOT / "configs/train" / f"_capped_{tmp_path.name}.yaml"  # load_train_config resolves paths from the repository
+        path.write_text(yaml.safe_dump(document))
+        try:
+            if not (ROOT / "artifacts/garden/seed_v6/train.jsonl").is_file():
+                pytest.skip("Garden v6 work directory not materialized")
+            result = diagnostics.report(path, (1, 1))
+        finally:
+            path.unlink()
+        schedule = result["schedule"]
+        assert schedule["total_steps"] == 1 and schedule["steps_per_epoch"] in (170, 173) and schedule["last_window_of_epoch_examples"] > 0
+
+
+def test_an_interrupted_average_leaves_nothing_that_looks_finished(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    torch = pytest.importorskip("torch")
+    safetensors_torch = pytest.importorskip("safetensors.torch")
+    from sentinel.train.average import average
+
+    run = tmp_path / "runs" / "train" / "r"
+    names = ("base_model.model.q.lora_A.weight", "base_model.model.q.lora_B.weight")
+    for step in (10, 20):
+        _write_checkpoint(run, step, {names[0]: torch.ones(2, 6), names[1]: torch.ones(5, 2)})
+    original = safetensors_torch.save_file
+
+    def fail(*args: Any, **kwargs: Any) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(safetensors_torch, "save_file", fail)
+    with pytest.raises(OSError):
+        average(run, 20, 2)
+    target = run / "averaged" / "avg2-step-000020"
+    assert not target.exists()  # only the temporary directory, never a partial adapter under the final name
+    monkeypatch.setattr(safetensors_torch, "save_file", original)
+    adapter = average(run, 20, 2)  # the rerun replaces the leftover and completes
+    assert adapter == target / "adapter" and (target / "checksums.json").is_file() and not target.with_name(target.name + ".tmp").exists()
+    with pytest.raises(FileExistsError):
+        average(run, 20, 2)

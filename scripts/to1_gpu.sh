@@ -21,9 +21,14 @@ DEV=$G/development
 CAL=$G/validation.jsonl
 RUN=runs/train/qsa-qlora-ornith15-9b-v6
 V0=runs/train/qsa-qlora-ornith15-9b-v0
-TO1=runs/eval/to1
-FINAL_DONE=runs/eval/to1-final.done
-EXPERIMENTS=(baseline_dense decision_w10 detection_only lr5e-5)
+# scripts/to2_gpu.sh sources this file with TAG=to2 and its own EXPERIMENTS: run names, configs and results
+# then use to2 instead of to1. Executed directly, everything is as it was for Training Optimization v1.
+TAG=${TAG:-to1}
+TO1=runs/eval/$TAG
+FINAL_DONE=runs/eval/$TAG-final.done
+if [ -z "${EXPERIMENTS+set}" ]; then
+  EXPERIMENTS=(baseline_dense decision_w10 detection_only lr5e-5)
+fi
 # what the reported V6 run was trained on (docs/TRAINING_OPTIMIZATION_V1.md § 3)
 V6_DATA_SHA256=51ab4c9d54ea8139311877533a9aadf8b831ce4e70337279effa16cef7a12e9a
 V6_CONFIG_SHA256=f9a0edf6dc25743b981720392b7c6cfb59c48fcd2ab4aa92c0d312da167d27d4
@@ -196,10 +201,10 @@ e0() {
 train() {
   local E R resume
   for E in "${EXPERIMENTS[@]}"; do
-    run python -m sentinel.train --config "configs/train/qlora_ornith15_9b_v6_to1_$E.yaml" --dry-run --check-tokens
+    run python -m sentinel.train --config "configs/train/qlora_ornith15_9b_v6_${TAG}_$E.yaml" --dry-run --check-tokens
   done
   for E in "${EXPERIMENTS[@]}"; do
-    R=runs/train/qsa-qlora-ornith15-9b-v6-to1-$E
+    R=runs/train/qsa-qlora-ornith15-9b-v6-$TAG-$E
     if [ -f "$R/adapter/adapter_model.safetensors" ]; then
       echo "= $R finished, skipped" >&2
       continue
@@ -208,14 +213,14 @@ train() {
     if [ -n "$(echo "$R"/checkpoints/step-[0-9][0-9][0-9][0-9][0-9][0-9])" ]; then
       resume=(--resume)  # an interrupted run continues from its last verified checkpoint
     fi
-    echo "+ python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_to1_$E.yaml ${resume[*]} >> runs/train-to1-$E.log" >&2
-    dry || python -m sentinel.train --config "configs/train/qlora_ornith15_9b_v6_to1_$E.yaml" "${resume[@]}" >> "runs/train-to1-$E.log" 2>&1
+    echo "+ python -m sentinel.train --config configs/train/qlora_ornith15_9b_v6_${TAG}_$E.yaml ${resume[*]} >> runs/train-$TAG-$E.log" >&2
+    dry || python -m sentinel.train --config "configs/train/qlora_ornith15_9b_v6_${TAG}_$E.yaml" "${resume[@]}" >> "runs/train-$TAG-$E.log" 2>&1
   done
 }
 
 evaluate() {
   local E=$1
-  local R=runs/train/qsa-qlora-ornith15-9b-v6-to1-$E O=$TO1/$1
+  local R=runs/train/qsa-qlora-ornith15-9b-v6-$TAG-$E O=$TO1/$1
   run mkdir -p "$O"
   adapter_args "$R"
   score_dir "$O/dev-bf16" "${ADAPTER_ARGS[@]}" --cases "$DEV/dev.eval_cases.jsonl"
@@ -225,8 +230,8 @@ evaluate() {
   shortlist "$O"
   generate_shortlist "$O"
   # shellcheck disable=SC2046
-  run_once "$O/diagnostics.json" python -m sentinel.train.diagnostics --config "configs/train/qlora_ornith15_9b_v6_to1_$E.yaml" \
-    $(training_log "runs/train-to1-$E.log" "$R") --window 150-200 --output "$O/diagnostics.json"
+  run_once "$O/diagnostics.json" python -m sentinel.train.diagnostics --config "configs/train/qlora_ornith15_9b_v6_${TAG}_$E.yaml" \
+    $(training_log "runs/train-$TAG-$E.log" "$R") --window 150-200 --output "$O/diagnostics.json"
 }
 
 select_all() {
@@ -252,15 +257,19 @@ final() {
     return 0
   fi
   for set in final_test holdout_reserved; do
-    mkdir -p "runs/eval/$set-to1"
-    run_once "runs/eval/$set-to1/foundation.json" python -m sentinel.eval.run_model --model "$M" --revision "$REV" \
-      --cases "$G/$set.eval_cases.jsonl" --output "runs/eval/$set-to1/foundation.json"
-    run_once "runs/eval/$set-to1/selected.json" python -m sentinel.eval.run_model --model "$M" --revision "$REV" \
-      --cases "$G/$set.eval_cases.jsonl" --adapter "$sel" ${cal:+--calibration "$cal"} --output "runs/eval/$set-to1/selected.json"
-    python -m sentinel.eval.compare "runs/eval/$set-to1/foundation.json" "runs/eval/$set-to1/selected.json" | tee "runs/eval/$set-to1/compare.txt"
+    mkdir -p "runs/eval/$set-$TAG"
+    run_once "runs/eval/$set-$TAG/foundation.json" python -m sentinel.eval.run_model --model "$M" --revision "$REV" \
+      --cases "$G/$set.eval_cases.jsonl" --output "runs/eval/$set-$TAG/foundation.json"
+    run_once "runs/eval/$set-$TAG/selected.json" python -m sentinel.eval.run_model --model "$M" --revision "$REV" \
+      --cases "$G/$set.eval_cases.jsonl" --adapter "$sel" ${cal:+--calibration "$cal"} --output "runs/eval/$set-$TAG/selected.json"
+    python -m sentinel.eval.compare "runs/eval/$set-$TAG/foundation.json" "runs/eval/$set-$TAG/selected.json" | tee "runs/eval/$set-$TAG/compare.txt"
   done
   echo "selected $sel ${cal:+with $cal}" > "$FINAL_DONE"
 }
+
+if [ "${BASH_SOURCE[0]}" != "$0" ]; then
+  return 0  # sourced (scripts/to2_gpu.sh): functions and settings only
+fi
 
 case "${1:-}" in
   check) check ;;
